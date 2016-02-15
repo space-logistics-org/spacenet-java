@@ -1,0 +1,1178 @@
+<scenario>
+  <name>Quick Start Scenario 2</name>
+  <description>A sample scenario analyzing the feasibility of a lunar outpost.</description>
+  <startDate>2019-07-01 00:00:00.0 EDT</startDate>
+  <filePath>docs\completed_quick_start_2.xml</filePath>
+  <createdBy>SpaceNet User</createdBy>
+  <scenarioType>LUNAR</scenarioType>
+  <dataSource class="excel">
+    <nodeLibrary>
+      <surfaceNode>
+        <tid>1</tid>
+        <name>KSC</name>
+        <description>Kennedy Space Center</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <body>EARTH</body>
+        <latitude>28.6</latitude>
+        <longitude>-80.6</longitude>
+      </surfaceNode>
+      <surfaceNode>
+        <tid>2</tid>
+        <name>PAC</name>
+        <description>Pacific Ocean Splash-down</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <body>EARTH</body>
+        <latitude>35.0</latitude>
+        <longitude>-117.9</longitude>
+      </surfaceNode>
+      <surfaceNode>
+        <tid>3</tid>
+        <name>LSP</name>
+        <description>Lunar South Pole</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <body>MOON</body>
+        <latitude>-89.9</latitude>
+        <longitude>-180.0</longitude>
+      </surfaceNode>
+    </nodeLibrary>
+    <edgeLibrary>
+      <flightEdge>
+        <tid>1</tid>
+        <name>Crewed Delivery</name>
+        <description>Crewed Delivery Flight</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <origin class="surfaceNode" reference="../../../nodeLibrary/surfaceNode"/>
+        <destination class="surfaceNode" reference="../../../nodeLibrary/surfaceNode[3]"/>
+        <duration>7.5</duration>
+        <maxCrewSize>4</maxCrewSize>
+        <maxCargoMass>500.0</maxCargoMass>
+      </flightEdge>
+      <flightEdge>
+        <tid>2</tid>
+        <name>Crewed Return</name>
+        <description>Crewed Return Flight</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <origin class="surfaceNode" reference="../../../nodeLibrary/surfaceNode[3]"/>
+        <destination class="surfaceNode" reference="../../../nodeLibrary/surfaceNode[2]"/>
+        <duration>5.5</duration>
+        <maxCrewSize>4</maxCrewSize>
+        <maxCargoMass>100.0</maxCargoMass>
+      </flightEdge>
+      <flightEdge>
+        <tid>3</tid>
+        <name>Cargo Delivery</name>
+        <description>Cargo Delivery Flight</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <origin class="surfaceNode" reference="../../../nodeLibrary/surfaceNode"/>
+        <destination class="surfaceNode" reference="../../../nodeLibrary/surfaceNode[3]"/>
+        <duration>7.5</duration>
+        <maxCrewSize>0</maxCrewSize>
+        <maxCargoMass>12000.0</maxCargoMass>
+      </flightEdge>
+    </edgeLibrary>
+    <resourceTypeLibrary>
+      <edu.mit.spacenet.domain.resource.Item>
+        <tid>1</tid>
+        <name>Habitat Spare</name>
+        <description></description>
+        <classOfSupply>COS401</classOfSupply>
+        <environment>PRESSURIZED</environment>
+        <units>kg</units>
+        <unitMass>10.0</unitMass>
+        <unitVolume>0.0</unitVolume>
+        <packingFactor>0.0</packingFactor>
+      </edu.mit.spacenet.domain.resource.Item>
+      <edu.mit.spacenet.domain.resource.Item>
+        <tid>2</tid>
+        <name>Power Supply Spare</name>
+        <description></description>
+        <classOfSupply>COS401</classOfSupply>
+        <environment>UNPRESSURIZED</environment>
+        <units>kg</units>
+        <unitMass>10.0</unitMass>
+        <unitVolume>0.0</unitVolume>
+        <packingFactor>0.0</packingFactor>
+      </edu.mit.spacenet.domain.resource.Item>
+    </resourceTypeLibrary>
+    <elementPreviewLibrary>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>1</ID>
+        <NAME>Crewed Lander</NAME>
+        <TYPE>CARRIER</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>2</ID>
+        <NAME>Crewed Return Capsule</NAME>
+        <TYPE>CARRIER</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>3</ID>
+        <NAME>Cargo Lander</NAME>
+        <TYPE>CARRIER</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>4</ID>
+        <NAME>Crew Member</NAME>
+        <TYPE>CREW_MEMBER</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>5</ID>
+        <NAME>Crew Habitat</NAME>
+        <TYPE>CARRIER</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>6</ID>
+        <NAME>Power Supply Unit</NAME>
+        <TYPE>ELEMENT</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+    </elementPreviewLibrary>
+    <demandModelLibrary/>
+    <lastLoadDate>2010-12-15 21:31:22.216 EST</lastLoadDate>
+    <filePath>docs\quick_start_2.xls</filePath>
+  </dataSource>
+  <network>
+    <nodes class="tree-set">
+      <no-comparator/>
+      <surfaceNode reference="../../../dataSource/nodeLibrary/surfaceNode"/>
+      <surfaceNode reference="../../../dataSource/nodeLibrary/surfaceNode[2]"/>
+      <surfaceNode reference="../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+    </nodes>
+    <edges class="tree-set">
+      <no-comparator/>
+      <flightEdge reference="../../../dataSource/edgeLibrary/flightEdge[3]"/>
+      <flightEdge reference="../../../dataSource/edgeLibrary/flightEdge"/>
+      <flightEdge reference="../../../dataSource/edgeLibrary/flightEdge[2]"/>
+    </edges>
+    <registrar class="tree-map">
+      <no-comparator/>
+    </registrar>
+  </network>
+  <missionList>
+    <edu.mit.spacenet.scenario.Mission>
+      <name>Automated Check-out Mission</name>
+      <startDate>2019-07-01 00:00:00.0 EDT</startDate>
+      <scenario reference="../../.."/>
+      <eventList>
+        <edu.mit.spacenet.simulator.event.CreateEvent>
+          <uid>4639932823903235072</uid>
+          <name>Autom | Create Elements</name>
+          <time>0.0</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier>
+              <tid>1</tid>
+              <name>Autom | Crewed Lander</name>
+              <description>Abstracted lander for delivering crew to the lunar surface</description>
+              <uid>1</uid>
+              <classOfSupply>COS9021</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>12000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>1</tid>
+                  <name>Crew Lander Active</name>
+                  <description></description>
+                  <stateType>ACTIVE</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>2</tid>
+                  <name>Crew Lander Decommissioned</name>
+                  <description></description>
+                  <stateType>DECOMMISSIONED</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+              </states>
+              <currentState class="edu.mit.spacenet.domain.element.State" reference="../states/edu.mit.spacenet.domain.element.State"/>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>400.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>4</maxCrewSize>
+            </edu.mit.spacenet.domain.element.Carrier>
+            <edu.mit.spacenet.domain.element.Carrier>
+              <tid>2</tid>
+              <name>Autom | Crewed Return Capsule</name>
+              <description>Abstracted return capsule for returning crew to Earth</description>
+              <uid>2</uid>
+              <classOfSupply>COS9022</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>3000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>4</tid>
+                  <name>Crew Return Active</name>
+                  <description></description>
+                  <stateType>ACTIVE</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>3</tid>
+                  <name>Crew Return Dormant</name>
+                  <description></description>
+                  <stateType>DORMANT</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+              </states>
+              <currentState class="edu.mit.spacenet.domain.element.State" reference="../states/edu.mit.spacenet.domain.element.State[2]"/>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>100.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>4</maxCrewSize>
+            </edu.mit.spacenet.domain.element.Carrier>
+          </elements>
+          <container class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+        </edu.mit.spacenet.simulator.event.CreateEvent>
+        <edu.mit.spacenet.simulator.event.FlightTransport>
+          <uid>2925014944735876096</uid>
+          <name>Autom | Flight Transport</name>
+          <time>0.0</time>
+          <priority>2</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <edge reference="../../../../../dataSource/edgeLibrary/flightEdge"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier"/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier[2]"/>
+          </elements>
+        </edu.mit.spacenet.simulator.event.FlightTransport>
+      </eventList>
+      <demandModels class="tree-set">
+        <no-comparator/>
+      </demandModels>
+      <destination class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+      <origin class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode"/>
+    </edu.mit.spacenet.scenario.Mission>
+    <edu.mit.spacenet.scenario.Mission>
+      <name>7-Day Surface Exploration</name>
+      <startDate>2019-12-01 00:00:00.0 EST</startDate>
+      <scenario reference="../../.."/>
+      <eventList>
+        <edu.mit.spacenet.simulator.event.CreateEvent>
+          <uid>3669724500634301440</uid>
+          <name>7-Day | Create Elements</name>
+          <time>0.0</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier>
+              <tid>1</tid>
+              <name>7-Day | Crewed Lander</name>
+              <description>Abstracted lander for delivering crew to the lunar surface</description>
+              <uid>3</uid>
+              <classOfSupply>COS9021</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>12000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>1</tid>
+                  <name>Crew Lander Active</name>
+                  <description></description>
+                  <stateType>ACTIVE</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>2</tid>
+                  <name>Crew Lander Decommissioned</name>
+                  <description></description>
+                  <stateType>DECOMMISSIONED</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+              </states>
+              <currentState class="edu.mit.spacenet.domain.element.State" reference="../states/edu.mit.spacenet.domain.element.State"/>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>400.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>4</maxCrewSize>
+            </edu.mit.spacenet.domain.element.Carrier>
+            <edu.mit.spacenet.domain.element.Carrier>
+              <tid>2</tid>
+              <name>7-Day | Crewed Return Capsule</name>
+              <description>Abstracted return capsule for returning crew to Earth</description>
+              <uid>4</uid>
+              <classOfSupply>COS9022</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>3000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>4</tid>
+                  <name>Crew Return Active</name>
+                  <description></description>
+                  <stateType>ACTIVE</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>3</tid>
+                  <name>Crew Return Dormant</name>
+                  <description></description>
+                  <stateType>DORMANT</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+              </states>
+              <currentState class="edu.mit.spacenet.domain.element.State" reference="../states/edu.mit.spacenet.domain.element.State[2]"/>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>100.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>4</maxCrewSize>
+            </edu.mit.spacenet.domain.element.Carrier>
+          </elements>
+          <container class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+        </edu.mit.spacenet.simulator.event.CreateEvent>
+        <edu.mit.spacenet.simulator.event.CreateEvent>
+          <uid>1330965799576294400</uid>
+          <name>7-Day | Create Elements</name>
+          <time>0.0</time>
+          <priority>2</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.CrewMember>
+              <tid>4</tid>
+              <name>7-Day | Crew Member A</name>
+              <description>Crew member</description>
+              <uid>5</uid>
+              <classOfSupply>COS0</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>100.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <availableTimeFraction>0.66</availableTimeFraction>
+            </edu.mit.spacenet.domain.element.CrewMember>
+            <edu.mit.spacenet.domain.element.CrewMember>
+              <tid>4</tid>
+              <name>7-Day | Crew Member B</name>
+              <description>Crew member</description>
+              <uid>6</uid>
+              <classOfSupply>COS0</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>100.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <availableTimeFraction>0.66</availableTimeFraction>
+            </edu.mit.spacenet.domain.element.CrewMember>
+            <edu.mit.spacenet.domain.element.CrewMember>
+              <tid>4</tid>
+              <name>7-Day | Crew Member C</name>
+              <description>Crew member</description>
+              <uid>7</uid>
+              <classOfSupply>COS0</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>100.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <availableTimeFraction>0.66</availableTimeFraction>
+            </edu.mit.spacenet.domain.element.CrewMember>
+            <edu.mit.spacenet.domain.element.CrewMember>
+              <tid>4</tid>
+              <name>7-Day | Crew Member D</name>
+              <description>Crew member</description>
+              <uid>8</uid>
+              <classOfSupply>COS0</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>100.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <availableTimeFraction>0.66</availableTimeFraction>
+            </edu.mit.spacenet.domain.element.CrewMember>
+          </elements>
+          <container class="edu.mit.spacenet.domain.element.Carrier" reference="../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier"/>
+        </edu.mit.spacenet.simulator.event.CreateEvent>
+        <edu.mit.spacenet.simulator.event.FlightTransport>
+          <uid>5188379700888718336</uid>
+          <name>7-Day | Flight Transport</name>
+          <time>0.0</time>
+          <priority>3</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <edge reference="../../../../../dataSource/edgeLibrary/flightEdge"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier"/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier[2]"/>
+          </elements>
+        </edu.mit.spacenet.simulator.event.FlightTransport>
+        <edu.mit.spacenet.simulator.event.ExplorationProcess>
+          <uid>4040106176097217536</uid>
+          <name>7-Day | Crewed Exploration</name>
+          <time>7.5</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+          <vehicle class="edu.mit.spacenet.domain.element.Carrier" reference="../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier"/>
+          <duration>7.0</duration>
+          <evaPerWeek>5.0</evaPerWeek>
+          <evaDuration>8.0</evaDuration>
+          <stateMap class="tree-map">
+            <no-comparator/>
+            <entry>
+              <edu.mit.spacenet.domain.element.CrewMember reference="../../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember"/>
+              <null/>
+            </entry>
+            <entry>
+              <edu.mit.spacenet.domain.element.CrewMember reference="../../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[2]"/>
+              <null/>
+            </entry>
+          </stateMap>
+          <demands>
+            <demands class="tree-set">
+              <no-comparator/>
+            </demands>
+          </demands>
+        </edu.mit.spacenet.simulator.event.ExplorationProcess>
+        <edu.mit.spacenet.simulator.event.MoveEvent>
+          <uid>6274764893272707072</uid>
+          <name>7-Day | Move Elements</name>
+          <time>14.5</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[2]"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[3]"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[4]"/>
+          </elements>
+          <container class="edu.mit.spacenet.domain.element.Carrier" reference="../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier[2]"/>
+        </edu.mit.spacenet.simulator.event.MoveEvent>
+        <edu.mit.spacenet.simulator.event.FlightTransport>
+          <uid>6140646384994852864</uid>
+          <name>7-Day | Flight Transport</name>
+          <time>14.5</time>
+          <priority>2</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+          <edge reference="../../../../../dataSource/edgeLibrary/flightEdge[2]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier[2]"/>
+          </elements>
+        </edu.mit.spacenet.simulator.event.FlightTransport>
+        <edu.mit.spacenet.simulator.event.RemoveEvent>
+          <uid>1911508840678014976</uid>
+          <name>7-Day | Remove Elements</name>
+          <time>20.0</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[2]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier[2]"/>
+          </elements>
+        </edu.mit.spacenet.simulator.event.RemoveEvent>
+      </eventList>
+      <demandModels class="tree-set">
+        <no-comparator/>
+        <edu.mit.spacenet.domain.model.CrewConsumablesDemandModel>
+          <tid>-666370899</tid>
+          <name>Crew Consumables Demand Model</name>
+          <description></description>
+          <mission reference="../../.."/>
+          <reservesDuration>0.0</reservesDuration>
+          <waterRecoveryRate>0.42</waterRecoveryRate>
+          <clothingLifetime>4.0</clothingLifetime>
+          <transitDemandsOmitted>true</transitDemandsOmitted>
+          <waterRate>3.6</waterRate>
+          <evaWaterRate>0.6875</evaWaterRate>
+          <foodSupportRate>0.05556</foodSupportRate>
+          <ambientFoodRate>0.76389</ambientFoodRate>
+          <rfFoodRate>1.61667</rfFoodRate>
+          <oxygenRate>3.85714</oxygenRate>
+          <evaOxygenRate>0.07875</evaOxygenRate>
+          <nitrogenRate>2.21429</nitrogenRate>
+          <hygieneRate>0.27778</hygieneRate>
+          <hygieneKit>1.8</hygieneKit>
+          <clothingRate>2.3</clothingRate>
+          <personalItems>10.0</personalItems>
+          <officeEquipment>5.0</officeEquipment>
+          <evaSuit>107.0</evaSuit>
+          <evaLithiumHydroxide>0.3625</evaLithiumHydroxide>
+          <healthEquipment>20.0</healthEquipment>
+          <healthConsumables>0.1</healthConsumables>
+          <safetyEquipment>25.0</safetyEquipment>
+          <commEquipment>20.0</commEquipment>
+          <computerEquipment>5.0</computerEquipment>
+          <trashBagRate>0.05</trashBagRate>
+          <wasteContainmentRate>0.05</wasteContainmentRate>
+        </edu.mit.spacenet.domain.model.CrewConsumablesDemandModel>
+      </demandModels>
+      <destination class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+      <origin class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode"/>
+      <returnOrigin class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+      <returnDestination class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode[2]"/>
+    </edu.mit.spacenet.scenario.Mission>
+    <edu.mit.spacenet.scenario.Mission>
+      <name>Habitat Delivery</name>
+      <startDate>2020-03-01 00:00:00.0 EST</startDate>
+      <scenario reference="../../.."/>
+      <eventList>
+        <edu.mit.spacenet.simulator.event.CreateEvent>
+          <uid>8718256138996466688</uid>
+          <name>Habit | Create Elements</name>
+          <time>0.0</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier>
+              <tid>3</tid>
+              <name>Habit | Cargo Lander</name>
+              <description>Abstracted lander for delivering cargo to the lunar surface</description>
+              <uid>9</uid>
+              <classOfSupply>COS9021</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>1000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>5</tid>
+                  <name>Cargo Lander Active</name>
+                  <description></description>
+                  <stateType>ACTIVE</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>6</tid>
+                  <name>Cargo Lander Decommissioned</name>
+                  <description></description>
+                  <stateType>DECOMMISSIONED</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+              </states>
+              <currentState class="edu.mit.spacenet.domain.element.State" reference="../states/edu.mit.spacenet.domain.element.State"/>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>12000.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>0</maxCrewSize>
+            </edu.mit.spacenet.domain.element.Carrier>
+          </elements>
+          <container class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+        </edu.mit.spacenet.simulator.event.CreateEvent>
+        <edu.mit.spacenet.simulator.event.CreateEvent>
+          <uid>7249728977853430784</uid>
+          <name>Habit | Create Elements</name>
+          <time>0.0</time>
+          <priority>2</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier>
+              <tid>5</tid>
+              <name>Habit | Crew Habitat</name>
+              <description>Lunar crew habitat</description>
+              <uid>10</uid>
+              <classOfSupply>COS801</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>7500.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+                <edu.mit.spacenet.domain.element.PartApplication>
+                  <tid>1</tid>
+                  <name></name>
+                  <description></description>
+                  <partType reference="../../../../../../../../../dataSource/resourceTypeLibrary/edu.mit.spacenet.domain.resource.Item"/>
+                  <meanTimeToFailure>-1.0</meanTimeToFailure>
+                  <meanTimeToRepair>-1.0</meanTimeToRepair>
+                  <massToRepair>0.0</massToRepair>
+                  <quantity>5.0</quantity>
+                  <dutyCycle>1.0</dutyCycle>
+                </edu.mit.spacenet.domain.element.PartApplication>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>8</tid>
+                  <name>Habitat Active</name>
+                  <description></description>
+                  <stateType>ACTIVE</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                    <edu.mit.spacenet.domain.model.SparingByMassDemandModel>
+                      <tid>1</tid>
+                      <name>Habitat Sparing by Mass</name>
+                      <description></description>
+                      <element class="edu.mit.spacenet.domain.element.Carrier" reference="../../../../.."/>
+                      <unpressurizedSparesRate>0.01</unpressurizedSparesRate>
+                      <pressurizedSparesRate>0.04</pressurizedSparesRate>
+                      <partsListEnabled>false</partsListEnabled>
+                    </edu.mit.spacenet.domain.model.SparingByMassDemandModel>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>7</tid>
+                  <name>Habitat Dormant</name>
+                  <description></description>
+                  <stateType>DORMANT</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+              </states>
+              <currentState class="edu.mit.spacenet.domain.element.State" reference="../states/edu.mit.spacenet.domain.element.State[2]"/>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>1500.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>4</maxCrewSize>
+            </edu.mit.spacenet.domain.element.Carrier>
+            <edu.mit.spacenet.domain.element.Element>
+              <tid>6</tid>
+              <name>Habit | Power Supply Unit</name>
+              <description>An element to provide the habitat with power</description>
+              <uid>11</uid>
+              <classOfSupply>COS803</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>2500.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+                <edu.mit.spacenet.domain.element.PartApplication>
+                  <tid>2</tid>
+                  <name></name>
+                  <description></description>
+                  <partType reference="../../../../../../../../../dataSource/resourceTypeLibrary/edu.mit.spacenet.domain.resource.Item[2]"/>
+                  <meanTimeToFailure>-1.0</meanTimeToFailure>
+                  <meanTimeToRepair>2.0</meanTimeToRepair>
+                  <massToRepair>0.0</massToRepair>
+                  <quantity>3.0</quantity>
+                  <dutyCycle>1.0</dutyCycle>
+                </edu.mit.spacenet.domain.element.PartApplication>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>10</tid>
+                  <name>Power Supply Active</name>
+                  <description></description>
+                  <stateType>ACTIVE</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                    <edu.mit.spacenet.domain.model.SparingByMassDemandModel>
+                      <tid>2</tid>
+                      <name>Power Supply Sparing by Mass</name>
+                      <description></description>
+                      <element class="edu.mit.spacenet.domain.element.Element" reference="../../../../.."/>
+                      <unpressurizedSparesRate>0.05</unpressurizedSparesRate>
+                      <pressurizedSparesRate>0.0</pressurizedSparesRate>
+                      <partsListEnabled>false</partsListEnabled>
+                    </edu.mit.spacenet.domain.model.SparingByMassDemandModel>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>9</tid>
+                  <name>Power Supply Dormant</name>
+                  <description></description>
+                  <stateType>DORMANT</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+              </states>
+              <currentState class="edu.mit.spacenet.domain.element.State" reference="../states/edu.mit.spacenet.domain.element.State[2]"/>
+            </edu.mit.spacenet.domain.element.Element>
+          </elements>
+          <container class="edu.mit.spacenet.domain.element.Carrier" reference="../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier"/>
+        </edu.mit.spacenet.simulator.event.CreateEvent>
+        <edu.mit.spacenet.simulator.event.FlightTransport>
+          <uid>5230321644480589824</uid>
+          <name>Habit | Flight Transport</name>
+          <time>0.0</time>
+          <priority>3</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <edge reference="../../../../../dataSource/edgeLibrary/flightEdge[3]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier"/>
+          </elements>
+        </edu.mit.spacenet.simulator.event.FlightTransport>
+      </eventList>
+      <demandModels class="tree-set">
+        <no-comparator/>
+      </demandModels>
+      <destination class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+      <origin class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode"/>
+    </edu.mit.spacenet.scenario.Mission>
+    <edu.mit.spacenet.scenario.Mission>
+      <name>14-Day Surface Exploration</name>
+      <startDate>2020-07-01 00:00:00.0 EDT</startDate>
+      <scenario reference="../../.."/>
+      <eventList>
+        <edu.mit.spacenet.simulator.event.CreateEvent>
+          <uid>7073146904298001408</uid>
+          <name>14-Da | Create Elements</name>
+          <time>0.0</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier>
+              <tid>1</tid>
+              <name>14-Da | Crewed Lander</name>
+              <description>Abstracted lander for delivering crew to the lunar surface</description>
+              <uid>12</uid>
+              <classOfSupply>COS9021</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>12000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>1</tid>
+                  <name>Crew Lander Active</name>
+                  <description></description>
+                  <stateType>ACTIVE</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>2</tid>
+                  <name>Crew Lander Decommissioned</name>
+                  <description></description>
+                  <stateType>DECOMMISSIONED</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+              </states>
+              <currentState class="edu.mit.spacenet.domain.element.State" reference="../states/edu.mit.spacenet.domain.element.State"/>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>400.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>4</maxCrewSize>
+            </edu.mit.spacenet.domain.element.Carrier>
+            <edu.mit.spacenet.domain.element.Carrier>
+              <tid>2</tid>
+              <name>14-Da | Crewed Return Capsule</name>
+              <description>Abstracted return capsule for returning crew to Earth</description>
+              <uid>13</uid>
+              <classOfSupply>COS9022</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>3000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>4</tid>
+                  <name>Crew Return Active</name>
+                  <description></description>
+                  <stateType>ACTIVE</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+                <edu.mit.spacenet.domain.element.State>
+                  <tid>3</tid>
+                  <name>Crew Return Dormant</name>
+                  <description></description>
+                  <stateType>DORMANT</stateType>
+                  <demandModels class="tree-set">
+                    <no-comparator/>
+                  </demandModels>
+                </edu.mit.spacenet.domain.element.State>
+              </states>
+              <currentState class="edu.mit.spacenet.domain.element.State" reference="../states/edu.mit.spacenet.domain.element.State[2]"/>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>100.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>4</maxCrewSize>
+            </edu.mit.spacenet.domain.element.Carrier>
+          </elements>
+          <container class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+        </edu.mit.spacenet.simulator.event.CreateEvent>
+        <edu.mit.spacenet.simulator.event.CreateEvent>
+          <uid>6502830794281175040</uid>
+          <name>14-Da | Create Elements</name>
+          <time>0.0</time>
+          <priority>2</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.CrewMember>
+              <tid>4</tid>
+              <name>14-Da | Crew Member A</name>
+              <description>Crew member</description>
+              <uid>14</uid>
+              <classOfSupply>COS0</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>100.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <availableTimeFraction>0.66</availableTimeFraction>
+            </edu.mit.spacenet.domain.element.CrewMember>
+            <edu.mit.spacenet.domain.element.CrewMember>
+              <tid>4</tid>
+              <name>14-Da | Crew Member B</name>
+              <description>Crew member</description>
+              <uid>15</uid>
+              <classOfSupply>COS0</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>100.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <availableTimeFraction>0.66</availableTimeFraction>
+            </edu.mit.spacenet.domain.element.CrewMember>
+            <edu.mit.spacenet.domain.element.CrewMember>
+              <tid>4</tid>
+              <name>14-Da | Crew Member C</name>
+              <description>Crew member</description>
+              <uid>16</uid>
+              <classOfSupply>COS0</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>100.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <availableTimeFraction>0.66</availableTimeFraction>
+            </edu.mit.spacenet.domain.element.CrewMember>
+            <edu.mit.spacenet.domain.element.CrewMember>
+              <tid>4</tid>
+              <name>14-Da | Crew Member D</name>
+              <description>Crew member</description>
+              <uid>17</uid>
+              <classOfSupply>COS0</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>100.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <availableTimeFraction>0.66</availableTimeFraction>
+            </edu.mit.spacenet.domain.element.CrewMember>
+          </elements>
+          <container class="edu.mit.spacenet.domain.element.Carrier" reference="../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier"/>
+        </edu.mit.spacenet.simulator.event.CreateEvent>
+        <edu.mit.spacenet.simulator.event.FlightTransport>
+          <uid>3859943637025301504</uid>
+          <name>14-Da | Flight Transport</name>
+          <time>0.0</time>
+          <priority>3</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <edge reference="../../../../../dataSource/edgeLibrary/flightEdge"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier"/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier[2]"/>
+          </elements>
+        </edu.mit.spacenet.simulator.event.FlightTransport>
+        <edu.mit.spacenet.simulator.event.MoveEvent>
+          <uid>6698191568590083072</uid>
+          <name>14-Da | Move Elements</name>
+          <time>7.5</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[2]"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[3]"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[4]"/>
+          </elements>
+          <container class="edu.mit.spacenet.domain.element.Carrier" reference="../../../../edu.mit.spacenet.scenario.Mission[3]/eventList/edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.Carrier"/>
+        </edu.mit.spacenet.simulator.event.MoveEvent>
+        <edu.mit.spacenet.simulator.event.ReconfigureGroupEvent>
+          <uid>5968234702635714560</uid>
+          <name>14-Da | Reconfigure Group</name>
+          <time>7.5</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../../../edu.mit.spacenet.scenario.Mission[3]/eventList/edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.Carrier"/>
+            <edu.mit.spacenet.domain.element.Element reference="../../../../../edu.mit.spacenet.scenario.Mission[3]/eventList/edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.Element"/>
+          </elements>
+          <stateType>ACTIVE</stateType>
+        </edu.mit.spacenet.simulator.event.ReconfigureGroupEvent>
+        <edu.mit.spacenet.simulator.event.ExplorationProcess>
+          <uid>4538799828562655232</uid>
+          <name>14-Da | Crewed Exploration</name>
+          <time>7.5</time>
+          <priority>2</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+          <vehicle class="edu.mit.spacenet.domain.element.Carrier" reference="../../../../edu.mit.spacenet.scenario.Mission[3]/eventList/edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.Carrier"/>
+          <duration>14.0</duration>
+          <evaPerWeek>5.0</evaPerWeek>
+          <evaDuration>8.0</evaDuration>
+          <stateMap class="tree-map">
+            <no-comparator/>
+            <entry>
+              <edu.mit.spacenet.domain.element.CrewMember reference="../../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember"/>
+              <null/>
+            </entry>
+            <entry>
+              <edu.mit.spacenet.domain.element.CrewMember reference="../../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[2]"/>
+              <null/>
+            </entry>
+          </stateMap>
+          <demands>
+            <demands class="tree-set">
+              <no-comparator/>
+            </demands>
+          </demands>
+        </edu.mit.spacenet.simulator.event.ExplorationProcess>
+        <edu.mit.spacenet.simulator.event.MoveEvent>
+          <uid>3423743952627637248</uid>
+          <name>14-Da | Move Elements</name>
+          <time>21.5</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[2]"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[3]"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[4]"/>
+          </elements>
+          <container class="edu.mit.spacenet.domain.element.Carrier" reference="../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier[2]"/>
+        </edu.mit.spacenet.simulator.event.MoveEvent>
+        <edu.mit.spacenet.simulator.event.ReconfigureGroupEvent>
+          <uid>8274917844497198080</uid>
+          <name>14-Da | Reconfigure Group</name>
+          <time>21.5</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../../../edu.mit.spacenet.scenario.Mission[3]/eventList/edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.Carrier"/>
+            <edu.mit.spacenet.domain.element.Element reference="../../../../../edu.mit.spacenet.scenario.Mission[3]/eventList/edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.Element"/>
+          </elements>
+          <stateType>DORMANT</stateType>
+        </edu.mit.spacenet.simulator.event.ReconfigureGroupEvent>
+        <edu.mit.spacenet.simulator.event.FlightTransport>
+          <uid>1604912141084941312</uid>
+          <name>14-Da | Flight Transport</name>
+          <time>21.5</time>
+          <priority>2</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+          <edge reference="../../../../../dataSource/edgeLibrary/flightEdge[2]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier[2]"/>
+          </elements>
+        </edu.mit.spacenet.simulator.event.FlightTransport>
+        <edu.mit.spacenet.simulator.event.RemoveEvent>
+          <uid>3430527131823099904</uid>
+          <name>14-Da | Remove Elements</name>
+          <time>27.0</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[2]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier[2]"/>
+          </elements>
+        </edu.mit.spacenet.simulator.event.RemoveEvent>
+      </eventList>
+      <demandModels class="tree-set">
+        <no-comparator/>
+        <edu.mit.spacenet.domain.model.CrewConsumablesDemandModel>
+          <tid>-2017483987</tid>
+          <name>Crew Consumables Demand Model</name>
+          <description></description>
+          <mission reference="../../.."/>
+          <reservesDuration>0.0</reservesDuration>
+          <waterRecoveryRate>0.42</waterRecoveryRate>
+          <clothingLifetime>4.0</clothingLifetime>
+          <transitDemandsOmitted>true</transitDemandsOmitted>
+          <waterRate>3.6</waterRate>
+          <evaWaterRate>0.6875</evaWaterRate>
+          <foodSupportRate>0.05556</foodSupportRate>
+          <ambientFoodRate>0.76389</ambientFoodRate>
+          <rfFoodRate>1.61667</rfFoodRate>
+          <oxygenRate>3.85714</oxygenRate>
+          <evaOxygenRate>0.07875</evaOxygenRate>
+          <nitrogenRate>2.21429</nitrogenRate>
+          <hygieneRate>0.27778</hygieneRate>
+          <hygieneKit>1.8</hygieneKit>
+          <clothingRate>2.3</clothingRate>
+          <personalItems>10.0</personalItems>
+          <officeEquipment>5.0</officeEquipment>
+          <evaSuit>107.0</evaSuit>
+          <evaLithiumHydroxide>0.3625</evaLithiumHydroxide>
+          <healthEquipment>20.0</healthEquipment>
+          <healthConsumables>0.1</healthConsumables>
+          <safetyEquipment>25.0</safetyEquipment>
+          <commEquipment>20.0</commEquipment>
+          <computerEquipment>5.0</computerEquipment>
+          <trashBagRate>0.05</trashBagRate>
+          <wasteContainmentRate>0.05</wasteContainmentRate>
+        </edu.mit.spacenet.domain.model.CrewConsumablesDemandModel>
+      </demandModels>
+      <destination class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+      <origin class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode"/>
+      <returnOrigin class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+      <returnDestination class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode[2]"/>
+    </edu.mit.spacenet.scenario.Mission>
+  </missionList>
+  <manifest>
+    <scenario reference="../.."/>
+    <supplyEdges class="tree-set">
+      <no-comparator/>
+    </supplyEdges>
+    <supplyPoints class="tree-set">
+      <no-comparator/>
+    </supplyPoints>
+    <aggregatedNodeDemands class="tree-map">
+      <no-comparator/>
+    </aggregatedNodeDemands>
+    <aggregatedEdgeDemands class="tree-map">
+      <no-comparator/>
+    </aggregatedEdgeDemands>
+    <demandsAsPacked/>
+    <packedDemands/>
+    <cachedContainerDemands class="tree-map">
+      <no-comparator/>
+    </cachedContainerDemands>
+    <manifestedContainers class="tree-map">
+      <no-comparator/>
+    </manifestedContainers>
+  </manifest>
+  <timePrecision>0.05</timePrecision>
+  <demandPrecision>0.01</demandPrecision>
+  <massPrecision>0.01</massPrecision>
+  <volumePrecision>1.0E-6</volumePrecision>
+  <volumeConstrained>false</volumeConstrained>
+  <environmentConstrained>true</environmentConstrained>
+  <itemDiscretization>NONE</itemDiscretization>
+  <itemAggregation>0.0</itemAggregation>
+  <scavengeSpares>false</scavengeSpares>
+  <repairedItems/>
+  <detailedEva>true</detailedEva>
+  <detailedExploration>true</detailedExploration>
+</scenario>

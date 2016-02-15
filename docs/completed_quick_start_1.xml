@@ -1,0 +1,1356 @@
+<scenario>
+  <name>Quick Start Scenario 1</name>
+  <description>A sample scenario analyzing the transportation feasibility of a lunar mission.</description>
+  <startDate>2019-07-01 21:05:16.51 EDT</startDate>
+  <filePath>docs\completed_quick_start_1.xml</filePath>
+  <createdBy>SpaceNet User</createdBy>
+  <scenarioType>LUNAR</scenarioType>
+  <dataSource class="excel">
+    <nodeLibrary>
+      <surfaceNode>
+        <tid>1</tid>
+        <name>KSC</name>
+        <description>Kennedy Space Center</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <body>EARTH</body>
+        <latitude>28.6</latitude>
+        <longitude>-80.6</longitude>
+      </surfaceNode>
+      <surfaceNode>
+        <tid>2</tid>
+        <name>PAC</name>
+        <description>Pacific Ocean Splash-down</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <body>EARTH</body>
+        <latitude>35.0</latitude>
+        <longitude>-117.9</longitude>
+      </surfaceNode>
+      <surfaceNode>
+        <tid>3</tid>
+        <name>LSP</name>
+        <description>Lunar South Pole</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <body>MOON</body>
+        <latitude>-89.9</latitude>
+        <longitude>-180.0</longitude>
+      </surfaceNode>
+      <orbitalNode>
+        <tid>4</tid>
+        <name>LEO</name>
+        <description>Low Earth Orbit</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <body>EARTH</body>
+        <inclination>28.5</inclination>
+        <periapsis>296.0</periapsis>
+        <apoapsis>296.0</apoapsis>
+      </orbitalNode>
+      <orbitalNode>
+        <tid>5</tid>
+        <name>LLPO</name>
+        <description>Low Lunar Polar Orbit</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <body>MOON</body>
+        <inclination>90.0</inclination>
+        <periapsis>100.0</periapsis>
+        <apoapsis>100.0</apoapsis>
+      </orbitalNode>
+    </nodeLibrary>
+    <edgeLibrary>
+      <spaceEdge>
+        <tid>1</tid>
+        <name>KSC-LEO</name>
+        <description>Earth Ascent</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <origin class="surfaceNode" reference="../../../nodeLibrary/surfaceNode"/>
+        <destination class="orbitalNode" reference="../../../nodeLibrary/orbitalNode"/>
+        <duration>0.25</duration>
+        <burns>
+          <burn>
+            <tid>1</tid>
+            <name></name>
+            <description></description>
+            <time>0.0</time>
+            <burnType>OMS</burnType>
+            <deltaV>9500.0</deltaV>
+          </burn>
+        </burns>
+      </spaceEdge>
+      <spaceEdge>
+        <tid>2</tid>
+        <name>LEO-LLPO</name>
+        <description>Lunar Orbit Injection</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <origin class="orbitalNode" reference="../../../nodeLibrary/orbitalNode"/>
+        <destination class="orbitalNode" reference="../../../nodeLibrary/orbitalNode[2]"/>
+        <duration>4.0</duration>
+        <burns>
+          <burn>
+            <tid>2</tid>
+            <name></name>
+            <description></description>
+            <time>0.0</time>
+            <burnType>OMS</burnType>
+            <deltaV>3150.0</deltaV>
+          </burn>
+          <burn>
+            <tid>3</tid>
+            <name></name>
+            <description></description>
+            <time>0.5</time>
+            <burnType>RCS</burnType>
+            <deltaV>2.0</deltaV>
+          </burn>
+          <burn>
+            <tid>4</tid>
+            <name></name>
+            <description></description>
+            <time>2.5</time>
+            <burnType>RCS</burnType>
+            <deltaV>2.0</deltaV>
+          </burn>
+          <burn>
+            <tid>5</tid>
+            <name></name>
+            <description></description>
+            <time>4.0</time>
+            <burnType>OMS</burnType>
+            <deltaV>950.0</deltaV>
+          </burn>
+        </burns>
+      </spaceEdge>
+      <spaceEdge>
+        <tid>3</tid>
+        <name>LLPO-LSP</name>
+        <description>Lunar Descent</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <origin class="orbitalNode" reference="../../../nodeLibrary/orbitalNode[2]"/>
+        <destination class="surfaceNode" reference="../../../nodeLibrary/surfaceNode[3]"/>
+        <duration>0.5</duration>
+        <burns>
+          <burn>
+            <tid>6</tid>
+            <name></name>
+            <description></description>
+            <time>0.0</time>
+            <burnType>OMS</burnType>
+            <deltaV>2030.0</deltaV>
+          </burn>
+          <burn>
+            <tid>7</tid>
+            <name></name>
+            <description></description>
+            <time>0.25</time>
+            <burnType>RCS</burnType>
+            <deltaV>11.0</deltaV>
+          </burn>
+        </burns>
+      </spaceEdge>
+      <spaceEdge>
+        <tid>4</tid>
+        <name>LSP-LLPO</name>
+        <description>Lunar Ascent</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <origin class="surfaceNode" reference="../../../nodeLibrary/surfaceNode[3]"/>
+        <destination class="orbitalNode" reference="../../../nodeLibrary/orbitalNode[2]"/>
+        <duration>0.5</duration>
+        <burns>
+          <burn>
+            <tid>8</tid>
+            <name></name>
+            <description></description>
+            <time>0.0</time>
+            <burnType>OMS</burnType>
+            <deltaV>1875.0</deltaV>
+          </burn>
+          <burn>
+            <tid>9</tid>
+            <name></name>
+            <description></description>
+            <time>0.25</time>
+            <burnType>RCS</burnType>
+            <deltaV>31.0</deltaV>
+          </burn>
+        </burns>
+      </spaceEdge>
+      <spaceEdge>
+        <tid>5</tid>
+        <name>LLPO-PAC</name>
+        <description>Trans-Earth Injection</description>
+        <contents class="tree-set">
+          <no-comparator/>
+        </contents>
+        <origin class="orbitalNode" reference="../../../nodeLibrary/orbitalNode[2]"/>
+        <destination class="surfaceNode" reference="../../../nodeLibrary/surfaceNode[2]"/>
+        <duration>4.0</duration>
+        <burns>
+          <burn>
+            <tid>10</tid>
+            <name></name>
+            <description></description>
+            <time>0.0</time>
+            <burnType>OMS</burnType>
+            <deltaV>612.3</deltaV>
+          </burn>
+          <burn>
+            <tid>11</tid>
+            <name></name>
+            <description></description>
+            <time>0.5</time>
+            <burnType>OMS</burnType>
+            <deltaV>276.5</deltaV>
+          </burn>
+          <burn>
+            <tid>12</tid>
+            <name></name>
+            <description></description>
+            <time>1.0</time>
+            <burnType>OMS</burnType>
+            <deltaV>333.6</deltaV>
+          </burn>
+          <burn>
+            <tid>13</tid>
+            <name></name>
+            <description></description>
+            <time>1.5</time>
+            <burnType>RCS</burnType>
+            <deltaV>3.2</deltaV>
+          </burn>
+          <burn>
+            <tid>14</tid>
+            <name></name>
+            <description></description>
+            <time>3.0</time>
+            <burnType>RCS</burnType>
+            <deltaV>3.2</deltaV>
+          </burn>
+          <burn>
+            <tid>15</tid>
+            <name></name>
+            <description></description>
+            <time>4.0</time>
+            <burnType>RCS</burnType>
+            <deltaV>5.0</deltaV>
+          </burn>
+        </burns>
+      </spaceEdge>
+    </edgeLibrary>
+    <resourceTypeLibrary>
+      <edu.mit.spacenet.domain.resource.Resource>
+        <tid>1</tid>
+        <name>PBAN Solid</name>
+        <description>Solid rocket fuel</description>
+        <classOfSupply>COS105</classOfSupply>
+        <environment>UNPRESSURIZED</environment>
+        <units>kg</units>
+        <unitMass>1.0</unitMass>
+        <unitVolume>0.0</unitVolume>
+        <packingFactor>0.0</packingFactor>
+      </edu.mit.spacenet.domain.resource.Resource>
+      <edu.mit.spacenet.domain.resource.Resource>
+        <tid>2</tid>
+        <name>LH2/LOX</name>
+        <description>Liquid oxygen/liquid hydrogen cryogenic fuel</description>
+        <classOfSupply>COS101</classOfSupply>
+        <environment>UNPRESSURIZED</environment>
+        <units>kg</units>
+        <unitMass>1.0</unitMass>
+        <unitVolume>0.0</unitVolume>
+        <packingFactor>0.0</packingFactor>
+      </edu.mit.spacenet.domain.resource.Resource>
+      <edu.mit.spacenet.domain.resource.Resource>
+        <tid>3</tid>
+        <name>MMH/N2O4</name>
+        <description>Hypergolic fuel</description>
+        <classOfSupply>COS102</classOfSupply>
+        <environment>UNPRESSURIZED</environment>
+        <units>kg</units>
+        <unitMass>1.0</unitMass>
+        <unitVolume>0.0</unitVolume>
+        <packingFactor>0.0</packingFactor>
+      </edu.mit.spacenet.domain.resource.Resource>
+    </resourceTypeLibrary>
+    <elementPreviewLibrary>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>1</ID>
+        <NAME>Ares I First Stage</NAME>
+        <TYPE>PROPULSIVE_VEHICLE</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>2</ID>
+        <NAME>Ares I Upper Stage</NAME>
+        <TYPE>PROPULSIVE_VEHICLE</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>3</ID>
+        <NAME>Orion SM</NAME>
+        <TYPE>PROPULSIVE_VEHICLE</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>4</ID>
+        <NAME>Orion CM</NAME>
+        <TYPE>PROPULSIVE_VEHICLE</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>5</ID>
+        <NAME>Orion LAS</NAME>
+        <TYPE>CARRIER</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>6</ID>
+        <NAME>Ares V SRBs</NAME>
+        <TYPE>PROPULSIVE_VEHICLE</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>7</ID>
+        <NAME>Ares V Core</NAME>
+        <TYPE>PROPULSIVE_VEHICLE</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>8</ID>
+        <NAME>EDS</NAME>
+        <TYPE>PROPULSIVE_VEHICLE</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>9</ID>
+        <NAME>Altair DM</NAME>
+        <TYPE>PROPULSIVE_VEHICLE</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>10</ID>
+        <NAME>Altair AM</NAME>
+        <TYPE>PROPULSIVE_VEHICLE</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>12</ID>
+        <NAME>Crew Member</NAME>
+        <TYPE>CREW_MEMBER</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>13</ID>
+        <NAME>Notional Cargo</NAME>
+        <TYPE>ELEMENT</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+      <edu.mit.spacenet.data.ElementPreview>
+        <ID>14</ID>
+        <NAME>Lunar Surface Samples</NAME>
+        <TYPE>ELEMENT</TYPE>
+      </edu.mit.spacenet.data.ElementPreview>
+    </elementPreviewLibrary>
+    <demandModelLibrary/>
+    <lastLoadDate>2010-12-15 21:09:39.408 EST</lastLoadDate>
+    <filePath>docs\quick_start_1.xls</filePath>
+  </dataSource>
+  <network>
+    <nodes class="tree-set">
+      <no-comparator/>
+      <surfaceNode reference="../../../dataSource/nodeLibrary/surfaceNode"/>
+      <surfaceNode reference="../../../dataSource/nodeLibrary/surfaceNode[2]"/>
+      <orbitalNode reference="../../../dataSource/nodeLibrary/orbitalNode"/>
+      <orbitalNode reference="../../../dataSource/nodeLibrary/orbitalNode[2]"/>
+      <surfaceNode reference="../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+    </nodes>
+    <edges class="tree-set">
+      <no-comparator/>
+      <spaceEdge reference="../../../dataSource/edgeLibrary/spaceEdge"/>
+      <spaceEdge reference="../../../dataSource/edgeLibrary/spaceEdge[2]"/>
+      <spaceEdge reference="../../../dataSource/edgeLibrary/spaceEdge[3]"/>
+      <spaceEdge reference="../../../dataSource/edgeLibrary/spaceEdge[5]"/>
+      <spaceEdge reference="../../../dataSource/edgeLibrary/spaceEdge[4]"/>
+    </edges>
+    <registrar class="tree-map">
+      <no-comparator/>
+    </registrar>
+  </network>
+  <missionList>
+    <edu.mit.spacenet.scenario.Mission>
+      <name>Lunar Sortie</name>
+      <startDate>2019-07-01 00:00:00.0 EDT</startDate>
+      <scenario reference="../../.."/>
+      <eventList>
+        <edu.mit.spacenet.simulator.event.CreateEvent>
+          <uid>1444385270617722880</uid>
+          <name>Lunar | Create Elements</name>
+          <time>0.0</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle>
+              <tid>1</tid>
+              <name>Lunar | Ares I First Stage</name>
+              <description>Ares I Launch Vehicle, First Propulsive Stage</description>
+              <uid>1</uid>
+              <classOfSupply>COS9021</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>105000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>0.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>0</maxCrewSize>
+              <omsIsp>267.0</omsIsp>
+              <rcsIsp>0.0</rcsIsp>
+              <omsFuelTank>
+                <tid>-1820064951</tid>
+                <name>Lunar | Ares I First Stage OMS Fuel Tank</name>
+                <description></description>
+                <uid>2</uid>
+                <classOfSupply>COS0</classOfSupply>
+                <environment>UNPRESSURIZED</environment>
+                <accommodationMass>0.0</accommodationMass>
+                <mass>0.0</mass>
+                <volume>0.0</volume>
+                <parts class="tree-set">
+                  <no-comparator/>
+                </parts>
+                <states class="tree-set">
+                  <no-comparator/>
+                </states>
+                <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../.."/>
+                <resource class="edu.mit.spacenet.domain.resource.Resource" reference="../../../../../../../../dataSource/resourceTypeLibrary/edu.mit.spacenet.domain.resource.Resource"/>
+                <amount>620000.0</amount>
+                <maxAmount>620000.0</maxAmount>
+              </omsFuelTank>
+            </edu.mit.spacenet.domain.element.PropulsiveVehicle>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle>
+              <tid>2</tid>
+              <name>Lunar | Ares I Upper Stage</name>
+              <description>Ares I Launch Vehicle, Second Propulsive Stage</description>
+              <uid>4</uid>
+              <classOfSupply>COS9021</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>12000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>0.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>0</maxCrewSize>
+              <omsIsp>448.0</omsIsp>
+              <rcsIsp>0.0</rcsIsp>
+              <omsFuelTank>
+                <tid>-760661015</tid>
+                <name>Lunar | Ares I Upper Stage OMS Fuel Tank</name>
+                <description></description>
+                <uid>5</uid>
+                <classOfSupply>COS0</classOfSupply>
+                <environment>UNPRESSURIZED</environment>
+                <accommodationMass>0.0</accommodationMass>
+                <mass>0.0</mass>
+                <volume>0.0</volume>
+                <parts class="tree-set">
+                  <no-comparator/>
+                </parts>
+                <states class="tree-set">
+                  <no-comparator/>
+                </states>
+                <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../.."/>
+                <resource class="edu.mit.spacenet.domain.resource.Resource" reference="../../../../../../../../dataSource/resourceTypeLibrary/edu.mit.spacenet.domain.resource.Resource"/>
+                <amount>125000.0</amount>
+                <maxAmount>125000.0</maxAmount>
+              </omsFuelTank>
+            </edu.mit.spacenet.domain.element.PropulsiveVehicle>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle>
+              <tid>4</tid>
+              <name>Lunar | Orion CM</name>
+              <description>Orion Crew Module</description>
+              <uid>10</uid>
+              <classOfSupply>COS9022</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>8000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>100.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>4</maxCrewSize>
+              <omsIsp>0.0</omsIsp>
+              <rcsIsp>301.0</rcsIsp>
+              <rcsFuelTank>
+                <tid>-337703527</tid>
+                <name>Lunar | Orion CM RCS Fuel Tank</name>
+                <description></description>
+                <uid>12</uid>
+                <classOfSupply>COS0</classOfSupply>
+                <environment>UNPRESSURIZED</environment>
+                <accommodationMass>0.0</accommodationMass>
+                <mass>0.0</mass>
+                <volume>0.0</volume>
+                <parts class="tree-set">
+                  <no-comparator/>
+                </parts>
+                <states class="tree-set">
+                  <no-comparator/>
+                </states>
+                <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../.."/>
+                <resource class="edu.mit.spacenet.domain.resource.Resource" reference="../../../../../../../../dataSource/resourceTypeLibrary/edu.mit.spacenet.domain.resource.Resource[3]"/>
+                <amount>175.0</amount>
+                <maxAmount>175.0</maxAmount>
+              </rcsFuelTank>
+            </edu.mit.spacenet.domain.element.PropulsiveVehicle>
+            <edu.mit.spacenet.domain.element.Carrier>
+              <tid>5</tid>
+              <name>Lunar | Orion LAS</name>
+              <description>Orion Launch Abort System</description>
+              <uid>13</uid>
+              <classOfSupply>COS9021</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>6000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>0.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>0</maxCrewSize>
+            </edu.mit.spacenet.domain.element.Carrier>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle>
+              <tid>3</tid>
+              <name>Lunar | Orion SM</name>
+              <description>Orion Service Module</description>
+              <uid>7</uid>
+              <classOfSupply>COS9022</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>3000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>0.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>0</maxCrewSize>
+              <omsIsp>328.0</omsIsp>
+              <rcsIsp>301.0</rcsIsp>
+              <omsFuelTank>
+                <tid>-1159906898</tid>
+                <name>Lunar | Orion SM OMS Fuel Tank</name>
+                <description></description>
+                <uid>8</uid>
+                <classOfSupply>COS0</classOfSupply>
+                <environment>UNPRESSURIZED</environment>
+                <accommodationMass>0.0</accommodationMass>
+                <mass>0.0</mass>
+                <volume>0.0</volume>
+                <parts class="tree-set">
+                  <no-comparator/>
+                </parts>
+                <states class="tree-set">
+                  <no-comparator/>
+                </states>
+                <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../.."/>
+                <resource class="edu.mit.spacenet.domain.resource.Resource" reference="../../../../../../../../dataSource/resourceTypeLibrary/edu.mit.spacenet.domain.resource.Resource[3]"/>
+                <amount>10000.0</amount>
+                <maxAmount>10000.0</maxAmount>
+              </omsFuelTank>
+              <rcsFuelTank reference="../omsFuelTank"/>
+            </edu.mit.spacenet.domain.element.PropulsiveVehicle>
+          </elements>
+          <container class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+        </edu.mit.spacenet.simulator.event.CreateEvent>
+        <edu.mit.spacenet.simulator.event.CreateEvent>
+          <uid>2428245564171849728</uid>
+          <name>Lunar | Create Elements</name>
+          <time>0.0</time>
+          <priority>2</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.CrewMember>
+              <tid>12</tid>
+              <name>Lunar | Crew Member A</name>
+              <description>Crew Member</description>
+              <uid>14</uid>
+              <classOfSupply>COS0</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>100.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <availableTimeFraction>0.66</availableTimeFraction>
+            </edu.mit.spacenet.domain.element.CrewMember>
+            <edu.mit.spacenet.domain.element.CrewMember>
+              <tid>12</tid>
+              <name>Lunar | Crew Member B</name>
+              <description>Crew Member</description>
+              <uid>15</uid>
+              <classOfSupply>COS0</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>100.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <availableTimeFraction>0.66</availableTimeFraction>
+            </edu.mit.spacenet.domain.element.CrewMember>
+            <edu.mit.spacenet.domain.element.CrewMember>
+              <tid>12</tid>
+              <name>Lunar | Crew Member C</name>
+              <description>Crew Member</description>
+              <uid>16</uid>
+              <classOfSupply>COS0</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>100.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <availableTimeFraction>0.66</availableTimeFraction>
+            </edu.mit.spacenet.domain.element.CrewMember>
+            <edu.mit.spacenet.domain.element.CrewMember>
+              <tid>12</tid>
+              <name>Lunar | Crew Member D</name>
+              <description>Crew Member</description>
+              <uid>17</uid>
+              <classOfSupply>COS0</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>100.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <availableTimeFraction>0.66</availableTimeFraction>
+            </edu.mit.spacenet.domain.element.CrewMember>
+          </elements>
+          <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[3]"/>
+        </edu.mit.spacenet.simulator.event.CreateEvent>
+        <edu.mit.spacenet.simulator.event.SpaceTransport>
+          <uid>719824631704404992</uid>
+          <name>Lunar | Space Transport</name>
+          <time>0.0</time>
+          <priority>3</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <edge reference="../../../../../dataSource/edgeLibrary/spaceEdge"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle"/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[2]"/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[3]"/>
+            <edu.mit.spacenet.domain.element.Carrier reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier"/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[4]"/>
+          </elements>
+          <burnStageSequence>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Stage</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Stage</burnStage>
+                <element class="edu.mit.spacenet.domain.element.Carrier" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.Carrier"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[2]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Stage</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[2]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+          </burnStageSequence>
+        </edu.mit.spacenet.simulator.event.SpaceTransport>
+        <edu.mit.spacenet.simulator.event.CreateEvent>
+          <uid>7977228362746739712</uid>
+          <name>Lunar | Create Elements</name>
+          <time>1.0</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle>
+              <tid>10</tid>
+              <name>Lunar | Altair AM</name>
+              <description>Altair Ascent Module</description>
+              <uid>30</uid>
+              <classOfSupply>COS9024</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>3000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>100.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>4</maxCrewSize>
+              <omsIsp>320.0</omsIsp>
+              <rcsIsp>300.0</rcsIsp>
+              <omsFuelTank>
+                <tid>-2035201050</tid>
+                <name>Lunar | Altair AM OMS Fuel Tank</name>
+                <description></description>
+                <uid>31</uid>
+                <classOfSupply>COS0</classOfSupply>
+                <environment>UNPRESSURIZED</environment>
+                <accommodationMass>0.0</accommodationMass>
+                <mass>0.0</mass>
+                <volume>0.0</volume>
+                <parts class="tree-set">
+                  <no-comparator/>
+                </parts>
+                <states class="tree-set">
+                  <no-comparator/>
+                </states>
+                <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../.."/>
+                <resource class="edu.mit.spacenet.domain.resource.Resource" reference="../../../../../../../../dataSource/resourceTypeLibrary/edu.mit.spacenet.domain.resource.Resource[3]"/>
+                <amount>3000.0</amount>
+                <maxAmount>3000.0</maxAmount>
+              </omsFuelTank>
+              <rcsFuelTank reference="../omsFuelTank"/>
+            </edu.mit.spacenet.domain.element.PropulsiveVehicle>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle>
+              <tid>9</tid>
+              <name>Lunar | Altair DM</name>
+              <description>Altair Descent Module</description>
+              <uid>27</uid>
+              <classOfSupply>COS9023</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>12000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>500.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>0</maxCrewSize>
+              <omsIsp>448.0</omsIsp>
+              <rcsIsp>300.0</rcsIsp>
+              <omsFuelTank>
+                <tid>-1267893505</tid>
+                <name>Lunar | Altair DM OMS Fuel Tank</name>
+                <description></description>
+                <uid>28</uid>
+                <classOfSupply>COS0</classOfSupply>
+                <environment>UNPRESSURIZED</environment>
+                <accommodationMass>0.0</accommodationMass>
+                <mass>0.0</mass>
+                <volume>0.0</volume>
+                <parts class="tree-set">
+                  <no-comparator/>
+                </parts>
+                <states class="tree-set">
+                  <no-comparator/>
+                </states>
+                <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../.."/>
+                <resource class="edu.mit.spacenet.domain.resource.Resource" reference="../../../../../../../../dataSource/resourceTypeLibrary/edu.mit.spacenet.domain.resource.Resource[2]"/>
+                <amount>24900.0</amount>
+                <maxAmount>24900.0</maxAmount>
+              </omsFuelTank>
+              <rcsFuelTank>
+                <tid>-930154983</tid>
+                <name>Lunar | Altair DM RCS Fuel Tank</name>
+                <description></description>
+                <uid>29</uid>
+                <classOfSupply>COS0</classOfSupply>
+                <environment>UNPRESSURIZED</environment>
+                <accommodationMass>0.0</accommodationMass>
+                <mass>0.0</mass>
+                <volume>0.0</volume>
+                <parts class="tree-set">
+                  <no-comparator/>
+                </parts>
+                <states class="tree-set">
+                  <no-comparator/>
+                </states>
+                <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../.."/>
+                <resource class="edu.mit.spacenet.domain.resource.Resource" reference="../../../../../../../../dataSource/resourceTypeLibrary/edu.mit.spacenet.domain.resource.Resource[2]"/>
+                <amount>425.0</amount>
+                <maxAmount>425.0</maxAmount>
+              </rcsFuelTank>
+            </edu.mit.spacenet.domain.element.PropulsiveVehicle>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle>
+              <tid>7</tid>
+              <name>Lunar | Ares V Core</name>
+              <description>Ares V Launch Vehicle, Core Engine</description>
+              <uid>21</uid>
+              <classOfSupply>COS9021</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>175000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>0.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>0</maxCrewSize>
+              <omsIsp>414.0</omsIsp>
+              <rcsIsp>0.0</rcsIsp>
+              <omsFuelTank>
+                <tid>-652427582</tid>
+                <name>Lunar | Ares V Core OMS Fuel Tank</name>
+                <description></description>
+                <uid>22</uid>
+                <classOfSupply>COS0</classOfSupply>
+                <environment>UNPRESSURIZED</environment>
+                <accommodationMass>0.0</accommodationMass>
+                <mass>0.0</mass>
+                <volume>0.0</volume>
+                <parts class="tree-set">
+                  <no-comparator/>
+                </parts>
+                <states class="tree-set">
+                  <no-comparator/>
+                </states>
+                <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../.."/>
+                <resource class="edu.mit.spacenet.domain.resource.Resource" reference="../../../../../../../../dataSource/resourceTypeLibrary/edu.mit.spacenet.domain.resource.Resource[2]"/>
+                <amount>1587000.0</amount>
+                <maxAmount>1587000.0</maxAmount>
+              </omsFuelTank>
+            </edu.mit.spacenet.domain.element.PropulsiveVehicle>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle>
+              <tid>6</tid>
+              <name>Lunar | Ares V SRBs</name>
+              <description>Ares V Launch Vehicle, Solid Rocket Boosters</description>
+              <uid>18</uid>
+              <classOfSupply>COS9021</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>210000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>0.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>0</maxCrewSize>
+              <omsIsp>270.0</omsIsp>
+              <rcsIsp>0.0</rcsIsp>
+              <omsFuelTank>
+                <tid>-179502667</tid>
+                <name>Lunar | Ares V SRBs OMS Fuel Tank</name>
+                <description></description>
+                <uid>19</uid>
+                <classOfSupply>COS0</classOfSupply>
+                <environment>UNPRESSURIZED</environment>
+                <accommodationMass>0.0</accommodationMass>
+                <mass>0.0</mass>
+                <volume>0.0</volume>
+                <parts class="tree-set">
+                  <no-comparator/>
+                </parts>
+                <states class="tree-set">
+                  <no-comparator/>
+                </states>
+                <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../.."/>
+                <resource class="edu.mit.spacenet.domain.resource.Resource" reference="../../../../../../../../dataSource/resourceTypeLibrary/edu.mit.spacenet.domain.resource.Resource"/>
+                <amount>1375000.0</amount>
+                <maxAmount>1375000.0</maxAmount>
+              </omsFuelTank>
+            </edu.mit.spacenet.domain.element.PropulsiveVehicle>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle>
+              <tid>8</tid>
+              <name>Lunar | EDS</name>
+              <description>Earth Departure System</description>
+              <uid>24</uid>
+              <classOfSupply>COS9022</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>26000.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+              <contents class="tree-set">
+                <no-comparator/>
+              </contents>
+              <maxCargoMass>0.0</maxCargoMass>
+              <maxCargoVolume>0.0</maxCargoVolume>
+              <cargoEnvironment>UNPRESSURIZED</cargoEnvironment>
+              <maxCrewSize>0</maxCrewSize>
+              <omsIsp>448.0</omsIsp>
+              <rcsIsp>0.0</rcsIsp>
+              <omsFuelTank>
+                <tid>-1805548954</tid>
+                <name>Lunar | EDS OMS Fuel Tank</name>
+                <description></description>
+                <uid>25</uid>
+                <classOfSupply>COS0</classOfSupply>
+                <environment>UNPRESSURIZED</environment>
+                <accommodationMass>0.0</accommodationMass>
+                <mass>0.0</mass>
+                <volume>0.0</volume>
+                <parts class="tree-set">
+                  <no-comparator/>
+                </parts>
+                <states class="tree-set">
+                  <no-comparator/>
+                </states>
+                <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../.."/>
+                <resource class="edu.mit.spacenet.domain.resource.Resource" reference="../../../../../../../../dataSource/resourceTypeLibrary/edu.mit.spacenet.domain.resource.Resource[2]"/>
+                <amount>253000.0</amount>
+                <maxAmount>253000.0</maxAmount>
+              </omsFuelTank>
+            </edu.mit.spacenet.domain.element.PropulsiveVehicle>
+          </elements>
+          <container class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+        </edu.mit.spacenet.simulator.event.CreateEvent>
+        <edu.mit.spacenet.simulator.event.CreateEvent>
+          <uid>7170097875789301760</uid>
+          <name>Lunar | Create Elements</name>
+          <time>1.0</time>
+          <priority>2</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Element>
+              <tid>13</tid>
+              <name>Lunar | Notional Cargo</name>
+              <description>Cargo</description>
+              <uid>33</uid>
+              <classOfSupply>COS6</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>500.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+            </edu.mit.spacenet.domain.element.Element>
+          </elements>
+          <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[2]"/>
+        </edu.mit.spacenet.simulator.event.CreateEvent>
+        <edu.mit.spacenet.simulator.event.SpaceTransport>
+          <uid>5250195997488295936</uid>
+          <name>Lunar | Space Transport</name>
+          <time>1.0</time>
+          <priority>3</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode"/>
+          <edge reference="../../../../../dataSource/edgeLibrary/spaceEdge"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle"/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[2]"/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[3]"/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[4]"/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[5]"/>
+          </elements>
+          <burnStageSequence>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[4]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Stage</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[4]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[3]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Stage</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[3]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[5]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+          </burnStageSequence>
+        </edu.mit.spacenet.simulator.event.SpaceTransport>
+        <edu.mit.spacenet.simulator.event.SpaceTransport>
+          <uid>576646182749045760</uid>
+          <name>Lunar | Space Transport</name>
+          <time>2.0</time>
+          <priority>1</priority>
+          <location class="orbitalNode" reference="../../../../../dataSource/nodeLibrary/orbitalNode"/>
+          <edge reference="../../../../../dataSource/edgeLibrary/spaceEdge[2]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle"/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[2]"/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[5]"/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[3]"/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[4]"/>
+          </elements>
+          <burnStageSequence>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[5]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Stage</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[5]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[2]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[2]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[2]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+          </burnStageSequence>
+        </edu.mit.spacenet.simulator.event.SpaceTransport>
+        <edu.mit.spacenet.simulator.event.MoveEvent>
+          <uid>6202974527973099520</uid>
+          <name>Lunar | Move Elements</name>
+          <time>6.0</time>
+          <priority>1</priority>
+          <location class="orbitalNode" reference="../../../../../dataSource/nodeLibrary/orbitalNode[2]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[2]"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[3]"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[4]"/>
+          </elements>
+          <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle"/>
+        </edu.mit.spacenet.simulator.event.MoveEvent>
+        <edu.mit.spacenet.simulator.event.SpaceTransport>
+          <uid>9043923827929866240</uid>
+          <name>Lunar | Space Transport</name>
+          <time>7.0</time>
+          <priority>2</priority>
+          <location class="orbitalNode" reference="../../../../../dataSource/nodeLibrary/orbitalNode[2]"/>
+          <edge reference="../../../../../dataSource/edgeLibrary/spaceEdge[3]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle"/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[2]"/>
+          </elements>
+          <burnStageSequence>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[2]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[2]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+          </burnStageSequence>
+        </edu.mit.spacenet.simulator.event.SpaceTransport>
+        <edu.mit.spacenet.simulator.event.ExplorationProcess>
+          <uid>3118135789392433152</uid>
+          <name>Lunar | Crewed Exploration</name>
+          <time>7.5</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+          <vehicle class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle"/>
+          <duration>7.0</duration>
+          <evaPerWeek>5.0</evaPerWeek>
+          <evaDuration>8.0</evaDuration>
+          <stateMap class="tree-map">
+            <no-comparator/>
+            <entry>
+              <edu.mit.spacenet.domain.element.CrewMember reference="../../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember"/>
+              <null/>
+            </entry>
+            <entry>
+              <edu.mit.spacenet.domain.element.CrewMember reference="../../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[2]"/>
+              <null/>
+            </entry>
+          </stateMap>
+          <demands>
+            <demands class="tree-set">
+              <no-comparator/>
+            </demands>
+          </demands>
+        </edu.mit.spacenet.simulator.event.ExplorationProcess>
+        <edu.mit.spacenet.simulator.event.CreateEvent>
+          <uid>4111001225752953856</uid>
+          <name>Lunar | Create Elements</name>
+          <time>14.5</time>
+          <priority>1</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.Element>
+              <tid>14</tid>
+              <name>Lunar | Lunar Surface Samples</name>
+              <description>Lunar Surface Samples</description>
+              <uid>34</uid>
+              <classOfSupply>COS6</classOfSupply>
+              <environment>UNPRESSURIZED</environment>
+              <accommodationMass>0.0</accommodationMass>
+              <mass>100.0</mass>
+              <volume>0.0</volume>
+              <parts class="tree-set">
+                <no-comparator/>
+              </parts>
+              <states class="tree-set">
+                <no-comparator/>
+              </states>
+            </edu.mit.spacenet.domain.element.Element>
+          </elements>
+          <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle"/>
+        </edu.mit.spacenet.simulator.event.CreateEvent>
+        <edu.mit.spacenet.simulator.event.SpaceTransport>
+          <uid>2931197969439678464</uid>
+          <name>Lunar | Space Transport</name>
+          <time>14.5</time>
+          <priority>2</priority>
+          <location class="surfaceNode" reference="../../../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+          <edge reference="../../../../../dataSource/edgeLibrary/spaceEdge[4]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle"/>
+          </elements>
+          <burnStageSequence>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent[3]/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+          </burnStageSequence>
+        </edu.mit.spacenet.simulator.event.SpaceTransport>
+        <edu.mit.spacenet.simulator.event.MoveEvent>
+          <uid>9154850374619037696</uid>
+          <name>Lunar | Move Elements</name>
+          <time>15.0</time>
+          <priority>1</priority>
+          <location class="orbitalNode" reference="../../../../../dataSource/nodeLibrary/orbitalNode[2]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[2]"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[3]"/>
+            <edu.mit.spacenet.domain.element.CrewMember reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[2]/elements/edu.mit.spacenet.domain.element.CrewMember[4]"/>
+            <edu.mit.spacenet.domain.element.Element reference="../../../edu.mit.spacenet.simulator.event.CreateEvent[5]/elements/edu.mit.spacenet.domain.element.Element"/>
+          </elements>
+          <container class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[3]"/>
+        </edu.mit.spacenet.simulator.event.MoveEvent>
+        <edu.mit.spacenet.simulator.event.SpaceTransport>
+          <uid>7851826860478834688</uid>
+          <name>Lunar | Space Transport</name>
+          <time>15.0</time>
+          <priority>2</priority>
+          <location class="orbitalNode" reference="../../../../../dataSource/nodeLibrary/orbitalNode[2]"/>
+          <edge reference="../../../../../dataSource/edgeLibrary/spaceEdge[5]"/>
+          <elements class="tree-set">
+            <no-comparator/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[3]"/>
+            <edu.mit.spacenet.domain.element.PropulsiveVehicle reference="../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[4]"/>
+          </elements>
+          <burnStageSequence>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[4]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[4]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[4]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[4]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[4]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+            <list>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Stage</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[4]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+              <edu.mit.spacenet.simulator.event.BurnStageItem>
+                <burnStage>Burn</burnStage>
+                <element class="edu.mit.spacenet.domain.element.PropulsiveVehicle" reference="../../../../../edu.mit.spacenet.simulator.event.CreateEvent/elements/edu.mit.spacenet.domain.element.PropulsiveVehicle[3]"/>
+              </edu.mit.spacenet.simulator.event.BurnStageItem>
+            </list>
+          </burnStageSequence>
+        </edu.mit.spacenet.simulator.event.SpaceTransport>
+      </eventList>
+      <demandModels class="tree-set">
+        <no-comparator/>
+      </demandModels>
+      <destination class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+      <origin class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode"/>
+      <returnOrigin class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode[3]"/>
+      <returnDestination class="surfaceNode" reference="../../../dataSource/nodeLibrary/surfaceNode[2]"/>
+    </edu.mit.spacenet.scenario.Mission>
+  </missionList>
+  <manifest>
+    <scenario reference="../.."/>
+    <supplyEdges class="tree-set">
+      <no-comparator/>
+    </supplyEdges>
+    <supplyPoints class="tree-set">
+      <no-comparator/>
+    </supplyPoints>
+    <aggregatedNodeDemands class="tree-map">
+      <no-comparator/>
+    </aggregatedNodeDemands>
+    <aggregatedEdgeDemands class="tree-map">
+      <no-comparator/>
+    </aggregatedEdgeDemands>
+    <demandsAsPacked/>
+    <packedDemands/>
+    <cachedContainerDemands class="tree-map">
+      <no-comparator/>
+    </cachedContainerDemands>
+    <manifestedContainers class="tree-map">
+      <no-comparator/>
+    </manifestedContainers>
+  </manifest>
+  <timePrecision>0.05</timePrecision>
+  <demandPrecision>0.01</demandPrecision>
+  <massPrecision>0.01</massPrecision>
+  <volumePrecision>1.0E-6</volumePrecision>
+  <volumeConstrained>false</volumeConstrained>
+  <environmentConstrained>true</environmentConstrained>
+  <itemDiscretization>NONE</itemDiscretization>
+  <itemAggregation>0.0</itemAggregation>
+  <scavengeSpares>false</scavengeSpares>
+  <repairedItems/>
+  <detailedEva>true</detailedEva>
+  <detailedExploration>true</detailedExploration>
+</scenario>

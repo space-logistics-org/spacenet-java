@@ -1,0 +1,880 @@
+/*
+ * Copyright (c) 2010 MIT Strategic Engineering Research Group
+ * 
+ * This file is part of SpaceNet 2.5r2.
+ * 
+ * SpaceNet 2.5r2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * SpaceNet 2.5r2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with SpaceNet 2.5r2.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package edu.mit.spacenet.gui.manifest;
+
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JViewport;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingWorker;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+
+import edu.mit.spacenet.domain.element.I_Carrier;
+import edu.mit.spacenet.domain.element.I_ResourceContainer;
+import edu.mit.spacenet.domain.resource.Demand;
+import edu.mit.spacenet.gui.ScenarioPanel;
+import edu.mit.spacenet.gui.SpaceNetFrame;
+import edu.mit.spacenet.gui.component.DropDownButton;
+import edu.mit.spacenet.gui.component.ElementTree;
+import edu.mit.spacenet.scenario.Manifest;
+import edu.mit.spacenet.scenario.Scenario;
+import edu.mit.spacenet.scenario.SupplyEdge;
+import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
+import edu.mit.spacenet.simulator.DemandSimulator;
+import edu.mit.spacenet.util.GlobalParameters;
+
+/**
+ * The tab component used to view and edit the scenario getManifest().
+ * 
+ * @author Paul Grogan
+ */
+public class ManifestTab extends JSplitPane {
+	private static final long serialVersionUID = 8829941616137676449L;
+	
+	private ScenarioPanel scenarioPanel;
+	private DemandSimulator simulator;
+	private SimWorker simWorker;
+	private ManifestWorker manifestWorker;
+	private AggregatedDemandsTable aggregatedDemandsTable;
+	private JButton clearButton, resetButton, autoManifestButton, unpackButton, autoPackButton;
+	
+	private PackedDemandsTable packedDemandsTable;
+	private JButton editContainerButton, removeContainerButton;
+	private JLabel containerNameLabel, containerMassLabel, containerVolumeLabel, containerEnvironmentLabel;
+	private ContainerContentsTable containerContentsTable;
+	private JButton unpackContentsButton;
+	private JProgressBar containerMassCapacity, containerVolumeCapacity;
+	private JButton packButton, unmanifestButton;
+	
+	private ElementTree carrierTree;
+	private CarrierContentsTable carrierContentsTable;
+	private JButton unmanifestContentsButton;
+	private JProgressBar carrierMassCapacity, carrierVolumeCapacity;
+	private JButton manifestButton;
+	
+	private ManifestedDemandsTable manifestedDemandsTable;
+	
+	/**
+	 * Instantiates a new manifest tab.
+	 * 
+	 * @param scenarioPanel the scenario panel
+	 */
+	public ManifestTab(ScenarioPanel scenarioPanel) {
+		this.scenarioPanel = scenarioPanel;
+		
+		setLeftComponent(buildDemandsPanel());
+		JSplitPane rightPanel = new JSplitPane();
+		rightPanel.setLeftComponent(buildPackingPanel());
+		rightPanel.setRightComponent(buildManifestingPanel());
+		setRightComponent(rightPanel);
+		
+		setResizeWeight(1/3D);
+		setDividerLocation(1/3D);
+		rightPanel.setResizeWeight(1/2D);
+		rightPanel.setDividerLocation(1/2D);
+		rightPanel.setBorder(BorderFactory.createEmptyBorder());
+		setBorder(BorderFactory.createEmptyBorder());
+	}
+	
+	/**
+	 * Builds the demands panel.
+	 * 
+	 * @return the demands panel
+	 */
+	private JPanel buildDemandsPanel() {
+		JPanel demandsPanel = new JPanel();
+		demandsPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		demandsPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(2,2,2,2);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = 0;
+		c.anchor = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.NONE;
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 3, 5));
+		clearButton = new JButton("Clear Manifest");
+		clearButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/cross.png")));
+		clearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getManifest().reset();
+				updateView();
+			}
+		});
+		buttonPanel.add(clearButton);
+		resetButton = new JButton("Reset Manifest");
+		resetButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/book_open_refresh.png")));
+		resetButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				while(simWorker!=null && !simWorker.isDone()) {
+					// wait until previous reset is finished
+				}
+				getManifest().reset();
+				simWorker = new SimWorker();
+				simWorker.execute();
+			}
+		});
+		buttonPanel.add(resetButton);
+		autoManifestButton = new JButton("Auto-Manifest");
+		autoManifestButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/book_open_lightning.png")));
+		autoManifestButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				while(manifestWorker!=null && !manifestWorker.isDone()) {
+					// wait until previous auto-manifesting process is finished
+				}
+				manifestWorker = new ManifestWorker();
+				manifestWorker.execute();
+			}
+		});
+		buttonPanel.add(autoManifestButton);
+		demandsPanel.add(buttonPanel, c);
+		
+		c.gridy++;
+		c.anchor = GridBagConstraints.LINE_START;
+		c.fill = GridBagConstraints.BOTH;
+		demandsPanel.add(new JLabel("Aggregated Demands"), c);
+		c.gridy++;
+		c.weighty = 1;
+		aggregatedDemandsTable = new AggregatedDemandsTable(this);
+		aggregatedDemandsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if(aggregatedDemandsTable.getSelectedRow()>=0) {
+					//packedDemandsTable.clearSelection();
+					//manifestedDemandsTable.clearSelection();
+				}
+				updateButtons();
+			}
+		});
+		JScrollPane aggregatedDemandsScroll = new JScrollPane(aggregatedDemandsTable);
+		demandsPanel.add(aggregatedDemandsScroll, c);
+		c.gridy++;
+		c.weighty = 0;
+		c.anchor = GridBagConstraints.LINE_END;
+		c.fill = GridBagConstraints.NONE;
+
+		JPanel packButtonPanel = new JPanel();
+		packButtonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 3, 0));
+		unpackButton = new JButton("Unpack");
+		unpackButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/box_out.png")));
+		unpackButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for(int row : aggregatedDemandsTable.getSelectedRows()) {
+					getManifest().unpackDemand(aggregatedDemandsTable.getDemand(row));
+				}
+				updateView();
+			}
+		});
+		unpackButton.setEnabled(false);
+		packButtonPanel.add(unpackButton);
+		autoPackButton = new JButton("Auto-Pack");
+		autoPackButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/box_lightning.png")));
+		autoPackButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for(int row : aggregatedDemandsTable.getSelectedRows()) {
+					getManifest().autoPackDemand(aggregatedDemandsTable.getDemand(row));
+				}
+				updateView();
+			}
+		});
+		autoPackButton.setEnabled(false);
+		packButtonPanel.add(autoPackButton);
+		demandsPanel.add(packButtonPanel, c);
+		return demandsPanel;
+	}
+	
+	/**
+	 * Builds the packing panel.
+	 * 
+	 * @return the packing panel
+	 */
+	private JPanel buildPackingPanel() {
+		JPanel packingPanel = new JPanel();
+		packingPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		packingPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(2,2,2,2);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = 0;
+		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.LINE_START;
+		c.fill = GridBagConstraints.BOTH;
+		packingPanel.add(new JLabel("Available Logistics Containers"), c);
+		c.gridy++;
+		c.weighty = 1;
+		packedDemandsTable = new PackedDemandsTable(this);
+		packedDemandsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if(packedDemandsTable.getSelectedRow()>=0) {
+					//manifestedDemandsTable.clearSelection();
+				}
+				updateContainer();
+				updateButtons();
+			}
+		});
+		JScrollPane packedDemandsScroll = new JScrollPane(packedDemandsTable);
+		packingPanel.add(packedDemandsScroll, c);
+		c.gridy++;
+		c.weighty = 0;
+		c.anchor = GridBagConstraints.LINE_END;
+		c.fill = GridBagConstraints.NONE;
+		JPanel containerButtonPanel = new JPanel();
+		containerButtonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 3, 0));
+		DropDownButton addContainerButton = new AddContainerButton(this);
+		containerButtonPanel.add(addContainerButton);
+		editContainerButton = new JButton("Edit");
+		editContainerButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/package_edit.png")));
+		editContainerButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO add edit container dialog
+			}
+		});
+		editContainerButton.setEnabled(false);
+		containerButtonPanel.add(editContainerButton);
+		removeContainerButton = new JButton("Remove");
+		removeContainerButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/package_delete.png")));
+		removeContainerButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HashSet<I_ResourceContainer> containers = new HashSet<I_ResourceContainer>();
+				for(int row : packedDemandsTable.getSelectedRows()) {
+					containers.add(packedDemandsTable.getContainer(row));
+				}
+				for(I_ResourceContainer container : containers) getManifest().removeContainer(container);
+				updateView();
+			}
+		});
+		removeContainerButton.setEnabled(false);
+		containerButtonPanel.add(removeContainerButton);
+		packingPanel.add(containerButtonPanel, c);
+		c.gridy++;
+		c.anchor = GridBagConstraints.LINE_END;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0;
+		c.gridwidth = 1;
+		packingPanel.add(new JLabel("Name: "), c);
+		c.gridy++;
+		packingPanel.add(new JLabel("Total Mass: "), c);
+		c.gridy++;
+		packingPanel.add(new JLabel("Total Volume: "), c);
+		c.gridy++;
+		c.anchor = GridBagConstraints.FIRST_LINE_END;
+		packingPanel.add(new JLabel("Contents: "), c);
+		c.anchor = GridBagConstraints.LINE_END;
+		c.gridy+=2;
+		packingPanel.add(new JLabel("Environment: "), c);
+		c.gridy++;
+		packingPanel.add(new JLabel("Cargo Mass: "), c);
+		c.gridy++;
+		packingPanel.add(new JLabel("Cargo Volume: "), c);
+		c.gridx++;
+		c.weightx = 1;
+		c.gridy-=7;
+		c.anchor = GridBagConstraints.LINE_START;
+		c.fill = GridBagConstraints.BOTH;
+		containerNameLabel = new JLabel();
+		packingPanel.add(containerNameLabel, c);
+		c.gridy++;
+		containerMassLabel = new JLabel();
+		packingPanel.add(containerMassLabel, c);
+		c.gridy++;
+		containerVolumeLabel = new JLabel();
+		packingPanel.add(containerVolumeLabel, c);
+		c.gridy++;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		c.weighty = 0.4;
+		containerContentsTable = new ContainerContentsTable(this);
+		containerContentsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if(containerContentsTable.getSelectedRowCount()==1) {
+					for(int row=0; row<aggregatedDemandsTable.getRowCount(); row++) {
+						if(aggregatedDemandsTable.getDemand(row).equals(
+								getManifest().getDemand(containerContentsTable.getSelectedDemand()))) {
+							aggregatedDemandsTable.getSelectionModel().setSelectionInterval(row, row);
+							JViewport viewport = (JViewport)aggregatedDemandsTable.getParent();
+					        Rectangle rect = aggregatedDemandsTable.getCellRect(row, 0, true);
+					        Point pt = viewport.getViewPosition();
+					        rect.setLocation(rect.x-pt.x, rect.y-pt.y);
+					        viewport.scrollRectToVisible(rect);
+							break;
+						}
+					}
+				}
+				updateButtons();
+			}
+		});
+		JScrollPane containerContentsScroll = new JScrollPane(containerContentsTable);
+		packingPanel.add(containerContentsScroll, c);
+		c.gridy++;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.LINE_END;
+		c.weighty = 0;
+		unpackContentsButton = new JButton("Unpack");
+		unpackContentsButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/box_out.png")));
+		unpackContentsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HashSet<Demand> demands = new HashSet<Demand>();
+				for(int row : containerContentsTable.getSelectedRows()) {
+					demands.add(containerContentsTable.getDemand(row));
+				}
+				for(Demand demand : demands) {
+					getManifest().unpackDemand(demand, 
+							packedDemandsTable.getSelectedContainer());
+				}
+				updateView();
+			}
+		});
+		unpackContentsButton.setEnabled(false);
+		packingPanel.add(unpackContentsButton, c);
+		c.gridy++;
+		c.fill = GridBagConstraints.BOTH;
+		c.anchor = GridBagConstraints.LINE_START;
+		containerEnvironmentLabel = new JLabel();
+		packingPanel.add(containerEnvironmentLabel, c);
+		c.gridy++;
+		containerMassCapacity = new JProgressBar(0,100);
+		containerMassCapacity.setStringPainted(true);
+		containerMassCapacity.setString("");
+		packingPanel.add(containerMassCapacity, c);
+		c.gridy++;
+		containerVolumeCapacity = new JProgressBar(0,100);
+		containerVolumeCapacity.setStringPainted(true);
+		containerVolumeCapacity.setString("");
+		packingPanel.add(containerVolumeCapacity, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.LINE_END;
+		c.fill = GridBagConstraints.NONE;
+		JPanel packButtonPanel = new JPanel();
+		packButtonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 3, 0));
+		packButton = new JButton("Pack");
+		packButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/box_in.png")));
+		packButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for(int row : aggregatedDemandsTable.getSelectedRows()) {
+					getManifest().packDemand(aggregatedDemandsTable.getDemand(row), 
+							packedDemandsTable.getSelectedContainer());
+				}
+				updateView();
+			}
+		});
+		packButton.setEnabled(false);
+		packButtonPanel.add(packButton);
+		unmanifestButton = new JButton("Unmanifest");
+		unmanifestButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/book_delete.png")));
+		unmanifestButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<I_ResourceContainer> containers = new ArrayList<I_ResourceContainer>();
+				ArrayList<SupplyEdge> edges = new ArrayList<SupplyEdge>();
+				for(int row : packedDemandsTable.getSelectedRows()) {
+					containers.add(packedDemandsTable.getContainer(row));
+					edges.add(packedDemandsTable.getSupplyEdge(row));
+				}
+				for(int i=0; i<containers.size(); i++) {
+					getManifest().unmanifestContainer(containers.get(i),  edges.get(i));
+				}
+				updateView();
+			}
+		});
+		unmanifestButton.setEnabled(false);
+		packButtonPanel.add(unmanifestButton);
+		packingPanel.add(packButtonPanel, c);
+		return packingPanel;
+	}
+	
+	/**
+	 * Builds the manifesting panel.
+	 * 
+	 * @return the manifesting panel
+	 */
+	private JPanel buildManifestingPanel() {
+		JPanel manifestingPanel = new JPanel();
+		manifestingPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		manifestingPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(2,2,2,2);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = 0;
+		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.LINE_START;
+		c.fill = GridBagConstraints.BOTH;
+		manifestingPanel.add(new JLabel("Available Carriers"), c);
+		c.gridy++;
+		c.weighty = 1;
+		manifestedDemandsTable = new ManifestedDemandsTable(this);
+		manifestedDemandsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if(manifestedDemandsTable.getSelectedRow()>=0
+						&& aggregatedDemandsTable.getSelectedRow()>=0
+						&& packedDemandsTable.getSelectedRow()<0) {
+					//aggregatedDemandsTable.clearSelection();
+				}
+				updateCarrier();
+				updateButtons();
+			}
+		});
+		JScrollPane manifestedDemandsScroll = new JScrollPane(manifestedDemandsTable);
+		manifestingPanel.add(manifestedDemandsScroll, c);
+		c.gridy++;
+		c.anchor = GridBagConstraints.LINE_END;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0;
+		c.weighty = 0;
+		c.gridwidth = 1;
+		c.anchor = GridBagConstraints.FIRST_LINE_END;
+		manifestingPanel.add(new JLabel("Carriers: "), c);
+		c.gridy++;
+		manifestingPanel.add(new JLabel("Containers: "), c);
+		c.anchor = GridBagConstraints.LINE_END;
+		c.gridy+=2;
+		manifestingPanel.add(new JLabel("Cargo Mass: "), c);
+		c.gridy++;
+		manifestingPanel.add(new JLabel("Cargo Volume: "), c);
+		c.gridx++;
+		c.weightx = 1;
+		c.gridy-=4;
+		c.fill = GridBagConstraints.BOTH;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		c.weighty = 0.4;
+		carrierTree = new ElementTree();
+		carrierTree.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		carrierTree.addTreeSelectionListener(new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent e) {
+				updateElement();
+				updateButtons();
+			}
+		});
+		JScrollPane carrierTreeScroll = new JScrollPane(carrierTree);
+		carrierTreeScroll.setPreferredSize(new Dimension(150,300));
+		manifestingPanel.add(carrierTreeScroll, c);
+		c.gridy++;
+		carrierContentsTable = new CarrierContentsTable(this);
+		carrierContentsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if(carrierContentsTable.getSelectedRowCount()==1) {
+					for(int row=0; row<packedDemandsTable.getRowCount(); row++) {
+						if(manifestedDemandsTable.getSelectedSupplyEdge().equals(packedDemandsTable.getSupplyEdge(row))
+								&& carrierContentsTable.getSelectedContainer().equals(packedDemandsTable.getContainer(row))) {
+							packedDemandsTable.getSelectionModel().setSelectionInterval(row, row);
+							JViewport viewport = (JViewport)packedDemandsTable.getParent();
+					        Rectangle rect = packedDemandsTable.getCellRect(row, 0, true);
+					        Point pt = viewport.getViewPosition();
+					        rect.setLocation(rect.x-pt.x, rect.y-pt.y);
+					        viewport.scrollRectToVisible(rect);
+							break;
+						}
+					}
+				}
+				updateButtons();
+			}
+		});
+		JScrollPane carrierContentsScroll = new JScrollPane(carrierContentsTable);
+		manifestingPanel.add(carrierContentsScroll, c);
+		c.gridy++;
+		c.anchor = GridBagConstraints.LINE_END;
+		c.fill = GridBagConstraints.NONE;
+		c.weighty = 0;
+		unmanifestContentsButton = new JButton("Unmanifest");
+		unmanifestContentsButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/book_delete.png")));
+		unmanifestContentsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HashSet<I_ResourceContainer> containers = new HashSet<I_ResourceContainer>();
+				for(int row : carrierContentsTable.getSelectedRows()) {
+					containers.add(carrierContentsTable.getContainer(row));
+				}
+				for(I_ResourceContainer container : containers) {
+					getManifest().unmanifestContainer(container, 
+							manifestedDemandsTable.getSelectedSupplyEdge());
+				}
+				updateView();
+			}
+		});
+		unmanifestContentsButton.setEnabled(false);
+		manifestingPanel.add(unmanifestContentsButton, c);
+		c.anchor = GridBagConstraints.LINE_START;
+		c.fill = GridBagConstraints.BOTH;
+		c.gridy++;
+		carrierMassCapacity = new JProgressBar(0,100);
+		carrierMassCapacity.setStringPainted(true);
+		carrierMassCapacity.setString("");
+		manifestingPanel.add(carrierMassCapacity, c);
+		c.gridy++;
+		carrierVolumeCapacity = new JProgressBar(0,100);
+		carrierVolumeCapacity.setStringPainted(true);
+		carrierVolumeCapacity.setString("");
+		manifestingPanel.add(carrierVolumeCapacity, c);
+		c.gridy++;
+		c.gridx = 0;
+		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.LINE_END;
+		c.fill = GridBagConstraints.NONE;
+		JPanel manifestingButtonPanel = new JPanel();
+		manifestingButtonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 3, 0));
+		manifestButton = new JButton("Manifest");
+		manifestButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/book_add.png")));
+		manifestButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<I_ResourceContainer> containers = new ArrayList<I_ResourceContainer>();
+				
+				for(int row : packedDemandsTable.getSelectedRows()) {
+					containers.add(packedDemandsTable.getContainer(row));
+				}
+				for(int i=0; i<containers.size(); i++) {
+					getManifest().manifestContainer(containers.get(i), 
+							manifestedDemandsTable.getSelectedSupplyEdge(), 
+							(I_Carrier)carrierTree.getSelection());
+				}
+				updateView();
+			}
+		});
+		manifestButton.setEnabled(false);
+		manifestingButtonPanel.add(manifestButton);
+		manifestingPanel.add(manifestingButtonPanel, c);
+		return manifestingPanel;
+	}
+	
+	/**
+	 * Initializes the panel for a new scenario.
+	 */
+	public void initialize() {
+		resetButton.setEnabled(getScenario()!=null);
+		autoManifestButton.setEnabled(getScenario()!=null);
+		unpackButton.setEnabled(getScenario()!=null);
+		autoPackButton.setEnabled(getScenario()!=null);
+		
+		if(getScenario()!=null) {
+			simulator = new DemandSimulator(getScenario());
+			simulator.setPackingDemandsAdded(false);
+			simulator.setItemsRepaired(true);
+			simWorker = new SimWorker();
+			simWorker.execute();
+		}
+		updateView();
+	}
+	
+	/**
+	 * Gets the scenario panel.
+	 * 
+	 * @return the scenario panel
+	 */
+	public ScenarioPanel getScenarioPanel() {
+		return scenarioPanel;
+	}
+	
+	/**
+	 * Gets the getManifest().
+	 * 
+	 * @return the manifest
+	 */
+	public Manifest getManifest() {
+		return getScenario().getManifest();
+	}
+	
+	/**
+	 * Gets the scenario.
+	 * 
+	 * @return the scenario
+	 */
+	public Scenario getScenario() {
+		return scenarioPanel.getScenario();
+	}
+	
+	/**
+	 * Update view.
+	 */
+	public void updateView() {
+		int selectedAggregatedRow = aggregatedDemandsTable.getSelectedRows().length==1?aggregatedDemandsTable.getSelectedRow():-1;
+		int selectedPackedRow = packedDemandsTable.getSelectedRows().length==1?packedDemandsTable.getSelectedRow():-1;
+		int selectedContainerContentsRow = containerContentsTable.getSelectedRowCount()==1?containerContentsTable.getSelectedRow():-1;
+		int selectedManifestedRow = manifestedDemandsTable.getSelectedRows().length==1?manifestedDemandsTable.getSelectedRow():-1;
+		int selectedCarrierRow = carrierTree.getSelectionCount()==1?carrierTree.getSelectionRows()[0]:-1;
+		int selectedCarrierContentsRow = carrierContentsTable.getSelectedRowCount()==1?carrierContentsTable.getSelectedRow():-1;
+		aggregatedDemandsTable.updateView();
+		packedDemandsTable.updateView();
+		manifestedDemandsTable.updateView();
+		aggregatedDemandsTable.getSelectionModel().setSelectionInterval(selectedAggregatedRow, selectedAggregatedRow);
+		if(selectedPackedRow<packedDemandsTable.getRowCount())
+			packedDemandsTable.getSelectionModel().setSelectionInterval(selectedPackedRow, selectedPackedRow);
+		if(selectedContainerContentsRow<containerContentsTable.getRowCount())
+			containerContentsTable.getSelectionModel().setSelectionInterval(selectedContainerContentsRow, selectedContainerContentsRow);
+		manifestedDemandsTable.getSelectionModel().setSelectionInterval(selectedManifestedRow, selectedManifestedRow);
+		if(selectedCarrierRow<carrierTree.getRowCount())
+			carrierTree.setSelectionRow(selectedCarrierRow);
+		if(selectedCarrierContentsRow<carrierContentsTable.getRowCount())
+			carrierContentsTable.getSelectionModel().setSelectionInterval(selectedCarrierContentsRow, selectedCarrierContentsRow);
+		updateButtons();
+	}
+	private void updateButtons() {
+		if(aggregatedDemandsTable.getSelectedRowCount()>0) {
+			for(int row : aggregatedDemandsTable.getSelectedRows()) {
+				unpackButton.setEnabled(getManifest().canUnpackDemand(aggregatedDemandsTable.getDemand(row)));
+				if(unpackButton.isEnabled()) break;
+			}
+		}
+		else unpackButton.setEnabled(false);
+		
+		if(aggregatedDemandsTable.getSelectedRowCount()>0) {
+			for(int row : aggregatedDemandsTable.getSelectedRows()) {
+				autoPackButton.setEnabled(getManifest().canAutoPackDemand(aggregatedDemandsTable.getDemand(row)));
+				if(autoPackButton.isEnabled()) break;
+			}
+		}
+		else autoPackButton.setEnabled(false);
+		
+		removeContainerButton.setEnabled(packedDemandsTable.getSelectedRowCount()>0);
+		
+		if(containerContentsTable.getSelectedRowCount()>0
+				&& packedDemandsTable.getSelectedRowCount()==1) {
+			for(int row : containerContentsTable.getSelectedRows()) {
+				unpackContentsButton.setEnabled(getManifest().canUnpackDemand(
+						containerContentsTable.getDemand(row), 
+						packedDemandsTable.getSelectedContainer()));
+				if(unpackContentsButton.isEnabled()) break;
+			}
+		}
+		else unpackContentsButton.setEnabled(false);
+		
+		if(aggregatedDemandsTable.getSelectedRowCount()>0
+				&& packedDemandsTable.getSelectedRowCount()==1) {
+			for(int row : aggregatedDemandsTable.getSelectedRows()) {
+				packButton.setEnabled(getManifest().canPackDemand(
+						aggregatedDemandsTable.getDemand(row), 
+						packedDemandsTable.getSelectedContainer()));
+				if(packButton.isEnabled()) break;
+			}
+		}
+		else packButton.setEnabled(false);
+		
+		if(packedDemandsTable.getSelectedRowCount()>0) {
+			for(int row : packedDemandsTable.getSelectedRows()) {
+				unmanifestButton.setEnabled(getManifest().canUnmanifestContainer(
+						packedDemandsTable.getContainer(row), 
+						packedDemandsTable.getSupplyEdge(row)));
+				if(unmanifestButton.isEnabled()) break;
+			}
+		}
+		else unmanifestButton.setEnabled(false);
+		
+		if(carrierContentsTable.getSelectedRowCount()>0
+				&& manifestedDemandsTable.getSelectedRowCount()==1)
+			for(int row : carrierContentsTable.getSelectedRows()) {
+				unmanifestContentsButton.setEnabled(getManifest().canUnmanifestContainer(
+						carrierContentsTable.getContainer(row), 
+						manifestedDemandsTable.getSelectedSupplyEdge()));
+				if(unmanifestContentsButton.isEnabled()) break;
+			}
+		else unmanifestContentsButton.setEnabled(false);
+		
+		if(packedDemandsTable.getSelectedRowCount()>0
+				&& manifestedDemandsTable.getSelectedRowCount()==1
+				&& carrierTree.getSelectionCount()==1
+				&& carrierTree.getSelection() instanceof I_Carrier)
+			for(int row : packedDemandsTable.getSelectedRows()) {
+				manifestButton.setEnabled(getManifest().canManifestContainer(
+						packedDemandsTable.getContainer(row),
+						manifestedDemandsTable.getSelectedSupplyEdge(), 
+						(I_Carrier)carrierTree.getSelection()));
+				if(manifestButton.isEnabled()) break;
+			}
+		else manifestButton.setEnabled(false);
+	}
+	private void updateContainer() {
+		if(packedDemandsTable.getSelectedRowCount()==1) {
+			I_ResourceContainer container = packedDemandsTable.getContainer(packedDemandsTable.getSelectedRow());
+			SupplyPoint point = packedDemandsTable.getSupplyPoint(packedDemandsTable.getSelectedRow());
+			double cargoMass = getManifest().getCargoMass(container, point);
+			double cargoVolume = getManifest().getCargoVolume(container, point);
+			
+			DecimalFormat massFormat = new DecimalFormat("0.00");
+			DecimalFormat volumeFormat = new DecimalFormat("0.000");
+			containerNameLabel.setText(container.getName());
+			containerMassLabel.setText(massFormat.format(container.getMass() + cargoMass) + " kg");
+			containerVolumeLabel.setText(volumeFormat.format(container.getVolume()) + " m^3");
+			containerContentsTable.setContainer(container, point);
+			containerEnvironmentLabel.setText(container.getCargoEnvironment().toString());
+			
+			if(cargoMass - container.getMaxCargoMass() > GlobalParameters.getMassPrecision()/2d) 
+				containerMassCapacity.setForeground(new Color(153, 0, 0));
+			else containerMassCapacity.setForeground(new Color(0, 153, 0));
+			if(container.getMaxCargoMass()==0) containerMassCapacity.setValue(100);
+			else containerMassCapacity.setValue((int)(100*cargoMass/container.getMaxCargoMass()));
+			containerMassCapacity.setString(massFormat.format(cargoMass) + " / " + massFormat.format(container.getMaxCargoMass()) + " kg");
+			
+			if(cargoVolume - container.getMaxCargoVolume() > GlobalParameters.getVolumePrecision()/2d) 
+				containerVolumeCapacity.setForeground(new Color(153, 0, 0));
+			else containerVolumeCapacity.setForeground(new Color(0, 153, 0));
+			if(container.getMaxCargoVolume()==0) containerVolumeCapacity.setValue(100);
+			else containerVolumeCapacity.setValue((int)(100*cargoVolume/container.getMaxCargoVolume()));
+			containerVolumeCapacity.setString(volumeFormat.format(cargoVolume) + " / " + volumeFormat.format(container.getMaxCargoVolume()) + " m^3");
+		} else {
+			containerNameLabel.setText(null);
+			containerMassLabel.setText(null);
+			containerVolumeLabel.setText(null);
+			containerContentsTable.setContainer(null, null);
+			containerEnvironmentLabel.setText(null);
+			containerMassCapacity.setValue(0);
+			containerMassCapacity.setString("");
+			containerVolumeCapacity.setValue(0);
+			containerVolumeCapacity.setString("");
+		}
+	}
+	private void updateCarrier() {
+		if(manifestedDemandsTable.getSelectedRow()>=0) {
+			I_Carrier superCarrier = manifestedDemandsTable.getCarrier(manifestedDemandsTable.getSelectedRow());
+			carrierTree.setRoot(superCarrier);
+			carrierTree.setRootVisible(true);
+			carrierTree.setSelection(superCarrier);
+		} else {
+			carrierTree.setRoot(null);
+			carrierTree.setRootVisible(false);
+			carrierMassCapacity.setValue(0);
+			carrierMassCapacity.setString("");
+			carrierVolumeCapacity.setValue(0);
+			carrierVolumeCapacity.setString("");
+		}
+	}
+	private void updateElement() {
+		if(carrierTree.getSelectionCount()>0
+				&& carrierTree.getSelection() instanceof I_Carrier) {
+			SupplyEdge edge = manifestedDemandsTable.getSupplyEdge(manifestedDemandsTable.getSelectedRow());
+			I_Carrier carrier = (I_Carrier)carrierTree.getSelection();
+			
+			carrierContentsTable.setCarrier(edge, carrier);
+			
+			double cargoMass = getManifest().getCargoMass(carrier, edge.getPoint());
+			double cargoVolume = getManifest().getCargoVolume(carrier, edge.getPoint());
+			
+			DecimalFormat massFormat = new DecimalFormat("0.00");
+			if(cargoMass - carrier.getMaxCargoMass() > GlobalParameters.getMassPrecision()/2d) 
+				carrierMassCapacity.setForeground(new Color(153, 0, 0));
+			else carrierMassCapacity.setForeground(new Color(0, 153, 0));
+			if(carrier.getMaxCargoMass()==0) carrierMassCapacity.setValue(100);
+			else carrierMassCapacity.setValue((int)(100*cargoMass/carrier.getMaxCargoMass()));
+			carrierMassCapacity.setString(massFormat.format(cargoMass) + " / " + massFormat.format(carrier.getMaxCargoMass()) + " kg");
+
+			DecimalFormat volumeFormat = new DecimalFormat("0.000");
+			if(cargoVolume - carrier.getMaxCargoVolume() > GlobalParameters.getVolumePrecision()/2d) 
+				carrierVolumeCapacity.setForeground(new Color(153, 0, 0));
+			else carrierVolumeCapacity.setForeground(new Color(0, 153, 0));
+			if(carrier.getMaxCargoVolume()==0) carrierVolumeCapacity.setValue(100);
+			else carrierVolumeCapacity.setValue((int)(100*cargoVolume/carrier.getMaxCargoVolume()));
+			carrierVolumeCapacity.setString(volumeFormat.format(cargoVolume) + " / " + volumeFormat.format(carrier.getMaxCargoVolume()) + " m^3");
+		} else {
+			carrierMassCapacity.setValue(0);
+			carrierMassCapacity.setString("");
+			
+			carrierVolumeCapacity.setValue(0);
+			carrierVolumeCapacity.setString("");
+			
+			carrierContentsTable.setCarrier(null, null);
+		}
+	}
+	
+	/**
+	 * A SwingWorker subclass that manages the time-intensive simulation in a
+	 * separate thread.
+	 */
+	private class SimWorker extends SwingWorker<Void, Void> {
+		/* (non-Javadoc)
+		 * @see org.jdesktop.swingworker.SwingWorker#doInBackground()
+		 */
+		public Void doInBackground() {
+			try {
+				SpaceNetFrame.getInstance().getStatusBar().setStatusMessage("Simulating Demands...");
+				scenarioPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				simulator.simulate();
+				getManifest().setSupplyEdges(simulator.getSupplyEdges());
+				getManifest().setSupplyPoints(simulator.getSupplyPoints());
+				getManifest().setAggregatedNodeDemands(simulator.getAggregatedNodeDemands());
+				getManifest().setAggregatedEdgeDemands(simulator.getAggregatedEdgeDemands());
+				scenarioPanel.setCursor(Cursor.getDefaultCursor());
+				SpaceNetFrame.getInstance().getStatusBar().clearStatusMessage();
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+			return null;
+		}
+		
+		/* (non-Javadoc)
+		 * @see org.jdesktop.swingworker.SwingWorker#done()
+		 */
+		protected void done() {
+			// initialize demands panel components
+			aggregatedDemandsTable.initialize();
+			// initialize packing panel components
+			packedDemandsTable.initialize();
+			containerContentsTable.initialize();
+			// initialize manifesting panel components
+			manifestedDemandsTable.initialize();
+			carrierContentsTable.initialize();
+		}
+	}
+	
+	/**
+	 * A SwingWorker subclass that manages the time-intensive auto-manifesting
+	 * in a separate thread.
+	 */
+	private class ManifestWorker extends SwingWorker<Void, Void> {
+		/* (non-Javadoc)
+		 * @see org.jdesktop.swingworker.SwingWorker#doInBackground()
+		 */
+		public Void doInBackground() {
+			try {
+				SpaceNetFrame.getInstance().getStatusBar().setStatusMessage("Auto-Manifesting...");
+				scenarioPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				getManifest().autoManifest();
+				updateView();
+				scenarioPanel.setCursor(Cursor.getDefaultCursor());
+				SpaceNetFrame.getInstance().getStatusBar().clearStatusMessage();
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+			return null;
+		}
+	}
+}

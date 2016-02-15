@@ -50,27 +50,27 @@
   </dependencies>
   <build>
     <plugins>
-	    <plugin>
-	    	<artifactId>maven-assembly-plugin</artifactId>
-	    	<executions>
-	    		<execution>
-	    			<goals>
-	    				<goal>attached</goal>
-	    			</goals>
-	    			<phase>package</phase>
-	    			<configuration>
-	    				<descriptorRefs>
-	    					<descriptorRef>jar-with-dependencies</descriptorRef>
-	    				</descriptorRefs>
-	    				<archive>
-	    					<manifest>
-	    						<mainClass>edu.mit.spacenet.SpaceNet</mainClass>
-	    					</manifest>
-	    				</archive>
-	    			</configuration>
-	    		</execution>
-	    	</executions>
-	    </plugin>
+	  <plugin>
+	    <artifactId>maven-assembly-plugin</artifactId>
+          <executions>
+            <execution>
+   			<goals>
+              <goal>attached</goal>
+   			</goals>
+   			<phase>package</phase>
+   			<configuration>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <archive>
+                <manifest>
+                  <mainClass>edu.mit.spacenet.SpaceNet</mainClass>
+                </manifest>
+              </archive>
+   			</configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>

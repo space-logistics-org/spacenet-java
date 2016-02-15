@@ -1,2 +1,2 @@
 # spacenet
-SpaceNet 3.0
+SpaceNet 2.5

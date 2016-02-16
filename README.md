@@ -10,7 +10,9 @@ SpaceNet 2.5r2 is research-grade code. As such, it has not received exhaustive t
 
 ## Installation
 
-SpaceNet does not require installation to run. The easiest way to get started is to download one of the binary releases which packages the executable Java Archive (JAR) file. Alternatively, building your own version of SpaceNet requires Maven to manage dependent libraries. SpaceNet requires a Java Runtime Environment (JRE) to run and a Java Development Kit (JDK) to build/compile.
+SpaceNet requires a Java Runtime Environment (JRE) to run. The easiest way to get started is to download one of the binary releases which packages the executable Java Archive (JAR) file. Simply double-click on the JAR to launch SpaceNet.
+
+Alternatively, building your own version of SpaceNet requires a Java Development Kit (JDK) and Apache Maven to manage dependencies. Common Integrated Development Environments (IDEs) such as Eclipse often provide these products in a user-friendly tool.
 
 ## Documentation
 

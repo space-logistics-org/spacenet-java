@@ -50,5 +50,5 @@ A user's guide and quick start tutorial is available in the doc/ directory.
 15. Yue, H.K. *Propulsive and Logistical Feasibility of Alternative Future Human-Robotic Mars Exploration Architectures.* S.M. Thesis. Massachusetts Institute of Technology. Cambridge. June 2011.
 16. Grogan, P.T., C. Lee, and O.L. de Weck. "Comparative usability study of two space logistics analysis tools." In: *AIAA Space 2011 Conference and Exposition*. Long Beach, CA. September 2011.
 17. Grogan, P.T., H.K. Yue, and O.L. de Weck. "Space Logistics Modeling and Simulation Analysis using SpaceNet: Four Application Cases." In: *AIAA Space 2011 Conference and Exposition*. Long Beach, CA. September 2011.
-18. Lee, C., P.T. Grogan, O.L. de Weck. "Process-oriented Evaluation of User Interactions in Integrated Space Analysis Tools." In: *2012 IEEE International Conference on Systems, Man, and Cybernetics. Seoul, Korea. October 2012.
+18. Lee, C., P.T. Grogan, O.L. de Weck. "Process-oriented Evaluation of User Interactions in Integrated Space Analysis Tools." In: *2012 IEEE International Conference on Systems, Man, and Cybernetics*. Seoul, Korea. October 2012.
 19. Yue, H.K., O.L. de Weck, P.T. Grogan. "Logistical Analysis of a Flexible Human and Robotic Mars Exploration Campaign." *Journal of Spacecraft and Rockets* 51 (2) 640-645. 2014.

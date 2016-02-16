@@ -42,10 +42,11 @@ A user's guide and quick start tutorial is available in the doc/ directory.
 9. de Weck, O.L., P. Grogan, E.O. Jordan, G.Y. Lee. "SpaceNet v2.5 User's Guide". Online: http://spacenet.mit.edu. September 2009.
 10. Grogan, P.T. *A Flexible, Modular Approach to Integrated Space Exploration Campaign Logistics Modeling, Simulation, and Analysis.* S.M. Thesis. Massachusetts Institute of Technology. Cambridge. September 2010.
 11. Ferreira, I. and P.T. Grogan. "Data Management, Collaboration, and Model Integration for Space Exploration System Analysis and Design." In: AIAA Space 2010 Conference and Exposition. Anaheim, CA. August 2010.
-12. "SpaceNet v2.5r2 User's Guide". Online: http://spacenet.mit.edu. December 2010.
-13. Grogan, P.T., A. Siddiqi, O.L. de Weck. "Matrix Methods for Optimal Manifesting of Multinode Space Exploration Systems." *Journal of Spacecraft and Rockets 48 (4) 679-690. 2011.
-14. Yue, H.K. *Propulsive and Logistical Feasibility of Alternative Future Human-Robotic Mars Exploration Architectures.* S.M. Thesis. Massachusetts Institute of Technology. Cambridge. June 2011.
-15. Grogan, P.T., C. Lee, and O.L. de Weck. "Comparative usability study of two space logistics analysis tools." In: *AIAA Space 2011 Conference and Exposition*. Long Beach, CA. September 2011.
-16. Grogan, P.T., H.K. Yue, and O.L. de Weck. "Space Logistics Modeling and Simulation Analysis using SpaceNet: Four Application Cases." In: *AIAA Space 2011 Conference and Exposition*. Long Beach, CA. September 2011.
-17. Lee, C., P.T. Grogan, O.L. de Weck. "Process-oriented Evaluation of User Interactions in Integrated Space Analysis Tools." In: *2012 IEEE International Conference on Systems, Man, and Cybernetics. Seoul, Korea. October 2012.
-18. Yue, H.K., O.L. de Weck, P.T. Grogan. "Logistical Analysis of a Flexible Human and Robotic Mars Exploration Campaign." *Journal of Spacecraft and Rockets* 51 (2) 640-645. 2014.
+12. Ishimatsu, T., P. Grogan, O. de Weck. "Interplanetary Trajectory Analysis and Logistical Considerations of Human Mars Exploration." *Journal of Cosmology* 12 3588-3600. 2010.
+13. "SpaceNet v2.5r2 User's Guide". Online: http://spacenet.mit.edu. December 2010.
+14. Grogan, P.T., A. Siddiqi, O.L. de Weck. "Matrix Methods for Optimal Manifesting of Multinode Space Exploration Systems." *Journal of Spacecraft and Rockets 48 (4) 679-690. 2011.
+15. Yue, H.K. *Propulsive and Logistical Feasibility of Alternative Future Human-Robotic Mars Exploration Architectures.* S.M. Thesis. Massachusetts Institute of Technology. Cambridge. June 2011.
+16. Grogan, P.T., C. Lee, and O.L. de Weck. "Comparative usability study of two space logistics analysis tools." In: *AIAA Space 2011 Conference and Exposition*. Long Beach, CA. September 2011.
+17. Grogan, P.T., H.K. Yue, and O.L. de Weck. "Space Logistics Modeling and Simulation Analysis using SpaceNet: Four Application Cases." In: *AIAA Space 2011 Conference and Exposition*. Long Beach, CA. September 2011.
+18. Lee, C., P.T. Grogan, O.L. de Weck. "Process-oriented Evaluation of User Interactions in Integrated Space Analysis Tools." In: *2012 IEEE International Conference on Systems, Man, and Cybernetics. Seoul, Korea. October 2012.
+19. Yue, H.K., O.L. de Weck, P.T. Grogan. "Logistical Analysis of a Flexible Human and Robotic Mars Exploration Campaign." *Journal of Spacecraft and Rockets* 51 (2) 640-645. 2014.

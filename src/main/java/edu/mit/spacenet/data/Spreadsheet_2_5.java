@@ -1268,7 +1268,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 		for (Row row : sheet) {
 			if (row.getRowNum() == 0 || isRowEmpty(row))
 				continue;
-			if (row.getCell(DEMAND_CONTAINER_ID).getCellType() != Cell.CELL_TYPE_NUMERIC
+			if (row.getCell(DEMAND_CONTAINER_ID).getCellType() == Cell.CELL_TYPE_NUMERIC
 					&& row.getCell(DEMAND_CONTAINER_ID).getNumericCellValue() == container.getTid()) {
 				boolean isDemandFound = false;
 				for (I_Resource resource : container.getContents().keySet()) {
@@ -1289,7 +1289,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			for (Row row : sheet) {
 				if (row.getRowNum() == 0 || isRowEmpty(row))
 					continue;
-				if (row.getCell(DEMAND_CONTAINER_ID).getCellType() != Cell.CELL_TYPE_NUMERIC
+				if (row.getCell(DEMAND_CONTAINER_ID).getCellType() == Cell.CELL_TYPE_NUMERIC
 						&& row.getCell(DEMAND_CONTAINER_ID).getNumericCellValue() == container.getTid()
 						&& row.getCell(DEMAND_RESOURCE_ID).getNumericCellValue() == resource.getTid()) {
 					rowNum = row.getRowNum();
@@ -1532,7 +1532,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 		for (Row row : sheet) {
 			if (row.getRowNum() == 0 || isRowEmpty(row))
 				continue;
-			if (row.getCell(DEMAND_MODEL_ID).getCellType() != Cell.CELL_TYPE_NUMERIC
+			if (row.getCell(DEMAND_MODEL_ID).getCellType() == Cell.CELL_TYPE_NUMERIC
 					&& row.getCell(DEMAND_MODEL_ID).getNumericCellValue() == model.getTid()) {
 				boolean isDemandFound = false;
 				for (Demand demand : demands) {
@@ -1553,7 +1553,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			for (Row row : sheet) {
 				if (row.getRowNum() == 0 || isRowEmpty(row))
 					continue;
-				if (row.getCell(DEMAND_MODEL_ID).getCellType() != Cell.CELL_TYPE_NUMERIC
+				if (row.getCell(DEMAND_MODEL_ID).getCellType() == Cell.CELL_TYPE_NUMERIC
 						&& row.getCell(DEMAND_MODEL_ID).getNumericCellValue() == model.getTid()
 						&& row.getCell(DEMAND_RESOURCE_ID).getNumericCellValue() == demand.getResource().getTid()) {
 					rowNum = row.getRowNum();

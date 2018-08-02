@@ -1,22 +1,20 @@
 /*
- * Copyright (c) 2010 MIT Strategic Engineering Research Group
+ * Copyright 2010 MIT Strategic Engineering Research Group
  * 
- * This file is part of SpaceNet 2.5r2.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  * 
- * SpaceNet 2.5r2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *   http://www.apache.org/licenses/LICENSE-2.0
  * 
- * SpaceNet 2.5r2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with SpaceNet 2.5r2.  If not, see <http://www.gnu.org/licenses/>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package edu.mit.spacenet.gui;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -45,26 +43,26 @@ public class SplashScreen extends JWindow {
 	 */
 	public SplashScreen() {
 		JPanel content = new JPanel(new GridBagLayout());
-		content.setBackground(new Color(153,51,51));
+		content.setBackground(new Color(153, 51, 51));
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_START;
-		
+
 		c.gridheight = 2;
 		JLabel logo = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("icons/spacenet_splash.png")));
-		logo.setPreferredSize(new Dimension(138,119));
+		logo.setPreferredSize(new Dimension(138, 119));
 		content.add(logo, c);
-		
+
 		c.gridx++;
 		c.gridheight = 1;
 		c.insets = new Insets(20, 20, 2, 20);
 		c.anchor = GridBagConstraints.LAST_LINE_START;
-		JLabel title = new JLabel ("SpaceNet 2.5");
+		JLabel title = new JLabel("SpaceNet 2.5");
 		title.setForeground(Color.WHITE);
 		title.setFont(new Font("Arial", Font.BOLD, 36));
 		content.add(title, c);
-		
+
 		c.gridy++;
 		c.insets = new Insets(2, 20, 10, 20);
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -72,17 +70,17 @@ public class SplashScreen extends JWindow {
 		subtitle.setForeground(Color.WHITE);
 		subtitle.setFont(new Font("Arial", Font.BOLD, 12));
 		content.add(subtitle, c);
-		
+
 		c.gridy++;
 		c.gridx = 0;
 		c.gridwidth = 2;
 		c.insets = new Insets(10, 20, 5, 20);
 		c.anchor = GridBagConstraints.CENTER;
 		JLabel loading = new JLabel("Loading...");
-		loading.setFont(new Font ("Arial", Font.BOLD, 12));
+		loading.setFont(new Font("Arial", Font.BOLD, 12));
 		loading.setForeground(Color.WHITE);
 		content.add(loading, c);
-		
+
 		c.gridy++;
 		c.insets = new Insets(5, 20, 20, 20);
 		JProgressBar progressBar = new JProgressBar();
@@ -91,7 +89,7 @@ public class SplashScreen extends JWindow {
 		progressBar.setBackground(Color.WHITE);
 		progressBar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		content.add(progressBar, c);
-		
+
 		add(content);
 	}
 }

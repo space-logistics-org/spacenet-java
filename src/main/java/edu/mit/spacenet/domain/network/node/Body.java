@@ -31,7 +31,7 @@ import javax.swing.ImageIcon;
 public enum Body implements Serializable { 
 	
 	/** The sun */
-	SUN("Sun", Color.YELLOW, "/icons/sun.png", null, 33200., 109., 0, "icons/sun_icon.png"),
+	SUN("Sun", Color.YELLOW, "/icons/sun.png", null, 332946., 109., 0, "icons/sun_icon.png"),
 	
 	/** Venus */
 	VENUS("Venus", Color.WHITE, null, SUN, 0.815, 0.950, 0.723, "icons/venus_icon.png"),

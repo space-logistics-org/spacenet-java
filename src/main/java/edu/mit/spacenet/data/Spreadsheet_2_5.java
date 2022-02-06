@@ -25,8 +25,9 @@ import java.util.Map;
 import java.util.SortedSet;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -225,7 +226,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 				for (Row row : wb.getSheetAt(DEMAND_SHEET)) {
 					if (row.getRowNum() == 0 || isRowEmpty(row))
 						continue;
-					if (row.getCell(DEMAND_CONTAINER_ID).getCellType() == Cell.CELL_TYPE_NUMERIC
+					if (row.getCell(DEMAND_CONTAINER_ID).getCellType() == CellType.NUMERIC
 							&& row.getCell(DEMAND_CONTAINER_ID)
 									.getNumericCellValue() == tid) {
 						demandsToDelete.add((int) row.getCell(DEMAND_ID).getNumericCellValue());
@@ -364,7 +365,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			for (Row row : wb.getSheetAt(DEMAND_SHEET)) {
 				if (row.getRowNum() == 0 || isRowEmpty(row))
 					continue;
-				if (row.getCell(DEMAND_MODEL_ID).getCellType() == Cell.CELL_TYPE_NUMERIC
+				if (row.getCell(DEMAND_MODEL_ID).getCellType() == CellType.NUMERIC
 						&& row.getCell(DEMAND_MODEL_ID).getNumericCellValue() == tid) {
 					demandsToDelete.add((int) row.getCell(DEMAND_ID)
 							.getNumericCellValue());
@@ -456,11 +457,11 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 		for (Row row : wb.getSheetAt(ELEMENT_SHEET)) {
 			if (row.getRowNum() == 0 || isRowEmpty(row))
 				continue;
-			if ((row.getCell(ELEMENT_OMS_ID).getCellType() == Cell.CELL_TYPE_NUMERIC && row
+			if ((row.getCell(ELEMENT_OMS_ID).getCellType() == CellType.NUMERIC && row
 					.getCell(ELEMENT_OMS_ID).getNumericCellValue() == tid)
-					|| (row.getCell(ELEMENT_RCS_ID).getCellType() == Cell.CELL_TYPE_NUMERIC && row
+					|| (row.getCell(ELEMENT_RCS_ID).getCellType() == CellType.NUMERIC && row
 							.getCell(ELEMENT_RCS_ID).getNumericCellValue() == tid)
-					|| (row.getCell(ELEMENT_FUEL_ID).getCellType() != Cell.CELL_TYPE_NUMERIC && row
+					|| (row.getCell(ELEMENT_FUEL_ID).getCellType() != CellType.NUMERIC && row
 							.getCell(ELEMENT_FUEL_ID).getNumericCellValue() == tid)) {
 				System.out.println("Resource #" + tid + " is used in elements");
 				return false; // resource is used in elements
@@ -469,7 +470,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 		for (Row row : wb.getSheetAt(PART_SHEET)) {
 			if (row.getRowNum() == 0 || isRowEmpty(row))
 				continue;
-			if (row.getCell(PART_RESOURCE_ID).getCellType() == Cell.CELL_TYPE_NUMERIC
+			if (row.getCell(PART_RESOURCE_ID).getCellType() == CellType.NUMERIC
 					&& row.getCell(PART_RESOURCE_ID).getNumericCellValue() == tid) {
 				System.out.println("Resource #" + tid
 						+ " is used in applications");
@@ -479,7 +480,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 		for (Row row : wb.getSheetAt(DEMAND_SHEET)) {
 			if (row.getRowNum() == 0 || isRowEmpty(row))
 				continue;
-			if (row.getCell(DEMAND_RESOURCE_ID).getCellType() == Cell.CELL_TYPE_NUMERIC
+			if (row.getCell(DEMAND_RESOURCE_ID).getCellType() == CellType.NUMERIC
 					&& row.getCell(DEMAND_RESOURCE_ID).getNumericCellValue() == tid) {
 				System.out.println("Resource #" + tid + " is used in demands");
 				return false; // resource is used in demands
@@ -1265,7 +1266,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 		for (Row row : sheet) {
 			if (row.getRowNum() == 0 || isRowEmpty(row))
 				continue;
-			if (row.getCell(DEMAND_CONTAINER_ID).getCellType() == Cell.CELL_TYPE_NUMERIC
+			if (row.getCell(DEMAND_CONTAINER_ID).getCellType() == CellType.NUMERIC
 					&& row.getCell(DEMAND_CONTAINER_ID).getNumericCellValue() == container.getTid()) {
 				boolean isDemandFound = false;
 				for (I_Resource resource : container.getContents().keySet()) {
@@ -1286,7 +1287,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			for (Row row : sheet) {
 				if (row.getRowNum() == 0 || isRowEmpty(row))
 					continue;
-				if (row.getCell(DEMAND_CONTAINER_ID).getCellType() == Cell.CELL_TYPE_NUMERIC
+				if (row.getCell(DEMAND_CONTAINER_ID).getCellType() == CellType.NUMERIC
 						&& row.getCell(DEMAND_CONTAINER_ID).getNumericCellValue() == container.getTid()
 						&& row.getCell(DEMAND_RESOURCE_ID).getNumericCellValue() == resource.getTid()) {
 					rowNum = row.getRowNum();
@@ -1529,7 +1530,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 		for (Row row : sheet) {
 			if (row.getRowNum() == 0 || isRowEmpty(row))
 				continue;
-			if (row.getCell(DEMAND_MODEL_ID).getCellType() == Cell.CELL_TYPE_NUMERIC
+			if (row.getCell(DEMAND_MODEL_ID).getCellType() == CellType.NUMERIC
 					&& row.getCell(DEMAND_MODEL_ID).getNumericCellValue() == model.getTid()) {
 				boolean isDemandFound = false;
 				for (Demand demand : demands) {
@@ -1550,7 +1551,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			for (Row row : sheet) {
 				if (row.getRowNum() == 0 || isRowEmpty(row))
 					continue;
-				if (row.getCell(DEMAND_MODEL_ID).getCellType() == Cell.CELL_TYPE_NUMERIC
+				if (row.getCell(DEMAND_MODEL_ID).getCellType() == CellType.NUMERIC
 						&& row.getCell(DEMAND_MODEL_ID).getNumericCellValue() == model.getTid()
 						&& row.getCell(DEMAND_RESOURCE_ID).getNumericCellValue() == demand.getResource().getTid()) {
 					rowNum = row.getRowNum();
@@ -1711,42 +1712,42 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			if (isRowEmpty(row))
 				continue;
 			String type = "";
-			if (row.getCell(NODE_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(NODE_ID).getCellType() != CellType.NUMERIC) {
 				errors.add("Node in row " + (i + 1) + " has missing or invalid id.");
 			}
-			if (row.getCell(NODE_TYPE).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(NODE_TYPE).getCellType() != CellType.STRING) {
 				errors.add("Node in row " + (i + 1) + " has missing or invalid type.");
 			} else {
 				type = row.getCell(NODE_TYPE).getStringCellValue().toLowerCase();
 			}
-			if (row.getCell(NODE_NAME).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(NODE_NAME).getCellType() != CellType.STRING) {
 				errors.add("Node in row " + (i + 1) + " has missing or invalid name.");
 			}
-			if (row.getCell(NODE_BODY_1).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(NODE_BODY_1).getCellType() != CellType.STRING) {
 				errors.add("Node in row " + (i + 1) + " has missing or invalid body.");
 			}
 			if (NodeType.SURFACE.getName().toLowerCase().contains(type)) {
-				if (row.getCell(NODE_LATITUDE).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(NODE_LATITUDE).getCellType() != CellType.NUMERIC) {
 					errors.add("Node in row " + (i + 1) + " has missing or invalid latitude.");
 				}
-				if (row.getCell(NODE_LONGITUDE).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(NODE_LONGITUDE).getCellType() != CellType.NUMERIC) {
 					errors.add("Node in row " + (i + 1) + " has missing or invalid longitude.");
 				}
 			} else if (NodeType.ORBITAL.getName().toLowerCase().contains(type)) {
-				if (row.getCell(NODE_APOAPSIS).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(NODE_APOAPSIS).getCellType() != CellType.NUMERIC) {
 					errors.add("Node in row " + (i + 1) + " has missing or invalid apoapsis.");
 				}
-				if (row.getCell(NODE_PERIAPSIS).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(NODE_PERIAPSIS).getCellType() != CellType.NUMERIC) {
 					errors.add("Node in row " + (i + 1) + " has missing or invalid periapsis.");
 				}
-				if (row.getCell(NODE_INCLINATION).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(NODE_INCLINATION).getCellType() != CellType.NUMERIC) {
 					errors.add("Node in row " + (i + 1) + " has missing or invalid inclination.");
 				}
 			} else if (NodeType.LAGRANGE.getName().toLowerCase().contains(type)) {
-				if (row.getCell(NODE_BODY_2).getCellType() != Cell.CELL_TYPE_STRING) {
+				if (row.getCell(NODE_BODY_2).getCellType() != CellType.STRING) {
 					errors.add("Node in row " + (i + 1) + " has missing or invalid minor body.");
 				}
-				if (row.getCell(NODE_LP_NUMBER).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(NODE_LP_NUMBER).getCellType() != CellType.NUMERIC) {
 					errors.add("Node in row " + (i + 1) + " has missing or invalid lagrange number.");
 				}
 			} else if (!type.equals("")) {
@@ -1770,39 +1771,39 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			if (isRowEmpty(row))
 				continue;
 			String type = "";
-			if (row.getCell(EDGE_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(EDGE_ID).getCellType() != CellType.NUMERIC) {
 				errors.add("Edge in row " + (i + 1) + " has missing or invalid id.");
 			}
-			if (row.getCell(EDGE_TYPE).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(EDGE_TYPE).getCellType() != CellType.STRING) {
 				errors.add("Edge in row " + (i + 1) + " has missing or invalid type.");
 			} else {
 				type = row.getCell(EDGE_TYPE).getStringCellValue().toLowerCase();
 			}
-			if (row.getCell(EDGE_NAME).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(EDGE_NAME).getCellType() != CellType.STRING) {
 				errors.add("Edge in row " + (i + 1) + " has missing or invalid name.");
 			}
-			if (row.getCell(EDGE_ORIGIN_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(EDGE_ORIGIN_ID).getCellType() != CellType.NUMERIC) {
 				errors.add("Edge in row " + (i + 1) + " has missing or invalid origin node.");
 			}
-			if (row.getCell(EDGE_DESTINATION_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(EDGE_DESTINATION_ID).getCellType() != CellType.NUMERIC) {
 				errors.add("Edge in row " + (i + 1) + " has missing or invalid destination node.");
 			}
 			if (EdgeType.SPACE.getName().toLowerCase().contains(type)) {
-				if (row.getCell(EDGE_DURATION).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(EDGE_DURATION).getCellType() != CellType.NUMERIC) {
 					errors.add("Edge in row " + (i + 1) + " has missing or invalid duration.");
 				}
 			} else if (EdgeType.SURFACE.getName().toLowerCase().contains(type)) {
-				if (row.getCell(EDGE_DISTANCE).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(EDGE_DISTANCE).getCellType() != CellType.NUMERIC) {
 					errors.add("Edge in row " + (i + 1) + " has missing or invalid distance.");
 				}
 			} else if (EdgeType.FLIGHT.getName().toLowerCase().contains(type)) {
-				if (row.getCell(EDGE_DURATION).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(EDGE_DURATION).getCellType() != CellType.NUMERIC) {
 					errors.add("Edge in row " + (i + 1) + " has missing or invalid duration.");
 				}
-				if (row.getCell(EDGE_MAX_CREW).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(EDGE_MAX_CREW).getCellType() != CellType.NUMERIC) {
 					errors.add("Edge in row " + (i + 1) + " has missing or invalid max crew size.");
 				}
-				if (row.getCell(EDGE_MAX_CARGO).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(EDGE_MAX_CARGO).getCellType() != CellType.NUMERIC) {
 					errors.add("Edge in row " + (i + 1) + " has missing or invalid max cargo mass.");
 				}
 			} else if (!type.equals("")) {
@@ -1825,19 +1826,19 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			Row row = sheet.getRow(i);
 			if (isRowEmpty(row))
 				continue;
-			if (row.getCell(BURN_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(BURN_ID).getCellType() != CellType.NUMERIC) {
 				errors.add("Burn in row " + (i + 1) + " has missing or invalid id.");
 			}
-			if (row.getCell(BURN_TIME).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(BURN_TIME).getCellType() != CellType.NUMERIC) {
 				errors.add("Burn in row " + (i + 1) + " has missing or invalid time.");
 			}
-			if (row.getCell(BURN_ORDER).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(BURN_ORDER).getCellType() != CellType.NUMERIC) {
 				errors.add("Burn in row " + (i + 1) + " has missing or invalid order.");
 			}
-			if (row.getCell(BURN_TYPE).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(BURN_TYPE).getCellType() != CellType.STRING) {
 				errors.add("Burn in row " + (i + 1) + " has missing or invalid type.");
 			}
-			if (row.getCell(BURN_DELTA_V).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(BURN_DELTA_V).getCellType() != CellType.NUMERIC) {
 				errors.add("Burn in row " + (i + 1) + " has missing or invalid delta-v.");
 			}
 		}
@@ -1858,34 +1859,34 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			if (isRowEmpty(row))
 				continue;
 			String type = "";
-			if (row.getCell(RESOURCE_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(RESOURCE_ID).getCellType() != CellType.NUMERIC) {
 				errors.add("Resource in row " + (i + 1) + " has missing or invalid id.");
 			}
-			if (row.getCell(RESOURCE_TYPE).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(RESOURCE_TYPE).getCellType() != CellType.STRING) {
 				errors.add("Resource in row " + (i + 1) + " has missing or invalid type.");
 			} else {
 				type = row.getCell(RESOURCE_TYPE).getStringCellValue().toLowerCase();
 			}
-			if (row.getCell(RESOURCE_NAME).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(RESOURCE_NAME).getCellType() != CellType.STRING) {
 				errors.add("Resource in row " + (i + 1) + " has missing or invalid name.");
 			}
-			if (row.getCell(RESOURCE_COS).getCellType() != Cell.CELL_TYPE_NUMERIC
+			if (row.getCell(RESOURCE_COS).getCellType() != CellType.NUMERIC
 					|| ClassOfSupply.getInstance((int) row.getCell(3).getNumericCellValue()) == null) {
 				errors.add("Resource in row " + (i + 1) + " has missing or invalid class of supply.");
 			}
-			if (row.getCell(RESOURCE_UNITS).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(RESOURCE_UNITS).getCellType() != CellType.STRING) {
 				errors.add("Resource in row " + (i + 1) + " has missing or invalid units.");
 			}
-			if (row.getCell(RESOURCE_UNIT_MASS).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(RESOURCE_UNIT_MASS).getCellType() != CellType.NUMERIC) {
 				errors.add("Resource in row " + (i + 1) + " has missing or invalid unit mass.");
 			}
-			if (row.getCell(RESOURCE_UNIT_VOLUME).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(RESOURCE_UNIT_VOLUME).getCellType() != CellType.NUMERIC) {
 				errors.add("Resource in row " + (i + 1) + " has missing or invalid unit volume.");
 			}
-			if (row.getCell(RESOURCE_PACKING_FACTOR).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(RESOURCE_PACKING_FACTOR).getCellType() != CellType.NUMERIC) {
 				errors.add("Resource in row " + (i + 1) + " has missing or invalid packing factor.");
 			}
-			if (row.getCell(RESOURCE_ENVIRONMENT).getCellType() != Cell.CELL_TYPE_STRING
+			if (row.getCell(RESOURCE_ENVIRONMENT).getCellType() != CellType.STRING
 					|| (!Environment.PRESSURIZED.getName().toLowerCase().equals(row.getCell(RESOURCE_ENVIRONMENT).getStringCellValue().toLowerCase()) 
 							&& !Environment.UNPRESSURIZED.getName().toLowerCase().equals(row.getCell(RESOURCE_ENVIRONMENT).getStringCellValue().toLowerCase()))) {
 				errors.add("Resource in row " + (i + 1) + " has missing or invalid environment.");
@@ -1913,91 +1914,91 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			if (isRowEmpty(row))
 				continue;
 			String type = "";
-			if (row.getCell(ELEMENT_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(ELEMENT_ID).getCellType() != CellType.NUMERIC) {
 				errors.add("Element in row " + (i + 1) + " has missing or invalid id.");
 			}
-			if (row.getCell(ELEMENT_TYPE).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(ELEMENT_TYPE).getCellType() != CellType.STRING) {
 				errors.add("Element in row " + (i + 1) + " has missing or invalid type.");
 			} else {
 				type = row.getCell(ELEMENT_TYPE).getStringCellValue().toLowerCase();
 			}
-			if (row.getCell(ELEMENT_NAME).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(ELEMENT_NAME).getCellType() != CellType.STRING) {
 				errors.add("Element in row " + (i + 1) + " has missing or invalid name.");
 			}
-			if (row.getCell(ELEMENT_COS).getCellType() != Cell.CELL_TYPE_NUMERIC
+			if (row.getCell(ELEMENT_COS).getCellType() != CellType.NUMERIC
 					|| ClassOfSupply.getInstance((int) row.getCell(3)
 							.getNumericCellValue()) == null) {
 				errors.add("Element in row " + (i + 1) + " has missing or invalid class of supply.");
 			}
-			if (row.getCell(ELEMENT_ENVIRONMENT).getCellType() != Cell.CELL_TYPE_STRING
+			if (row.getCell(ELEMENT_ENVIRONMENT).getCellType() != CellType.STRING
 					|| (!Environment.PRESSURIZED.getName().toLowerCase().equals(row.getCell(ELEMENT_ENVIRONMENT).getStringCellValue().toLowerCase()) 
 							&& !Environment.UNPRESSURIZED.getName().toLowerCase().equals(row.getCell(ELEMENT_ENVIRONMENT).getStringCellValue().toLowerCase()))) {
 				errors.add("Element in row " + (i + 1) + " has missing or invalid environment.");
 			}
-			if (row.getCell(ELEMENT_ACCOMMODATION_MASS).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(ELEMENT_ACCOMMODATION_MASS).getCellType() != CellType.NUMERIC) {
 				errors.add("Element in row " + (i + 1) + " has missing or invalid accommodation mass.");
 			}
-			if (row.getCell(ELEMENT_MASS).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(ELEMENT_MASS).getCellType() != CellType.NUMERIC) {
 				errors.add("Element in row " + (i + 1) + " has missing or invalid mass.");
 			}
-			if (row.getCell(ELEMENT_VOLUME).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(ELEMENT_VOLUME).getCellType() != CellType.NUMERIC) {
 				errors.add("Element in row " + (i + 1) + " has missing or invalid volume.");
 			}
 			if (ElementType.ELEMENT.getName().toLowerCase().contains(type)) {
 			} else if (ElementType.RESOURCE_CONTAINER.getName().toLowerCase().contains(type)) {
-				if (row.getCell(ELEMENT_CARGO_MASS).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(ELEMENT_CARGO_MASS).getCellType() != CellType.NUMERIC) {
 					errors.add("Container in row " + (i + 1) + " has missing or invalid max cargo mass.");
 				}
-				if (row.getCell(ELEMENT_CARGO_VOLUME).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(ELEMENT_CARGO_VOLUME).getCellType() != CellType.NUMERIC) {
 					errors.add("Container in row " + (i + 1) + " has missing or invalid max cargo volume.");
 				}
-				if (row.getCell(ELEMENT_CARGO_ENVIRONMENT).getCellType() != Cell.CELL_TYPE_STRING
+				if (row.getCell(ELEMENT_CARGO_ENVIRONMENT).getCellType() != CellType.STRING
 						|| (!Environment.PRESSURIZED.getName().toLowerCase().equals(row.getCell(ELEMENT_CARGO_ENVIRONMENT).getStringCellValue().toLowerCase()) 
 								&& !Environment.UNPRESSURIZED.getName().toLowerCase().equals(row.getCell(ELEMENT_CARGO_ENVIRONMENT).getStringCellValue().toLowerCase()))) {
 					errors.add("Container in row " + (i + 1) + " has missing or invalid cargo environment.");
 				}
 			} else if (ElementType.CREW_MEMBER.getName().toLowerCase().contains(type)) {
-				if (row.getCell(ELEMENT_ACTIVE_FRACTION).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(ELEMENT_ACTIVE_FRACTION).getCellType() != CellType.NUMERIC) {
 					errors.add("Crew Member in row " + (i + 1) + " has missing or invalid active time fraction.");
 				}
 			} else if (ElementType.CARRIER.getName().toLowerCase().contains(type)
 					|| ElementType.SURFACE_VEHICLE.getName().toLowerCase().contains(type)
 					|| ElementType.PROPULSIVE_VEHICLE.getName().toLowerCase().contains(type)) {
-				if (row.getCell(ELEMENT_MAX_CREW).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(ELEMENT_MAX_CREW).getCellType() != CellType.NUMERIC) {
 					errors.add("Carrier in row " + (i + 1) + " has missing or invalid max crew.");
 				}
-				if (row.getCell(ELEMENT_CARGO_MASS).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(ELEMENT_CARGO_MASS).getCellType() != CellType.NUMERIC) {
 					errors.add("Carrier in row " + (i + 1) + " has missing or invalid max cargo mass.");
 				}
-				if (row.getCell(ELEMENT_CARGO_VOLUME).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(ELEMENT_CARGO_VOLUME).getCellType() != CellType.NUMERIC) {
 					errors.add("Container in row " + (i + 1) + " has missing or invalid max cargo volume.");
 				}
-				if (row.getCell(ELEMENT_CARGO_ENVIRONMENT).getCellType() != Cell.CELL_TYPE_STRING
+				if (row.getCell(ELEMENT_CARGO_ENVIRONMENT).getCellType() != CellType.STRING
 						|| (!Environment.PRESSURIZED.getName().toLowerCase().equals(row.getCell(ELEMENT_CARGO_ENVIRONMENT).getStringCellValue().toLowerCase()) 
 								&& !Environment.UNPRESSURIZED.getName().toLowerCase().equals(row.getCell(ELEMENT_CARGO_ENVIRONMENT).getStringCellValue().toLowerCase()))) {
 					errors.add("Container in row " + (i + 1) + " has missing or invalid cargo environment.");
 				}
 			} else if (ElementType.PROPULSIVE_VEHICLE.getName().toLowerCase().contains(type)) {
-				if (row.getCell(ELEMENT_OMS_ISP).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(ELEMENT_OMS_ISP).getCellType() != CellType.NUMERIC) {
 					errors.add("Propulsive Vehicle in row " + (i + 1) + " has missing or invalid OMS Isp.");
 				}
-				if (row.getCell(ELEMENT_OMS_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(ELEMENT_OMS_ID).getCellType() != CellType.NUMERIC) {
 					errors.add("Propulsive Vehicle in row " + (i + 1) + " has missing or invalid max OMS fuel.");
 				}
-				if (row.getCell(ELEMENT_RCS_ISP).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(ELEMENT_RCS_ISP).getCellType() != CellType.NUMERIC) {
 					errors.add("Propulsive Vehicle in row " + (i + 1) + " has missing or invalid RCS Isp.");
 				}
-				if (row.getCell(ELEMENT_RCS_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(ELEMENT_RCS_ID).getCellType() != CellType.NUMERIC) {
 					errors.add("Propulsive Vehicle in row " + (i + 1) + " has missing or invalid max RCS fuel.");
 				}
 			} else if (ElementType.SURFACE_VEHICLE.getName().toLowerCase().contains(type)) {
-				if (row.getCell(ELEMENT_MAX_SPEED).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(ELEMENT_MAX_SPEED).getCellType() != CellType.NUMERIC) {
 					errors.add("Surface Vehicle in row " + (i + 1) + " has missing or invalid max speed.");
 				}
-				if (row.getCell(ELEMENT_MAX_FUEL).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(ELEMENT_MAX_FUEL).getCellType() != CellType.NUMERIC) {
 					errors.add("Surface Vehicle in row " + (i + 1) + " has missing or invalid max fuel.");
 				}
-				if (row.getCell(ELEMENT_FUEL_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(ELEMENT_FUEL_ID).getCellType() != CellType.NUMERIC) {
 					errors.add("Surface Vehicle in row " + (i + 1) + " has missing or invalid fuel id.");
 				}
 			} else if (!type.equals("")) {
@@ -2021,25 +2022,25 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			Row row = sheet.getRow(i);
 			if (isRowEmpty(row))
 				continue;
-			if (row.getCell(PART_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(PART_ID).getCellType() != CellType.NUMERIC) {
 				errors.add("Part Application in row " + (i + 1) + " has missing or invalid id.");
 			}
-			if (row.getCell(PART_RESOURCE_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(PART_RESOURCE_ID).getCellType() != CellType.NUMERIC) {
 				errors.add("Part Application in row " + (i + 1) + " has missing or invalid resource id.");
 			}
-			if (row.getCell(PART_QUANTITY).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(PART_QUANTITY).getCellType() != CellType.NUMERIC) {
 				errors.add("Part Application in row " + (i + 1) + " has missing or invalid quantity.");
 			}
-			if (row.getCell(PART_DUTY_CYCLE).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(PART_DUTY_CYCLE).getCellType() != CellType.NUMERIC) {
 				errors.add("Part Application in row " + (i + 1) + " has missing or invalid duty cycle.");
 			}
-			if (row.getCell(PART_MTTF).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(PART_MTTF).getCellType() != CellType.NUMERIC) {
 				errors.add("Part Application in row " + (i + 1) + " has missing or invalid mean time to failure.");
 			}
-			if (row.getCell(PART_MTTR).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(PART_MTTR).getCellType() != CellType.NUMERIC) {
 				errors.add("Part Application in row " + (i + 1) + " has missing or invalid mean time to repair.");
 			}
-			if (row.getCell(PART_REPAIR_MASS).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(PART_REPAIR_MASS).getCellType() != CellType.NUMERIC) {
 				errors.add("Part Application in row " + (i + 1) + " has missing or invalid mass to repair.");
 			}
 		}
@@ -2059,13 +2060,13 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			Row row = sheet.getRow(i);
 			if (isRowEmpty(row))
 				continue;
-			if (row.getCell(STATE_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(STATE_ID).getCellType() != CellType.NUMERIC) {
 				errors.add("State in row " + (i + 1) + " has missing or invalid id.");
 			}
-			if (row.getCell(STATE_NAME).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(STATE_NAME).getCellType() != CellType.STRING) {
 				errors.add("State in row " + (i + 1) + " has missing or invalid name.");
 			}
-			if (row.getCell(STATE_TYPE).getCellType() != Cell.CELL_TYPE_STRING
+			if (row.getCell(STATE_TYPE).getCellType() != CellType.STRING
 					|| !(StateType.ACTIVE.getName().toLowerCase().contains(row.getCell(STATE_TYPE).getStringCellValue().toLowerCase())
 							|| StateType.SPECIAL.getName().toLowerCase().contains(row.getCell(STATE_TYPE).getStringCellValue().toLowerCase())
 							|| StateType.QUIESCENT.getName().toLowerCase().contains(row.getCell(STATE_TYPE).getStringCellValue().toLowerCase())
@@ -2073,7 +2074,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 							|| StateType.DECOMMISSIONED.getName().toLowerCase().contains(row.getCell(STATE_TYPE).getStringCellValue().toLowerCase()))) {
 				errors.add("State in row " + (i + 1) + " has missing or invalid type.");
 			}
-			if (row.getCell(STATE_INITIAL).getCellType() != Cell.CELL_TYPE_BOOLEAN) {
+			if (row.getCell(STATE_INITIAL).getCellType() != CellType.BOOLEAN) {
 				errors.add("State in row " + (i + 1) + " has missing or invalid initial state boolean.");
 			}
 		}
@@ -2094,27 +2095,27 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			if (isRowEmpty(row))
 				continue;
 			String type = "";
-			if (row.getCell(MODEL_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(MODEL_ID).getCellType() != CellType.NUMERIC) {
 				errors.add("Model in row " + (i + 1) + " has missing or invalid id.");
 			}
-			if (row.getCell(MODEL_TYPE).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(MODEL_TYPE).getCellType() != CellType.STRING) {
 				errors.add("Model in row " + (i + 1) + " has missing or invalid type.");
 			} else {
 				type = row.getCell(MODEL_TYPE).getStringCellValue().toLowerCase();
 			}
-			if (row.getCell(MODEL_NAME).getCellType() != Cell.CELL_TYPE_STRING) {
+			if (row.getCell(MODEL_NAME).getCellType() != CellType.STRING) {
 				errors.add("Model in row " + (i + 1) + " has missing or invalid name.");
 			}
 			if (DemandModelType.TIMED_IMPULSE.getName().toLowerCase().contains(type)) {
 			} else if (DemandModelType.RATED.getName().toLowerCase().contains(type)) {
 			} else if (DemandModelType.SPARING_BY_MASS.getName().toLowerCase().contains(type)) {
-				if (row.getCell(MODEL_PARTS_LIST).getCellType() != Cell.CELL_TYPE_BOOLEAN) {
+				if (row.getCell(MODEL_PARTS_LIST).getCellType() != CellType.BOOLEAN) {
 					errors.add("Sparing by Mass Model in row " + (i + 1)+ " has missing or invalid parts list boolean.");
 				}
-				if (row.getCell(MODEL_UNPRESS_RATE).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(MODEL_UNPRESS_RATE).getCellType() != CellType.NUMERIC) {
 					errors.add("Sparing by Mass Model in row " + (i + 1)+ " has missing or invalid unpressurized spares rate.");
 				}
-				if (row.getCell(MODEL_PRESS_RATE).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				if (row.getCell(MODEL_PRESS_RATE).getCellType() != CellType.NUMERIC) {
 					errors.add("Sparing by Mass Model in row " + (i + 1) + " has missing or invalid pressurized spares rate.");
 				}
 			} else if (!type.equals("")) {
@@ -2137,13 +2138,13 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			Row row = sheet.getRow(i);
 			if (isRowEmpty(row))
 				continue;
-			if (row.getCell(DEMAND_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(DEMAND_ID).getCellType() != CellType.NUMERIC) {
 				errors.add("Demand in row " + (i + 1) + " has missing or invalid id.");
 			}
-			if (row.getCell(DEMAND_RESOURCE_ID).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(DEMAND_RESOURCE_ID).getCellType() != CellType.NUMERIC) {
 				errors.add("Demand in row " + (i + 1) + " has missing or invalid resource id.");
 			}
-			if (row.getCell(DEMAND_AMOUNT).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+			if (row.getCell(DEMAND_AMOUNT).getCellType() != CellType.NUMERIC) {
 				errors.add("Demand in row " + (i + 1) + " has missing or invalid amount.");
 			}
 		}
@@ -2160,7 +2161,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 	private Workbook readWorkbook() throws IOException {
 		FileInputStream fis = new FileInputStream(filePath);
 		Workbook wb = new HSSFWorkbook(fis);
-		wb.setMissingCellPolicy(Row.CREATE_NULL_AS_BLANK);
+		wb.setMissingCellPolicy(MissingCellPolicy.CREATE_NULL_AS_BLANK);
 		fis.close();
 		return wb;
 	}
@@ -2184,7 +2185,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 	public void format() throws IOException {
 		FileOutputStream fos = new FileOutputStream(filePath);
 		Workbook wb = new HSSFWorkbook();
-		wb.setMissingCellPolicy(Row.CREATE_NULL_AS_BLANK);
+		wb.setMissingCellPolicy(MissingCellPolicy.CREATE_NULL_AS_BLANK);
 		if(wb.getNumberOfSheets() <= NODE_SHEET) {
 			wb.createSheet("nodes");
 			Row row = wb.getSheetAt(NODE_SHEET).createRow(0);
@@ -2309,6 +2310,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 			row.getCell(DEMAND_CONTAINER_ID).setCellValue("container_id");
 		}
 		wb.write(fos);
+		wb.close();
 		fos.close();
 	}
 
@@ -2353,7 +2355,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
 	private static boolean isRowEmpty(Row row) {
 		if (row == null
 				|| row.getCell(0) == null
-				|| row.getCell(0).getCellType() != Cell.CELL_TYPE_NUMERIC
+				|| row.getCell(0).getCellType() != CellType.NUMERIC
 				|| row.getCell(0).getNumericCellValue() <= 0)
 			return true;
 		else

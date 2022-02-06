@@ -21,6 +21,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 
 import edu.mit.spacenet.data.DataSourceType;
 import edu.mit.spacenet.data.ElementPreview;
@@ -59,6 +62,13 @@ public class XStreamEngine {
 	public static void saveScenario(Scenario scenario) 
 		throws FileNotFoundException, IOException {
 		XStream xs = new XStream();
+		xs.addPermission(NoTypePermission.NONE);
+		xs.addPermission(NullPermission.NULL);
+		xs.addPermission(PrimitiveTypePermission.PRIMITIVES);
+		xs.allowTypesByWildcard(new String[] { 
+				"edu.mit.spacenet.**",
+				"java.util.*"
+		});
 		// TODO: correct references to node/edge libraries
 		//xs.omitField(DataSource.class, "nodeLibrary");
 		//xs.omitField(DataSource.class, "edgeLibrary");
@@ -94,6 +104,13 @@ public class XStreamEngine {
 	public static Scenario openScenario(String filePath) 
 		throws FileNotFoundException, IOException {
 		XStream xs = new XStream();
+		xs.addPermission(NoTypePermission.NONE);
+		xs.addPermission(NullPermission.NULL);
+		xs.addPermission(PrimitiveTypePermission.PRIMITIVES);
+		xs.allowTypesByWildcard(new String[] { 
+				"edu.mit.spacenet.**",
+				"java.util.*"
+		});
 		xs.alias("scenario", Scenario.class);
 		xs.alias("excel", Spreadsheet_2_5.class);
 		xs.alias("surfaceNode", SurfaceNode.class);

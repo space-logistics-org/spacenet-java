@@ -16,6 +16,9 @@
 package edu.mit.spacenet.util;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 
 /**
  * A utility class used to serialize (clone) objects.
@@ -32,7 +35,14 @@ public class SerializeUtil {
 	 * @return the serialized object
 	 */
 	public static Object deepClone(Object object) {
-		XStream xStream = new XStream();
-		return xStream.fromXML((String)xStream.toXML(object));
+		XStream xs = new XStream();
+		xs.addPermission(NoTypePermission.NONE);
+		xs.addPermission(NullPermission.NULL);
+		xs.addPermission(PrimitiveTypePermission.PRIMITIVES);
+		xs.allowTypesByWildcard(new String[] { 
+				"edu.mit.spacenet.**",
+				"java.util.*"
+		});
+		return xs.fromXML((String)xs.toXML(object));
 	}
 }

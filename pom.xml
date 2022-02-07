@@ -47,25 +47,29 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-          <executions>
-            <execution>
-              <goals>
-                <goal>attached</goal>
-              </goals>
-              <phase>package</phase>
-              <configuration>
-                <descriptorRefs>
-                  <descriptorRef>jar-with-dependencies</descriptorRef>
-                </descriptorRefs>
+        <version>3.3.0</version>
+	    <executions>
+	      <execution>
+	        <phase>package</phase>
+	        <goals>
+	          <goal>single</goal>
+	        </goals>
+            <configuration>
                 <archive>
                   <manifest>
-                    <mainClass>edu.mit.spacenet.SpaceNet</mainClass>
+                    <mainClass>
+                        edu.mit.spacenet.SpaceNet
+                    </mainClass>
                   </manifest>
                 </archive>
-              </configuration>
-            </execution>
-         </executions>
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+            </configuration>
+	      </execution>
+	    </executions>
       </plugin>
     </plugins>
   </build>

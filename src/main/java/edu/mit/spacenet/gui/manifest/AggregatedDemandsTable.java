@@ -27,6 +27,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import edu.mit.spacenet.domain.resource.Demand;
+import edu.mit.spacenet.domain.resource.DemandSet;
 import edu.mit.spacenet.scenario.Manifest;
 import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
 
@@ -189,9 +190,9 @@ public class AggregatedDemandsTable extends JTable {
 		 */
 		public int getRowCount() {
 			int i = 0;
-			for(SupplyPoint point : getManifest().getAggregatedNodeDemands().keySet()) {
-				i+=getManifest().getAggregatedNodeDemands().get(point).size();
-				i+=getManifest().getAggregatedEdgeDemands().get(point.getEdge()).size();
+			for(SupplyPoint point : getManifest().getSupplyPoints()) {
+				i+=getManifest().getAggregatedNodeDemands(point).size();
+				i+=getManifest().getAggregatedEdgeDemands(point.getEdge()).size();
 			}
 			return i;
 		}
@@ -215,22 +216,21 @@ public class AggregatedDemandsTable extends JTable {
 		 */
 		private Demand getDemand(int row) {
 			int lastRowSeen = -1;
-			for(SupplyPoint point : getManifest().getAggregatedNodeDemands().keySet()) {
-				if(lastRowSeen + 
-						getManifest().getAggregatedNodeDemands().get(point).size() + 
-						getManifest().getAggregatedEdgeDemands().get(point.getEdge()).size() >= row) {
-					for(Demand d : getManifest().getAggregatedNodeDemands().get(point)) {
+			for(SupplyPoint point : getManifest().getSupplyPoints()) {
+				DemandSet pointDemands = getManifest().getAggregatedNodeDemands(point);
+				DemandSet edgeDemands = getManifest().getAggregatedEdgeDemands(point.getEdge());
+				if(lastRowSeen + pointDemands.size() + edgeDemands.size() >= row) {
+					for(Demand d : pointDemands) {
 						lastRowSeen++;
 						if(lastRowSeen==row) return d;
 					}
-					for(Demand d : getManifest().getAggregatedEdgeDemands().get(point.getEdge())) {
+					for(Demand d : edgeDemands) {
 						lastRowSeen++;
 						if(lastRowSeen==row) return d;
 					}
 					return null;
 				}
-				lastRowSeen+=getManifest().getAggregatedNodeDemands().get(point).size()+ 
-					getManifest().getAggregatedEdgeDemands().get(point.getEdge()).size();
+				lastRowSeen += pointDemands.size() + edgeDemands.size();
 			}
 			return null;
 		}

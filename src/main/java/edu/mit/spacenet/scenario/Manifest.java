@@ -15,12 +15,11 @@
  */
 package edu.mit.spacenet.scenario;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -36,6 +35,7 @@ import edu.mit.spacenet.domain.network.node.SurfaceNode;
 import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.domain.resource.DemandSet;
 import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
+import edu.mit.spacenet.simulator.DemandSimulator;
 import edu.mit.spacenet.simulator.event.ManifestEvent;
 import edu.mit.spacenet.util.GlobalParameters;
 
@@ -48,14 +48,14 @@ import edu.mit.spacenet.util.GlobalParameters;
  */
 public class Manifest {
 	private Scenario scenario;
-	private SortedSet<SupplyEdge> supplyEdges;
-	private SortedSet<SupplyPoint> supplyPoints;
-	private SortedMap<SupplyPoint, DemandSet> aggregatedNodeDemands;
-	private SortedMap<SupplyEdge, DemandSet> aggregatedEdgeDemands;
+	private Set<SupplyEdge> supplyEdges;
+	private Set<SupplyPoint> supplyPoints;
+	private Map<SupplyPoint, DemandSet> aggregatedNodeDemands;
+	private Map<SupplyEdge, DemandSet> aggregatedEdgeDemands;
 	private Map<Demand, Set<Demand>> demandsAsPacked;
 	private Map<I_ResourceContainer, Set<Demand>> packedDemands;
-	private SortedMap<SupplyPoint, Set<I_ResourceContainer>> cachedContainerDemands;
-	private SortedMap<SupplyEdge, Map<I_Carrier, Set<I_ResourceContainer>>> manifestedContainers;
+	@Deprecated private Map<SupplyPoint, Set<I_ResourceContainer>> cachedContainerDemands;
+	private Map<SupplyEdge, Map<I_Carrier, Set<I_ResourceContainer>>> manifestedContainers;
 	
 	/**
 	 * Instantiates a new manifest.
@@ -70,7 +70,6 @@ public class Manifest {
 		aggregatedEdgeDemands = new TreeMap<SupplyEdge, DemandSet>();
 		demandsAsPacked = new HashMap<Demand, Set<Demand>>();
 		packedDemands = new HashMap<I_ResourceContainer, Set<Demand>>();
-		cachedContainerDemands = new TreeMap<SupplyPoint, Set<I_ResourceContainer>>();
 		manifestedContainers = new TreeMap<SupplyEdge, Map<I_Carrier, Set<I_ResourceContainer>>>();
 	}
 	
@@ -267,7 +266,7 @@ public class Manifest {
 	 * 
 	 * @param container the resource container
 	 * 
-	 * @return the intial supply point
+	 * @return the initial supply point
 	 */
 	public SupplyPoint getInitialSupplyPoint(I_ResourceContainer container) {
 		SupplyEdge edge = null;
@@ -299,12 +298,21 @@ public class Manifest {
 	 * 
 	 * @return the current supply point
 	 */
-	public SupplyPoint getCurrentSupplyPoint(I_ResourceContainer container) {
-		SupplyPoint point = null;
-		for(SupplyPoint p : supplyPoints) {
-			if(cachedContainerDemands.get(p).contains(container)
-					&& (point==null||p.getTime()<point.getTime())) {
-				point = p;
+	private SupplyPoint getCurrentSupplyPoint(I_ResourceContainer container) {
+		SupplyPoint point = getInitialSupplyPoint(container);
+		if(point == null) {
+			return null;
+		}
+		for(SupplyEdge edge : supplyEdges) {
+			if(edge.getEndTime() <= point.getTime()) {
+				for(I_Carrier carrier : edge.getAllCarriers()) {
+					if(manifestedContainers.get(edge).get(carrier).contains(container)) {
+						SupplyPoint p = getNextSupplyPoint(edge);
+						if(p != null && (p.getTime() < point.getTime())) {
+							point = p;
+						}
+					}
+				}
 			}
 		}
 		return point;
@@ -316,13 +324,14 @@ public class Manifest {
 	 * @return the set of empty resource containers
 	 */
 	public Set<I_ResourceContainer> getEmptyContainers() {
-		HashSet<I_ResourceContainer> containers = new HashSet<I_ResourceContainer>();
-		for(I_ResourceContainer container : packedDemands.keySet()) {
+		HashSet<I_ResourceContainer> emptyContainers = new HashSet<I_ResourceContainer>();
+		Set<I_ResourceContainer> containers = packedDemands.keySet();
+		for(I_ResourceContainer container : containers) {
 			if(packedDemands.get(container).size()==0
 					&& getInitialSupplyPoint(container)==null)
-				containers.add(container);
+				emptyContainers.add(container);
 		}
-		return containers;
+		return Collections.unmodifiableSet(emptyContainers);
 	}
 	
 	/**
@@ -543,7 +552,6 @@ public class Manifest {
 				Demand demandAsPacked = new Demand(demand.getResource(), amount);
 				demandsAsPacked.get(demand).add(demandAsPacked);
 				packedDemands.get(container).add(demandAsPacked);
-				rebuildCachedContainerDemands();
 			}
 		}
 	}
@@ -563,7 +571,6 @@ public class Manifest {
 				}
 			}
 			demandsAsPacked.get(demand).clear();
-			rebuildCachedContainerDemands();
 		}
 	}
 	
@@ -579,7 +586,6 @@ public class Manifest {
 			for(Demand d : demandsAsPacked.keySet()) {
 				demandsAsPacked.get(d).remove(demandAsPacked);
 			}
-			rebuildCachedContainerDemands();
 		}
 	}
 	
@@ -740,7 +746,6 @@ public class Manifest {
 	public void manifestContainer(I_ResourceContainer container, SupplyEdge edge, I_Carrier carrier) {
 		if(canManifestContainer(container, edge, carrier)) {
 			manifestedContainers.get(edge).get(carrier).add(container);
-			rebuildCachedContainerDemands();
 		}
 	}
 	
@@ -757,13 +762,12 @@ public class Manifest {
 			}
 			for(SupplyEdge e : supplyEdges) {
 				// clean up earlier manifests... not guaranteed anymore
-				if(e.getEndTime()<edge.getEndTime()) {
+				if(e.getEndTime() < edge.getEndTime()) {
 					for(I_Carrier carrier : manifestedContainers.get(e).keySet()) {
 						manifestedContainers.get(e).get(carrier).remove(container);
 					}
 				}
 			}
-			rebuildCachedContainerDemands();
 		}
 	}
 	
@@ -795,12 +799,38 @@ public class Manifest {
 			}
 		}
 		packedDemands.remove(container);
-		for(SupplyPoint point : supplyPoints) {
-			cachedContainerDemands.get(point).remove(container);
-		}
 		for(SupplyEdge edge : supplyEdges) {
 			for(I_Carrier carrier : edge.getAllCarriers()) {
 				manifestedContainers.get(edge).get(carrier).remove(container);
+			}
+		}
+	}
+
+	/**
+	 * Imports demands from a demand simulator.
+	 * 
+	 * @param supplyEdges the set of supply edges
+	 */
+	public void importDemands(DemandSimulator simulator) {
+		reset();
+		supplyPoints.addAll(simulator.getSupplyPoints());
+		supplyEdges.addAll(simulator.getSupplyEdges());
+		for(SupplyEdge edge : supplyEdges) {
+			manifestedContainers.put(edge, new TreeMap<I_Carrier, Set<I_ResourceContainer>>());
+			for(I_Carrier carrier : edge.getAllCarriers()) {
+				manifestedContainers.get(edge).put(carrier, new HashSet<I_ResourceContainer>());
+			}
+		}
+		aggregatedNodeDemands.putAll(simulator.getAggregatedNodeDemands());
+		for(DemandSet demands : aggregatedNodeDemands.values()) {
+			for(Demand demand : demands) {
+				demandsAsPacked.put(demand, new HashSet<Demand>());
+			}
+		}
+		aggregatedEdgeDemands.putAll(simulator.getAggregatedEdgeDemands());
+		for(DemandSet demands : aggregatedEdgeDemands.values()) {
+			for(Demand demand : demands) {
+				demandsAsPacked.put(demand, new HashSet<Demand>());
 			}
 		}
 	}
@@ -810,23 +840,8 @@ public class Manifest {
 	 * 
 	 * @return the set of supply edges
 	 */
-	public SortedSet<SupplyEdge> getSupplyEdges() {
-		return supplyEdges;
-	}
-	
-	/**
-	 * Sets the set of supply edges.
-	 * 
-	 * @param supplyEdges the set of supply edges
-	 */
-	public void setSupplyEdges(SortedSet<SupplyEdge> supplyEdges) {
-		this.supplyEdges = supplyEdges;
-		for(SupplyEdge edge : supplyEdges) {
-			manifestedContainers.put(edge, new HashMap<I_Carrier, Set<I_ResourceContainer>>());
-			for(I_Carrier carrier : edge.getAllCarriers()) {
-				manifestedContainers.get(edge).put(carrier, new HashSet<I_ResourceContainer>());
-			}
-		}
+	public Set<SupplyEdge> getSupplyEdges() {
+		return Collections.unmodifiableSet(supplyEdges);
 	}
 	
 	/**
@@ -834,66 +849,30 @@ public class Manifest {
 	 * 
 	 * @return the set of supply points
 	 */
-	public SortedSet<SupplyPoint> getSupplyPoints() {
-		return supplyPoints;
+	public Set<SupplyPoint> getSupplyPoints() {
+		return Collections.unmodifiableSet(supplyPoints);
 	}
 	
 	/**
-	 * Sets the set of supply points.
+	 * Gets the set of demands aggregated to a supply point.
 	 * 
-	 * @param supplyPoints the set of supply points
-	 */
-	public void setSupplyPoints(SortedSet<SupplyPoint> supplyPoints) {
-		this.supplyPoints = supplyPoints;
-		for(SupplyPoint point : supplyPoints) {
-			cachedContainerDemands.put(point, new HashSet<I_ResourceContainer>());
-		}
-	}
-	
-	/**
-	 * Gets the set of demands aggregated to supply points.
+	 * @param point the supply point
 	 * 
 	 * @return the set of aggregated demands
 	 */
-	public SortedMap<SupplyPoint, DemandSet> getAggregatedNodeDemands() {
-		return aggregatedNodeDemands;
+	public DemandSet getAggregatedNodeDemands(SupplyPoint point) {
+		return aggregatedNodeDemands.get(point);
 	}
 	
 	/**
-	 * Sets the set of demands aggregated to supply points.
+	 * Gets the set of demands aggregated to a supply edge.
 	 * 
-	 * @param aggregatedNodeDemands the set of aggregated demands
-	 */
-	public void setAggregatedNodeDemands(SortedMap<SupplyPoint, DemandSet> aggregatedNodeDemands) {
-		this.aggregatedNodeDemands = aggregatedNodeDemands;
-		for(DemandSet demands : aggregatedNodeDemands.values()) {
-			for(Demand demand : demands) {
-				demandsAsPacked.put(demand, new HashSet<Demand>());
-			}
-		}
-	}
-	
-	/**
-	 * Gets the set of demands aggregated to supply edges.
+	 * @param edge the supply edge
 	 * 
 	 * @return the set of aggregated demands
 	 */
-	public SortedMap<SupplyEdge, DemandSet> getAggregatedEdgeDemands() {
-		return aggregatedEdgeDemands;
-	}
-	
-	/**
-	 * Sets the set of demands aggregated to supply edges.
-	 * 
-	 * @param aggregatedEdgeDemands the set of aggregated demands
-	 */
-	public void setAggregatedEdgeDemands(SortedMap<SupplyEdge, DemandSet> aggregatedEdgeDemands) {
-		this.aggregatedEdgeDemands = aggregatedEdgeDemands;
-		for(DemandSet demands : aggregatedEdgeDemands.values()) {
-			for(Demand demand : demands) {
-				demandsAsPacked.put(demand, new HashSet<Demand>());
-			}
-		}
+	public DemandSet getAggregatedEdgeDemands(SupplyEdge edge) {
+		return aggregatedEdgeDemands.get(edge);
 	}
 	
 	/**
@@ -902,7 +881,7 @@ public class Manifest {
 	 * @return the set of packed demands
 	 */
 	public Map<Demand, Set<Demand>> getDemandsAsPacked() {
-		return demandsAsPacked;
+		return Collections.unmodifiableMap(demandsAsPacked);
 	}
 	
 	/**
@@ -911,7 +890,7 @@ public class Manifest {
 	 * @return the set of packed demands
 	 */
 	public Map<I_ResourceContainer, Set<Demand>> getPackedDemands() {
-		return packedDemands;
+		return Collections.unmodifiableMap(packedDemands);
 	}
 	
 	/**
@@ -925,29 +904,25 @@ public class Manifest {
 	 */
 	public Set<Demand> getPackedDemands(I_ResourceContainer container, SupplyPoint point) {
 		HashSet<Demand> demands = new HashSet<Demand>();
-		for(Demand demand : packedDemands.get(container)) { // got null pointer here ?
-			if(getSupplyPoint(getDemand(demand)).getTime()>=point.getTime())
-				demands.add(demand);
+		if(packedDemands.get(container) != null) {
+			for(Demand demand : packedDemands.get(container)) {
+				if(getSupplyPoint(getDemand(demand)).getTime()>=point.getTime())
+					demands.add(demand);
+			}
 		}
-		return demands;
+		return Collections.unmodifiableSet(demands);
 	}
 	
 	/**
-	 * Gets the set of resource containers at supply points.
+	 * Gets the set of resource containers manifested to a supply edge on a carrier.
+	 * 
+	 * @param edge the supply edge
+	 * @param carrier the carrier
 	 * 
 	 * @return the set of resource containers
 	 */
-	public SortedMap<SupplyPoint, Set<I_ResourceContainer>> getCachedContainerDemands() {
-		return cachedContainerDemands;
-	}
-	
-	/**
-	 * Gets the set of resource containers manifested to a supply edge.
-	 * 
-	 * @return the set of resource containers
-	 */
-	public SortedMap<SupplyEdge, Map<I_Carrier, Set<I_ResourceContainer>>> getManifestedContainers() {
-		return manifestedContainers;
+	public Set<I_ResourceContainer> getManifestedContainers(SupplyEdge edge, I_Carrier carrier) {
+		return Collections.unmodifiableSet(manifestedContainers.get(edge).get(carrier));
 	}
 	
 	/**
@@ -969,37 +944,7 @@ public class Manifest {
 				}
 			}
 		}
-		return containers;
-	}
-	private void rebuildCachedContainerDemands() {
-		for(SupplyPoint point : supplyPoints) {
-			cachedContainerDemands.get(point).clear();
-		}
-		
-		for(I_ResourceContainer container : packedDemands.keySet()) {
-			SupplyEdge firstEdge = null;
-			for(SupplyEdge edge : supplyEdges) {
-				for(I_Carrier carrier : edge.getAllCarriers()) {
-					if(manifestedContainers.get(edge).get(carrier).contains(container)) {
-						SupplyPoint point = getNextSupplyPoint(edge);
-						if(point != null) cachedContainerDemands.get(point).add(container);
-						if(firstEdge==null||edge.getStartTime()>firstEdge.getStartTime()) {
-							firstEdge = edge;
-						}
-					}
-				}
-			}
-			SupplyPoint firstPoint = firstEdge==null?null:firstEdge.getPoint();
-			for(Demand demandAsPacked : packedDemands.get(container)) {
-				SupplyPoint point = getSupplyPoint(getDemand(demandAsPacked));
-				if(firstPoint==null||(point.getTime()<firstPoint.getTime())) {
-					firstPoint = point;
-				}
-			}
-			if(firstPoint!=null) {
-				cachedContainerDemands.get(firstPoint).add(container);
-			}
-		}
+		return Collections.unmodifiableSet(containers);
 	}
 	
 	/**
@@ -1012,7 +957,6 @@ public class Manifest {
 		aggregatedEdgeDemands.clear();
 		demandsAsPacked.clear();
 		packedDemands.clear();
-		cachedContainerDemands.clear();
 		manifestedContainers.clear();
 	}
 	
@@ -1022,7 +966,18 @@ public class Manifest {
 	 * @return the set of resource containers
 	 */
 	public Set<I_ResourceContainer> getContainers() {
-		return packedDemands.keySet();
+		return Collections.unmodifiableSet(packedDemands.keySet());
+	}
+	
+	/**
+	 * Gets the set of demands packed in a container.
+	 * 
+	 * @param container the container
+	 * 
+	 * @return the set of demands
+	 */
+	public Set<Demand> getPackedDemands(I_ResourceContainer container) {
+		return Collections.unmodifiableSet(packedDemands.get(container));
 	}
 	
 	/**
@@ -1062,7 +1017,7 @@ public class Manifest {
 				}
 			}
 		}
-		return events;
+		return Collections.unmodifiableSet(events);
 	}
 	
 	/**

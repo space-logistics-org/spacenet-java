@@ -167,7 +167,7 @@ public class CarrierContentsTable extends JTable {
 		 */
 		public int getRowCount() {
 			if(edge==null || carrier==null) return 0;
-			else return getManifest().getManifestedContainers().get(edge).get(carrier).size();
+			else return getManifest().getManifestedContainers(edge, carrier).size();
 		}
 		
 		/* (non-Javadoc)
@@ -180,7 +180,7 @@ public class CarrierContentsTable extends JTable {
 		}
 		private I_ResourceContainer getContainer(int row) {
 			int lastRowSeen = -1;
-			for(I_ResourceContainer container : getManifest().getManifestedContainers().get(edge).get(carrier)) {
+			for(I_ResourceContainer container : getManifest().getManifestedContainers(edge, carrier)) {
 				lastRowSeen++;
 				if(row==lastRowSeen) return container;
 			}

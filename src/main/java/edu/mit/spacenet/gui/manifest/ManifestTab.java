@@ -61,7 +61,7 @@ import edu.mit.spacenet.simulator.DemandSimulator;
 import edu.mit.spacenet.util.GlobalParameters;
 
 /**
- * The tab component used to view and edit the scenario getManifest().
+ * The tab component used to view and edit the scenario manifest.
  * 
  * @author Paul Grogan
  */
@@ -151,6 +151,7 @@ public class ManifestTab extends JSplitPane {
 				getManifest().reset();
 				simWorker = new SimWorker();
 				simWorker.execute();
+				updateView();
 			}
 		});
 		buttonPanel.add(resetButton);
@@ -825,10 +826,7 @@ public class ManifestTab extends JSplitPane {
 				SpaceNetFrame.getInstance().getStatusBar().setStatusMessage("Simulating Demands...");
 				scenarioPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				simulator.simulate();
-				getManifest().setSupplyEdges(simulator.getSupplyEdges());
-				getManifest().setSupplyPoints(simulator.getSupplyPoints());
-				getManifest().setAggregatedNodeDemands(simulator.getAggregatedNodeDemands());
-				getManifest().setAggregatedEdgeDemands(simulator.getAggregatedEdgeDemands());
+				getManifest().importDemands(simulator);
 				scenarioPanel.setCursor(Cursor.getDefaultCursor());
 				SpaceNetFrame.getInstance().getStatusBar().clearStatusMessage();
 			} catch(Exception ex) {

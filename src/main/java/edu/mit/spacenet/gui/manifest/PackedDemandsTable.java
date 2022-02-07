@@ -18,6 +18,10 @@ package edu.mit.spacenet.gui.manifest;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTable;
@@ -26,6 +30,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import edu.mit.spacenet.domain.element.I_Carrier;
 import edu.mit.spacenet.domain.element.I_ResourceContainer;
+import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.gui.renderer.ElementTableCellRenderer;
 import edu.mit.spacenet.scenario.Manifest;
 import edu.mit.spacenet.scenario.SupplyEdge;
@@ -180,6 +185,15 @@ public class PackedDemandsTable extends JTable {
 	 */
 	class PackedDemandsTableModel extends AbstractTableModel {
 		private static final long serialVersionUID = -678300273079091701L;
+		private Map<SupplyPoint, Set<I_ResourceContainer>> containerDemands = new TreeMap<SupplyPoint, Set<I_ResourceContainer>>();
+		
+		/* (non-Javadoc)
+		 * @see javax.swing.table.TableModel#fireTableDataChanged()
+		 */
+		public void fireTableDataChanged() {
+			updateContainerDemands();
+			super.fireTableDataChanged();
+		}
 		
 		/* (non-Javadoc)
 		 * @see javax.swing.table.TableModel#getColumnCount()
@@ -194,7 +208,7 @@ public class PackedDemandsTable extends JTable {
 		public int getRowCount() {
 			int rows = getManifest().getEmptyContainers().size();
 			for(SupplyPoint point : getManifest().getSupplyPoints()) {
-				rows+=getManifest().getCachedContainerDemands().get(point).size();
+				rows += containerDemands.get(point) == null ? 0 : containerDemands.get(point).size();
 			}
 			return rows;
 		}
@@ -217,14 +231,24 @@ public class PackedDemandsTable extends JTable {
 		 */
 		private I_ResourceContainer getContainer(int row) {
 			int lastRowSeen = -1;
-			for(I_ResourceContainer container : getManifest().getEmptyContainers()) {
-				lastRowSeen++;
-				if(lastRowSeen==row) return container;
-			}
-			for(SupplyPoint point : getManifest().getSupplyPoints()) {
-				for(I_ResourceContainer container : getManifest().getCachedContainerDemands().get(point)) {
+			Set<I_ResourceContainer> emptyContainers = getManifest().getEmptyContainers();
+			if(lastRowSeen + emptyContainers.size() < row) {
+				lastRowSeen += emptyContainers.size();
+			} else {
+				for(I_ResourceContainer container : emptyContainers) {
 					lastRowSeen++;
 					if(lastRowSeen==row) return container;
+				}
+			}
+			for(SupplyPoint point : containerDemands.keySet()) {
+				Set<I_ResourceContainer> containers = containerDemands.get(point);
+				if(lastRowSeen + containers.size() < row) {
+					lastRowSeen += containers.size();
+				} else {
+					for(I_ResourceContainer container : containers) {
+						lastRowSeen++;
+						if(lastRowSeen==row) return container;
+					}
 				}
 			}
 			return null;
@@ -238,10 +262,10 @@ public class PackedDemandsTable extends JTable {
 		 * @return the supply point
 		 */
 		private SupplyPoint getSupplyPoint(int row) {
-			int lastRowSeen = getManifest().getEmptyContainers().size()-1;
+			int lastRowSeen = getManifest().getEmptyContainers().size() - 1;
 			if(row<=lastRowSeen) return null;
-			for(SupplyPoint point : getManifest().getSupplyPoints()) {
-				lastRowSeen+=getManifest().getCachedContainerDemands().get(point).size();
+			for(SupplyPoint point : containerDemands.keySet()) {
+				lastRowSeen += containerDemands.get(point).size();
 				if(row<=lastRowSeen) return point;
 			}
 			return null;
@@ -263,12 +287,52 @@ public class PackedDemandsTable extends JTable {
 				if(edge.getDestination().equals(point.getNode())
 						&& edge.getEndTime()<=point.getTime()) {
 					for(I_Carrier carrier : edge.getCarriers()) {
-						if(getManifest().getManifestedContainers().get(edge).get(carrier).contains(container))
+						if(getManifest().getManifestedContainers(edge, carrier).contains(container))
 							return edge;
 					}
 				}
 			}
 			return null;
+		}
+		
+		private void updateContainerDemands() {
+			containerDemands.clear();
+			for(SupplyPoint point : getManifest().getSupplyPoints()) {
+				containerDemands.put(point, new TreeSet<I_ResourceContainer>());
+			}
+			for(I_ResourceContainer container : getManifest().getContainers()) {
+				SupplyEdge firstEdge = null;
+				// loop over later supply edges
+				for(SupplyEdge edge : getManifest().getSupplyEdges()) {
+					// loop over all carriers
+					for(I_Carrier carrier : edge.getAllCarriers()) {
+						// check if the container is manifested on this carrier
+						if(getManifest().getManifestedContainers(edge, carrier).contains(container)) {
+							SupplyPoint p = getManifest().getNextSupplyPoint(edge);
+							if(p != null) {
+								// add container demand to the next supply point
+								containerDemands.get(p).add(container);
+								break;
+							}
+						}
+					}
+					// keep track of the earliest edge to flag initial demands
+					if(firstEdge==null || (edge.getStartTime() > firstEdge.getStartTime())) {
+						firstEdge = edge;
+					}
+				}
+				SupplyPoint firstPoint = firstEdge==null ? null : firstEdge.getPoint();
+				// loop over all demands packed in this container
+				for(Demand demandAsPacked : getManifest().getPackedDemands(container)) {
+					// check to see if the demands are needed before the first supply point
+					SupplyPoint p = getManifest().getSupplyPoint(getManifest().getDemand(demandAsPacked));
+					if(firstPoint==null || (p.getTime() < firstPoint.getTime())) {
+						firstPoint = p;
+					}
+				}
+				// include container if it contains initial point demands
+				containerDemands.get(firstPoint).add(container);
+			}
 		}
 	}
 }

@@ -30,7 +30,6 @@ import javax.swing.UIManager;
 import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.gui.SplashScreen;
-import net.infonode.gui.laf.InfoNodeLookAndFeel;
 
 /**
  * This class is used to launch the SpaceNet application.
@@ -48,7 +47,6 @@ public class SpaceNet {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
             	try {
-					UIManager.setLookAndFeel(new InfoNodeLookAndFeel());
 					UIManager.put("TextArea.margin", new Insets(3,3,3,3));
 					UIManager.put("Button.margin", new Insets(3,3,3,3));
 					UIManager.put("ComboBox.background", Color.WHITE);

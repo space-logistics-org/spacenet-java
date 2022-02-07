@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -210,7 +211,7 @@ public class DemandSimulator extends AbstractSimulator {
 	 * @return the set of repairable items
 	 */
 	public Map<Integer, ArrayList<RepairItem>> getUnsortedRepairItems() {
-		return unsortedRepairItems;
+		return Collections.unmodifiableMap(unsortedRepairItems);
 	}
 	
 	/**
@@ -219,7 +220,7 @@ public class DemandSimulator extends AbstractSimulator {
 	 * @return the set of repairable items
 	 */
 	public Map<Integer, ArrayList<RepairItem>> getSortedRepairItems() {
-		return sortedRepairItems;
+		return Collections.unmodifiableMap(sortedRepairItems);
 	}
 	
 	/**
@@ -227,8 +228,8 @@ public class DemandSimulator extends AbstractSimulator {
 	 * 
 	 * @return the set supply edges
 	 */
-	public SortedSet<SupplyEdge> getSupplyEdges() {
-		return supplyEdges;
+	public Set<SupplyEdge> getSupplyEdges() {
+		return Collections.unmodifiableSet(supplyEdges);
 	}
 	
 	/**
@@ -236,8 +237,8 @@ public class DemandSimulator extends AbstractSimulator {
 	 * 
 	 * @return the set of supply points
 	 */
-	public SortedSet<SupplyPoint> getSupplyPoints() {
-		return supplyPoints;
+	public Set<SupplyPoint> getSupplyPoints() {
+		return Collections.unmodifiableSet(supplyPoints);
 	}
 	
 	/**
@@ -245,8 +246,8 @@ public class DemandSimulator extends AbstractSimulator {
 	 * 
 	 * @return the aggregated set of demands
 	 */
-	public SortedMap<SupplyPoint, DemandSet> getAggregatedNodeDemands() {
-		return aggregatedNodeDemands;
+	public Map<SupplyPoint, DemandSet> getAggregatedNodeDemands() {
+		return Collections.unmodifiableMap(aggregatedNodeDemands);
 	}
 	
 	/**
@@ -254,7 +255,7 @@ public class DemandSimulator extends AbstractSimulator {
 	 * 
 	 * @return the aggregated set of demands
 	 */
-	public SortedMap<SupplyEdge, DemandSet> getAggregatedEdgeDemands() {
-		return aggregatedEdgeDemands;
+	public Map<SupplyEdge, DemandSet> getAggregatedEdgeDemands() {
+		return Collections.unmodifiableMap(aggregatedEdgeDemands);
 	}
 }

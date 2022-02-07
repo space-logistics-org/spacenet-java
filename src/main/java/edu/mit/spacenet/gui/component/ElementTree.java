@@ -131,7 +131,8 @@ public class ElementTree extends JTree {
 	 */
 	public void setSelection(I_Element element) {
 		for(int i=0; i < getRowCount(); i++) {
-			if(((DefaultMutableTreeNode)getPathForRow(i).getLastPathComponent()).getUserObject().equals(element)) {
+			Object userObject = ((DefaultMutableTreeNode)getPathForRow(i).getLastPathComponent()).getUserObject();
+			if(userObject != null && userObject.equals(element)) {
 				setSelectionRow(i);
 				scrollPathToVisible(getSelectionPath());
 				break;

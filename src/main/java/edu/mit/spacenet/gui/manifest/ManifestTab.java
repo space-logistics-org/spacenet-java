@@ -281,6 +281,7 @@ public class ManifestTab extends JSplitPane {
 					containers.add(packedDemandsTable.getContainer(row));
 				}
 				for(I_ResourceContainer container : containers) getManifest().removeContainer(container);
+				packedDemandsTable.getSelectionModel().clearSelection();
 				updateView();
 			}
 		});

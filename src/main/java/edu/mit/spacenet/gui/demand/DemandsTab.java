@@ -615,10 +615,10 @@ public class DemandsTab extends JSplitPane {
 							out.write(delimiter);
 							out.write("" + demand.getAmount());
 						} else if(referenceCombo.getSelectedItem()==NAME_OUTPUT) {
-							out.write(supplyPoint.getNode().getName());
-							out.write(delimiter);
-							out.write(delimiter);
 							out.write("" + supplyPoint.getTime());
+							out.write(delimiter);
+							out.write(delimiter);
+							out.write(supplyPoint.getNode().getName());
 							out.write(delimiter);
 							out.write(delimiter);
 							out.write(demand.getResource().getName());

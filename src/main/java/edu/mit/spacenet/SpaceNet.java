@@ -22,8 +22,11 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
@@ -37,11 +40,16 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.gui.SplashScreen;
 import edu.mit.spacenet.io.XStreamEngine;
 import edu.mit.spacenet.scenario.Scenario;
+import edu.mit.spacenet.scenario.SupplyEdge;
+import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
+import edu.mit.spacenet.simulator.DemandSimulator;
+import edu.mit.spacenet.simulator.SimDemand;
 
 /**
  * This class is used to launch the SpaceNet application.
@@ -49,6 +57,16 @@ import edu.mit.spacenet.scenario.Scenario;
  * @author Paul Grogan
  */
 public class SpaceNet {
+	public static enum HeadlessMode {
+		DEMANDS_RAW("demands-raw"),
+		DEMANDS_AGGREGATED("demands-agg");
+		
+		public final String label;
+		
+		private HeadlessMode(String label) {
+			this.label = label;
+		}
+	}
 	
 	/**
 	 * Launches the SpaceNet application.
@@ -59,54 +77,172 @@ public class SpaceNet {
 		Options options = new Options();
 		Option headless = Option.builder("h")
 				.longOpt("headless")
-				.argName("analysis")
+				.argName("mode")
 				.hasArg()
-				.desc("Headless execution.")
+				.desc("Headless execution mode. Alternatives: demand (demand simulator).")
 				.build();
 		options.addOption(headless);
-		Option file = Option.builder("s")
-				.longOpt("scenario")
-				.argName("scenario")
+		Option input = Option.builder("i")
+				.longOpt("input")
+				.argName("file path")
 				.hasArg()
-				.desc("Scenario file path.")
+				.desc("Input file path.")
 				.build();
-		options.addOption(file);
+		options.addOption(input);
+		Option output = Option.builder("o")
+				.longOpt("output")
+				.argName("file path")
+				.hasArg()
+				.desc("Output file path.")
+				.build();
+		options.addOption(output);
+		Option confirm = Option.builder("y")
+				.longOpt("yes")
+				.hasArg(false)
+				.desc("Confirm overwrite output.")
+				.build();
+		options.addOption(confirm);
 		
 		CommandLineParser parser = new DefaultParser();
 		HelpFormatter helper = new HelpFormatter();
 		
 		try {
 			CommandLine line = parser.parse(options, args);
-			String scenarioFilePath = null;
-			if(line.hasOption(file)) {
-				scenarioFilePath = new File(line.getOptionValue(file)).getAbsolutePath();
-			}
-			if(line.hasOption(headless)) {
-				if(scenarioFilePath == null) {
-					System.err.println("Missing scenario file path.");
-					helper.printHelp("Usage:", options);
+			if(line.hasOption(headless)) {				
+				String mode = line.getOptionValue(headless);
+				
+				if(mode.equalsIgnoreCase(HeadlessMode.DEMANDS_RAW.label) || mode.equalsIgnoreCase(HeadlessMode.DEMANDS_AGGREGATED.label)) {
+					String scenarioFilePath = null;
+					if(line.hasOption(input)) {
+						scenarioFilePath = new File(line.getOptionValue(input)).getAbsolutePath();
+					} else {
+						System.err.println("Missing scenario file path.");
+						helper.printHelp("Usage:", options);
+						System.exit(0);
+					}
+					String outputFilePath = null;
+					if(line.hasOption(output)) {
+						outputFilePath = new File(line.getOptionValue(output)).getAbsolutePath();
+					} else {
+						System.err.println("Missing output file path.");
+						helper.printHelp("Usage:", options);
+						System.exit(0);
+					}
+					
+					runDemandSimulator(scenarioFilePath, outputFilePath, line.hasOption(confirm), mode.equalsIgnoreCase(HeadlessMode.DEMANDS_RAW.label));
+				} else {
+					System.err.println("Unknown headless mode: " + mode);
 					System.exit(0);
 				}
-				System.out.println(line.getOptionValue(headless));
-
-				Scenario scenario = XStreamEngine.openScenario(scenarioFilePath);
-				scenario.setFilePath(scenarioFilePath);
 				
-				throw new UnsupportedOperationException("Not yet implemented!");
 			} else {
+				String scenarioFilePath = null;
+				if(line.hasOption(input)) {
+					scenarioFilePath = new File(line.getOptionValue(input)).getAbsolutePath();
+				}
 				startGUI(scenarioFilePath);
 			}
 		} catch(ParseException ex) {
 			System.err.println("Parsing failed: " + ex.getMessage());
 			helper.printHelp("Usage:", options);
 			System.exit(0);
-		} catch(IOException ex) {
-			System.err.println("Read scenario file failed: " + ex.getMessage());
-			System.exit(0);
 		}
 	}
 	
-	public static void startGUI(String scenarioFilePath) {
+	private static void runDemandSimulator(String scenarioFilePath, String outputFilePath, boolean isOverwriteConfirmed, boolean isRawDemands) {
+		Scenario scenario = null;
+		try {
+			scenario = XStreamEngine.openScenario(scenarioFilePath);
+			scenario.setFilePath(scenarioFilePath);
+		} catch(IOException ex) {
+			System.err.println("Failed to read scenario file: " + ex.getMessage());
+			System.exit(1);
+		}
+		
+		DemandSimulator simulator = new DemandSimulator(scenario);
+		simulator.setDemandsSatisfied(false);
+		simulator.simulate();
+
+		File file = new File(outputFilePath);
+		if(file.exists() && !isOverwriteConfirmed) {
+			Scanner in = new Scanner(System.in);
+			String lastInput = "";
+			do {
+				System.out.println("Confirm to overwrite existing file " + outputFilePath + " (yes/no)");
+				lastInput = in.nextLine();
+				if(lastInput.equalsIgnoreCase("no") || lastInput.equalsIgnoreCase("n")) {
+					in.close();
+					return;
+				}
+			} while(!(lastInput.equalsIgnoreCase("yes") || lastInput.equalsIgnoreCase("y")));
+			in.close();
+		}
+
+		char delimiter = ',';		
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter(outputFilePath));
+			if(isRawDemands) {
+				out.write("Time" + delimiter + "Location" + delimiter + 
+						"Element" + delimiter + "Resource" + delimiter + 
+						"Amount" + System.getProperty("line.separator"));
+				for(SimDemand simDemand : simulator.getUnsatisfiedDemands()) {
+					for(Demand demand : simDemand.getDemands()) {
+						out.write("" + simDemand.getTime());
+						out.write(delimiter);
+						out.write(simDemand.getLocation().getName());
+						out.write(delimiter);
+						if(simDemand.getElement()!=null) {
+							out.write("" + simDemand.getElement().getName());
+						}
+						out.write(delimiter);
+						out.write(demand.getResource().getName());
+						out.write(delimiter);
+						out.write("" + demand.getAmount());
+						out.write(System.getProperty("line.separator"));
+					}
+				}
+			} else {
+				out.write("Time1" + delimiter + "Time2" + delimiter + "Node1" + 
+						delimiter + "Node2" + delimiter + "Resource" + 
+						delimiter + "Amount" + System.getProperty("line.separator"));
+				for(SupplyEdge supplyEdge : simulator.getSupplyEdges()) {
+					for(Demand demand : simulator.getAggregatedEdgeDemands().get(supplyEdge)) {
+						out.write("" + supplyEdge.getStartTime());
+						out.write(delimiter);
+						out.write("" + supplyEdge.getEndTime());
+						out.write(delimiter);
+						out.write(supplyEdge.getOrigin().getName());
+						out.write(delimiter);
+						out.write(supplyEdge.getDestination().getName());
+						out.write(delimiter);
+						out.write(demand.getResource().getName());
+						out.write(delimiter);
+						out.write("" + demand.getAmount());
+						out.write(System.getProperty("line.separator"));
+					}
+					SupplyPoint supplyPoint = supplyEdge.getPoint();
+					for(Demand demand : simulator.getAggregatedNodeDemands().get(supplyPoint)) {
+						out.write("" + supplyPoint.getTime());
+						out.write(delimiter);
+						out.write(delimiter);
+						out.write(supplyPoint.getNode().getName());
+						out.write(delimiter);
+						out.write(delimiter);
+						out.write(demand.getResource().getName());
+						out.write(delimiter);
+						out.write("" + demand.getAmount());
+						out.write(System.getProperty("line.separator"));
+					}
+				}
+			}
+			out.close();
+		} catch(IOException ex) {
+			System.err.println("Failed to output file: " + ex.getMessage());
+			System.exit(1);
+		}
+	}
+	
+	private static void startGUI(String scenarioFilePath) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
             	try {

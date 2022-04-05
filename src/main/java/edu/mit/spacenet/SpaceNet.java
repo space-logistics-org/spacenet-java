@@ -22,14 +22,26 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
 import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.gui.SplashScreen;
+import edu.mit.spacenet.io.XStreamEngine;
+import edu.mit.spacenet.scenario.Scenario;
 
 /**
  * This class is used to launch the SpaceNet application.
@@ -44,6 +56,57 @@ public class SpaceNet {
 	 * @param args the args
 	 */
 	public static void main(String[] args) {
+		Options options = new Options();
+		Option headless = Option.builder("h")
+				.longOpt("headless")
+				.argName("analysis")
+				.hasArg()
+				.desc("Headless execution.")
+				.build();
+		options.addOption(headless);
+		Option file = Option.builder("s")
+				.longOpt("scenario")
+				.argName("scenario")
+				.hasArg()
+				.desc("Scenario file path.")
+				.build();
+		options.addOption(file);
+		
+		CommandLineParser parser = new DefaultParser();
+		HelpFormatter helper = new HelpFormatter();
+		
+		try {
+			CommandLine line = parser.parse(options, args);
+			String scenarioFilePath = null;
+			if(line.hasOption(file)) {
+				scenarioFilePath = new File(line.getOptionValue(file)).getAbsolutePath();
+			}
+			if(line.hasOption(headless)) {
+				if(scenarioFilePath == null) {
+					System.err.println("Missing scenario file path.");
+					helper.printHelp("Usage:", options);
+					System.exit(0);
+				}
+				System.out.println(line.getOptionValue(headless));
+
+				Scenario scenario = XStreamEngine.openScenario(scenarioFilePath);
+				scenario.setFilePath(scenarioFilePath);
+				
+				throw new UnsupportedOperationException("Not yet implemented!");
+			} else {
+				startGUI(scenarioFilePath);
+			}
+		} catch(ParseException ex) {
+			System.err.println("Parsing failed: " + ex.getMessage());
+			helper.printHelp("Usage:", options);
+			System.exit(0);
+		} catch(IOException ex) {
+			System.err.println("Read scenario file failed: " + ex.getMessage());
+			System.exit(0);
+		}
+	}
+	
+	public static void startGUI(String scenarioFilePath) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
             	try {
@@ -88,6 +151,7 @@ public class SpaceNet {
 								SpaceNetFrame.getInstance().setBounds(virtualBounds.intersection(SpaceNetSettings.getInstance().getLastBounds()));
 							}
 							SpaceNetFrame.getInstance().setVisible(true);
+							SpaceNetFrame.getInstance().openScenario(scenarioFilePath);
 						} catch(Exception ex) {
 							// display error message if one occurs... since this
 							// is inside a worker thread, the stack trace will

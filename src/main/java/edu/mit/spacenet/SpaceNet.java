@@ -287,7 +287,9 @@ public class SpaceNet {
 								SpaceNetFrame.getInstance().setBounds(virtualBounds.intersection(SpaceNetSettings.getInstance().getLastBounds()));
 							}
 							SpaceNetFrame.getInstance().setVisible(true);
-							SpaceNetFrame.getInstance().openScenario(scenarioFilePath);
+							if(scenarioFilePath != null) {
+								SpaceNetFrame.getInstance().openScenario(scenarioFilePath);
+							}
 						} catch(Exception ex) {
 							// display error message if one occurs... since this
 							// is inside a worker thread, the stack trace will

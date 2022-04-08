@@ -40,11 +40,15 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import com.google.gson.Gson;
+
 import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.gui.SplashScreen;
 import edu.mit.spacenet.io.XStreamEngine;
+import edu.mit.spacenet.io.gson.AggregatedDemandsAnalysisOutput;
+import edu.mit.spacenet.io.gson.RawDemandsAnalysisOutput;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.scenario.SupplyEdge;
 import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
@@ -178,62 +182,18 @@ public class SpaceNet {
 			in.close();
 		}
 
-		char delimiter = ',';		
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(outputFilePath));
 			if(isRawDemands) {
-				out.write("Time" + delimiter + "Location" + delimiter + 
-						"Element" + delimiter + "Resource" + delimiter + 
-						"Amount" + System.getProperty("line.separator"));
-				for(SimDemand simDemand : simulator.getUnsatisfiedDemands()) {
-					for(Demand demand : simDemand.getDemands()) {
-						out.write("" + simDemand.getTime());
-						out.write(delimiter);
-						out.write(simDemand.getLocation().getName());
-						out.write(delimiter);
-						if(simDemand.getElement()!=null) {
-							out.write("" + simDemand.getElement().getName());
-						}
-						out.write(delimiter);
-						out.write(demand.getResource().getName());
-						out.write(delimiter);
-						out.write("" + demand.getAmount());
-						out.write(System.getProperty("line.separator"));
-					}
-				}
+				new Gson().toJson(
+					RawDemandsAnalysisOutput.createFrom(simulator),
+					out
+				);
 			} else {
-				out.write("Time1" + delimiter + "Time2" + delimiter + "Node1" + 
-						delimiter + "Node2" + delimiter + "Resource" + 
-						delimiter + "Amount" + System.getProperty("line.separator"));
-				for(SupplyEdge supplyEdge : simulator.getSupplyEdges()) {
-					for(Demand demand : simulator.getAggregatedEdgeDemands().get(supplyEdge)) {
-						out.write("" + supplyEdge.getStartTime());
-						out.write(delimiter);
-						out.write("" + supplyEdge.getEndTime());
-						out.write(delimiter);
-						out.write(supplyEdge.getOrigin().getName());
-						out.write(delimiter);
-						out.write(supplyEdge.getDestination().getName());
-						out.write(delimiter);
-						out.write(demand.getResource().getName());
-						out.write(delimiter);
-						out.write("" + demand.getAmount());
-						out.write(System.getProperty("line.separator"));
-					}
-					SupplyPoint supplyPoint = supplyEdge.getPoint();
-					for(Demand demand : simulator.getAggregatedNodeDemands().get(supplyPoint)) {
-						out.write("" + supplyPoint.getTime());
-						out.write(delimiter);
-						out.write(delimiter);
-						out.write(supplyPoint.getNode().getName());
-						out.write(delimiter);
-						out.write(delimiter);
-						out.write(demand.getResource().getName());
-						out.write(delimiter);
-						out.write("" + demand.getAmount());
-						out.write(System.getProperty("line.separator"));
-					}
-				}
+				new Gson().toJson(
+					AggregatedDemandsAnalysisOutput.createFrom(simulator),
+					out
+				);
 			}
 			out.close();
 		} catch(IOException ex) {

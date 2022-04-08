@@ -8,6 +8,8 @@ public class RawDemand {
 	public Location location;
 	public Element element;
 	public List<Demand> demands = new ArrayList<Demand>();
+	public double totalMass;
+	public double totalVolume;
 	
 	public static RawDemand createFrom(edu.mit.spacenet.simulator.SimDemand demands) {
 		RawDemand d = new RawDemand();
@@ -15,6 +17,8 @@ public class RawDemand {
 		d.location = Location.createFrom(demands.getLocation());
 		d.element = Element.createFrom(demands.getElement());
 		d.demands = Demand.createFrom(demands.getDemands());
+		d.totalMass = demands.getDemands().getTotalMass();
+		d.totalVolume = demands.getDemands().getTotalVolume();
 		return d;
 	}
 	

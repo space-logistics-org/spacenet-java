@@ -9,6 +9,8 @@ public class EdgeDemand {
 	public double endTime;
 	public Location location;
 	public List<Demand> demands = new ArrayList<Demand>();
+	public double totalMass;
+	public double totalVolume;
 
 	public static List<EdgeDemand> createFrom(Map<edu.mit.spacenet.scenario.SupplyEdge, edu.mit.spacenet.domain.resource.DemandSet> demands) {
 		List<EdgeDemand> ds = new ArrayList<EdgeDemand>();
@@ -19,6 +21,8 @@ public class EdgeDemand {
 				d.endTime = edge.getEndTime();
 				d.location = Location.createFrom(edge.getEdge());
 				d.demands = Demand.createFrom(demands.get(edge));
+				d.totalMass = demands.get(edge).getTotalMass();
+				d.totalVolume = demands.get(edge).getTotalVolume();
 				ds.add(d);
 			}
 		}

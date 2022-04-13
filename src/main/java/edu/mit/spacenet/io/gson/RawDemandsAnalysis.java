@@ -3,11 +3,11 @@ package edu.mit.spacenet.io.gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RawDemandsAnalysisOutput {
+public class RawDemandsAnalysis {
 	public List<RawDemand> demands = new ArrayList<RawDemand>();
 	
-	public static RawDemandsAnalysisOutput createFrom(edu.mit.spacenet.simulator.DemandSimulator sim) {
-		RawDemandsAnalysisOutput o = new RawDemandsAnalysisOutput();
+	public static RawDemandsAnalysis createFrom(edu.mit.spacenet.simulator.DemandSimulator sim) {
+		RawDemandsAnalysis o = new RawDemandsAnalysis();
 		o.demands = RawDemand.createFrom(sim.getUnsatisfiedDemands());
 		return o;
 	}

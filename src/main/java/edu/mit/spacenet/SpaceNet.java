@@ -46,8 +46,8 @@ import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.gui.SplashScreen;
 import edu.mit.spacenet.io.XStreamEngine;
-import edu.mit.spacenet.io.gson.AggregatedDemandsAnalysisOutput;
-import edu.mit.spacenet.io.gson.RawDemandsAnalysisOutput;
+import edu.mit.spacenet.io.gson.AggregatedDemandsAnalysis;
+import edu.mit.spacenet.io.gson.RawDemandsAnalysis;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.simulator.DemandSimulator;
 
@@ -182,12 +182,12 @@ public class SpaceNet {
 			BufferedWriter out = new BufferedWriter(new FileWriter(outputFilePath));
 			if(isRawDemands) {
 				new Gson().toJson(
-					RawDemandsAnalysisOutput.createFrom(simulator),
+					RawDemandsAnalysis.createFrom(simulator),
 					out
 				);
 			} else {
 				new Gson().toJson(
-					AggregatedDemandsAnalysisOutput.createFrom(simulator),
+					AggregatedDemandsAnalysis.createFrom(simulator),
 					out
 				);
 			}

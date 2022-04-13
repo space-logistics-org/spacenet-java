@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import edu.mit.spacenet.scenario.SupplyPoint;
+
 public class NodeDemand {
 	public double time;
 	public Location location;
@@ -11,9 +13,9 @@ public class NodeDemand {
 	public double totalMass;
 	public double totalVolume;
 	
-	public static List<NodeDemand> createFrom(Map<edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint, edu.mit.spacenet.domain.resource.DemandSet> demands) {
+	public static List<NodeDemand> createFrom(Map<edu.mit.spacenet.scenario.SupplyPoint, edu.mit.spacenet.domain.resource.DemandSet> demands) {
 		List<NodeDemand> ds = new ArrayList<NodeDemand>();
-		for(edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint point : demands.keySet()) {
+		for(edu.mit.spacenet.scenario.SupplyPoint point : demands.keySet()) {
 			if(demands.get(point).getTotalMass() > 0) { // TODO does not consider zero mass resources
 				NodeDemand d = new NodeDemand();
 				d.time = point.getTime();

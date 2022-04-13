@@ -40,7 +40,7 @@ import edu.mit.spacenet.scenario.Mission;
 import edu.mit.spacenet.scenario.RepairItem;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.scenario.SupplyEdge;
-import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
+import edu.mit.spacenet.scenario.SupplyPoint;
 import edu.mit.spacenet.simulator.event.I_Transport;
 import edu.mit.spacenet.simulator.event.SurfaceTransport;
 import edu.mit.spacenet.util.DateFunctions;

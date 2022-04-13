@@ -58,7 +58,7 @@ import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.scenario.ItemDiscretization;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.scenario.SupplyEdge;
-import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
+import edu.mit.spacenet.scenario.SupplyPoint;
 import edu.mit.spacenet.simulator.DemandSimulator;
 import edu.mit.spacenet.simulator.SimDemand;
 

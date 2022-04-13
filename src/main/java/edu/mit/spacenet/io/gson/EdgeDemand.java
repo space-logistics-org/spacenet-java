@@ -11,6 +11,7 @@ public class EdgeDemand {
 	public List<Demand> demands = new ArrayList<Demand>();
 	public double totalMass;
 	public double totalVolume;
+	public double totalMassCapacity;
 
 	public static List<EdgeDemand> createFrom(Map<edu.mit.spacenet.scenario.SupplyEdge, edu.mit.spacenet.domain.resource.DemandSet> demands) {
 		List<EdgeDemand> ds = new ArrayList<EdgeDemand>();

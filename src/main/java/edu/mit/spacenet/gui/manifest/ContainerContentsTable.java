@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import edu.mit.spacenet.domain.element.I_ResourceContainer;
 import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.scenario.Manifest;
-import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
+import edu.mit.spacenet.scenario.SupplyPoint;
 
 /**
  * A table for viewing the packed contents of a container.

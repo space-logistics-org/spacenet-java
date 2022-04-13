@@ -70,7 +70,7 @@ import edu.mit.spacenet.gui.component.SNChartPanel;
 import edu.mit.spacenet.gui.renderer.VisibilityTableCellHeaderRenderer;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.scenario.SupplyEdge;
-import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
+import edu.mit.spacenet.scenario.SupplyPoint;
 import edu.mit.spacenet.util.DateFunctions;
 
 /**

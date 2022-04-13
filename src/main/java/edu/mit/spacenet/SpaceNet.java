@@ -42,7 +42,6 @@ import org.apache.commons.cli.ParseException;
 
 import com.google.gson.Gson;
 
-import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.gui.SplashScreen;
@@ -50,10 +49,7 @@ import edu.mit.spacenet.io.XStreamEngine;
 import edu.mit.spacenet.io.gson.AggregatedDemandsAnalysisOutput;
 import edu.mit.spacenet.io.gson.RawDemandsAnalysisOutput;
 import edu.mit.spacenet.scenario.Scenario;
-import edu.mit.spacenet.scenario.SupplyEdge;
-import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
 import edu.mit.spacenet.simulator.DemandSimulator;
-import edu.mit.spacenet.simulator.SimDemand;
 
 /**
  * This class is used to launch the SpaceNet application.

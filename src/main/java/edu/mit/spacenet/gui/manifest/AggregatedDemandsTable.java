@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.domain.resource.DemandSet;
 import edu.mit.spacenet.scenario.Manifest;
-import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
+import edu.mit.spacenet.scenario.SupplyPoint;
 
 /**
  * A table for visualizing aggregated demands, and the portion of each demand

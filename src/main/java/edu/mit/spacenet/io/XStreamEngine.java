@@ -43,7 +43,6 @@ import edu.mit.spacenet.domain.network.node.SurfaceNode;
 import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.domain.resource.DemandSet;
 import edu.mit.spacenet.scenario.Scenario;
-import edu.mit.spacenet.scenario.SupplyPoint;
 
 /**
  * A class to help manage serialization/deserialization of objects.

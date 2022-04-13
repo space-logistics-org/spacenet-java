@@ -34,7 +34,6 @@ import edu.mit.spacenet.domain.network.node.Body;
 import edu.mit.spacenet.domain.network.node.SurfaceNode;
 import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.domain.resource.DemandSet;
-import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
 import edu.mit.spacenet.simulator.DemandSimulator;
 import edu.mit.spacenet.simulator.event.ManifestEvent;
 import edu.mit.spacenet.util.GlobalParameters;

@@ -58,7 +58,7 @@ import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.scenario.ItemDiscretization;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.scenario.SupplyEdge;
-import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
+import edu.mit.spacenet.scenario.SupplyPoint;
 import edu.mit.spacenet.simulator.DemandSimulator;
 import edu.mit.spacenet.simulator.SimDemand;
 
@@ -615,10 +615,10 @@ public class DemandsTab extends JSplitPane {
 							out.write(delimiter);
 							out.write("" + demand.getAmount());
 						} else if(referenceCombo.getSelectedItem()==NAME_OUTPUT) {
-							out.write(supplyPoint.getNode().getName());
-							out.write(delimiter);
-							out.write(delimiter);
 							out.write("" + supplyPoint.getTime());
+							out.write(delimiter);
+							out.write(delimiter);
+							out.write(supplyPoint.getNode().getName());
 							out.write(delimiter);
 							out.write(delimiter);
 							out.write(demand.getResource().getName());

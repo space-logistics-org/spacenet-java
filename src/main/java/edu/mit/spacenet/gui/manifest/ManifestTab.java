@@ -56,7 +56,7 @@ import edu.mit.spacenet.gui.component.ElementTree;
 import edu.mit.spacenet.scenario.Manifest;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.scenario.SupplyEdge;
-import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
+import edu.mit.spacenet.scenario.SupplyPoint;
 import edu.mit.spacenet.simulator.DemandSimulator;
 import edu.mit.spacenet.util.GlobalParameters;
 

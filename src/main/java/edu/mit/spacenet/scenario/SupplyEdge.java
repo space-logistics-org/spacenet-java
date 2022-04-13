@@ -128,7 +128,7 @@ public class SupplyEdge implements Comparable<SupplyEdge> {
 	 * 
 	 * @return the capacity (kilograms)
 	 */
-	public double getCapacity() {
+	public double getNetCargoMass() {
 		double capacity = 0;
 		for(I_Carrier carrier : getCarriers()) {
 			capacity += carrier.getMaxCargoMass()-carrier.getCargoMass();
@@ -142,10 +142,38 @@ public class SupplyEdge implements Comparable<SupplyEdge> {
 	 * 
 	 * @return the raw capacity (kilograms)
 	 */
-	public double getRawCapacity() {
+	public double getMaxCargoMass() {
 		double capacity = 0;
 		for(I_Carrier carrier : getCarriers()) {
 			capacity += carrier.getMaxCargoMass();
+		}
+		return capacity;
+	}
+	
+	/**
+	 * Gets the capacity of the supply edge, measured by the excess cargo volume
+	 * capacity of the carriers.
+	 * 
+	 * @return the capacity (cubic meters)
+	 */
+	public double getNetCargoVolume() {
+		double capacity = 0;
+		for(I_Carrier carrier : getCarriers()) {
+			capacity += carrier.getMaxCargoVolume()-carrier.getCargoVolume();
+		}
+		return capacity;
+	}
+	
+	/**
+	 * Gets the raw capacity of the supply edge, measured by the maximum cargo
+	 * volume capacity of the carriers.
+	 * 
+	 * @return the raw capacity (cubic meters)
+	 */
+	public double getMaxCargoVolume() {
+		double capacity = 0;
+		for(I_Carrier carrier : getCarriers()) {
+			capacity += carrier.getMaxCargoVolume();
 		}
 		return capacity;
 	}
@@ -181,70 +209,13 @@ public class SupplyEdge implements Comparable<SupplyEdge> {
 		}
 		return allCarriers;
 	}
+	
 	private void recursiveAddCarrier(Set<I_Carrier> allCarriers, I_Carrier carrier) {
 		allCarriers.add(carrier);
 		for(I_Element element : carrier.getContents()) {
 			if(element instanceof I_Carrier) {
 				recursiveAddCarrier(allCarriers, (I_Carrier)element);
 			}
-		}
-	}
-	
-	/**
-	 * A supply point is the point in time and space that is supplied by a
-	 * supply edge.
-	 * 
-	 * @author Paul Grogan
-	 */
-	public class SupplyPoint implements Comparable<SupplyPoint> {
-		private SupplyEdge edge;
-		
-		private SupplyPoint(SupplyEdge edge) {
-			this.edge = edge;
-		}
-		
-		/* (non-Javadoc)
-		 * @see java.lang.Object#toString()
-		 */
-		public String toString() {
-			DecimalFormat format = new DecimalFormat("0.0");
-			return getNode() + " (" + format.format(getTime()) + ")";
-		}
-		
-		/* (non-Javadoc)
-		 * @see java.lang.Comparable#compareTo(java.lang.Object)
-		 */
-		public int compareTo(SupplyPoint point) {
-			if(getTime()==point.getTime()) 
-				return getNode().compareTo(point.getNode());
-			return new Double(getTime()).compareTo(point.getTime())*-1;
-		}
-		
-		/**
-		 * Gets the network node.
-		 * 
-		 * @return the node
-		 */
-		public Node getNode() {
-			return edge.getDestination();
-		}
-		
-		/**
-		 * Gets the simulation time of the supply point.
-		 * 
-		 * @return the time
-		 */
-		public double getTime() {
-			return edge.getEndTime();
-		}
-		
-		/**
-		 * Gets the associated supply edge.
-		 * 
-		 * @return the supply edge
-		 */
-		public SupplyEdge getEdge() {
-			return edge;
 		}
 	}
 }

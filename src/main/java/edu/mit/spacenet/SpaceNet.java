@@ -22,14 +22,34 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
+import com.google.gson.Gson;
+
 import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.gui.SplashScreen;
+import edu.mit.spacenet.io.XStreamEngine;
+import edu.mit.spacenet.io.gson.AggregatedDemandsAnalysis;
+import edu.mit.spacenet.io.gson.RawDemandsAnalysis;
+import edu.mit.spacenet.scenario.Scenario;
+import edu.mit.spacenet.simulator.DemandSimulator;
 
 /**
  * This class is used to launch the SpaceNet application.
@@ -37,6 +57,16 @@ import edu.mit.spacenet.gui.SplashScreen;
  * @author Paul Grogan
  */
 public class SpaceNet {
+	public static enum HeadlessMode {
+		DEMANDS_RAW("demands-raw"),
+		DEMANDS_AGGREGATED("demands-agg");
+		
+		public final String label;
+		
+		private HeadlessMode(String label) {
+			this.label = label;
+		}
+	}
 	
 	/**
 	 * Launches the SpaceNet application.
@@ -44,6 +74,131 @@ public class SpaceNet {
 	 * @param args the args
 	 */
 	public static void main(String[] args) {
+		Options options = new Options();
+		Option headless = Option.builder("h")
+				.longOpt("headless")
+				.argName("mode")
+				.hasArg()
+				.desc("Headless execution mode. Alternatives: demand (demand simulator).")
+				.build();
+		options.addOption(headless);
+		Option input = Option.builder("i")
+				.longOpt("input")
+				.argName("file path")
+				.hasArg()
+				.desc("Input file path.")
+				.build();
+		options.addOption(input);
+		Option output = Option.builder("o")
+				.longOpt("output")
+				.argName("file path")
+				.hasArg()
+				.desc("Output file path.")
+				.build();
+		options.addOption(output);
+		Option confirm = Option.builder("y")
+				.longOpt("yes")
+				.hasArg(false)
+				.desc("Confirm overwrite output.")
+				.build();
+		options.addOption(confirm);
+		
+		CommandLineParser parser = new DefaultParser();
+		HelpFormatter helper = new HelpFormatter();
+		
+		try {
+			CommandLine line = parser.parse(options, args);
+			if(line.hasOption(headless)) {				
+				String mode = line.getOptionValue(headless);
+				
+				if(mode.equalsIgnoreCase(HeadlessMode.DEMANDS_RAW.label) || mode.equalsIgnoreCase(HeadlessMode.DEMANDS_AGGREGATED.label)) {
+					String scenarioFilePath = null;
+					if(line.hasOption(input)) {
+						scenarioFilePath = new File(line.getOptionValue(input)).getAbsolutePath();
+					} else {
+						System.err.println("Missing scenario file path.");
+						helper.printHelp("Usage:", options);
+						System.exit(0);
+					}
+					String outputFilePath = null;
+					if(line.hasOption(output)) {
+						outputFilePath = new File(line.getOptionValue(output)).getAbsolutePath();
+					} else {
+						System.err.println("Missing output file path.");
+						helper.printHelp("Usage:", options);
+						System.exit(0);
+					}
+					
+					runDemandSimulator(scenarioFilePath, outputFilePath, line.hasOption(confirm), mode.equalsIgnoreCase(HeadlessMode.DEMANDS_RAW.label));
+				} else {
+					System.err.println("Unknown headless mode: " + mode);
+					System.exit(0);
+				}
+				
+			} else {
+				String scenarioFilePath = null;
+				if(line.hasOption(input)) {
+					scenarioFilePath = new File(line.getOptionValue(input)).getAbsolutePath();
+				}
+				startGUI(scenarioFilePath);
+			}
+		} catch(ParseException ex) {
+			System.err.println("Parsing failed: " + ex.getMessage());
+			helper.printHelp("Usage:", options);
+			System.exit(0);
+		}
+	}
+	
+	private static void runDemandSimulator(String scenarioFilePath, String outputFilePath, boolean isOverwriteConfirmed, boolean isRawDemands) {
+		Scenario scenario = null;
+		try {
+			scenario = XStreamEngine.openScenario(scenarioFilePath);
+			scenario.setFilePath(scenarioFilePath);
+		} catch(IOException ex) {
+			System.err.println("Failed to read scenario file: " + ex.getMessage());
+			System.exit(1);
+		}
+		
+		DemandSimulator simulator = new DemandSimulator(scenario);
+		simulator.setDemandsSatisfied(false);
+		simulator.simulate();
+
+		File file = new File(outputFilePath);
+		if(file.exists() && !isOverwriteConfirmed) {
+			Scanner in = new Scanner(System.in);
+			String lastInput = "";
+			do {
+				System.out.println("Confirm to overwrite existing file " + outputFilePath + " (yes/no)");
+				lastInput = in.nextLine();
+				if(lastInput.equalsIgnoreCase("no") || lastInput.equalsIgnoreCase("n")) {
+					in.close();
+					return;
+				}
+			} while(!(lastInput.equalsIgnoreCase("yes") || lastInput.equalsIgnoreCase("y")));
+			in.close();
+		}
+
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter(outputFilePath));
+			if(isRawDemands) {
+				new Gson().toJson(
+					RawDemandsAnalysis.createFrom(simulator),
+					out
+				);
+			} else {
+				new Gson().toJson(
+					AggregatedDemandsAnalysis.createFrom(simulator),
+					out
+				);
+			}
+			out.close();
+		} catch(IOException ex) {
+			System.err.println("Failed to output file: " + ex.getMessage());
+			System.exit(1);
+		}
+	}
+	
+	private static void startGUI(String scenarioFilePath) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
             	try {
@@ -88,6 +243,9 @@ public class SpaceNet {
 								SpaceNetFrame.getInstance().setBounds(virtualBounds.intersection(SpaceNetSettings.getInstance().getLastBounds()));
 							}
 							SpaceNetFrame.getInstance().setVisible(true);
+							if(scenarioFilePath != null) {
+								SpaceNetFrame.getInstance().openScenario(scenarioFilePath);
+							}
 						} catch(Exception ex) {
 							// display error message if one occurs... since this
 							// is inside a worker thread, the stack trace will

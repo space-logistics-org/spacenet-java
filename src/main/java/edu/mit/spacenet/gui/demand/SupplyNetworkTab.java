@@ -70,7 +70,7 @@ import edu.mit.spacenet.gui.component.SNChartPanel;
 import edu.mit.spacenet.gui.renderer.VisibilityTableCellHeaderRenderer;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.scenario.SupplyEdge;
-import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
+import edu.mit.spacenet.scenario.SupplyPoint;
 import edu.mit.spacenet.util.DateFunctions;
 
 /**
@@ -503,11 +503,11 @@ public class SupplyNetworkTab extends JSplitPane {
 					capacity += carrier.getMaxCargoMass();
 				}
 			} else if(optionsPanel.transportDisplayCombo.getSelectedItem()==REMAINING_CAPACITY)
-				capacity = edge.getCapacity();
+				capacity = edge.getNetCargoMass();
 			else if(optionsPanel.transportDisplayCombo.getSelectedItem()==DEMANDS)
 				capacity = -demandsTab.getSimulator().getAggregatedEdgeDemands().get(edge).getTotalMass();
 			else
-				capacity = edge.getCapacity() - demandsTab.getSimulator().getAggregatedEdgeDemands().get(edge).getTotalMass();
+				capacity = edge.getNetCargoMass() - demandsTab.getSimulator().getAggregatedEdgeDemands().get(edge).getTotalMass();
 			return capacity;
 		}
 		

@@ -51,16 +51,7 @@ import edu.mit.spacenet.scenario.Scenario;
  */
 public class XStreamEngine {
 	
-	/**
-	 * Serializes and saves a scenario.
-	 * 
-	 * @param scenario the scenario to save
-	 * 
-	 * @throws FileNotFoundException the file not found exception
-	 * @throws IOException the i/o exception
-	 */
-	public static void saveScenario(Scenario scenario) 
-		throws FileNotFoundException, IOException {
+	public static XStream getXStream() {
 		XStream xs = new XStream();
 		xs.addPermission(NoTypePermission.NONE);
 		xs.addPermission(NullPermission.NULL);
@@ -85,6 +76,34 @@ public class XStreamEngine {
 		xs.alias("surfaceEdge", SurfaceEdge.class);
 		xs.alias("flightEdge", FlightEdge.class);
 		xs.alias("burn", Burn.class);
+		xs.alias("edu.mit.spacenet.domain.demand.Demand", Demand.class);
+		xs.alias("edu.mit.spacenet.domain.demand.DemandSet", DemandSet.class);
+		xs.alias("edu.mit.spacenet.domain.demand.model.SparingByMassDemandModel", SparingByMassDemandModel.class);
+		xs.alias("edu.mit.spacenet.domain.demand.model.RatedDemandModel", RatedDemandModel.class);
+		xs.alias("edu.mit.spacenet.domain.demand.model.TimedImpulseDemandModel", TimedImpulseDemandModel.class);
+		xs.alias("edu.mit.spacenet.domain.demand.State", State.class);
+		xs.alias("edu.mit.spacenet.domain.demand.PartApplication", PartApplication.class);
+		xs.alias("edu.mit.spacenet.scenario.data.Spreadsheet_2_5", Spreadsheet_2_5.class);
+		xs.alias("edu.mit.spacenet.scenario.data.DataSourceType", DataSourceType.class);
+		xs.alias("edu.mit.spacenet.scenario.data.ElementPreview", ElementPreview.class);
+		
+		// skip loading manifest (breaking changes in data structure)
+		xs.omitField(Scenario.class, "manifest");
+
+		return xs;
+	}
+	
+	/**
+	 * Serializes and saves a scenario.
+	 * 
+	 * @param scenario the scenario to save
+	 * 
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws IOException the i/o exception
+	 */
+	public static void saveScenario(Scenario scenario) 
+		throws FileNotFoundException, IOException {
+		XStream xs = getXStream();
 		
 		FileOutputStream fos = new FileOutputStream(scenario.getFilePath());
 		xs.toXML(scenario, fos);
@@ -103,33 +122,7 @@ public class XStreamEngine {
 	 */
 	public static Scenario openScenario(String filePath) 
 		throws FileNotFoundException, IOException {
-		XStream xs = new XStream();
-		xs.addPermission(NoTypePermission.NONE);
-		xs.addPermission(NullPermission.NULL);
-		xs.addPermission(PrimitiveTypePermission.PRIMITIVES);
-		xs.allowTypesByWildcard(new String[] { 
-				"edu.mit.spacenet.**",
-				"java.util.*"
-		});
-		xs.alias("scenario", Scenario.class);
-		xs.alias("excel", Spreadsheet_2_5.class);
-		xs.alias("surfaceNode", SurfaceNode.class);
-		xs.alias("orbitalNode", OrbitalNode.class);
-		xs.alias("lagrangeNode", LagrangeNode.class);
-		xs.alias("spaceEdge", SpaceEdge.class);
-		xs.alias("surfaceEdge", SurfaceEdge.class);
-		xs.alias("flightEdge", FlightEdge.class);
-		xs.alias("burn", Burn.class);
-		xs.alias("edu.mit.spacenet.domain.demand.Demand", Demand.class);
-		xs.alias("edu.mit.spacenet.domain.demand.DemandSet", DemandSet.class);
-		xs.alias("edu.mit.spacenet.domain.demand.model.SparingByMassDemandModel", SparingByMassDemandModel.class);
-		xs.alias("edu.mit.spacenet.domain.demand.model.RatedDemandModel", RatedDemandModel.class);
-		xs.alias("edu.mit.spacenet.domain.demand.model.TimedImpulseDemandModel", TimedImpulseDemandModel.class);
-		xs.alias("edu.mit.spacenet.domain.demand.State", State.class);
-		xs.alias("edu.mit.spacenet.domain.demand.PartApplication", PartApplication.class);
-		xs.alias("edu.mit.spacenet.scenario.data.Spreadsheet_2_5", Spreadsheet_2_5.class);
-		xs.alias("edu.mit.spacenet.scenario.data.DataSourceType", DataSourceType.class);
-		xs.alias("edu.mit.spacenet.scenario.data.ElementPreview", ElementPreview.class);
+		XStream xs = getXStream();		
 		Scenario scenario = new Scenario();
 		
 		FileInputStream fis = new FileInputStream(filePath);

@@ -34,7 +34,7 @@ import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.gui.renderer.ElementTableCellRenderer;
 import edu.mit.spacenet.scenario.Manifest;
 import edu.mit.spacenet.scenario.SupplyEdge;
-import edu.mit.spacenet.scenario.SupplyEdge.SupplyPoint;
+import edu.mit.spacenet.scenario.SupplyPoint;
 
 /**
  * The table used to view the available resource containers for demand packing.

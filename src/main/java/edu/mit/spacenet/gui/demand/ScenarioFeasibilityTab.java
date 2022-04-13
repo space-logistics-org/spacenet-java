@@ -507,8 +507,8 @@ public class ScenarioFeasibilityTab extends JSplitPane {
 				estimatedDemands += demandsTab.getSimulator().getAggregatedNodeDemands().get(edge.getPoint()).getTotalMass();
 				
 				if(optionsPanel.supplyEdgesModel.getSelectedObjects().contains(edge)) {
-					rawCapacity += edge.getRawCapacity();
-					remainingCapacity += edge.getCapacity();
+					rawCapacity += edge.getMaxCargoMass();
+					remainingCapacity += edge.getCargoMassRemaining();
 					
 					if(optionsPanel.dataModel.getSelectedObjects().contains(ESTIMATED_DEMANDS))
 						estimatedDemandsSeries.addOrUpdate(hour, estimatedDemands);
@@ -552,8 +552,8 @@ public class ScenarioFeasibilityTab extends JSplitPane {
 				estimatedDemands += demandsTab.getSimulator().getAggregatedNodeDemands().get(edge.getPoint()).getTotalMass();
 				
 				if(optionsPanel.supplyEdgesModel.getSelectedObjects().contains(edge)) {
-					rawCapacity += edge.getRawCapacity();
-					remainingCapacity += edge.getCapacity();
+					rawCapacity += edge.getMaxCargoMass();
+					remainingCapacity += edge.getCargoMassRemaining();
 					
 					if(optionsPanel.dataModel.getSelectedObjects().contains(ESTIMATED_DEMANDS)) {
 						dataset.addValue(estimatedDemands, ESTIMATED_DEMANDS, edge);
@@ -612,12 +612,12 @@ public class ScenarioFeasibilityTab extends JSplitPane {
 				}
 				if(optionsPanel.dataModel.getSelectedObjects().contains(RAW_CAPACITY)
 						&& optionsPanel.supplyEdgesModel.getSelectedObjects().contains(edge)) {
-					dataset.addValue(edge.getRawCapacity(), RAW_CAPACITY, edge);
+					dataset.addValue(edge.getMaxCargoMass(), RAW_CAPACITY, edge);
 					r.setSeriesPaint(dataset.getRowCount() - 1, Color.BLUE);
 				}
 				if(optionsPanel.dataModel.getSelectedObjects().contains(REMAINING_CAPACITY)
 						&& optionsPanel.supplyEdgesModel.getSelectedObjects().contains(edge)) {
-					dataset.addValue(edge.getCapacity(), REMAINING_CAPACITY, edge);
+					dataset.addValue(edge.getCargoMassRemaining(), REMAINING_CAPACITY, edge);
 					r.setSeriesPaint(dataset.getRowCount() - 1, Color.GREEN);
 				}
 			}

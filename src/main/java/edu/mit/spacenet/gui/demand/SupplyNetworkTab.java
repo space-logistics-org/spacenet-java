@@ -503,11 +503,11 @@ public class SupplyNetworkTab extends JSplitPane {
 					capacity += carrier.getMaxCargoMass();
 				}
 			} else if(optionsPanel.transportDisplayCombo.getSelectedItem()==REMAINING_CAPACITY)
-				capacity = edge.getCapacity();
+				capacity = edge.getCargoMassRemaining();
 			else if(optionsPanel.transportDisplayCombo.getSelectedItem()==DEMANDS)
 				capacity = -demandsTab.getSimulator().getAggregatedEdgeDemands().get(edge).getTotalMass();
 			else
-				capacity = edge.getCapacity() - demandsTab.getSimulator().getAggregatedEdgeDemands().get(edge).getTotalMass();
+				capacity = edge.getCargoMassRemaining() - demandsTab.getSimulator().getAggregatedEdgeDemands().get(edge).getTotalMass();
 			return capacity;
 		}
 		

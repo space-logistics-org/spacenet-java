@@ -128,7 +128,7 @@ public class SupplyEdge implements Comparable<SupplyEdge> {
 	 * 
 	 * @return the capacity (kilograms)
 	 */
-	public double getCapacity() {
+	public double getCargoMassRemaining() {
 		double capacity = 0;
 		for(I_Carrier carrier : getCarriers()) {
 			capacity += carrier.getMaxCargoMass()-carrier.getCargoMass();
@@ -142,10 +142,38 @@ public class SupplyEdge implements Comparable<SupplyEdge> {
 	 * 
 	 * @return the raw capacity (kilograms)
 	 */
-	public double getRawCapacity() {
+	public double getMaxCargoMass() {
 		double capacity = 0;
 		for(I_Carrier carrier : getCarriers()) {
 			capacity += carrier.getMaxCargoMass();
+		}
+		return capacity;
+	}
+	
+	/**
+	 * Gets the capacity of the supply edge, measured by the excess cargo volume
+	 * capacity of the carriers.
+	 * 
+	 * @return the capacity (cubic meters)
+	 */
+	public double getCargoVolumeRemaining() {
+		double capacity = 0;
+		for(I_Carrier carrier : getCarriers()) {
+			capacity += carrier.getMaxCargoVolume()-carrier.getCargoVolume();
+		}
+		return capacity;
+	}
+	
+	/**
+	 * Gets the raw capacity of the supply edge, measured by the maximum cargo
+	 * volume capacity of the carriers.
+	 * 
+	 * @return the raw capacity (cubic meters)
+	 */
+	public double getMaxCargoVolume() {
+		double capacity = 0;
+		for(I_Carrier carrier : getCarriers()) {
+			capacity += carrier.getMaxCargoVolume();
 		}
 		return capacity;
 	}

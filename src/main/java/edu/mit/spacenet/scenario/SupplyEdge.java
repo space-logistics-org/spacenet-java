@@ -128,7 +128,7 @@ public class SupplyEdge implements Comparable<SupplyEdge> {
 	 * 
 	 * @return the capacity (kilograms)
 	 */
-	public double getCargoMassRemaining() {
+	public double getNetCargoMass() {
 		double capacity = 0;
 		for(I_Carrier carrier : getCarriers()) {
 			capacity += carrier.getMaxCargoMass()-carrier.getCargoMass();
@@ -156,7 +156,7 @@ public class SupplyEdge implements Comparable<SupplyEdge> {
 	 * 
 	 * @return the capacity (cubic meters)
 	 */
-	public double getCargoVolumeRemaining() {
+	public double getNetCargoVolume() {
 		double capacity = 0;
 		for(I_Carrier carrier : getCarriers()) {
 			capacity += carrier.getMaxCargoVolume()-carrier.getCargoVolume();

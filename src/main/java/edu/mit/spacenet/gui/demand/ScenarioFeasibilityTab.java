@@ -508,7 +508,7 @@ public class ScenarioFeasibilityTab extends JSplitPane {
 				
 				if(optionsPanel.supplyEdgesModel.getSelectedObjects().contains(edge)) {
 					rawCapacity += edge.getMaxCargoMass();
-					remainingCapacity += edge.getCargoMassRemaining();
+					remainingCapacity += edge.getNetCargoMass();
 					
 					if(optionsPanel.dataModel.getSelectedObjects().contains(ESTIMATED_DEMANDS))
 						estimatedDemandsSeries.addOrUpdate(hour, estimatedDemands);
@@ -553,7 +553,7 @@ public class ScenarioFeasibilityTab extends JSplitPane {
 				
 				if(optionsPanel.supplyEdgesModel.getSelectedObjects().contains(edge)) {
 					rawCapacity += edge.getMaxCargoMass();
-					remainingCapacity += edge.getCargoMassRemaining();
+					remainingCapacity += edge.getNetCargoMass();
 					
 					if(optionsPanel.dataModel.getSelectedObjects().contains(ESTIMATED_DEMANDS)) {
 						dataset.addValue(estimatedDemands, ESTIMATED_DEMANDS, edge);
@@ -617,7 +617,7 @@ public class ScenarioFeasibilityTab extends JSplitPane {
 				}
 				if(optionsPanel.dataModel.getSelectedObjects().contains(REMAINING_CAPACITY)
 						&& optionsPanel.supplyEdgesModel.getSelectedObjects().contains(edge)) {
-					dataset.addValue(edge.getCargoMassRemaining(), REMAINING_CAPACITY, edge);
+					dataset.addValue(edge.getNetCargoMass(), REMAINING_CAPACITY, edge);
 					r.setSeriesPaint(dataset.getRowCount() - 1, Color.GREEN);
 				}
 			}

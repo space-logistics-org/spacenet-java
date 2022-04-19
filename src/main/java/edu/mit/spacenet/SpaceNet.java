@@ -79,7 +79,10 @@ public class SpaceNet {
 				.longOpt("headless")
 				.argName("mode")
 				.hasArg()
-				.desc("Headless execution mode. Alternatives: demand (demand simulator).")
+				.desc("Headless execution mode. Alternatives: " +
+						HeadlessMode.DEMANDS_RAW.label + " (raw demand simulator)" +
+						HeadlessMode.DEMANDS_AGGREGATED.label + " (aggregated demand simulator)" +
+						".")
 				.build();
 		options.addOption(headless);
 		Option input = Option.builder("i")

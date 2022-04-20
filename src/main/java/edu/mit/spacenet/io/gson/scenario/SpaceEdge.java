@@ -15,8 +15,8 @@ public class SpaceEdge extends Edge {
 		e.id = context.getUUID(edge);
 		e.name = edge.getName();
 		e.description = edge.getDescription();
-		e.origin = context.getUUID(edge.getOrigin());
-		e.destination = context.getUUID(edge.getDestination());
+		e.origin_id = context.getUUID(edge.getOrigin());
+		e.destination_id = context.getUUID(edge.getDestination());
 		e.duration = edge.getDuration();
 		for(edu.mit.spacenet.domain.network.edge.Burn burn : edge.getBurns()) {
 			e.burns.add(Burn.createFrom(burn));
@@ -29,8 +29,8 @@ public class SpaceEdge extends Edge {
 		e.setTid(context.getId(id));
 		e.setName(name);
 		e.setDescription(description);
-		e.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(origin));
-		e.setDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(destination));
+		e.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(origin_id));
+		e.setDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(destination_id));
 		e.setDuration(duration);
 		List<edu.mit.spacenet.domain.network.edge.Burn> bs = new ArrayList<edu.mit.spacenet.domain.network.edge.Burn>();
 		for(Burn b : burns) {

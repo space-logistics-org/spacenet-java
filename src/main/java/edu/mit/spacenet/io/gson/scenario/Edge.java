@@ -17,8 +17,8 @@ public abstract class Edge {
 	public UUID id;
 	public String name;
 	public String description;
-	public UUID origin;
-	public UUID destination;
+	public UUID origin_id;
+	public UUID destination_id;
 	
 	public static Edge createFrom(edu.mit.spacenet.domain.network.edge.Edge edge, Context context) {
 		if(edge.getEdgeType() == EdgeType.SURFACE) {

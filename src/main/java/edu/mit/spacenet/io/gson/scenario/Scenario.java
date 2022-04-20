@@ -1,6 +1,8 @@
 package edu.mit.spacenet.io.gson.scenario;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
@@ -22,6 +24,7 @@ public class Scenario {
 	public Date startDate;
 	public String scenarioType;
 	public Network network;
+	public List<Mission> missions = new ArrayList<Mission>();
 	
 	public static Scenario createFrom(edu.mit.spacenet.scenario.Scenario scenario) {
 		Scenario s = new Scenario();
@@ -31,6 +34,9 @@ public class Scenario {
 		s.scenarioType = TYPE_MAP.inverse().get(scenario.getScenarioType());
 		Context context = new Context();
 		s.network = Network.createFrom(scenario.getNetwork(), context);
+		for(edu.mit.spacenet.scenario.Mission mission : scenario.getMissionList()) {
+			s.missions.add(Mission.createFrom(mission, context));
+		}
 		return s;
 	}
 	
@@ -46,6 +52,9 @@ public class Scenario {
 		}
 		for(Edge e : network.edges) {
 			s.getNetwork().add(e.toSpaceNet(context));
+		}
+		for(Mission m : missions) {
+			s.getMissionList().add(m.toSpaceNet(s, context));
 		}
 		return s;
 	}

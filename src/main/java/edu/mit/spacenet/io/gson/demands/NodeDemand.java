@@ -1,4 +1,4 @@
-package edu.mit.spacenet.io.gson;
+package edu.mit.spacenet.io.gson.demands;
 
 import java.util.ArrayList;
 import java.util.List;

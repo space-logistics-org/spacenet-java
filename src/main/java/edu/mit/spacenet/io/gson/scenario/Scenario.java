@@ -7,6 +7,8 @@ import java.util.List;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
+import edu.mit.spacenet.domain.element.I_Element;
+import edu.mit.spacenet.domain.resource.I_Resource;
 import edu.mit.spacenet.scenario.ScenarioType;
 
 public class Scenario {
@@ -25,6 +27,8 @@ public class Scenario {
 	public String scenarioType;
 	public Network network;
 	public List<Mission> missions = new ArrayList<Mission>();
+	public List<ResourceType> resources = new ArrayList<ResourceType>();
+	public List<Element> elements = new ArrayList<Element>();
 	
 	public static Scenario createFrom(edu.mit.spacenet.scenario.Scenario scenario) {
 		Scenario s = new Scenario();
@@ -36,6 +40,12 @@ public class Scenario {
 		s.network = Network.createFrom(scenario.getNetwork(), context);
 		for(edu.mit.spacenet.scenario.Mission mission : scenario.getMissionList()) {
 			s.missions.add(Mission.createFrom(mission, context));
+		}
+		for(I_Resource resource : scenario.getDataSource().getResourceLibrary()) {
+			s.resources.add(ResourceType.createFrom(resource, context));
+		}
+		for(I_Element element : scenario.getElements()) {
+			s.elements.add(Element.createFrom(element, context));
 		}
 		return s;
 	}
@@ -52,6 +62,14 @@ public class Scenario {
 		}
 		for(Edge e : network.edges) {
 			s.getNetwork().add(e.toSpaceNet(context));
+		}
+		// load resources
+		for(ResourceType r : resources) {
+			context.getUUID(r);
+		}
+		// load elements
+		for(Element e : elements) {
+			context.getUUID(e);
 		}
 		for(Mission m : missions) {
 			s.getMissionList().add(m.toSpaceNet(s, context));

@@ -1,6 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.time.Duration;
+import java.util.UUID;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
@@ -28,6 +29,7 @@ public abstract class Event {
 	public String name;
 	public int priority;
 	public Duration mission_time;
+	public UUID location;
 
 	public static Event createFrom(edu.mit.spacenet.simulator.event.I_Event event, Context context) {
 		if(event.getEventType() == EventType.CREATE) {
@@ -59,7 +61,7 @@ public abstract class Event {
 		} else if(event.getEventType() == EventType.FLIGHT_TRANSPORT) {
 			return FlightTransport.createFrom((edu.mit.spacenet.simulator.event.FlightTransport) event, context);
 		} else {
-			throw new UnsupportedOperationException("unknown event type: " + event);
+			throw new UnsupportedOperationException("unknown event type: " + event.getEventType());
 		}
 	}
 	

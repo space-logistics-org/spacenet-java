@@ -25,6 +25,9 @@ public class Context {
 	}
 	
 	public UUID getUUID(Object object) {
+		if(object == null) {
+			return null;
+		}
 		if(!uuids.containsValue(object)) {
 			uuids.put(UUID.randomUUID(), object);
 		}

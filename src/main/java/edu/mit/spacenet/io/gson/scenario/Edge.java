@@ -7,16 +7,13 @@ import com.google.common.collect.ImmutableBiMap;
 
 import edu.mit.spacenet.domain.network.edge.EdgeType;
 
-public abstract class Edge {
+public abstract class Edge extends Location {
 	public static final BiMap<String, EdgeType> TYPE_MAP = new ImmutableBiMap.Builder<String, EdgeType>()
 			.put("SurfaceEdge", EdgeType.SURFACE)
 			.put("SpaceEdge", EdgeType.SPACE)
 			.put("FlightEdge", EdgeType.FLIGHT)
 			.build();
 	
-	public UUID id;
-	public String name;
-	public String description;
 	public UUID origin_id;
 	public UUID destination_id;
 	
@@ -31,6 +28,7 @@ public abstract class Edge {
 			throw new UnsupportedOperationException("unknown edge type: " + edge.getEdgeType());
 		}
 	}
-	
+
+	@Override
 	public abstract edu.mit.spacenet.domain.network.edge.Edge toSpaceNet(Context context);
 }

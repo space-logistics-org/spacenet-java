@@ -30,25 +30,18 @@ public interface I_DomainObject extends I_DomainType {
 	public int getUid();
 	
 	/**
+	 * Sets the Unique Identifier.
+	 * 
+	 * @param uid the new unique identifier
+	 */
+	public void setUid(int uid);
+	
+	/**
 	 * Resets the Unique IDentifier after instantiation. Used during copy
 	 * processes where already-instantiated domain objects must be reassigned
 	 * a new identifier.
 	 */
 	public void resetUid();
-	
-	/**
-	 * Gets the Type IDentifier.
-	 * 
-	 * @return 	the type identifier
-	 */
-	public int getTid();
-	
-	/**
-	 * Sets the Type IDentifier.
-	 * 
-	 * @param tid the type identifier
-	 */
-	public void setTid(int tid);
 	
 	/**
 	 * Prints to console without any indentation.

@@ -44,6 +44,13 @@ public abstract class DomainObject extends DomainType implements I_DomainObject 
 	}
 	
 	/* (non-Javadoc)
+	 * @see edu.mit.spacenet.domain.I_DomainObject#setUid(int)
+	 */
+	public void setUid(int uid) {
+		this.uid = uid;
+	}
+	
+	/* (non-Javadoc)
 	 * @see edu.mit.spacenet.domain.I_DomainObject#resetUid()
 	 */
 	public void resetUid() {

@@ -10,13 +10,13 @@ import java.util.UUID;
 import edu.mit.spacenet.simulator.event.EventType;
 
 public class ReconfigureElements extends Event {
-	public String type = TYPE_MAP.inverse().get(EventType.RECONFIGURE_GROUP);
 	
 	public List<UUID> elements = new ArrayList<UUID>();
 	private String stateType;
 
 	public static ReconfigureElements createFrom(edu.mit.spacenet.simulator.event.ReconfigureGroupEvent event, Context context) {
 		ReconfigureElements e = new ReconfigureElements();
+		e.type = TYPE_MAP.inverse().get(EventType.RECONFIGURE_GROUP);
 		e.name = event.getName();
 		e.mission_time = Duration.ofSeconds((long) event.getTime()*24*60*60);
 		e.priority = event.getPriority();

@@ -1,17 +1,25 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.UUID;
 
 import edu.mit.spacenet.simulator.event.EventType;
 
 public class AddResources extends Event {
-	public String type = TYPE_MAP.inverse().get(EventType.ADD);
 
+	public List<Resource> resources;
+	public UUID container;
+	
 	public static AddResources createFrom(edu.mit.spacenet.simulator.event.AddEvent event, Context context) {
 		AddResources e = new AddResources();
+		e.type = TYPE_MAP.inverse().get(EventType.ADD);
 		e.name = event.getName();
 		e.mission_time = Duration.ofSeconds((long) event.getTime()*24*60*60);
 		e.priority = event.getPriority();
+		e.location = context.getUUID(event.getLocation());
+		e.resources = Resource.createFrom(event.getDemands(), context);
+		e.container = context.getUUID(event.getContainer());
 		return e;
 	}
 	
@@ -21,6 +29,8 @@ public class AddResources extends Event {
 		e.setName(name);
 		e.setTime(mission_time.getSeconds() / (24*60*60));
 		e.setPriority(priority);
+		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObject(location));
+		// TODO
 		return e;
 	}
 

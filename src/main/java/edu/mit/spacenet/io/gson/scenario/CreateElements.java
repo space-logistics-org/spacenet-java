@@ -7,13 +7,13 @@ import java.util.UUID;
 import edu.mit.spacenet.simulator.event.EventType;
 
 public class CreateElements extends Event {
-	public String type = TYPE_MAP.inverse().get(EventType.CREATE);
 	
 	public List<UUID> elements;
 	public UUID container;
 
 	public static CreateElements createFrom(edu.mit.spacenet.simulator.event.CreateEvent event, Context context) {
 		CreateElements e = new CreateElements();
+		e.type = TYPE_MAP.inverse().get(EventType.CREATE);
 		e.name = event.getName();
 		e.mission_time = Duration.ofSeconds((long) event.getTime()*24*60*60);
 		e.priority = event.getPriority();

@@ -30,6 +30,7 @@ public abstract class Event {
 			.put("Flight Transport", EventType.FLIGHT_TRANSPORT)
 			.build();
 	
+	public String type;
 	public String name;
 	public int priority;
 	public Duration mission_time;

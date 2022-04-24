@@ -23,7 +23,7 @@ public class ImpulseDemandModel extends DemandModel {
 		m.setTid(context.getId(id));
 		m.setName(name);
 		m.setDescription(description);
-		m.setDemands(Resource.toSpaceNet(demands, context));
+		m.setDemands(Resource.toSpaceNetSet(demands, context));
 		return m;
 	}
 }

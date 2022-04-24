@@ -5,10 +5,10 @@ import java.time.Duration;
 import edu.mit.spacenet.simulator.event.EventType;
 
 public class FlightTransport extends Event {
-	public String type = TYPE_MAP.inverse().get(EventType.FLIGHT_TRANSPORT);
 
 	public static FlightTransport createFrom(edu.mit.spacenet.simulator.event.FlightTransport event, Context context) {
 		FlightTransport e = new FlightTransport();
+		e.type = TYPE_MAP.inverse().get(EventType.FLIGHT_TRANSPORT);
 		e.name = event.getName();
 		e.mission_time = Duration.ofSeconds((long) event.getTime()*24*60*60);
 		e.priority = event.getPriority();

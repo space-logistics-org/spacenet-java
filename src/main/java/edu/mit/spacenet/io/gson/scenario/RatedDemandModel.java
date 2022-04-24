@@ -24,7 +24,7 @@ public class RatedDemandModel extends DemandModel {
 		m.setTid(context.getId(id));
 		m.setName(name);
 		m.setDescription(description);
-		m.setDemandRates(Resource.toSpaceNet(demandRates, context));
+		m.setDemandRates(Resource.toSpaceNetSet(demandRates, context));
 		return m;
 	}
 }

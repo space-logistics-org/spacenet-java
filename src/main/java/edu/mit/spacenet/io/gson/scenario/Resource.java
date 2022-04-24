@@ -23,6 +23,14 @@ public class Resource {
 		return d;
 	}
 	
+	public static List<Resource> createFrom(edu.mit.spacenet.domain.resource.DemandSet demands, Context context) {
+		List<Resource> rs = new ArrayList<Resource>();
+		for(edu.mit.spacenet.domain.resource.Demand d : demands) {
+			rs.add(Resource.createFrom(d, context));
+		}
+		return rs;
+	}
+	
 	public static List<Resource> createFrom(Collection<edu.mit.spacenet.domain.resource.Demand> demands, Context context) {
 		List<Resource> rs = new ArrayList<Resource>();
 		for(edu.mit.spacenet.domain.resource.Demand d : demands) {
@@ -49,8 +57,18 @@ public class Resource {
 		return d;
 	}
 	
-	public static SortedSet<edu.mit.spacenet.domain.resource.Demand> toSpaceNet(Collection<Resource> resources, Context context) {
+	public static SortedSet<edu.mit.spacenet.domain.resource.Demand> toSpaceNetSet(Collection<Resource> resources, Context context) {
 		SortedSet<edu.mit.spacenet.domain.resource.Demand> ds = new TreeSet<edu.mit.spacenet.domain.resource.Demand>();
+		if(resources != null) {
+			for(Resource r : resources) {
+				ds.add(r.toSpaceNet(context));
+			}
+		}
+		return ds;
+	}
+	
+	public static edu.mit.spacenet.domain.resource.DemandSet toSpaceNet(Collection<Resource> resources, Context context) {
+		edu.mit.spacenet.domain.resource.DemandSet ds = new edu.mit.spacenet.domain.resource.DemandSet();
 		if(resources != null) {
 			for(Resource r : resources) {
 				ds.add(r.toSpaceNet(context));

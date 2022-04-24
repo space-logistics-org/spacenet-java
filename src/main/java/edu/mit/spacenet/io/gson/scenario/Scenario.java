@@ -7,8 +7,6 @@ import java.util.List;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
-import edu.mit.spacenet.domain.element.I_Element;
-import edu.mit.spacenet.domain.resource.I_Resource;
 import edu.mit.spacenet.scenario.ScenarioType;
 
 public class Scenario {
@@ -25,7 +23,7 @@ public class Scenario {
 	public String description;
 	public Date startDate;
 	public String scenarioType;
-	public Network network;
+	public List<Location> locations;
 	public List<Mission> missions = new ArrayList<Mission>();
 	public List<ResourceType> resources = new ArrayList<ResourceType>();
 	public List<Element> elements = new ArrayList<Element>();
@@ -37,16 +35,10 @@ public class Scenario {
 		s.startDate = scenario.getStartDate();
 		s.scenarioType = TYPE_MAP.inverse().get(scenario.getScenarioType());
 		Context context = new Context();
-		s.network = Network.createFrom(scenario.getNetwork(), context);
-		for(edu.mit.spacenet.scenario.Mission mission : scenario.getMissionList()) {
-			s.missions.add(Mission.createFrom(mission, context));
-		}
-		for(I_Resource resource : scenario.getDataSource().getResourceLibrary()) {
-			s.resources.add(ResourceType.createFrom(resource, context));
-		}
-		for(I_Element element : scenario.getElements()) {
-			s.elements.add(Element.createFrom(element, context));
-		}
+		s.locations = Location.createFrom(scenario.getNetwork().getLocations(), context);
+		s.missions = Mission.createFrom(scenario.getMissionList(), context);
+		s.resources = ResourceType.createFrom(scenario.getDataSource().getResourceLibrary(), context);
+		s.elements = Element.createFrom(scenario.getElements(), context);
 		return s;
 	}
 	
@@ -57,11 +49,16 @@ public class Scenario {
 		s.setStartDate(startDate);
 		s.setScenarioType(TYPE_MAP.get(scenarioType));
 		Context context = new Context();
-		for(Node n : network.nodes) {
-			s.getNetwork().add(n.toSpaceNet(context));
+		List<edu.mit.spacenet.domain.network.Location> ls = Location.toSpaceNet(locations, context);
+		for(edu.mit.spacenet.domain.network.Location l : ls) {
+			if(l.isNode()) {
+				s.getNetwork().add(l);
+			}
 		}
-		for(Edge e : network.edges) {
-			s.getNetwork().add(e.toSpaceNet(context));
+		for(edu.mit.spacenet.domain.network.Location l : ls) {
+			if(!l.isNode()) {
+				s.getNetwork().add(l);
+			}
 		}
 		// load resources
 		for(ResourceType r : resources) {
@@ -71,9 +68,7 @@ public class Scenario {
 		for(Element e : elements) {
 			context.getUUID(e);
 		}
-		for(Mission m : missions) {
-			s.getMissionList().add(m.toSpaceNet(s, context));
-		}
+		s.getMissionList().addAll(Mission.toSpaceNet(this, context));
 		return s;
 	}
 }

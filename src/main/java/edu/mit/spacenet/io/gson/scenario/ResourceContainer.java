@@ -2,14 +2,11 @@ package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
 import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_State;
-import edu.mit.spacenet.domain.resource.I_Resource;
 
 public class ResourceContainer extends Element {
 	public double maxCargoMass;
@@ -28,22 +25,13 @@ public class ResourceContainer extends Element {
 		e.volume = element.getVolume();
 		e.classOfSupply = element.getClassOfSupply().getId();
 		e.environment = element.getEnvironment().getName();
-		for(edu.mit.spacenet.domain.element.I_State state : element.getStates()) {
-			e.states.add(State.createFrom(state, context));
-		}
+		e.states = State.createFrom(element.getStates(), context);
 		e.currentState = context.getUUID(element.getCurrentState());
-		for(edu.mit.spacenet.domain.element.PartApplication part : element.getParts()) {
-			e.parts.add(Part.createFrom(part, context));
-		}
+		e.parts = Part.createFrom(element.getParts(), context);
 		e.maxCargoMass = element.getMaxCargoMass();
 		e.maxCargoVolume = element.getMaxCargoVolume();
 		e.cargoEnvironment = element.getCargoEnvironment().getName();
-		for(I_Resource r : element.getContents().keySet()) {
-			Resource d = new Resource();
-			d.type = context.getUUID(r);
-			d.amount = element.getContents().get(r);
-			e.contents.add(d);
-		}
+		e.contents = Resource.createFrom(element.getContents(), context);
 		return e;
 	}
 	
@@ -58,23 +46,13 @@ public class ResourceContainer extends Element {
 		e.setVolume(volume);
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
-		SortedSet<edu.mit.spacenet.domain.element.I_State> ss = new TreeSet<edu.mit.spacenet.domain.element.I_State>();
-		for(State state : states) {
-			ss.add(state.toSpaceNet(context));
-		}
-		e.setStates(ss);
+		e.setStates(State.toSpaceNet(states, context));
 		e.setCurrentState((I_State) context.getObject(currentState));
-		SortedSet<edu.mit.spacenet.domain.element.PartApplication> ps = new TreeSet<edu.mit.spacenet.domain.element.PartApplication>();
-		for(Part part : parts) {
-			ps.add(part.toSpaceNet(context));
-		}
-		e.setParts(ps);
+		e.setParts(Part.toSpaceNet(parts, context));
 		e.setMaxCargoMass(maxCargoMass);
 		e.setMaxCargoVolume(maxCargoVolume);
 		e.setCargoEnvironment(Environment.getInstance(cargoEnvironment));
-		for(Resource d : contents) {
-			e.getContents().put((I_Resource) context.getObject(d.type), d.amount);
-		}
+		e.getContents().putAll(Resource.toSpaceNetMap(contents, context));
 		return e;
 	}
 }

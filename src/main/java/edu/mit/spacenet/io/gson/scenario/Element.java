@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableBiMap;
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
 import edu.mit.spacenet.domain.element.ElementType;
+import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.element.I_State;
 
 public class Element {
@@ -34,11 +35,11 @@ public class Element {
 	public double volume;
 	public int classOfSupply;
 	public String environment;
-	public List<State> states = new ArrayList<State>();
+	public List<State> states;
 	public UUID currentState;
-	public List<Part> parts = new ArrayList<Part>();
+	public List<Part> parts;
 
-	public static Element createFrom(edu.mit.spacenet.domain.element.I_Element element, Context context) {
+	public static Element createFrom(I_Element element, Context context) {
 		if(element.getElementType() == ElementType.ELEMENT) {
 			Element e = new Element();
 			e.id = context.getUUID(element);
@@ -50,13 +51,9 @@ public class Element {
 			e.volume = element.getVolume();
 			e.classOfSupply = element.getClassOfSupply().getId();
 			e.environment = element.getEnvironment().getName();
-			for(edu.mit.spacenet.domain.element.I_State state : element.getStates()) {
-				e.states.add(State.createFrom(state, context));
-			}
+			e.states = State.createFrom(element.getStates(), context);
 			e.currentState = context.getUUID(element.getCurrentState());
-			for(edu.mit.spacenet.domain.element.PartApplication part : element.getParts()) {
-				e.parts.add(Part.createFrom(part, context));
-			}
+			e.parts = Part.createFrom(element.getParts(), context);
 			return e;
 		} else if(element.getElementType() == ElementType.RESOURCE_CONTAINER) {
 			return ResourceContainer.createFrom((edu.mit.spacenet.domain.element.ResourceContainer) element, context);
@@ -75,6 +72,22 @@ public class Element {
 		}
 	}
 	
+	public static List<Element> createFrom(List<I_Element> elements, Context context) {
+		List<Element> es = new ArrayList<Element>();
+		for(I_Element e : elements) {
+			es.add(Element.createFrom(e, context));
+		}
+		return es;
+	}
+	
+	public static List<UUID> createFrom(SortedSet<I_Element> elements, Context context) {
+		List<UUID> es = new ArrayList<UUID>();
+		for(I_Element e : elements) {
+			es.add(context.getUUID(e));
+		}
+		return es;
+	}
+	
 	public edu.mit.spacenet.domain.element.Element toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.Element e = new edu.mit.spacenet.domain.element.Element();
 		e.setUid(context.getId(id));
@@ -85,17 +98,19 @@ public class Element {
 		e.setVolume(volume);
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
-		SortedSet<edu.mit.spacenet.domain.element.I_State> ss = new TreeSet<edu.mit.spacenet.domain.element.I_State>();
-		for(State state : states) {
-			ss.add(state.toSpaceNet(context));
-		}
-		e.setStates(ss);
+		e.setStates(State.toSpaceNet(states, context));
 		e.setCurrentState((I_State) context.getObject(currentState));
-		SortedSet<edu.mit.spacenet.domain.element.PartApplication> ps = new TreeSet<edu.mit.spacenet.domain.element.PartApplication>();
-		for(Part part : parts) {
-			ps.add(part.toSpaceNet(context));
-		}
-		e.setParts(ps);
+		e.setParts(Part.toSpaceNet(parts, context));
 		return e;
+	}
+	
+	public static SortedSet<I_Element> toSpaceNet(List<UUID> elements, Context context) {
+		SortedSet<I_Element> es = new TreeSet<I_Element>();
+		if(elements != null) {
+			for(UUID uuid : elements) {
+				es.add(((I_Element) context.getObject(uuid)));
+			}
+		}
+		return es;
 	}
 }

@@ -3,7 +3,6 @@ package edu.mit.spacenet.io.gson.scenario;
 import edu.mit.spacenet.domain.network.edge.EdgeType;
 
 public class SurfaceEdge extends Edge {
-	public String type = TYPE_MAP.inverse().get(EdgeType.SURFACE);
 	public double distance;
 
 	public static SurfaceEdge createFrom(edu.mit.spacenet.domain.network.edge.SurfaceEdge edge, Context context) {
@@ -11,9 +10,11 @@ public class SurfaceEdge extends Edge {
 		e.id = context.getUUID(edge);
 		e.name = edge.getName();
 		e.description = edge.getDescription();
+		e.type = TYPE_MAP.inverse().get(EdgeType.SURFACE);
 		e.origin_id = context.getUUID(edge.getOrigin());
 		e.destination_id = context.getUUID(edge.getDestination());
 		e.distance = edge.getDistance();
+		e.contents = Element.createFrom(edge.getContents(), context);
 		return e;
 	}
 	
@@ -25,6 +26,7 @@ public class SurfaceEdge extends Edge {
 		e.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(origin_id));
 		e.setDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(destination_id));
 		e.setDistance(distance);
+		e.getContents().addAll(Element.toSpaceNet(contents, context));
 		return e;
 	}
 }

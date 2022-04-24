@@ -3,7 +3,6 @@ package edu.mit.spacenet.io.gson.scenario;
 import edu.mit.spacenet.domain.network.edge.EdgeType;
 
 public class FlightEdge extends Edge {
-	public String type = TYPE_MAP.inverse().get(EdgeType.FLIGHT);
 	public double duration;
 	public int max_crew;
 	public double max_cargo;
@@ -13,11 +12,13 @@ public class FlightEdge extends Edge {
 		e.id = context.getUUID(edge);
 		e.name = edge.getName();
 		e.description = edge.getDescription();
+		e.type = TYPE_MAP.inverse().get(EdgeType.FLIGHT);
 		e.origin_id = context.getUUID(edge.getOrigin());
 		e.destination_id = context.getUUID(edge.getDestination());
 		e.duration = edge.getDuration();
 		e.max_crew = edge.getMaxCrewSize();
 		e.max_cargo = edge.getMaxCargoMass();
+		e.contents = Element.createFrom(edge.getContents(), context);
 		return e;
 	}
 	
@@ -31,6 +32,7 @@ public class FlightEdge extends Edge {
 		e.setDuration(duration);
 		e.setMaxCrewSize(max_crew);
 		e.setMaxCargoMass(max_cargo);
+		e.getContents().addAll(Element.toSpaceNet(contents, context));
 		return e;
 	}
 }

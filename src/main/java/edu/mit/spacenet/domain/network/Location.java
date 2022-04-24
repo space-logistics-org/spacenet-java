@@ -41,6 +41,13 @@ public abstract class Location extends DomainType implements I_Container, Compar
 		contents = new TreeSet<I_Element>();
 	}
 	
+	/**
+	 * Checks whether this is a node location.
+	 * 
+	 * @return True, if this is a node location.
+	 */
+	public abstract boolean isNode();
+	
 	/* (non-Javadoc)
 	 * @see edu.mit.spacenet.domain.I_Container#getContents()
 	 */

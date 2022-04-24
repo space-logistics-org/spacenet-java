@@ -11,7 +11,6 @@ import com.google.common.collect.ImmutableBiMap;
 
 import edu.mit.spacenet.domain.element.I_State;
 import edu.mit.spacenet.domain.element.StateType;
-import edu.mit.spacenet.domain.model.I_DemandModel;
 
 public class State {
 	public static final BiMap<String, StateType> TYPE_MAP = new ImmutableBiMap.Builder<String, StateType>()
@@ -26,7 +25,7 @@ public class State {
 	public String name;
 	public String description;
 	public String type;
-	public List<DemandModel> demandModels = new ArrayList<DemandModel>();
+	public List<DemandModel> demandModels;
 
 	public static State createFrom(I_State state, Context context) {
 		State s = new State();
@@ -34,10 +33,16 @@ public class State {
 		s.name = state.getName();
 		s.description = state.getDescription();
 		s.type = TYPE_MAP.inverse().get(state.getStateType());
-		for(I_DemandModel m : state.getDemandModels()) {
-			s.demandModels.add(DemandModel.createFrom(m, context));
-		}
+		s.demandModels = DemandModel.createFrom(state.getDemandModels(), context);
 		return s;
+	}
+	
+	public static List<State> createFrom(SortedSet<I_State> states, Context context) {
+		List<State> ss = new ArrayList<State>();
+		for(I_State s : states) {
+			ss.add(State.createFrom(s, context));
+		}
+		return ss;
 	}
 	
 	public I_State toSpaceNet(Context context) {
@@ -46,11 +51,17 @@ public class State {
 		s.setName(name);
 		s.setDescription(description);
 		s.setStateType(TYPE_MAP.get(type));
-		SortedSet<I_DemandModel> ms = new TreeSet<I_DemandModel>();
-		for(DemandModel m : demandModels) {
-			ms.add(m.toSpaceNet(context));
-		}
-		s.setDemandModels(ms);
+		s.setDemandModels(DemandModel.toSpaceNet(demandModels, context));
 		return s;
+	}
+
+	public static SortedSet<I_State> toSpaceNet(List<State> states, Context context) {
+		SortedSet<I_State> ss = new TreeSet<I_State>();
+		if(states != null) {
+			for(State state : states) {
+				ss.add(state.toSpaceNet(context));
+			}
+		}
+		return ss;
 	}
 }

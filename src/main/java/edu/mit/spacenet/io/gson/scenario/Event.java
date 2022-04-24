@@ -1,12 +1,15 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
 import edu.mit.spacenet.simulator.event.EventType;
+import edu.mit.spacenet.simulator.event.I_Event;
 
 public abstract class Event {
 	public static final BiMap<String, EventType> TYPE_MAP = new ImmutableBiMap.Builder<String, EventType>()
@@ -65,5 +68,23 @@ public abstract class Event {
 		}
 	}
 	
+	public static List<Event> createFrom(List<edu.mit.spacenet.simulator.event.I_Event> events, Context context) {
+		List<Event> es = new ArrayList<Event>();
+		if(events != null) {
+			for(I_Event e : events) {
+				es.add(Event.createFrom(e, context));
+			}
+		}
+		return es;
+	}
+	
 	public abstract edu.mit.spacenet.simulator.event.I_Event toSpaceNet(Context context);
+	
+	public static List<edu.mit.spacenet.simulator.event.I_Event> toSpaceNet(List<Event> events, Context context) {
+		List<edu.mit.spacenet.simulator.event.I_Event> es = new ArrayList<edu.mit.spacenet.simulator.event.I_Event>();
+		for(Event e : events) {
+			es.add(e.toSpaceNet(context));
+		}
+		return es;
+	}
 }

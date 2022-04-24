@@ -14,6 +14,7 @@ public abstract class Edge extends Location {
 			.put("FlightEdge", EdgeType.FLIGHT)
 			.build();
 	
+	public String type;
 	public UUID origin_id;
 	public UUID destination_id;
 	

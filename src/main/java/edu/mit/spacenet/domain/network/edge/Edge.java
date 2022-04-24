@@ -35,6 +35,13 @@ public abstract class Edge extends Location {
 		super();
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.mit.spacenet.domain.network.Location#isNode()
+	 */
+	public boolean isNode() {
+		return false;
+	}
+	
 	/**
 	 * Gets the origin.
 	 * 

@@ -4,7 +4,6 @@ import edu.mit.spacenet.domain.network.node.Body;
 import edu.mit.spacenet.domain.network.node.NodeType;
 
 public class SurfaceNode extends Node {
-	public String type = TYPE_MAP.inverse().get(NodeType.SURFACE);
 	public double latitude;
 	public double longitude;
 	
@@ -13,9 +12,11 @@ public class SurfaceNode extends Node {
 		n.id = context.getUUID(node);
 		n.name = node.getName();
 		n.description = node.getDescription();
+		n.type = TYPE_MAP.inverse().get(NodeType.SURFACE);
 		n.body_1 = node.getBody().getName();
 		n.latitude = node.getLatitude();
 		n.longitude = node.getLongitude();
+		n.contents = Element.createFrom(node.getContents(), context);
 		return n;
 	}
 	
@@ -27,6 +28,7 @@ public class SurfaceNode extends Node {
 		n.setBody(Body.getInstance(body_1));
 		n.setLatitude(latitude);
 		n.setLongitude(longitude);
+		n.getContents().addAll(Element.toSpaceNet(contents, context));
 		return n;
 	}
 }

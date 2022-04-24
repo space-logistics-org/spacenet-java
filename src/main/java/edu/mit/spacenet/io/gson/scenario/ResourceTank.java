@@ -1,7 +1,5 @@
 package edu.mit.spacenet.io.gson.scenario;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.UUID;
 
 import edu.mit.spacenet.domain.ClassOfSupply;
@@ -26,13 +24,9 @@ public class ResourceTank extends Element {
 		e.volume = element.getVolume();
 		e.classOfSupply = element.getClassOfSupply().getId();
 		e.environment = element.getEnvironment().getName();
-		for(edu.mit.spacenet.domain.element.I_State state : element.getStates()) {
-			e.states.add(State.createFrom(state, context));
-		}
+		e.states = State.createFrom(element.getStates(), context);
 		e.currentState = context.getUUID(element.getCurrentState());
-		for(edu.mit.spacenet.domain.element.PartApplication part : element.getParts()) {
-			e.parts.add(Part.createFrom(part, context));
-		}
+		e.parts = Part.createFrom(element.getParts(), context);
 		e.resource = context.getUUID(element.getResource());
 		e.maxAmount = element.getMaxAmount();
 		e.amount = element.getAmount();
@@ -50,17 +44,9 @@ public class ResourceTank extends Element {
 		e.setVolume(volume);
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
-		SortedSet<edu.mit.spacenet.domain.element.I_State> ss = new TreeSet<edu.mit.spacenet.domain.element.I_State>();
-		for(State state : states) {
-			ss.add(state.toSpaceNet(context));
-		}
-		e.setStates(ss);
+		e.setStates(State.toSpaceNet(states, context));
 		e.setCurrentState((I_State) context.getObject(currentState));
-		SortedSet<edu.mit.spacenet.domain.element.PartApplication> ps = new TreeSet<edu.mit.spacenet.domain.element.PartApplication>();
-		for(Part part : parts) {
-			ps.add(part.toSpaceNet(context));
-		}
-		e.setParts(ps);
+		e.setParts(Part.toSpaceNet(parts, context));
 		e.setResource((I_Resource) context.getObject(resource));
 		e.setMaxAmount(maxAmount);
 		e.setAmount(amount);

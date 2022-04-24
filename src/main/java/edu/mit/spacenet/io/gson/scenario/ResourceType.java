@@ -1,5 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.google.common.collect.BiMap;
@@ -42,6 +44,14 @@ public class ResourceType {
 		return r;
 	}
 	
+	public static List<ResourceType> createFrom(List<I_Resource> resources, Context context) {
+		List<ResourceType> rs = new ArrayList<ResourceType>();
+		for(I_Resource r : resources) {
+			rs.add(ResourceType.createFrom(r, context));
+		}
+		return rs;
+	}
+	
 	public I_Resource toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.resource.I_Resource r;
 		if(TYPE_MAP.get(type) == edu.mit.spacenet.domain.resource.ResourceType.ITEM) {
@@ -59,5 +69,13 @@ public class ResourceType {
 		r.setUnitVolume(unitVolume);
 		r.setPackingFactor(packingFactor);
 		return r;
+	}
+	
+	public static List<I_Resource> toSpaceNet(List<ResourceType> resources, Context context) {
+		List<I_Resource> rs = new ArrayList<I_Resource>();
+		for(ResourceType r : resources) {
+			rs.add(r.toSpaceNet(context));
+		}
+		return rs;
 	}
 }

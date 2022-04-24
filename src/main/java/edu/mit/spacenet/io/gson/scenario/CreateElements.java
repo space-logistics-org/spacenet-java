@@ -1,10 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.UUID;
 
 import edu.mit.spacenet.simulator.event.EventType;
@@ -12,7 +9,7 @@ import edu.mit.spacenet.simulator.event.EventType;
 public class CreateElements extends Event {
 	public String type = TYPE_MAP.inverse().get(EventType.CREATE);
 	
-	public List<UUID> elements = new ArrayList<UUID>();
+	public List<UUID> elements;
 	public UUID container;
 
 	public static CreateElements createFrom(edu.mit.spacenet.simulator.event.CreateEvent event, Context context) {
@@ -21,9 +18,7 @@ public class CreateElements extends Event {
 		e.mission_time = Duration.ofSeconds((long) event.getTime()*24*60*60);
 		e.priority = event.getPriority();
 		e.location = context.getUUID(event.getLocation());
-		for(edu.mit.spacenet.domain.element.I_Element element : event.getElements()) {
-			e.elements.add(context.getUUID(element));
-		}
+		e.elements = Element.createFrom(event.getElements(), context);
 		e.container = context.getUUID(event.getContainer());
 		return e;
 	}
@@ -35,11 +30,7 @@ public class CreateElements extends Event {
 		e.setTime(mission_time.getSeconds() / (24*60*60));
 		e.setPriority(priority);
 		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObject(location));
-		SortedSet<edu.mit.spacenet.domain.element.I_Element> es = new TreeSet<edu.mit.spacenet.domain.element.I_Element>();
-		for(UUID uuid : elements) {
-			es.add(((edu.mit.spacenet.domain.element.I_Element) context.getObject(uuid)));
-		}
-		e.setElements(es);
+		e.setElements(Element.toSpaceNet(elements, context));
 		e.setContainer((edu.mit.spacenet.domain.I_Container) context.getObject(container));
 		return e;
 	}

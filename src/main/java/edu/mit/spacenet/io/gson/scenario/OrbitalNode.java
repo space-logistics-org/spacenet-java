@@ -4,7 +4,6 @@ import edu.mit.spacenet.domain.network.node.Body;
 import edu.mit.spacenet.domain.network.node.NodeType;
 
 public class OrbitalNode extends Node {
-	public String type = TYPE_MAP.inverse().get(NodeType.ORBITAL);
 	public double inclination;
 	public double periapsis;
 	public double apoapsis;
@@ -14,10 +13,12 @@ public class OrbitalNode extends Node {
 		n.id = context.getUUID(node);
 		n.name = node.getName();
 		n.description = node.getDescription();
+		n.type = TYPE_MAP.inverse().get(NodeType.ORBITAL);
 		n.body_1 = node.getBody().getName();
 		n.inclination = node.getInclination();
 		n.periapsis = node.getPeriapsis();
 		n.apoapsis = node.getApoapsis();
+		n.contents = Element.createFrom(node.getContents(), context);
 		return n;
 	}
 	
@@ -30,6 +31,7 @@ public class OrbitalNode extends Node {
 		n.setInclination(inclination);
 		n.setPeriapsis(periapsis);
 		n.setApoapsis(apoapsis);
+		n.getContents().addAll(Element.toSpaceNet(contents, context));
 		return n;
 	}
 }

@@ -5,12 +5,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import edu.mit.spacenet.simulator.event.I_Event;
-
 public class Mission {
 	public String name;
 	public Date start_date;
-	public List<Object> events = new ArrayList<Object>();
+	public List<Event> events;
 	public List<Object> demand_models = new ArrayList<Object>();
 	public UUID origin;
 	public UUID destination;
@@ -25,10 +23,16 @@ public class Mission {
 		m.destination = context.getUUID(mission.getDestination());
 		m.return_origin = context.getUUID(mission.getReturnOrigin());
 		m.return_destination = context.getUUID(mission.getReturnDestination());
-		for(I_Event event : mission.getEventList()) {
-			m.events.add(Event.createFrom(event, context));
-		}
+		m.events = Event.createFrom(mission.getEventList(), context);
 		return m;
+	}
+	
+	public static List<Mission> createFrom(List<edu.mit.spacenet.scenario.Mission> missions, Context context) {
+		List<Mission> ms = new ArrayList<Mission>();
+		for(edu.mit.spacenet.scenario.Mission mission : missions) {
+			ms.add(Mission.createFrom(mission, context));
+		}
+		return ms;
 	}
 	
 	public edu.mit.spacenet.scenario.Mission toSpaceNet(edu.mit.spacenet.scenario.Scenario scenario, Context context) {
@@ -39,6 +43,15 @@ public class Mission {
 		m.setDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(destination));
 		m.setReturnOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(return_origin));
 		m.setReturnDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(return_destination));
+		m.getEventList().addAll(Event.toSpaceNet(events, context));
 		return m;
+	}
+	
+	public static List<edu.mit.spacenet.scenario.Mission> toSpaceNet(Scenario scenario, Context context) {
+		List<edu.mit.spacenet.scenario.Mission> ms = new ArrayList<edu.mit.spacenet.scenario.Mission>();
+		for(Mission m : scenario.missions) {
+			ms.add(m.toSpaceNet(scenario.toSpaceNet(), context));
+		}
+		return ms;
 	}
 }

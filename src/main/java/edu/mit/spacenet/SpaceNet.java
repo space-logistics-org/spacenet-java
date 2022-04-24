@@ -22,10 +22,13 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
@@ -41,6 +44,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.typeadapters.UtcDateTypeAdapter;
 
 import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
@@ -154,12 +159,33 @@ public class SpaceNet {
 	
 	private static void runDemandSimulator(String scenarioFilePath, String outputFilePath, boolean isOverwriteConfirmed, boolean isRawDemands) {
 		Scenario scenario = null;
-		try {
-			scenario = XStreamEngine.openScenario(scenarioFilePath);
-			scenario.setFilePath(scenarioFilePath);
-		} catch(IOException ex) {
-			System.err.println("Failed to read scenario file: " + ex.getMessage());
-			System.exit(1);
+		if(scenarioFilePath.endsWith("xml")) {
+			try {
+				scenario = XStreamEngine.openScenario(scenarioFilePath);
+				scenario.setFilePath(scenarioFilePath);
+				
+				// FIXME temporary code
+				BufferedWriter out = new BufferedWriter(new FileWriter(scenarioFilePath.replace("xml", "json")));
+				Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new UtcDateTypeAdapter()).create();
+				gson.toJson(
+					edu.mit.spacenet.io.gson.scenario.Scenario.createFrom(scenario),
+					out
+				);
+				out.close();
+				// FIXME
+			} catch(IOException ex) {
+				System.err.println("Failed to read scenario file: " + ex.getMessage());
+				System.exit(1);
+			}
+		} else {
+			try {
+				BufferedReader in = new BufferedReader(new FileReader(scenarioFilePath));
+				scenario = new Gson().fromJson(in, edu.mit.spacenet.io.gson.scenario.Scenario.class).toSpaceNet();
+				in.close();
+			} catch(IOException ex) {
+				System.err.println("Failed to read scenario file: " + ex.getMessage());
+				System.exit(1);
+			}
 		}
 		
 		DemandSimulator simulator = new DemandSimulator(scenario);

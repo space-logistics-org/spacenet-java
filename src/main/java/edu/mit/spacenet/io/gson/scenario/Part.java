@@ -1,6 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -28,7 +29,7 @@ public class Part {
 		return p;
 	}
 	
-	public static List<Part> createFrom(SortedSet<edu.mit.spacenet.domain.element.PartApplication> parts, Context context) {
+	public static List<Part> createFrom(Collection<edu.mit.spacenet.domain.element.PartApplication> parts, Context context) {
 		List<Part> ps = new ArrayList<Part>();
 		for(edu.mit.spacenet.domain.element.PartApplication p : parts) {
 			ps.add(Part.createFrom(p, context));
@@ -47,7 +48,7 @@ public class Part {
 		return p;
 	}
 
-	public static SortedSet<PartApplication> toSpaceNet(List<Part> parts, Context context) {
+	public static SortedSet<PartApplication> toSpaceNet(Collection<Part> parts, Context context) {
 		SortedSet<PartApplication> ps = new TreeSet<PartApplication>();
 		if(parts != null) {
 			for(Part part : parts) {

@@ -18,7 +18,7 @@ public class SpaceEdge extends Edge {
 		e.destination_id = context.getUUID(edge.getDestination());
 		e.duration = edge.getDuration();
 		e.burns = Burn.createFrom(edge.getBurns());
-		e.contents = Element.createFrom(edge.getContents(), context);
+		e.contents = Element.createIdsFrom(edge.getContents(), context);
 		return e;
 	}
 	

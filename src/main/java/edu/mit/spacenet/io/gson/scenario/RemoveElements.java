@@ -17,7 +17,7 @@ public class RemoveElements extends Event {
 		e.name = event.getName();
 		e.mission_time = Duration.ofSeconds((long) event.getTime()*24*60*60);
 		e.priority = event.getPriority();
-		e.elements = Element.createFrom(event.getElements(), context);
+		e.elements = Element.createIdsFrom(event.getElements(), context);
 		return e;
 	}
 	

@@ -23,5 +23,4 @@ public class TransferResources extends Event {
 		e.setPriority(priority);
 		return e;
 	}
-
 }

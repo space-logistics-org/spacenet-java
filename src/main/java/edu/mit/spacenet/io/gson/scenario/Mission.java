@@ -1,6 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -27,7 +28,7 @@ public class Mission {
 		return m;
 	}
 	
-	public static List<Mission> createFrom(List<edu.mit.spacenet.scenario.Mission> missions, Context context) {
+	public static List<Mission> createFrom(Collection<edu.mit.spacenet.scenario.Mission> missions, Context context) {
 		List<Mission> ms = new ArrayList<Mission>();
 		for(edu.mit.spacenet.scenario.Mission mission : missions) {
 			ms.add(Mission.createFrom(mission, context));

@@ -1,6 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -37,7 +38,7 @@ public class State {
 		return s;
 	}
 	
-	public static List<State> createFrom(SortedSet<I_State> states, Context context) {
+	public static List<State> createFrom(Collection<I_State> states, Context context) {
 		List<State> ss = new ArrayList<State>();
 		for(I_State s : states) {
 			ss.add(State.createFrom(s, context));
@@ -55,7 +56,7 @@ public class State {
 		return s;
 	}
 
-	public static SortedSet<I_State> toSpaceNet(List<State> states, Context context) {
+	public static SortedSet<I_State> toSpaceNet(Collection<State> states, Context context) {
 		SortedSet<I_State> ss = new TreeSet<I_State>();
 		if(states != null) {
 			for(State state : states) {

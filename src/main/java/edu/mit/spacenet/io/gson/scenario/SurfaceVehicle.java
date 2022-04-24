@@ -31,7 +31,7 @@ public class SurfaceVehicle extends Carrier {
 		e.maxCargoMass = element.getMaxCargoMass();
 		e.maxCargoVolume = element.getMaxCargoVolume();
 		e.cargoEnvironment = element.getCargoEnvironment().getName();
-		e.contents = Element.createFrom(element.getContents(), context);
+		e.contents = Element.createIdsFrom(element.getContents(), context);
 		e.maxSpeed = element.getMaxSpeed();
 		e.fuelType = context.getUUID(element.getFuelTank().getResource());
 		e.fuelMaxAmount = element.getFuelTank().getMaxAmount();

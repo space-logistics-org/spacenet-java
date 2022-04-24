@@ -16,7 +16,7 @@ public class LagrangeNode extends Node {
 		n.body_1 = node.getBody().getName();
 		n.body_2 = node.getMinorBody().getName();
 		n.lp_number = node.getNumber();
-		n.contents = Element.createFrom(node.getContents(), context);
+		n.contents = Element.createIdsFrom(node.getContents(), context);
 		return n;
 	}
 	

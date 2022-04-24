@@ -18,7 +18,7 @@ public class CreateElements extends Event {
 		e.mission_time = Duration.ofSeconds((long) event.getTime()*24*60*60);
 		e.priority = event.getPriority();
 		e.location = context.getUUID(event.getLocation());
-		e.elements = Element.createFrom(event.getElements(), context);
+		e.elements = Element.createIdsFrom(event.getElements(), context);
 		e.container = context.getUUID(event.getContainer());
 		return e;
 	}

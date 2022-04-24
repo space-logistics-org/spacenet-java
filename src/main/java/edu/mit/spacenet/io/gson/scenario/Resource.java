@@ -49,7 +49,7 @@ public class Resource {
 		return d;
 	}
 	
-	public static SortedSet<edu.mit.spacenet.domain.resource.Demand> toSpaceNet(List<Resource> resources, Context context) {
+	public static SortedSet<edu.mit.spacenet.domain.resource.Demand> toSpaceNet(Collection<Resource> resources, Context context) {
 		SortedSet<edu.mit.spacenet.domain.resource.Demand> ds = new TreeSet<edu.mit.spacenet.domain.resource.Demand>();
 		if(resources != null) {
 			for(Resource r : resources) {
@@ -59,7 +59,7 @@ public class Resource {
 		return ds;
 	}
 	
-	public static SortedMap<edu.mit.spacenet.domain.resource.I_Resource, Double> toSpaceNetMap(List<Resource> resources, Context context) {
+	public static SortedMap<edu.mit.spacenet.domain.resource.I_Resource, Double> toSpaceNetMap(Collection<Resource> resources, Context context) {
 		SortedMap<edu.mit.spacenet.domain.resource.I_Resource, Double> ds = new TreeMap<edu.mit.spacenet.domain.resource.I_Resource, Double>();
 		if(resources != null) {
 			for(Resource r : resources) {

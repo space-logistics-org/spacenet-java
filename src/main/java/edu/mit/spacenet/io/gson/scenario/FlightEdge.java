@@ -18,7 +18,7 @@ public class FlightEdge extends Edge {
 		e.duration = edge.getDuration();
 		e.max_crew = edge.getMaxCrewSize();
 		e.max_cargo = edge.getMaxCargoMass();
-		e.contents = Element.createFrom(edge.getContents(), context);
+		e.contents = Element.createIdsFrom(edge.getContents(), context);
 		return e;
 	}
 	

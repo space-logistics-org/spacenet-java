@@ -1,6 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,7 +45,7 @@ public class ResourceType {
 		return r;
 	}
 	
-	public static List<ResourceType> createFrom(List<I_Resource> resources, Context context) {
+	public static List<ResourceType> createFrom(Collection<I_Resource> resources, Context context) {
 		List<ResourceType> rs = new ArrayList<ResourceType>();
 		for(I_Resource r : resources) {
 			rs.add(ResourceType.createFrom(r, context));
@@ -71,7 +72,7 @@ public class ResourceType {
 		return r;
 	}
 	
-	public static List<I_Resource> toSpaceNet(List<ResourceType> resources, Context context) {
+	public static List<I_Resource> toSpaceNet(Collection<ResourceType> resources, Context context) {
 		List<I_Resource> rs = new ArrayList<I_Resource>();
 		for(ResourceType r : resources) {
 			rs.add(r.toSpaceNet(context));

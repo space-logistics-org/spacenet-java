@@ -46,8 +46,8 @@ import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.gui.SplashScreen;
 import edu.mit.spacenet.io.XStreamEngine;
-import edu.mit.spacenet.io.gson.AggregatedDemandsAnalysis;
-import edu.mit.spacenet.io.gson.RawDemandsAnalysis;
+import edu.mit.spacenet.io.gson.demands.AggregatedDemandsAnalysis;
+import edu.mit.spacenet.io.gson.demands.RawDemandsAnalysis;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.simulator.DemandSimulator;
 

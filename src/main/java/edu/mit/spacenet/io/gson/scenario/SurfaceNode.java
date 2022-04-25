@@ -20,7 +20,7 @@ public class SurfaceNode extends Node {
 	
 	public edu.mit.spacenet.domain.network.node.SurfaceNode toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.network.node.SurfaceNode n = new edu.mit.spacenet.domain.network.node.SurfaceNode();
-		n.setTid(context.getId(id));
+		n.setTid(context.getId(id, n));
 		n.setName(name);
 		n.setDescription(description);
 		n.setBody(Body.getInstance(body_1));

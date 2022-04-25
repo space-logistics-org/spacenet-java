@@ -13,6 +13,7 @@ import com.google.common.collect.HashBiMap;
 public class Context {
 	public BiMap<UUID, Object> uuids = HashBiMap.create();
 	public Map<UUID, Integer> ids = new HashMap<UUID, Integer>();
+	public BiMap<Integer, Object> objects = HashBiMap.create();
 	
 	public Object getObject(UUID uuid) {
 		return uuids.get(uuid);
@@ -20,9 +21,11 @@ public class Context {
 	
 	private int nextId = 0;
 	
-	public int getId(UUID uuid) {
+	public int getId(UUID uuid, Object object) {
 		if(!ids.containsKey(uuid)) {
-			ids.put(uuid, ++nextId);
+			int id = ++nextId;
+			ids.put(uuid, id);
+			objects.put(id, object);
 		}
 		return ids.get(uuid);
 	}

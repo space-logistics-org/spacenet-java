@@ -38,7 +38,7 @@ public class ResourceContainer extends Element {
 	@Override
 	public edu.mit.spacenet.domain.element.ResourceContainer toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.ResourceContainer e = new edu.mit.spacenet.domain.element.ResourceContainer();
-		e.setUid(context.getId(id));
+		e.setUid(context.getId(id, e));
 		e.setName(name);
 		e.setDescription(description);
 		e.setAccommodationMass(accommodatationMass);

@@ -17,7 +17,7 @@ public class ImpulseDemandModel extends DemandModel {
 	@Override
 	public edu.mit.spacenet.domain.model.TimedImpulseDemandModel toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.model.TimedImpulseDemandModel m = new edu.mit.spacenet.domain.model.TimedImpulseDemandModel();
-		m.setTid(context.getId(id));
+		m.setTid(context.getId(id, m));
 		m.setName(name);
 		m.setDescription(description);
 		m.setDemands(Resource.toSpaceNetSet(demands, context));

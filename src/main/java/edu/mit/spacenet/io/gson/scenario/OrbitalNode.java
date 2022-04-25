@@ -22,7 +22,7 @@ public class OrbitalNode extends Node {
 	
 	public edu.mit.spacenet.domain.network.node.OrbitalNode toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.network.node.OrbitalNode n = new edu.mit.spacenet.domain.network.node.OrbitalNode();
-		n.setTid(context.getId(id));
+		n.setTid(context.getId(id, n));
 		n.setName(name);
 		n.setDescription(description);
 		n.setBody(Body.getInstance(body_1));

@@ -42,7 +42,7 @@ public class SurfaceVehicle extends Carrier {
 	@Override
 	public edu.mit.spacenet.domain.element.SurfaceVehicle toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.SurfaceVehicle e = new edu.mit.spacenet.domain.element.SurfaceVehicle();
-		e.setUid(context.getId(id));
+		e.setUid(context.getId(id, e));
 		e.setName(name);
 		e.setDescription(description);
 		e.setAccommodationMass(accommodatationMass);

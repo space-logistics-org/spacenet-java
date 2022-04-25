@@ -48,7 +48,7 @@ public class State {
 	
 	public I_State toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.State s = new edu.mit.spacenet.domain.element.State();
-		s.setTid(context.getId(id));
+		s.setTid(context.getId(id, s));
 		s.setName(name);
 		s.setDescription(description);
 		s.setStateType(TYPE_MAP.get(type));

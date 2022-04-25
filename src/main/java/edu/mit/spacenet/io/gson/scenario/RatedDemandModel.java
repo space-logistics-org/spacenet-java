@@ -18,7 +18,7 @@ public class RatedDemandModel extends DemandModel {
 	@Override
 	public edu.mit.spacenet.domain.model.RatedDemandModel toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.model.RatedDemandModel m = new edu.mit.spacenet.domain.model.RatedDemandModel();
-		m.setTid(context.getId(id));
+		m.setTid(context.getId(id, m));
 		m.setName(name);
 		m.setDescription(description);
 		m.setDemandRates(Resource.toSpaceNetSet(demandRates, context));

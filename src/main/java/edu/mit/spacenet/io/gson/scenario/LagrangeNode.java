@@ -20,7 +20,7 @@ public class LagrangeNode extends Node {
 	
 	public edu.mit.spacenet.domain.network.node.LagrangeNode toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.network.node.LagrangeNode n = new edu.mit.spacenet.domain.network.node.LagrangeNode();
-		n.setTid(context.getId(id));
+		n.setTid(context.getId(id, n));
 		n.setName(name);
 		n.setDescription(description);
 		n.setBody(Body.getInstance(body_1));

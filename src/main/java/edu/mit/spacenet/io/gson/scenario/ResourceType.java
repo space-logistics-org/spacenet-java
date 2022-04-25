@@ -60,7 +60,7 @@ public class ResourceType {
 		} else {
 			r = new edu.mit.spacenet.domain.resource.Resource();
 		}
-		r.setTid(context.getId(id));
+		r.setTid(context.getId(id, r));
 		r.setName(name);
 		r.setDescription(description);
 		r.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));

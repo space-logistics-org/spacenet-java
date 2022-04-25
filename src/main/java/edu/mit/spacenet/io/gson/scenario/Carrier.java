@@ -39,7 +39,7 @@ public class Carrier extends Element {
 	@Override
 	public edu.mit.spacenet.domain.element.Carrier toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.Carrier e = new edu.mit.spacenet.domain.element.Carrier();
-		e.setUid(context.getId(id));
+		e.setUid(context.getId(id, e));
 		e.setName(name);
 		e.setDescription(description);
 		e.setAccommodationMass(accommodatationMass);

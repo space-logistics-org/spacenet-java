@@ -83,7 +83,7 @@ public class Element {
 	
 	public edu.mit.spacenet.domain.element.Element toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.Element e = new edu.mit.spacenet.domain.element.Element();
-		e.setUid(context.getId(id));
+		e.setUid(context.getId(id, e));
 		e.setName(name);
 		e.setDescription(description);
 		e.setAccommodationMass(accommodatationMass);

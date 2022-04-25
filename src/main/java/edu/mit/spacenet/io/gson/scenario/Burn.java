@@ -35,7 +35,7 @@ public class Burn {
 	
 	public edu.mit.spacenet.domain.network.edge.Burn toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.network.edge.Burn b = new edu.mit.spacenet.domain.network.edge.Burn();
-		b.setTid(context.getId(id));
+		b.setTid(context.getId(id, b));
 		b.setTime(time.getPeriod().getDays() + time.getDuration().getSeconds() / (24*60*60d));
 		b.setDeltaV(delta_v);
 		return b;

@@ -29,7 +29,7 @@ public class CrewMember extends Element {
 	@Override
 	public edu.mit.spacenet.domain.element.CrewMember toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.CrewMember e = new edu.mit.spacenet.domain.element.CrewMember();
-		e.setUid(context.getId(id));
+		e.setUid(context.getId(id, e));
 		e.setName(name);
 		e.setDescription(description);
 		e.setAccommodationMass(accommodatationMass);

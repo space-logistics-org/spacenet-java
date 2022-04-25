@@ -17,7 +17,7 @@ public class SurfaceEdge extends Edge {
 	
 	public edu.mit.spacenet.domain.network.edge.SurfaceEdge toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.network.edge.SurfaceEdge e = new edu.mit.spacenet.domain.network.edge.SurfaceEdge();
-		e.setTid(context.getId(id));
+		e.setTid(context.getId(id, e));
 		e.setName(name);
 		e.setDescription(description);
 		e.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(origin_id));

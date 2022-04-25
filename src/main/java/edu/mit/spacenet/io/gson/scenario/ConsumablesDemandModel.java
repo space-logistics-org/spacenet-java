@@ -69,7 +69,7 @@ public class ConsumablesDemandModel extends DemandModel {
 	@Override
 	public edu.mit.spacenet.domain.model.CrewConsumablesDemandModel toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.model.CrewConsumablesDemandModel m = new edu.mit.spacenet.domain.model.CrewConsumablesDemandModel((edu.mit.spacenet.scenario.Mission) context.getObject(mission));
-		m.setTid(context.getId(id));
+		m.setTid(context.getId(id, m));
 		m.setName(name);
 		m.setDescription(description);
 		m.setReservesDuration(reservesDuration);

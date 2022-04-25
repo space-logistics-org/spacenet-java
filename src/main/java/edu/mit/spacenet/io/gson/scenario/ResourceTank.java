@@ -36,7 +36,7 @@ public class ResourceTank extends Element {
 	@Override
 	public edu.mit.spacenet.domain.element.ResourceTank toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.ResourceTank e = new edu.mit.spacenet.domain.element.ResourceTank();
-		e.setUid(context.getId(id));
+		e.setUid(context.getId(id, e));
 		e.setName(name);
 		e.setDescription(description);
 		e.setAccommodationMass(accommodatationMass);

@@ -46,7 +46,7 @@ public class BurnStageAction {
 	public edu.mit.spacenet.simulator.event.BurnStageItem toSpaceNet(Context context) {
 		edu.mit.spacenet.simulator.event.BurnStageItem a = new edu.mit.spacenet.simulator.event.BurnStageItem();
 		a.setBurnStage(TYPE_MAP.get(type));
-		a.setElement((I_Element) context.getObject(element));
+		a.setElement((I_Element) context.getObjectViaId(element));
 		return a;
 	}
 	

@@ -43,19 +43,19 @@ public class Mission {
 		edu.mit.spacenet.scenario.Mission m = new edu.mit.spacenet.scenario.Mission(scenario);
 		m.setName(name);
 		m.setStartDate(start_date);
-		m.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(origin));
-		m.setDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(destination));
-		m.setReturnOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(return_origin));
-		m.setReturnDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(return_destination));
+		m.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObjectViaId(origin));
+		m.setDestination((edu.mit.spacenet.domain.network.node.Node) context.getObjectViaId(destination));
+		m.setReturnOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObjectViaId(return_origin));
+		m.setReturnDestination((edu.mit.spacenet.domain.network.node.Node) context.getObjectViaId(return_destination));
 		m.getEventList().addAll(Event.toSpaceNet(events, context));
 		m.getDemandModels().addAll(DemandModel.toSpaceNet(demand_models, context));
 		return m;
 	}
 	
-	public static List<edu.mit.spacenet.scenario.Mission> toSpaceNet(Scenario scenario, Context context) {
+	public static List<edu.mit.spacenet.scenario.Mission> toSpaceNet(Collection<Mission> missions, edu.mit.spacenet.scenario.Scenario scenario, Context context) {
 		List<edu.mit.spacenet.scenario.Mission> ms = new ArrayList<edu.mit.spacenet.scenario.Mission>();
-		for(Mission m : scenario.missions) {
-			ms.add(m.toSpaceNet(scenario.toSpaceNet(), context));
+		for(Mission m : missions) {
+			ms.add(m.toSpaceNet(scenario, context));
 		}
 		return ms;
 	}

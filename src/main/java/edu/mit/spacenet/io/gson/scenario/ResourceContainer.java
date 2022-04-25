@@ -5,7 +5,6 @@ import java.util.List;
 
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
-import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_State;
 
 public class ResourceContainer extends Element {
@@ -17,7 +16,6 @@ public class ResourceContainer extends Element {
 	public static ResourceContainer createFrom(edu.mit.spacenet.domain.element.ResourceContainer element, Context context) {
 		ResourceContainer e = new ResourceContainer();
 		e.id = context.getUUID(element);
-		e.type = TYPE_MAP.inverse().get(ElementType.RESOURCE_CONTAINER);
 		e.name = element.getName();
 		e.description = element.getDescription();
 		e.accommodatationMass = element.getAccommodationMass();
@@ -47,7 +45,7 @@ public class ResourceContainer extends Element {
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
 		e.setStates(State.toSpaceNet(states, context));
-		e.setCurrentState((I_State) context.getObject(currentState));
+		e.setCurrentState((I_State) context.getObjectViaId(currentState));
 		e.setParts(Part.toSpaceNet(parts, context));
 		e.setMaxCargoMass(maxCargoMass);
 		e.setMaxCargoVolume(maxCargoVolume);

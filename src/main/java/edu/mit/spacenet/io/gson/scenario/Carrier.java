@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
-import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_State;
 
 public class Carrier extends Element {
@@ -18,7 +17,6 @@ public class Carrier extends Element {
 	public static Carrier createFrom(edu.mit.spacenet.domain.element.Carrier element, Context context) {
 		Carrier e = new Carrier();
 		e.id = context.getUUID(element);
-		e.type = TYPE_MAP.inverse().get(ElementType.CARRIER);
 		e.name = element.getName();
 		e.description = element.getDescription();
 		e.accommodatationMass = element.getAccommodationMass();
@@ -48,7 +46,7 @@ public class Carrier extends Element {
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
 		e.setStates(State.toSpaceNet(states, context));
-		e.setCurrentState((I_State) context.getObject(currentState));
+		e.setCurrentState((I_State) context.getObjectViaId(currentState));
 		e.setParts(Part.toSpaceNet(parts, context));
 		e.setMaxCargoMass(maxCargoMass);
 		e.setMaxCargoVolume(maxCargoVolume);

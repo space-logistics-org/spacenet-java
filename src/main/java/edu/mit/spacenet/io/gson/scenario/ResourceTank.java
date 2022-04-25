@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
-import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_State;
 import edu.mit.spacenet.domain.resource.I_Resource;
 
@@ -16,7 +15,6 @@ public class ResourceTank extends Element {
 	public static ResourceTank createFrom(edu.mit.spacenet.domain.element.ResourceTank element, Context context) {
 		ResourceTank e = new ResourceTank();
 		e.id = context.getUUID(element);
-		e.type = TYPE_MAP.inverse().get(ElementType.RESOURCE_TANK);
 		e.name = element.getName();
 		e.description = element.getDescription();
 		e.accommodatationMass = element.getAccommodationMass();
@@ -45,9 +43,9 @@ public class ResourceTank extends Element {
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
 		e.setStates(State.toSpaceNet(states, context));
-		e.setCurrentState((I_State) context.getObject(currentState));
+		e.setCurrentState((I_State) context.getObjectViaId(currentState));
 		e.setParts(Part.toSpaceNet(parts, context));
-		e.setResource((I_Resource) context.getObject(resource));
+		e.setResource((I_Resource) context.getObjectViaId(resource));
 		e.setMaxAmount(maxAmount);
 		e.setAmount(amount);
 		return e;

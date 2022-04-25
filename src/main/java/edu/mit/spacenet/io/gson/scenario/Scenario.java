@@ -49,28 +49,28 @@ public class Scenario {
 		s.setStartDate(startDate);
 		s.setScenarioType(TYPE_MAP.get(scenarioType));
 		Context context = new Context();
-		List<edu.mit.spacenet.domain.network.Location> ls = Location.toSpaceNet(locations, context);
 		// load nodes
-		for(edu.mit.spacenet.domain.network.Location l : ls) {
-			if(l.isNode()) {
-				s.getNetwork().add(l);
+		for(Location location : locations) {
+			if(location instanceof Node) {
+				s.getNetwork().add(location.toSpaceNet(context));
 			}
 		}
 		// load edges (must be after nodes due to runtime dependency)
-		for(edu.mit.spacenet.domain.network.Location l : ls) {
-			if(!l.isNode()) {
-				s.getNetwork().add(l);
+		for(Location location : locations) {
+			if(location instanceof Edge) {
+				s.getNetwork().add(location.toSpaceNet(context));
 			}
 		}
 		// load resources
 		for(ResourceType r : resources) {
-			context.getUUID(r);
+			context.getId(r.id, r.toSpaceNet(context));
 		}
 		// load elements
 		for(Element e : elements) {
-			context.getUUID(e);
+			context.getId(e.id, e.toSpaceNet(context));
 		}
-		s.getMissionList().addAll(Mission.toSpaceNet(this, context));
+
+		s.getMissionList().addAll(Mission.toSpaceNet(missions, s, context));
 		return s;
 	}
 }

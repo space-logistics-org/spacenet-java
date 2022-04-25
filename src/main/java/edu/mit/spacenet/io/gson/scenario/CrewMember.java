@@ -2,7 +2,6 @@ package edu.mit.spacenet.io.gson.scenario;
 
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
-import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_State;
 
 public class CrewMember extends Element {
@@ -11,7 +10,6 @@ public class CrewMember extends Element {
 	public static CrewMember createFrom(edu.mit.spacenet.domain.element.CrewMember element, Context context) {
 		CrewMember e = new CrewMember();
 		e.id = context.getUUID(element);
-		e.type = TYPE_MAP.inverse().get(ElementType.RESOURCE_CONTAINER);
 		e.name = element.getName();
 		e.description = element.getDescription();
 		e.accommodatationMass = element.getAccommodationMass();
@@ -38,7 +36,7 @@ public class CrewMember extends Element {
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
 		e.setStates(State.toSpaceNet(states, context));
-		e.setCurrentState((I_State) context.getObject(currentState));
+		e.setCurrentState((I_State) context.getObjectViaId(currentState));
 		e.setParts(Part.toSpaceNet(parts, context));
 		e.setAvailableTimeFraction(availableTimeFraction);
 		return e;

@@ -34,13 +34,6 @@ public abstract class Node extends Location {
 		super();
 	}
 	
-	/* (non-Javadoc)
-	 * @see edu.mit.spacenet.domain.network.Location#isNode()
-	 */
-	public boolean isNode() {
-		return true;
-	}
-	
 	/**
 	 * Gets the main body associated with the node.
 	 * 

@@ -28,7 +28,6 @@ public class Element {
 			.build();
 
 	public UUID id;
-	public String type;
 	public String name;
 	public String description;
 	public double accommodatationMass;
@@ -44,7 +43,6 @@ public class Element {
 		if(element.getElementType() == ElementType.ELEMENT) {
 			Element e = new Element();
 			e.id = context.getUUID(element);
-			e.type = TYPE_MAP.inverse().get(ElementType.ELEMENT);
 			e.name = element.getName();
 			e.description = element.getDescription();
 			e.accommodatationMass = element.getAccommodationMass();
@@ -92,7 +90,7 @@ public class Element {
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
 		e.setStates(State.toSpaceNet(states, context));
-		e.setCurrentState((I_State) context.getObject(currentState));
+		e.setCurrentState((I_State) context.getObjectViaId(currentState));
 		e.setParts(Part.toSpaceNet(parts, context));
 		return e;
 	}
@@ -101,7 +99,7 @@ public class Element {
 		SortedSet<I_Element> es = new TreeSet<I_Element>();
 		if(elements != null) {
 			for(UUID uuid : elements) {
-				es.add(((I_Element) context.getObject(uuid)));
+				es.add(((I_Element) context.getObjectViaId(uuid)));
 			}
 		}
 		return es;

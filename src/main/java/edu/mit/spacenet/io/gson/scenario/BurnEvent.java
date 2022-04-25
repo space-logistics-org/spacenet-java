@@ -33,7 +33,7 @@ public class BurnEvent extends Event {
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
 		e.setElements(Element.toSpaceNet(elements, context));
-		e.setBurn((edu.mit.spacenet.domain.network.edge.Burn) context.getObject(burn));
+		e.setBurn((edu.mit.spacenet.domain.network.edge.Burn) context.getObjectViaId(burn));
 		e.setBurnStateSequence(BurnStageAction._toSpaceNet(actions, context));
 		return e;
 	}

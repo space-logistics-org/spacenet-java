@@ -19,6 +19,10 @@ public class Context {
 		return uuids.get(uuid);
 	}
 	
+	public Object getObjectViaId(UUID uuid) {
+		return objects.get(ids.get(uuid));
+	}
+	
 	private int nextId = 0;
 	
 	public int getId(UUID uuid, Object object) {

@@ -52,7 +52,7 @@ public class Resource {
 
 	public edu.mit.spacenet.domain.resource.Demand toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.resource.Demand d = new edu.mit.spacenet.domain.resource.Demand();
-		d.setResource((I_Resource) context.getObject(type));
+		d.setResource((I_Resource) context.getObjectViaId(type));
 		d.setAmount(amount);
 		return d;
 	}

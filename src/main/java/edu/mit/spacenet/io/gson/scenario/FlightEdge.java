@@ -32,8 +32,8 @@ public class FlightEdge extends Edge {
 		e.setTid(context.getId(id, e));
 		e.setName(name);
 		e.setDescription(description);
-		e.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(origin_id));
-		e.setDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(destination_id));
+		e.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObjectViaId(origin_id));
+		e.setDestination((edu.mit.spacenet.domain.network.node.Node) context.getObjectViaId(destination_id));
 		e.setDuration(duration.getPeriod().getDays() + duration.getDuration().getSeconds() / (24*60*60d));
 		e.setMaxCrewSize(max_crew);
 		e.setMaxCargoMass(max_cargo);

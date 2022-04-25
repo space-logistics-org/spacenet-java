@@ -32,7 +32,7 @@ public class SpaceTransport extends Event {
 		e.setName(name);
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
-		e.setEdge((edu.mit.spacenet.domain.network.edge.SpaceEdge) context.getObject(edge));
+		e.setEdge((edu.mit.spacenet.domain.network.edge.SpaceEdge) context.getObjectViaId(edge));
 		e.setElements(Element.toSpaceNet(elements, context));
 		e.getBurnStageSequence().addAll(BurnStageAction.toSpaceNet(burnStageSequence, context));
 		return e;

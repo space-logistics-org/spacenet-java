@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
-import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_State;
 import edu.mit.spacenet.domain.resource.I_Resource;
 
@@ -17,7 +16,6 @@ public class PropulsiveVehicle extends Carrier {
 	public static PropulsiveVehicle createFrom(edu.mit.spacenet.domain.element.PropulsiveVehicle element, Context context) {
 		PropulsiveVehicle e = new PropulsiveVehicle();
 		e.id = context.getUUID(element);
-		e.type = TYPE_MAP.inverse().get(ElementType.PROPULSIVE_VEHICLE);
 		e.name = element.getName();
 		e.description = element.getDescription();
 		e.accommodatationMass = element.getAccommodationMass();
@@ -57,7 +55,7 @@ public class PropulsiveVehicle extends Carrier {
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
 		e.setStates(State.toSpaceNet(states, context));
-		e.setCurrentState((I_State) context.getObject(currentState));
+		e.setCurrentState((I_State) context.getObjectViaId(currentState));
 		e.setParts(Part.toSpaceNet(parts, context));
 		e.setMaxCargoMass(maxCargoMass);
 		e.setMaxCargoVolume(maxCargoVolume);

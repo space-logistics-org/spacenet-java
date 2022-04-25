@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
-import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_State;
 import edu.mit.spacenet.domain.resource.I_Resource;
 
@@ -17,7 +16,6 @@ public class SurfaceVehicle extends Carrier {
 	public static SurfaceVehicle createFrom(edu.mit.spacenet.domain.element.SurfaceVehicle element, Context context) {
 		SurfaceVehicle e = new SurfaceVehicle();
 		e.id = context.getUUID(element);
-		e.type = TYPE_MAP.inverse().get(ElementType.SURFACE_VEHICLE);
 		e.name = element.getName();
 		e.description = element.getDescription();
 		e.accommodatationMass = element.getAccommodationMass();
@@ -51,7 +49,7 @@ public class SurfaceVehicle extends Carrier {
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
 		e.setStates(State.toSpaceNet(states, context));
-		e.setCurrentState((I_State) context.getObject(currentState));
+		e.setCurrentState((I_State) context.getObjectViaId(currentState));
 		e.setParts(Part.toSpaceNet(parts, context));
 		e.setMaxCargoMass(maxCargoMass);
 		e.setMaxCargoVolume(maxCargoVolume);

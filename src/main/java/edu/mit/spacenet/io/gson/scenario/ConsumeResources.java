@@ -34,9 +34,9 @@ public class ConsumeResources extends Event {
 		e.setName(name);
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
-		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObject(location));
+		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObjectViaId(location));
 		e.setDemands(Resource.toSpaceNet(resources, context));
-		e.setElement((I_Element) context.getObject(source));
+		e.setElement((I_Element) context.getObjectViaId(source));
 		return e;
 	}
 

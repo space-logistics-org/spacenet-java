@@ -49,6 +49,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.google.gson.typeadapters.UtcDateTypeAdapter;
 
+import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.model.DemandModelType;
 import edu.mit.spacenet.domain.network.edge.EdgeType;
 import edu.mit.spacenet.domain.network.node.NodeType;
@@ -60,11 +61,14 @@ import edu.mit.spacenet.io.gson.demands.AggregatedDemandsAnalysis;
 import edu.mit.spacenet.io.gson.demands.RawDemandsAnalysis;
 import edu.mit.spacenet.io.gson.scenario.AddResources;
 import edu.mit.spacenet.io.gson.scenario.BurnEvent;
+import edu.mit.spacenet.io.gson.scenario.Carrier;
 import edu.mit.spacenet.io.gson.scenario.ConsumablesDemandModel;
 import edu.mit.spacenet.io.gson.scenario.ConsumeResources;
 import edu.mit.spacenet.io.gson.scenario.CreateElements;
+import edu.mit.spacenet.io.gson.scenario.CrewMember;
 import edu.mit.spacenet.io.gson.scenario.DemandModel;
 import edu.mit.spacenet.io.gson.scenario.Edge;
+import edu.mit.spacenet.io.gson.scenario.Element;
 import edu.mit.spacenet.io.gson.scenario.EvaEvent;
 import edu.mit.spacenet.io.gson.scenario.Event;
 import edu.mit.spacenet.io.gson.scenario.Exploration;
@@ -77,16 +81,20 @@ import edu.mit.spacenet.io.gson.scenario.MoveElements;
 import edu.mit.spacenet.io.gson.scenario.Node;
 import edu.mit.spacenet.io.gson.scenario.OrbitalNode;
 import edu.mit.spacenet.io.gson.scenario.PeriodDurationTypeAdpater;
+import edu.mit.spacenet.io.gson.scenario.PropulsiveVehicle;
 import edu.mit.spacenet.io.gson.scenario.RatedDemandModel;
 import edu.mit.spacenet.io.gson.scenario.ReconfigureElement;
 import edu.mit.spacenet.io.gson.scenario.ReconfigureElements;
 import edu.mit.spacenet.io.gson.scenario.RemoveElements;
+import edu.mit.spacenet.io.gson.scenario.ResourceContainer;
+import edu.mit.spacenet.io.gson.scenario.ResourceTank;
 import edu.mit.spacenet.io.gson.scenario.SpaceEdge;
 import edu.mit.spacenet.io.gson.scenario.SpaceTransport;
 import edu.mit.spacenet.io.gson.scenario.SparingByMassDemandModel;
 import edu.mit.spacenet.io.gson.scenario.SurfaceEdge;
 import edu.mit.spacenet.io.gson.scenario.SurfaceNode;
 import edu.mit.spacenet.io.gson.scenario.SurfaceTransport;
+import edu.mit.spacenet.io.gson.scenario.SurfaceVehicle;
 import edu.mit.spacenet.io.gson.scenario.TransferResources;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.simulator.DemandSimulator;
@@ -232,6 +240,15 @@ public class SpaceNet {
 						.registerSubtype(ImpulseDemandModel.class, DemandModel.TYPE_MAP.inverse().get(DemandModelType.TIMED_IMPULSE))
 						.registerSubtype(SparingByMassDemandModel.class, DemandModel.TYPE_MAP.inverse().get(DemandModelType.SPARING_BY_MASS))
 						.registerSubtype(ConsumablesDemandModel.class, DemandModel.TYPE_MAP.inverse().get(DemandModelType.CREW_CONSUMABLES));
+				RuntimeTypeAdapterFactory<Element> elementAdapterFactory = RuntimeTypeAdapterFactory
+						.of(Element.class, "type")
+						.registerSubtype(Element.class, Element.TYPE_MAP.inverse().get(ElementType.ELEMENT))
+						.registerSubtype(CrewMember.class, Element.TYPE_MAP.inverse().get(ElementType.CREW_MEMBER))
+						.registerSubtype(ResourceContainer.class, Element.TYPE_MAP.inverse().get(ElementType.RESOURCE_CONTAINER))
+						.registerSubtype(ResourceTank.class, Element.TYPE_MAP.inverse().get(ElementType.RESOURCE_TANK))
+						.registerSubtype(Carrier.class, Element.TYPE_MAP.inverse().get(ElementType.CARRIER))
+						.registerSubtype(PropulsiveVehicle.class, Element.TYPE_MAP.inverse().get(ElementType.PROPULSIVE_VEHICLE))
+						.registerSubtype(SurfaceVehicle.class, Element.TYPE_MAP.inverse().get(ElementType.SURFACE_VEHICLE));
 				
 				Gson gson = new GsonBuilder()
 						.registerTypeAdapter(Date.class, new UtcDateTypeAdapter())
@@ -239,6 +256,7 @@ public class SpaceNet {
 						.registerTypeAdapterFactory(locationAdapterFactory)
 						.registerTypeAdapterFactory(eventAdapterFactory)
 						.registerTypeAdapterFactory(demandModelAdapterFactory)
+						.registerTypeAdapterFactory(elementAdapterFactory)
 						.create();
 				
 				

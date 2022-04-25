@@ -38,10 +38,10 @@ public class SurfaceTransport extends Event {
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
 		e.setDutyCycle(dutyCycle);
-		e.setVehicle((edu.mit.spacenet.domain.element.SurfaceVehicle) context.getObject(vehicle));
-		e.setTransportState((I_State) context.getObject(transportState));
+		e.setVehicle((edu.mit.spacenet.domain.element.SurfaceVehicle) context.getObjectViaId(vehicle));
+		e.setTransportState((I_State) context.getObjectViaId(transportState));
 		e.setSpeed(speed);
-		e.setEdge((edu.mit.spacenet.domain.network.edge.SurfaceEdge) context.getObject(edge));
+		e.setEdge((edu.mit.spacenet.domain.network.edge.SurfaceEdge) context.getObjectViaId(edge));
 		return e;
 	}
 

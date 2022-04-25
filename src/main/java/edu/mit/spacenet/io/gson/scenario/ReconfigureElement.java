@@ -34,9 +34,9 @@ public class ReconfigureElement extends Event {
 		e.setName(name);
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
-		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObject(location));
-		e.setElement((I_Element) context.getObject(element));
-		e.setState((I_State) context.getObject(state));
+		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObjectViaId(location));
+		e.setElement((I_Element) context.getObjectViaId(element));
+		e.setState((I_State) context.getObjectViaId(state));
 		return e;
 	}
 

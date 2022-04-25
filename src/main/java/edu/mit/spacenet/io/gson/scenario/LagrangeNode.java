@@ -1,7 +1,6 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import edu.mit.spacenet.domain.network.node.Body;
-import edu.mit.spacenet.domain.network.node.NodeType;
 
 public class LagrangeNode extends Node {
 	public String body_2;
@@ -12,7 +11,6 @@ public class LagrangeNode extends Node {
 		n.id = context.getUUID(node);
 		n.name = node.getName();
 		n.description = node.getDescription();
-		n.type = TYPE_MAP.inverse().get(NodeType.LAGRANGE);
 		n.body_1 = node.getBody().getName();
 		n.body_2 = node.getMinorBody().getName();
 		n.lp_number = node.getNumber();

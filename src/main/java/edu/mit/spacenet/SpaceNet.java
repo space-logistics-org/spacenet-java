@@ -46,17 +46,51 @@ import org.threeten.extra.PeriodDuration;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.google.gson.typeadapters.UtcDateTypeAdapter;
 
+import edu.mit.spacenet.domain.model.DemandModelType;
+import edu.mit.spacenet.domain.network.edge.EdgeType;
+import edu.mit.spacenet.domain.network.node.NodeType;
 import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.gui.SplashScreen;
 import edu.mit.spacenet.io.XStreamEngine;
 import edu.mit.spacenet.io.gson.demands.AggregatedDemandsAnalysis;
 import edu.mit.spacenet.io.gson.demands.RawDemandsAnalysis;
+import edu.mit.spacenet.io.gson.scenario.AddResources;
+import edu.mit.spacenet.io.gson.scenario.BurnEvent;
+import edu.mit.spacenet.io.gson.scenario.ConsumablesDemandModel;
+import edu.mit.spacenet.io.gson.scenario.ConsumeResources;
+import edu.mit.spacenet.io.gson.scenario.CreateElements;
+import edu.mit.spacenet.io.gson.scenario.DemandModel;
+import edu.mit.spacenet.io.gson.scenario.Edge;
+import edu.mit.spacenet.io.gson.scenario.EvaEvent;
+import edu.mit.spacenet.io.gson.scenario.Event;
+import edu.mit.spacenet.io.gson.scenario.Exploration;
+import edu.mit.spacenet.io.gson.scenario.FlightEdge;
+import edu.mit.spacenet.io.gson.scenario.FlightTransport;
+import edu.mit.spacenet.io.gson.scenario.ImpulseDemandModel;
+import edu.mit.spacenet.io.gson.scenario.LagrangeNode;
+import edu.mit.spacenet.io.gson.scenario.Location;
+import edu.mit.spacenet.io.gson.scenario.MoveElements;
+import edu.mit.spacenet.io.gson.scenario.Node;
+import edu.mit.spacenet.io.gson.scenario.OrbitalNode;
+import edu.mit.spacenet.io.gson.scenario.PeriodDurationTypeAdpater;
+import edu.mit.spacenet.io.gson.scenario.RatedDemandModel;
+import edu.mit.spacenet.io.gson.scenario.ReconfigureElement;
+import edu.mit.spacenet.io.gson.scenario.ReconfigureElements;
+import edu.mit.spacenet.io.gson.scenario.RemoveElements;
+import edu.mit.spacenet.io.gson.scenario.SpaceEdge;
+import edu.mit.spacenet.io.gson.scenario.SpaceTransport;
+import edu.mit.spacenet.io.gson.scenario.SparingByMassDemandModel;
+import edu.mit.spacenet.io.gson.scenario.SurfaceEdge;
+import edu.mit.spacenet.io.gson.scenario.SurfaceNode;
+import edu.mit.spacenet.io.gson.scenario.SurfaceTransport;
+import edu.mit.spacenet.io.gson.scenario.TransferResources;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.simulator.DemandSimulator;
-import edu.mit.spacenet.util.DurationTypeAdpater;
+import edu.mit.spacenet.simulator.event.EventType;
 
 /**
  * This class is used to launch the SpaceNet application.
@@ -168,15 +202,55 @@ public class SpaceNet {
 				
 				// FIXME temporary code
 				BufferedWriter out = new BufferedWriter(new FileWriter(scenarioFilePath.replace("xml", "json")));
+				RuntimeTypeAdapterFactory<Location> locationAdapterFactory = RuntimeTypeAdapterFactory
+						.of(Location.class, "type")
+						.registerSubtype(SurfaceNode.class, Node.TYPE_MAP.inverse().get(NodeType.SURFACE))
+						.registerSubtype(OrbitalNode.class, Node.TYPE_MAP.inverse().get(NodeType.ORBITAL))
+						.registerSubtype(LagrangeNode.class, Node.TYPE_MAP.inverse().get(NodeType.LAGRANGE))
+						.registerSubtype(SurfaceEdge.class, Edge.TYPE_MAP.inverse().get(EdgeType.SURFACE))
+						.registerSubtype(SpaceEdge.class, Edge.TYPE_MAP.inverse().get(EdgeType.SPACE))
+						.registerSubtype(FlightEdge.class, Edge.TYPE_MAP.inverse().get(EdgeType.FLIGHT));
+				RuntimeTypeAdapterFactory<Event> eventAdapterFactory = RuntimeTypeAdapterFactory
+						.of(Event.class, "type")
+						.registerSubtype(CreateElements.class, Event.TYPE_MAP.inverse().get(EventType.CREATE))
+						.registerSubtype(MoveElements.class, Event.TYPE_MAP.inverse().get(EventType.MOVE))
+						.registerSubtype(RemoveElements.class, Event.TYPE_MAP.inverse().get(EventType.REMOVE))
+						.registerSubtype(AddResources.class, Event.TYPE_MAP.inverse().get(EventType.ADD))
+						.registerSubtype(ConsumeResources.class, Event.TYPE_MAP.inverse().get(EventType.DEMAND))
+						.registerSubtype(TransferResources.class, Event.TYPE_MAP.inverse().get(EventType.TRANSFER))
+						.registerSubtype(BurnEvent.class, Event.TYPE_MAP.inverse().get(EventType.BURN))
+						.registerSubtype(ReconfigureElement.class, Event.TYPE_MAP.inverse().get(EventType.RECONFIGURE))
+						.registerSubtype(ReconfigureElements.class, Event.TYPE_MAP.inverse().get(EventType.RECONFIGURE_GROUP))
+						.registerSubtype(EvaEvent.class, Event.TYPE_MAP.inverse().get(EventType.EVA))
+						.registerSubtype(Exploration.class, Event.TYPE_MAP.inverse().get(EventType.EXPLORATION))
+						.registerSubtype(SpaceTransport.class, Event.TYPE_MAP.inverse().get(EventType.SPACE_TRANSPORT))
+						.registerSubtype(SurfaceTransport.class, Event.TYPE_MAP.inverse().get(EventType.SURFACE_TRANSPORT))
+						.registerSubtype(FlightTransport.class, Event.TYPE_MAP.inverse().get(EventType.FLIGHT_TRANSPORT));
+				RuntimeTypeAdapterFactory<DemandModel> demandModelAdapterFactory = RuntimeTypeAdapterFactory
+						.of(DemandModel.class, "type")
+						.registerSubtype(RatedDemandModel.class, DemandModel.TYPE_MAP.inverse().get(DemandModelType.RATED))
+						.registerSubtype(ImpulseDemandModel.class, DemandModel.TYPE_MAP.inverse().get(DemandModelType.TIMED_IMPULSE))
+						.registerSubtype(SparingByMassDemandModel.class, DemandModel.TYPE_MAP.inverse().get(DemandModelType.SPARING_BY_MASS))
+						.registerSubtype(ConsumablesDemandModel.class, DemandModel.TYPE_MAP.inverse().get(DemandModelType.CREW_CONSUMABLES));
+				
 				Gson gson = new GsonBuilder()
 						.registerTypeAdapter(Date.class, new UtcDateTypeAdapter())
-						.registerTypeAdapter(PeriodDuration.class, new DurationTypeAdpater())
+						.registerTypeAdapter(PeriodDuration.class, new PeriodDurationTypeAdpater())
+						.registerTypeAdapterFactory(locationAdapterFactory)
+						.registerTypeAdapterFactory(eventAdapterFactory)
+						.registerTypeAdapterFactory(demandModelAdapterFactory)
 						.create();
+				
+				
 				gson.toJson(
 					edu.mit.spacenet.io.gson.scenario.Scenario.createFrom(scenario),
 					out
 				);
 				out.close();
+
+				BufferedReader in = new BufferedReader(new FileReader(scenarioFilePath.replace("xml", "json")));
+				scenario = gson.fromJson(in, edu.mit.spacenet.io.gson.scenario.Scenario.class).toSpaceNet();
+				in.close();
 				// FIXME
 			} catch(IOException ex) {
 				System.err.println("Failed to read scenario file: " + ex.getMessage());

@@ -2,8 +2,6 @@ package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.UUID;
 
-import edu.mit.spacenet.domain.model.DemandModelType;
-
 public class ConsumablesDemandModel extends DemandModel {	
 	public UUID mission; // TODO remove
 	public double reservesDuration;
@@ -36,7 +34,6 @@ public class ConsumablesDemandModel extends DemandModel {
 	public static ConsumablesDemandModel createFrom(edu.mit.spacenet.domain.model.CrewConsumablesDemandModel demandModel, Context context) {
 		ConsumablesDemandModel m = new ConsumablesDemandModel();
 		m.id = context.getUUID(demandModel);
-		m.type = TYPE_MAP.inverse().get(DemandModelType.CREW_CONSUMABLES);
 		m.name = demandModel.getName();
 		m.description = demandModel.getDescription();
 		m.mission = context.getUUID(demandModel.getMission());

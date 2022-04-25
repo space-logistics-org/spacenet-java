@@ -1,7 +1,5 @@
 package edu.mit.spacenet.io.gson.scenario;
 
-import edu.mit.spacenet.domain.network.edge.EdgeType;
-
 public class SurfaceEdge extends Edge {
 	public double distance;
 
@@ -10,7 +8,6 @@ public class SurfaceEdge extends Edge {
 		e.id = context.getUUID(edge);
 		e.name = edge.getName();
 		e.description = edge.getDescription();
-		e.type = TYPE_MAP.inverse().get(EdgeType.SURFACE);
 		e.origin_id = context.getUUID(edge.getOrigin());
 		e.destination_id = context.getUUID(edge.getDestination());
 		e.distance = edge.getDistance();

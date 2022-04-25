@@ -5,15 +5,18 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import org.threeten.extra.PeriodDuration;
 
 public class Burn {
+	public UUID id;
 	public PeriodDuration time;
 	public double delta_v;
 
-	public static Burn createFrom(edu.mit.spacenet.domain.network.edge.Burn burn) {
+	public static Burn createFrom(edu.mit.spacenet.domain.network.edge.Burn burn, Context context) {
 		Burn b = new Burn();
+		b.id = context.getUUID(burn);
 		b.time = PeriodDuration.of(
 				Period.ofDays((int) burn.getTime()), 
 				Duration.ofSeconds((long) (burn.getTime() - (int) burn.getTime())*24*60*60)
@@ -22,25 +25,26 @@ public class Burn {
 		return b;
 	}
 	
-	public static List<Burn> createFrom(Collection<edu.mit.spacenet.domain.network.edge.Burn> burns) {
+	public static List<Burn> createFrom(Collection<edu.mit.spacenet.domain.network.edge.Burn> burns, Context context) {
 		List<Burn> bs = new ArrayList<Burn>();
 		for(edu.mit.spacenet.domain.network.edge.Burn burn : burns) {
-			bs.add(Burn.createFrom(burn));
+			bs.add(Burn.createFrom(burn, context));
 		}
 		return bs;
 	}
 	
-	public edu.mit.spacenet.domain.network.edge.Burn toSpaceNet() {
+	public edu.mit.spacenet.domain.network.edge.Burn toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.network.edge.Burn b = new edu.mit.spacenet.domain.network.edge.Burn();
+		b.setTid(context.getId(id));
 		b.setTime(time.getPeriod().getDays() + time.getDuration().getSeconds() / (24*60*60d));
 		b.setDeltaV(delta_v);
 		return b;
 	}
 	
-	public static List<edu.mit.spacenet.domain.network.edge.Burn> toSpaceNet(Collection<Burn> burns) {
+	public static List<edu.mit.spacenet.domain.network.edge.Burn> toSpaceNet(Collection<Burn> burns, Context context) {
 		List<edu.mit.spacenet.domain.network.edge.Burn> bs = new ArrayList<edu.mit.spacenet.domain.network.edge.Burn>();
 		for(Burn b : burns) {
-			bs.add(b.toSpaceNet());
+			bs.add(b.toSpaceNet(context));
 		}
 		return bs;
 	}

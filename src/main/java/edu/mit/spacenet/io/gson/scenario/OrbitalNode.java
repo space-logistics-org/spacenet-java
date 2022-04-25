@@ -1,7 +1,6 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import edu.mit.spacenet.domain.network.node.Body;
-import edu.mit.spacenet.domain.network.node.NodeType;
 
 public class OrbitalNode extends Node {
 	public double inclination;
@@ -13,7 +12,6 @@ public class OrbitalNode extends Node {
 		n.id = context.getUUID(node);
 		n.name = node.getName();
 		n.description = node.getDescription();
-		n.type = TYPE_MAP.inverse().get(NodeType.ORBITAL);
 		n.body_1 = node.getBody().getName();
 		n.inclination = node.getInclination();
 		n.periapsis = node.getPeriapsis();

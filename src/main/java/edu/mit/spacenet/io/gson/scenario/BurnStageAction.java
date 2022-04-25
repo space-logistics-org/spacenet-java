@@ -27,7 +27,7 @@ public class BurnStageAction {
 		return a;
 	}
 	
-	private static List<BurnStageAction> _createFrom(Collection<edu.mit.spacenet.simulator.event.BurnStageItem> actions, Context context) {
+	public static List<BurnStageAction> _createFrom(Collection<edu.mit.spacenet.simulator.event.BurnStageItem> actions, Context context) {
 		List<BurnStageAction> as = new ArrayList<BurnStageAction>();
 		for(edu.mit.spacenet.simulator.event.BurnStageItem action : actions) {
 			as.add(BurnStageAction.createFrom(action, context));
@@ -50,7 +50,7 @@ public class BurnStageAction {
 		return a;
 	}
 	
-	private static List<edu.mit.spacenet.simulator.event.BurnStageItem> _toSpaceNet(Collection<BurnStageAction> actions, Context context) {
+	public static List<edu.mit.spacenet.simulator.event.BurnStageItem> _toSpaceNet(Collection<BurnStageAction> actions, Context context) {
 		List<edu.mit.spacenet.simulator.event.BurnStageItem> as = new ArrayList<edu.mit.spacenet.simulator.event.BurnStageItem>();
 		for(BurnStageAction a : actions) {
 			as.add(a.toSpaceNet(context));

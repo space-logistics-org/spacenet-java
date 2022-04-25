@@ -8,7 +8,6 @@ import java.util.UUID;
 import org.threeten.extra.PeriodDuration;
 
 import edu.mit.spacenet.domain.element.I_Element;
-import edu.mit.spacenet.simulator.event.EventType;
 
 public class ConsumeResources extends Event {
 
@@ -17,7 +16,6 @@ public class ConsumeResources extends Event {
 
 	public static ConsumeResources createFrom(edu.mit.spacenet.simulator.event.DemandEvent event, Context context) {
 		ConsumeResources e = new ConsumeResources();
-		e.type = TYPE_MAP.inverse().get(EventType.DEMAND);
 		e.name = event.getName();
 		e.mission_time = PeriodDuration.of(
 				Period.ofDays((int) event.getTime()), 

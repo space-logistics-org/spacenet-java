@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.threeten.extra.PeriodDuration;
 
 import edu.mit.spacenet.domain.element.I_State;
-import edu.mit.spacenet.simulator.event.EventType;
 
 public class SurfaceTransport extends Event {
 	public double dutyCycle;
@@ -18,7 +17,6 @@ public class SurfaceTransport extends Event {
 
 	public static SurfaceTransport createFrom(edu.mit.spacenet.simulator.event.SurfaceTransport event, Context context) {
 		SurfaceTransport e = new SurfaceTransport();
-		e.type = TYPE_MAP.inverse().get(EventType.SURFACE_TRANSPORT);
 		e.name = event.getName();
 		e.mission_time = PeriodDuration.of(
 				Period.ofDays((int) event.getTime()), 

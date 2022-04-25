@@ -8,7 +8,6 @@ import org.threeten.extra.PeriodDuration;
 
 import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.element.I_State;
-import edu.mit.spacenet.simulator.event.EventType;
 
 public class ReconfigureElement extends Event {
 	
@@ -17,7 +16,6 @@ public class ReconfigureElement extends Event {
 
 	public static ReconfigureElement createFrom(edu.mit.spacenet.simulator.event.ReconfigureEvent event, Context context) {
 		ReconfigureElement e = new ReconfigureElement();
-		e.type = TYPE_MAP.inverse().get(EventType.REMOVE);
 		e.name = event.getName();
 		e.mission_time = PeriodDuration.of(
 				Period.ofDays((int) event.getTime()), 

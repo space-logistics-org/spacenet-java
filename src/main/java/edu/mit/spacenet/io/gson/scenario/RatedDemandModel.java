@@ -3,15 +3,12 @@ package edu.mit.spacenet.io.gson.scenario;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.mit.spacenet.domain.model.DemandModelType;
-
 public class RatedDemandModel extends DemandModel {
 	public List<Resource> demandRates = new ArrayList<Resource>();
 
 	public static RatedDemandModel createFrom(edu.mit.spacenet.domain.model.RatedDemandModel demandModel, Context context) {
 		RatedDemandModel m = new RatedDemandModel();
 		m.id = context.getUUID(demandModel);
-		m.type = TYPE_MAP.inverse().get(DemandModelType.RATED);
 		m.name = demandModel.getName();
 		m.description = demandModel.getDescription();
 		m.demandRates = Resource.createFrom(demandModel.getDemandRates(), context);

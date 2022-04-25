@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.threeten.extra.PeriodDuration;
 
-import edu.mit.spacenet.domain.network.edge.EdgeType;
-
 public class SpaceEdge extends Edge {
 	public PeriodDuration duration;
 	public List<Burn> burns;
@@ -17,14 +15,13 @@ public class SpaceEdge extends Edge {
 		e.id = context.getUUID(edge);
 		e.name = edge.getName();
 		e.description = edge.getDescription();
-		e.type = TYPE_MAP.inverse().get(EdgeType.SPACE);
 		e.origin_id = context.getUUID(edge.getOrigin());
 		e.destination_id = context.getUUID(edge.getDestination());
 		e.duration = PeriodDuration.of(
 				Period.ofDays((int) edge.getDuration()), 
 				Duration.ofSeconds((long) (edge.getDuration() - (int) edge.getDuration())*24*60*60)
 			);
-		e.burns = Burn.createFrom(edge.getBurns());
+		e.burns = Burn.createFrom(edge.getBurns(), context);
 		e.contents = context.getUUIDs(edge.getContents());
 		return e;
 	}
@@ -37,7 +34,7 @@ public class SpaceEdge extends Edge {
 		e.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(origin_id));
 		e.setDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(destination_id));
 		e.setDuration(duration.getPeriod().getDays() + duration.getDuration().getSeconds() / (24*60*60d));
-		e.setBurns(Burn.toSpaceNet(burns));
+		e.setBurns(Burn.toSpaceNet(burns, context));
 		e.getContents().addAll(Element.toSpaceNet(contents, context));
 		return e;
 	}

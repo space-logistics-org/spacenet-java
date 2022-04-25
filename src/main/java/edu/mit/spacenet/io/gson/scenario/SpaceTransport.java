@@ -7,8 +7,6 @@ import java.util.UUID;
 
 import org.threeten.extra.PeriodDuration;
 
-import edu.mit.spacenet.simulator.event.EventType;
-
 public class SpaceTransport extends Event {
 	public UUID edge;
 	public List<UUID> elements;
@@ -16,7 +14,6 @@ public class SpaceTransport extends Event {
 
 	public static SpaceTransport createFrom(edu.mit.spacenet.simulator.event.SpaceTransport event, Context context) {
 		SpaceTransport e = new SpaceTransport();
-		e.type = TYPE_MAP.inverse().get(EventType.SPACE_TRANSPORT);
 		e.name = event.getName();
 		e.mission_time = PeriodDuration.of(
 				Period.ofDays((int) event.getTime()), 

@@ -5,8 +5,6 @@ import java.time.Period;
 
 import org.threeten.extra.PeriodDuration;
 
-import edu.mit.spacenet.domain.network.edge.EdgeType;
-
 public class FlightEdge extends Edge {
 	public PeriodDuration duration;
 	public int max_crew;
@@ -17,7 +15,6 @@ public class FlightEdge extends Edge {
 		e.id = context.getUUID(edge);
 		e.name = edge.getName();
 		e.description = edge.getDescription();
-		e.type = TYPE_MAP.inverse().get(EdgeType.FLIGHT);
 		e.origin_id = context.getUUID(edge.getOrigin());
 		e.destination_id = context.getUUID(edge.getDestination());
 		e.duration = PeriodDuration.of(

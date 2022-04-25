@@ -22,7 +22,6 @@ public abstract class DemandModel {
 			.build();
 	
 	public UUID id;
-	public String type;
 	public String name;
 	public String description;
 

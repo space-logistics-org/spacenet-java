@@ -1,4 +1,4 @@
-package edu.mit.spacenet.util;
+package edu.mit.spacenet.io.gson.scenario;
 
 import java.io.IOException;
 import java.time.format.DateTimeParseException;
@@ -10,7 +10,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-public final class DurationTypeAdpater extends TypeAdapter<PeriodDuration> {
+public final class PeriodDurationTypeAdpater extends TypeAdapter<PeriodDuration> {
 
 	@Override
 	public void write(JsonWriter out, PeriodDuration duration) throws IOException {

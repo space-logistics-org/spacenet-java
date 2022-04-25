@@ -1,7 +1,6 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import edu.mit.spacenet.domain.network.node.Body;
-import edu.mit.spacenet.domain.network.node.NodeType;
 
 public class SurfaceNode extends Node {
 	public double latitude;
@@ -12,7 +11,6 @@ public class SurfaceNode extends Node {
 		n.id = context.getUUID(node);
 		n.name = node.getName();
 		n.description = node.getDescription();
-		n.type = TYPE_MAP.inverse().get(NodeType.SURFACE);
 		n.body_1 = node.getBody().getName();
 		n.latitude = node.getLatitude();
 		n.longitude = node.getLongitude();

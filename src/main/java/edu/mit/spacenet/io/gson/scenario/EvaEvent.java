@@ -12,7 +12,6 @@ import org.threeten.extra.PeriodDuration;
 import edu.mit.spacenet.domain.element.I_Carrier;
 import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.element.I_State;
-import edu.mit.spacenet.simulator.event.EventType;
 
 public class EvaEvent extends Event {
 	public UUID vehicle;
@@ -23,7 +22,6 @@ public class EvaEvent extends Event {
 
 	public static EvaEvent createFrom(edu.mit.spacenet.simulator.event.EvaEvent event, Context context) {
 		EvaEvent e = new EvaEvent();
-		e.type = TYPE_MAP.inverse().get(EventType.EVA);
 		e.name = event.getName();
 		e.mission_time = PeriodDuration.of(
 				Period.ofDays((int) event.getTime()), 

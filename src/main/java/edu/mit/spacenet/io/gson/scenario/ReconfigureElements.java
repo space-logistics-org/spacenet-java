@@ -22,6 +22,7 @@ public class ReconfigureElements extends Event {
 				Duration.ofSeconds((long) (event.getTime() - (int) event.getTime())*24*60*60)
 			);
 		e.priority = event.getPriority();
+		e.location = context.getUUID(event.getLocation());
 		e.elements = context.getUUIDs(event.getElements());
 		e.stateType = event.getStateType().getName();
 		return e;
@@ -33,6 +34,7 @@ public class ReconfigureElements extends Event {
 		e.setName(name);
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
+		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObjectViaId(location));
 		e.setElements(Element.toSpaceNet(elements, context));
 		e.setStateType(StateType.getInstance(stateType));
 		return e;

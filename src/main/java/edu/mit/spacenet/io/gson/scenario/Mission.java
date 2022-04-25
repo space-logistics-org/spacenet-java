@@ -41,6 +41,7 @@ public class Mission {
 	
 	public edu.mit.spacenet.scenario.Mission toSpaceNet(edu.mit.spacenet.scenario.Scenario scenario, Context context) {
 		edu.mit.spacenet.scenario.Mission m = new edu.mit.spacenet.scenario.Mission(scenario);
+		context.getId(id, m); // register id for consumables model
 		m.setName(name);
 		m.setStartDate(start_date);
 		m.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObjectViaId(origin));

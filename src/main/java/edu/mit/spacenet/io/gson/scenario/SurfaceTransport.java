@@ -23,6 +23,7 @@ public class SurfaceTransport extends Event {
 				Duration.ofSeconds((long) (event.getTime() - (int) event.getTime())*24*60*60)
 			);
 		e.priority = event.getPriority();
+		e.location = context.getUUID(event.getLocation());
 		e.dutyCycle = event.getDutyCycle();
 		e.vehicle = context.getUUID(event.getVehicle());
 		e.transportState = context.getUUID(event.getTransportState());
@@ -37,6 +38,7 @@ public class SurfaceTransport extends Event {
 		e.setName(name);
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
+		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObjectViaId(location));
 		e.setDutyCycle(dutyCycle);
 		e.setVehicle((edu.mit.spacenet.domain.element.SurfaceVehicle) context.getObjectViaId(vehicle));
 		e.setTransportState((I_State) context.getObjectViaId(transportState));

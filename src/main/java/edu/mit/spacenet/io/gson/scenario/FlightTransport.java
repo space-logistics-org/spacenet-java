@@ -19,6 +19,7 @@ public class FlightTransport extends Event {
 				Duration.ofSeconds((long) (event.getTime() - (int) event.getTime())*24*60*60)
 			);
 		e.priority = event.getPriority();
+		e.location = context.getUUID(event.getLocation());
 		e.edge = context.getUUID(event.getEdge());
 		e.elements = context.getUUIDs(event.getElements());
 		return e;
@@ -30,6 +31,7 @@ public class FlightTransport extends Event {
 		e.setName(name);
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
+		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObjectViaId(location));
 		e.setEdge((edu.mit.spacenet.domain.network.edge.FlightEdge) context.getObjectViaId(edge));
 		e.setElements(Element.toSpaceNet(elements, context));
 		return e;

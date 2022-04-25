@@ -69,7 +69,6 @@ public class Scenario {
 		for(Element e : elements) {
 			context.getId(e.id, e.toSpaceNet(context));
 		}
-
 		s.getMissionList().addAll(Mission.toSpaceNet(missions, s, context));
 		return s;
 	}

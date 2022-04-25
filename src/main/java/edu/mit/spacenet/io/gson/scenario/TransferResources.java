@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
+import edu.mit.spacenet.domain.element.I_ResourceContainer;
 import edu.mit.spacenet.simulator.event.EventType;
 
 public class TransferResources extends Event {
@@ -32,7 +33,9 @@ public class TransferResources extends Event {
 		e.setTime(mission_time.getSeconds() / (24*60*60));
 		e.setPriority(priority);
 		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObject(location));
-		// TODO
+		e.setTransferDemands(Resource.toSpaceNet(resources, context));
+		e.setOriginContainer((I_ResourceContainer) context.getObject(origin));
+		e.setDestinationContainer((I_ResourceContainer) context.getObject(destination));
 		return e;
 	}
 }

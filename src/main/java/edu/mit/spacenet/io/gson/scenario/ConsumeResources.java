@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
+import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.simulator.event.EventType;
 
 public class ConsumeResources extends Event {
@@ -30,7 +31,8 @@ public class ConsumeResources extends Event {
 		e.setTime(mission_time.getSeconds() / (24*60*60));
 		e.setPriority(priority);
 		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObject(location));
-		// TODO
+		e.setDemands(Resource.toSpaceNet(resources, context));
+		e.setElement((I_Element) context.getObject(source));
 		return e;
 	}
 

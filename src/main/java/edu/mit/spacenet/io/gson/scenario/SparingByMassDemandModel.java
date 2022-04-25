@@ -6,7 +6,6 @@ import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.model.DemandModelType;
 
 public class SparingByMassDemandModel extends DemandModel {
-	public String type = TYPE_MAP.inverse().get(DemandModelType.SPARING_BY_MASS);
 	public UUID element; // TODO remove?
 	public double unpressurizedSparesRate;
 	public double pressurizedSparesRate;
@@ -15,6 +14,7 @@ public class SparingByMassDemandModel extends DemandModel {
 	public static SparingByMassDemandModel createFrom(edu.mit.spacenet.domain.model.SparingByMassDemandModel demandModel, Context context) {
 		SparingByMassDemandModel m = new SparingByMassDemandModel();
 		m.id = context.getUUID(demandModel);
+		m.type = TYPE_MAP.inverse().get(DemandModelType.SPARING_BY_MASS);
 		m.name = demandModel.getName();
 		m.description = demandModel.getDescription();
 		m.element = context.getUUID(demandModel.getElement());
@@ -26,8 +26,7 @@ public class SparingByMassDemandModel extends DemandModel {
 	
 	@Override
 	public edu.mit.spacenet.domain.model.SparingByMassDemandModel toSpaceNet(Context context) {
-		I_Element e = (I_Element) context.getObject(element);
-		edu.mit.spacenet.domain.model.SparingByMassDemandModel m = new edu.mit.spacenet.domain.model.SparingByMassDemandModel(e);
+		edu.mit.spacenet.domain.model.SparingByMassDemandModel m = new edu.mit.spacenet.domain.model.SparingByMassDemandModel((I_Element) context.getObject(element));
 		m.setTid(context.getId(id));
 		m.setName(name);
 		m.setDescription(description);

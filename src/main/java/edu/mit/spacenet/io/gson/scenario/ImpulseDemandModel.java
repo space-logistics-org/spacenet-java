@@ -5,12 +5,12 @@ import java.util.List;
 import edu.mit.spacenet.domain.model.DemandModelType;
 
 public class ImpulseDemandModel extends DemandModel {
-	public String type = TYPE_MAP.inverse().get(DemandModelType.TIMED_IMPULSE);
 	public List<Resource> demands;
 
 	public static ImpulseDemandModel createFrom(edu.mit.spacenet.domain.model.TimedImpulseDemandModel demandModel, Context context) {
 		ImpulseDemandModel m = new ImpulseDemandModel();
 		m.id = context.getUUID(demandModel);
+		m.type = TYPE_MAP.inverse().get(DemandModelType.TIMED_IMPULSE);
 		m.name = demandModel.getName();
 		m.description = demandModel.getDescription();
 		m.demands = Resource.createFrom(demandModel.getDemands(), context);

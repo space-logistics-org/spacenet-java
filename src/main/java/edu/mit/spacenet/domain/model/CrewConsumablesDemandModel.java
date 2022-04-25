@@ -150,6 +150,15 @@ public class CrewConsumablesDemandModel extends AbstractDemandModel {
 	}
 	
 	/**
+	 * Gets the mission.
+	 * 
+	 * @return the mission
+	 */
+	public Mission getMission() {
+		return mission;
+	}
+	
+	/**
 	 * Gets the mission crew size.
 	 * 
 	 * @return the crew size

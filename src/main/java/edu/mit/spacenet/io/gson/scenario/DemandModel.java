@@ -22,6 +22,7 @@ public abstract class DemandModel {
 			.build();
 	
 	public UUID id;
+	public String type;
 	public String name;
 	public String description;
 
@@ -32,6 +33,8 @@ public abstract class DemandModel {
 			return RatedDemandModel.createFrom((edu.mit.spacenet.domain.model.RatedDemandModel) demandModel, context);
 		} else if(demandModel.getDemandModelType() == DemandModelType.SPARING_BY_MASS) {
 			return SparingByMassDemandModel.createFrom((edu.mit.spacenet.domain.model.SparingByMassDemandModel) demandModel, context);
+		} else if(demandModel.getDemandModelType() == DemandModelType.CREW_CONSUMABLES) {
+			return ConsumablesDemandModel.createFrom((edu.mit.spacenet.domain.model.CrewConsumablesDemandModel) demandModel, context);
 		} else {
 			throw new UnsupportedOperationException("unknown demand model type: " + demandModel.getDemandModelType());
 		}

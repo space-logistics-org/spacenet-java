@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class Mission {
+	public UUID id;
 	public String name;
 	public Date start_date;
 	public List<Event> events;
-	public List<Object> demand_models = new ArrayList<Object>();
+	public List<DemandModel> demand_models = new ArrayList<DemandModel>();
 	public UUID origin;
 	public UUID destination;
 	public UUID return_origin;
@@ -18,6 +19,7 @@ public class Mission {
 
 	public static Mission createFrom(edu.mit.spacenet.scenario.Mission mission, Context context) {
 		Mission m = new Mission();
+		m.id = context.getUUID(mission);
 		m.name = mission.getName();
 		m.start_date = mission.getStartDate();
 		m.origin = context.getUUID(mission.getOrigin());
@@ -25,6 +27,7 @@ public class Mission {
 		m.return_origin = context.getUUID(mission.getReturnOrigin());
 		m.return_destination = context.getUUID(mission.getReturnDestination());
 		m.events = Event.createFrom(mission.getEventList(), context);
+		m.demand_models = DemandModel.createFrom(mission.getDemandModels(), context);
 		return m;
 	}
 	
@@ -45,6 +48,7 @@ public class Mission {
 		m.setReturnOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(return_origin));
 		m.setReturnDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(return_destination));
 		m.getEventList().addAll(Event.toSpaceNet(events, context));
+		m.getDemandModels().addAll(DemandModel.toSpaceNet(demand_models, context));
 		return m;
 	}
 	

@@ -1,6 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.time.Duration;
+import java.time.Period;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +19,10 @@ public class AddResources extends Event {
 		AddResources e = new AddResources();
 		e.type = TYPE_MAP.inverse().get(EventType.ADD);
 		e.name = event.getName();
-		e.mission_time = PeriodDuration.of(Duration.ofSeconds((long) event.getTime()*24*60*60));
+		e.mission_time = PeriodDuration.of(
+				Period.ofDays((int) event.getTime()), 
+				Duration.ofSeconds((long) (event.getTime() - (int) event.getTime())*24*60*60)
+			);
 		e.priority = event.getPriority();
 		e.location = context.getUUID(event.getLocation());
 		e.resources = Resource.createFrom(event.getDemands(), context);

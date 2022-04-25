@@ -1,6 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.time.Duration;
+import java.time.Period;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +17,10 @@ public class FlightTransport extends Event {
 		FlightTransport e = new FlightTransport();
 		e.type = TYPE_MAP.inverse().get(EventType.FLIGHT_TRANSPORT);
 		e.name = event.getName();
-		e.mission_time = PeriodDuration.of(Duration.ofSeconds((long) event.getTime()*24*60*60));
+		e.mission_time = PeriodDuration.of(
+				Period.ofDays((int) event.getTime()), 
+				Duration.ofSeconds((long) (event.getTime() - (int) event.getTime())*24*60*60)
+			);
 		e.priority = event.getPriority();
 		e.edge = context.getUUID(event.getEdge());
 		e.elements = context.getUUIDs(event.getElements());
@@ -27,7 +31,7 @@ public class FlightTransport extends Event {
 	public edu.mit.spacenet.simulator.event.FlightTransport toSpaceNet(Context context) {
 		edu.mit.spacenet.simulator.event.FlightTransport e = new edu.mit.spacenet.simulator.event.FlightTransport();
 		e.setName(name);
-		e.setTime(mission_time.getDuration().getSeconds() / (24*60*60d));
+		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
 		e.setEdge((edu.mit.spacenet.domain.network.edge.FlightEdge) context.getObject(edge));
 		e.setElements(Element.toSpaceNet(elements, context));

@@ -33,9 +33,15 @@ public class PropulsiveVehicle extends Carrier {
 		e.cargoEnvironment = element.getCargoEnvironment().getName();
 		e.contents = context.getUUIDs(element.getContents());
 		e.isp = element.getOmsIsp();
-		e.fuelType = context.getUUID(element.getOmsFuelTank().getResource());
-		e.fuelMaxAmount = element.getOmsFuelTank().getMaxAmount();
-		e.fuelAmount = element.getOmsFuelTank().getAmount();
+		if(element.getOmsFuelTank() != null) {
+			e.fuelType = context.getUUID(element.getOmsFuelTank().getResource());
+			e.fuelMaxAmount = element.getOmsFuelTank().getMaxAmount();
+			e.fuelAmount = element.getOmsFuelTank().getAmount();
+		} else if(element.getRcsFuelTank() != null) {
+			e.fuelType = context.getUUID(element.getRcsFuelTank().getResource());
+			e.fuelMaxAmount = element.getRcsFuelTank().getMaxAmount();
+			e.fuelAmount = element.getRcsFuelTank().getAmount();
+		}
 		return e;
 	}
 	

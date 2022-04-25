@@ -1,6 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.time.Duration;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +14,10 @@ public class Burn {
 
 	public static Burn createFrom(edu.mit.spacenet.domain.network.edge.Burn burn) {
 		Burn b = new Burn();
-		b.time = PeriodDuration.of(Duration.ofSeconds((long) burn.getTime()*24*60*60));
+		b.time = PeriodDuration.of(
+				Period.ofDays((int) burn.getTime()), 
+				Duration.ofSeconds((long) (burn.getTime() - (int) burn.getTime())*24*60*60)
+			);
 		b.delta_v = burn.getDeltaV();
 		return b;
 	}
@@ -28,7 +32,7 @@ public class Burn {
 	
 	public edu.mit.spacenet.domain.network.edge.Burn toSpaceNet() {
 		edu.mit.spacenet.domain.network.edge.Burn b = new edu.mit.spacenet.domain.network.edge.Burn();
-		b.setTime(time.getDuration().getSeconds() / (24*60*60d));
+		b.setTime(time.getPeriod().getDays() + time.getDuration().getSeconds() / (24*60*60d));
 		b.setDeltaV(delta_v);
 		return b;
 	}

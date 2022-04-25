@@ -1,6 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.time.Duration;
+import java.time.Period;
 import java.util.UUID;
 
 import org.threeten.extra.PeriodDuration;
@@ -19,7 +20,10 @@ public class SurfaceTransport extends Event {
 		SurfaceTransport e = new SurfaceTransport();
 		e.type = TYPE_MAP.inverse().get(EventType.SURFACE_TRANSPORT);
 		e.name = event.getName();
-		e.mission_time = PeriodDuration.of(Duration.ofSeconds((long) event.getTime()*24*60*60));
+		e.mission_time = PeriodDuration.of(
+				Period.ofDays((int) event.getTime()), 
+				Duration.ofSeconds((long) (event.getTime() - (int) event.getTime())*24*60*60)
+			);
 		e.priority = event.getPriority();
 		e.dutyCycle = event.getDutyCycle();
 		e.vehicle = context.getUUID(event.getVehicle());
@@ -33,7 +37,7 @@ public class SurfaceTransport extends Event {
 	public edu.mit.spacenet.simulator.event.SurfaceTransport toSpaceNet(Context context) {
 		edu.mit.spacenet.simulator.event.SurfaceTransport e = new edu.mit.spacenet.simulator.event.SurfaceTransport();
 		e.setName(name);
-		e.setTime(mission_time.getDuration().getSeconds() / (24*60*60d));
+		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
 		e.setDutyCycle(dutyCycle);
 		e.setVehicle((edu.mit.spacenet.domain.element.SurfaceVehicle) context.getObject(vehicle));

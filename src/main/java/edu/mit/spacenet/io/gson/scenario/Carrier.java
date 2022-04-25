@@ -32,7 +32,7 @@ public class Carrier extends Element {
 		e.maxCargoMass = element.getMaxCargoMass();
 		e.maxCargoVolume = element.getMaxCargoVolume();
 		e.cargoEnvironment = element.getCargoEnvironment().getName();
-		e.contents = Element.createIdsFrom(element.getContents(), context);
+		e.contents = context.getUUIDs(element.getContents());
 		return e;
 	}
 	

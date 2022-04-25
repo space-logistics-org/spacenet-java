@@ -14,7 +14,7 @@ public class SurfaceEdge extends Edge {
 		e.origin_id = context.getUUID(edge.getOrigin());
 		e.destination_id = context.getUUID(edge.getDestination());
 		e.distance = edge.getDistance();
-		e.contents = Element.createIdsFrom(edge.getContents(), context);
+		e.contents = context.getUUIDs(edge.getContents());
 		return e;
 	}
 	

@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.mit.spacenet.domain.element.CrewMember;
 import edu.mit.spacenet.domain.element.I_Carrier;
 import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.element.I_ResourceContainer;
@@ -169,42 +168,42 @@ public class CopyMissionCommand implements I_Command {
 				((BurnEvent)event).getElements().clear();
 				((BurnEvent)event).getElements().addAll(elements);
 			} else if(event instanceof EvaEvent) {
-				Map<CrewMember, I_State> map = new HashMap<CrewMember, I_State>();
-				for(CrewMember crew : ((EvaEvent)event).getStateMap().keySet()) {
+				Map<I_Element, I_State> map = new HashMap<I_Element, I_State>();
+				for(I_Element crew : ((EvaEvent)event).getStateMap().keySet()) {
 					I_State s = ((EvaEvent)event).getStateMap().get(crew);
 					if(s==null) {
-						map.put((CrewMember)getElement(crew.getUid()), null);
+						map.put(getElement(crew.getUid()), null);
 					} else {
 						for(I_State state : getElement(crew.getUid()).getStates()) {
 							if(state.equals(s)) {
-								map.put((CrewMember)getElement(crew.getUid()), state);
+								map.put(getElement(crew.getUid()), state);
 								break;
 							}
 						}
 					}
 				}
 				((EvaEvent)event).getStateMap().clear();
-				for(CrewMember crew : map.keySet()) {
+				for(I_Element crew : map.keySet()) {
 					((EvaEvent)event).getStateMap().put(crew, map.get(crew));
 				}
 				((EvaEvent)event).setVehicle((I_Carrier)getElement(((EvaEvent)event).getVehicle().getUid()));
 			} else if(event instanceof ExplorationProcess) {
-				Map<CrewMember, I_State> map = new HashMap<CrewMember, I_State>();
-				for(CrewMember crew : ((ExplorationProcess)event).getStateMap().keySet()) {
+				Map<I_Element, I_State> map = new HashMap<I_Element, I_State>();
+				for(I_Element crew : ((ExplorationProcess)event).getStateMap().keySet()) {
 					I_State s = ((ExplorationProcess)event).getStateMap().get(crew);
 					if(s==null) {
-						map.put((CrewMember)getElement(crew.getUid()), null);
+						map.put(getElement(crew.getUid()), null);
 					} else {
 						for(I_State state : getElement(crew.getUid()).getStates()) {
 							if(state.equals(s)) {
-								map.put((CrewMember)getElement(crew.getUid()), state);
+								map.put(getElement(crew.getUid()), state);
 								break;
 							}
 						}
 					}
 				}
 				((ExplorationProcess)event).getStateMap().clear();
-				for(CrewMember crew : map.keySet()) {
+				for(I_Element crew : map.keySet()) {
 					((ExplorationProcess)event).getStateMap().put(crew, map.get(crew));
 				}
 				((ExplorationProcess)event).setVehicle((I_Carrier)getElement(((ExplorationProcess)event).getVehicle().getUid()));

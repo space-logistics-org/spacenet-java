@@ -18,7 +18,7 @@ public class OrbitalNode extends Node {
 		n.inclination = node.getInclination();
 		n.periapsis = node.getPeriapsis();
 		n.apoapsis = node.getApoapsis();
-		n.contents = Element.createIdsFrom(node.getContents(), context);
+		n.contents = context.getUUIDs(node.getContents());
 		return n;
 	}
 	

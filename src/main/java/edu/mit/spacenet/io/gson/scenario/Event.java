@@ -1,10 +1,11 @@
 package edu.mit.spacenet.io.gson.scenario;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import org.threeten.extra.PeriodDuration;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
@@ -33,7 +34,7 @@ public abstract class Event {
 	public String type;
 	public String name;
 	public int priority;
-	public Duration mission_time;
+	public PeriodDuration mission_time;
 	public UUID location;
 
 	public static Event createFrom(edu.mit.spacenet.simulator.event.I_Event event, Context context) {

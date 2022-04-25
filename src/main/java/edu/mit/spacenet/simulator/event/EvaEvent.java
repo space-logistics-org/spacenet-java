@@ -18,8 +18,8 @@ package edu.mit.spacenet.simulator.event;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import edu.mit.spacenet.domain.element.CrewMember;
 import edu.mit.spacenet.domain.element.I_Carrier;
+import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.element.I_State;
 import edu.mit.spacenet.domain.resource.DemandSet;
 import edu.mit.spacenet.simulator.I_Simulator;
@@ -37,7 +37,7 @@ import edu.mit.spacenet.simulator.SimWarning;
 public class EvaEvent extends AbstractEvent {
 	private I_Carrier vehicle;
 	private double evaDuration;
-	private SortedMap<CrewMember, I_State> stateMap;
+	private SortedMap<I_Element, I_State> stateMap;
 	private DemandSet demands;
 	
 	/**
@@ -46,7 +46,7 @@ public class EvaEvent extends AbstractEvent {
 	 */
 	public EvaEvent() {
 		super();
-		stateMap = new TreeMap<CrewMember, I_State>();
+		stateMap = new TreeMap<I_Element, I_State>();
 		demands = new DemandSet();
 		setEvaDuration(8);
 	}
@@ -71,7 +71,7 @@ public class EvaEvent extends AbstractEvent {
 			throw new SimSpatialError(simulator.getTime(), this, 
 					vehicle + " is located at " + vehicle.getLocation() + " instead of " + getLocation() + ".");
 		}
-		for(CrewMember member : stateMap.keySet()) {
+		for(I_Element member : stateMap.keySet()) {
 			if(member.getLocation()==null) {
 				throw new SimSpatialError(simulator.getTime(), this, 
 						member + " was not found.");
@@ -86,8 +86,8 @@ public class EvaEvent extends AbstractEvent {
 				" hours");
 		
 		if(simulator.getScenario().isDetailedEva()) {
-			TreeMap<CrewMember, I_State> previousStates = new TreeMap<CrewMember, I_State>();
-			for(CrewMember c : stateMap.keySet()) {
+			TreeMap<I_Element, I_State> previousStates = new TreeMap<I_Element, I_State>();
+			for(I_Element c : stateMap.keySet()) {
 				if(stateMap.get(c) != null) {
 					previousStates.put(c, c.getCurrentState());
 					ReconfigureEvent r = new ReconfigureEvent();
@@ -107,7 +107,7 @@ public class EvaEvent extends AbstractEvent {
 			m1.setParent(this);
 			m1.setLocation(getLocation());
 			m1.setContainer(getLocation());
-			for(CrewMember c : stateMap.keySet()) m1.getElements().add(c);
+			for(I_Element c : stateMap.keySet()) m1.getElements().add(c);
 			simulator.schedule(m1);
 			
 			MoveEvent m2 = new MoveEvent();
@@ -115,10 +115,10 @@ public class EvaEvent extends AbstractEvent {
 			m2.setParent(this);
 			m2.setLocation(getLocation());
 			m2.setContainer(vehicle);
-			for(CrewMember c : stateMap.keySet()) m2.getElements().add(c);
+			for(I_Element c : stateMap.keySet()) m2.getElements().add(c);
 			simulator.schedule(m2);
 			
-			for(CrewMember c : stateMap.keySet()) {
+			for(I_Element c : stateMap.keySet()) {
 				if(previousStates.get(c) != null) {
 					ReconfigureEvent r = new ReconfigureEvent();
 					r.setTime(getTime() + evaDuration/24);
@@ -182,7 +182,7 @@ public class EvaEvent extends AbstractEvent {
 	 * 
 	 * @return the map of crew member's EVA states
 	 */
-	public SortedMap<CrewMember, I_State> getStateMap() {
+	public SortedMap<I_Element, I_State> getStateMap() {
 		return stateMap;
 	}
 	
@@ -191,7 +191,7 @@ public class EvaEvent extends AbstractEvent {
 	 * 
 	 * @param evaStates the mapping of crew member's EVA states
 	 */
-	public void setStateMap(SortedMap<CrewMember, I_State> evaStates) {
+	public void setStateMap(SortedMap<I_Element, I_State> evaStates) {
 		this.stateMap = evaStates;
 	}
 	

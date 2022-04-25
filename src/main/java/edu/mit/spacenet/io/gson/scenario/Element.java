@@ -73,18 +73,10 @@ public class Element {
 		}
 	}
 	
-	public static List<Element> createFrom(Collection<I_Element> elements, Context context) {
+	public static List<Element> createFrom(Collection<? extends I_Element> elements, Context context) {
 		List<Element> es = new ArrayList<Element>();
 		for(I_Element e : elements) {
 			es.add(Element.createFrom(e, context));
-		}
-		return es;
-	}
-	
-	public static List<UUID> createIdsFrom(Collection<I_Element> elements, Context context) {
-		List<UUID> es = new ArrayList<UUID>();
-		for(I_Element e : elements) {
-			es.add(context.getUUID(e));
 		}
 		return es;
 	}

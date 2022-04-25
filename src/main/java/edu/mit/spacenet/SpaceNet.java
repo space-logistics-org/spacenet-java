@@ -42,6 +42,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.threeten.extra.PeriodDuration;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -55,6 +56,7 @@ import edu.mit.spacenet.io.gson.demands.AggregatedDemandsAnalysis;
 import edu.mit.spacenet.io.gson.demands.RawDemandsAnalysis;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.simulator.DemandSimulator;
+import edu.mit.spacenet.util.DurationTypeAdpater;
 
 /**
  * This class is used to launch the SpaceNet application.
@@ -166,7 +168,10 @@ public class SpaceNet {
 				
 				// FIXME temporary code
 				BufferedWriter out = new BufferedWriter(new FileWriter(scenarioFilePath.replace("xml", "json")));
-				Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new UtcDateTypeAdapter()).create();
+				Gson gson = new GsonBuilder()
+						.registerTypeAdapter(Date.class, new UtcDateTypeAdapter())
+						.registerTypeAdapter(PeriodDuration.class, new DurationTypeAdpater())
+						.create();
 				gson.toJson(
 					edu.mit.spacenet.io.gson.scenario.Scenario.createFrom(scenario),
 					out

@@ -16,7 +16,7 @@ public class SurfaceNode extends Node {
 		n.body_1 = node.getBody().getName();
 		n.latitude = node.getLatitude();
 		n.longitude = node.getLongitude();
-		n.contents = Element.createIdsFrom(node.getContents(), context);
+		n.contents = context.getUUIDs(node.getContents());
 		return n;
 	}
 	

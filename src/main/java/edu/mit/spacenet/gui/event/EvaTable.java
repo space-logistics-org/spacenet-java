@@ -32,6 +32,7 @@ import javax.swing.table.TableCellEditor;
 
 import edu.mit.spacenet.domain.element.CrewMember;
 import edu.mit.spacenet.domain.element.ElementType;
+import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.element.I_State;
 
 /**
@@ -103,7 +104,7 @@ public class EvaTable extends JTable {
 					return this;
 				}
 			});
-			for(I_State state : ((CrewMember)getValueAt(row, 1)).getStates()) {
+			for(I_State state : ((I_Element) getValueAt(row, 1)).getStates()) {
 				stateCombo.addItem(state);
 	    	}
 	    	return new DefaultCellEditor(stateCombo);
@@ -115,15 +116,15 @@ public class EvaTable extends JTable {
 	 */
 	public class EvaTableModel extends AbstractTableModel {
 		private static final long serialVersionUID = -6033117922087345936L;
-		private SortedMap<CrewMember, I_State> data;
-		private Map<CrewMember, Boolean> visibility;
+		private SortedMap<I_Element, I_State> data;
+		private Map<I_Element, Boolean> visibility;
 		
 		/**
 		 * Instantiates a new eva table model.
 		 */
 		public EvaTableModel() {
-			data = new TreeMap<CrewMember, I_State>();
-			visibility = new HashMap<CrewMember, Boolean>();
+			data = new TreeMap<I_Element, I_State>();
+			visibility = new HashMap<I_Element, Boolean>();
 		}
 		
 		/* (non-Javadoc)
@@ -177,18 +178,18 @@ public class EvaTable extends JTable {
 		public void setValueAt(Object value, int row, int col) {
 			if(col==0) {
 				if((Boolean)value) {
-					I_State evaState = ((CrewMember)getValueAt(row,1)).getCurrentState();
-					for(I_State s : ((CrewMember)getValueAt(row,1)).getStates()) {
+					I_State evaState = ((I_Element)getValueAt(row,1)).getCurrentState();
+					for(I_State s : ((I_Element)getValueAt(row,1)).getStates()) {
 						if(s.getName().toLowerCase().contains("eva")) {
 							evaState = s;
 							break;
 						}
 					}
-					data.put((CrewMember)getValueAt(row,1),evaState);	
+					data.put((I_Element)getValueAt(row,1),evaState);	
 				}
-				visibility.put((CrewMember)getValueAt(row,1), (Boolean)value);
+				visibility.put((I_Element)getValueAt(row,1), (Boolean)value);
 			}
-			else data.put((CrewMember)getValueAt(row,1),(I_State)value);
+			else data.put((I_Element)getValueAt(row,1),(I_State)value);
 			fireTableRowsUpdated(row, row);
 		}
 		
@@ -199,7 +200,7 @@ public class EvaTable extends JTable {
 		 * @param s the s
 		 * @param isVisible the is visible
 		 */
-		public void put(CrewMember c, I_State s, boolean isVisible) {
+		public void put(I_Element c, I_State s, boolean isVisible) {
 			data.put(c, s);
 			visibility.put(c, isVisible);
 			fireTableDataChanged();
@@ -219,9 +220,9 @@ public class EvaTable extends JTable {
 		 * 
 		 * @return the data
 		 */
-		public SortedMap<CrewMember, I_State> getData() {
-			TreeMap<CrewMember, I_State> retData = new TreeMap<CrewMember, I_State>();
-			for(CrewMember c : data.keySet()) {
+		public SortedMap<I_Element, I_State> getData() {
+			TreeMap<I_Element, I_State> retData = new TreeMap<I_Element, I_State>();
+			for(I_Element c : data.keySet()) {
 				if(visibility.get(c)) {
 					retData.put(c, data.get(c));
 				}

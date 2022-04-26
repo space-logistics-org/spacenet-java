@@ -45,7 +45,7 @@ public class ResourceContainer extends Element {
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
 		e.setStates(State.toSpaceNet(states, context));
-		e.setCurrentState((I_State) context.getObjectViaId(currentState));
+		e.setCurrentState((I_State) context.getObject(currentState));
 		e.setParts(Part.toSpaceNet(parts, context));
 		e.setMaxCargoMass(maxCargoMass);
 		e.setMaxCargoVolume(maxCargoVolume);

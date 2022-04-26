@@ -90,7 +90,7 @@ public class Element {
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
 		e.setStates(State.toSpaceNet(states, context));
-		e.setCurrentState((I_State) context.getObjectViaId(currentState));
+		e.setCurrentState((I_State) context.getObject(currentState));
 		e.setParts(Part.toSpaceNet(parts, context));
 		return e;
 	}
@@ -99,7 +99,7 @@ public class Element {
 		SortedSet<I_Element> es = new TreeSet<I_Element>();
 		if(elements != null) {
 			for(UUID uuid : elements) {
-				es.add(((I_Element) context.getObjectViaId(uuid)));
+				es.add(((I_Element) context.getObject(uuid)));
 			}
 		}
 		return es;

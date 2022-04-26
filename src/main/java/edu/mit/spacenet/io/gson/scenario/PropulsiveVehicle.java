@@ -29,13 +29,15 @@ public class PropulsiveVehicle extends Carrier {
 		e.maxCargoMass = element.getMaxCargoMass();
 		e.maxCargoVolume = element.getMaxCargoVolume();
 		e.cargoEnvironment = element.getCargoEnvironment().getName();
+		e.maxCrewSize = element.getMaxCrewSize();
 		e.contents = context.getUUIDs(element.getContents());
-		e.isp = element.getOmsIsp();
 		if(element.getOmsFuelTank() != null) {
+			e.isp = element.getOmsIsp();
 			e.fuelType = context.getUUID(element.getOmsFuelTank().getResource());
 			e.fuelMaxAmount = element.getOmsFuelTank().getMaxAmount();
 			e.fuelAmount = element.getOmsFuelTank().getAmount();
 		} else if(element.getRcsFuelTank() != null) {
+			e.isp = element.getRcsIsp();
 			e.fuelType = context.getUUID(element.getRcsFuelTank().getResource());
 			e.fuelMaxAmount = element.getRcsFuelTank().getMaxAmount();
 			e.fuelAmount = element.getRcsFuelTank().getAmount();
@@ -55,11 +57,12 @@ public class PropulsiveVehicle extends Carrier {
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
 		e.setStates(State.toSpaceNet(states, context));
-		e.setCurrentState((I_State) context.getObjectViaId(currentState));
+		e.setCurrentState((I_State) context.getObject(currentState));
 		e.setParts(Part.toSpaceNet(parts, context));
 		e.setMaxCargoMass(maxCargoMass);
 		e.setMaxCargoVolume(maxCargoVolume);
 		e.setCargoEnvironment(Environment.getInstance(cargoEnvironment));
+		e.setMaxCrewSize(maxCrewSize);
 		e.getContents().addAll(Element.toSpaceNet(contents, context));
 		e.setOmsIsp(isp);
 		edu.mit.spacenet.domain.element.ResourceTank t = new edu.mit.spacenet.domain.element.ResourceTank();

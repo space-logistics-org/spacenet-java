@@ -24,7 +24,7 @@ public class SparingByMassDemandModel extends DemandModel {
 	
 	@Override
 	public edu.mit.spacenet.domain.model.SparingByMassDemandModel toSpaceNet(Context context) {
-		edu.mit.spacenet.domain.model.SparingByMassDemandModel m = new edu.mit.spacenet.domain.model.SparingByMassDemandModel((I_Element) context.getObjectViaId(element));
+		edu.mit.spacenet.domain.model.SparingByMassDemandModel m = new edu.mit.spacenet.domain.model.SparingByMassDemandModel((I_Element) context.getObject(element));
 		m.setTid(context.getId(id, m));
 		m.setName(name);
 		m.setDescription(description);

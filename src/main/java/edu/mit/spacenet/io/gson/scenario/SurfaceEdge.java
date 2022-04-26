@@ -20,8 +20,8 @@ public class SurfaceEdge extends Edge {
 		e.setTid(context.getId(id, e));
 		e.setName(name);
 		e.setDescription(description);
-		e.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObjectViaId(origin_id));
-		e.setDestination((edu.mit.spacenet.domain.network.node.Node) context.getObjectViaId(destination_id));
+		e.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(origin_id));
+		e.setDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(destination_id));
 		e.setDistance(distance);
 		e.getContents().addAll(Element.toSpaceNet(contents, context));
 		return e;

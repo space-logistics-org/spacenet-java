@@ -43,9 +43,9 @@ public class ResourceTank extends Element {
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
 		e.setStates(State.toSpaceNet(states, context));
-		e.setCurrentState((I_State) context.getObjectViaId(currentState));
+		e.setCurrentState((I_State) context.getObject(currentState));
 		e.setParts(Part.toSpaceNet(parts, context));
-		e.setResource((I_Resource) context.getObjectViaId(resource));
+		e.setResource((I_Resource) context.getObject(resource));
 		e.setMaxAmount(maxAmount);
 		e.setAmount(amount);
 		return e;

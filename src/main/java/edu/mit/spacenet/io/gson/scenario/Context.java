@@ -16,10 +16,6 @@ public class Context {
 	public BiMap<Integer, Object> objects = HashBiMap.create();
 	
 	public Object getObject(UUID uuid) {
-		return uuids.get(uuid);
-	}
-	
-	public Object getObjectViaId(UUID uuid) {
 		return objects.get(ids.get(uuid));
 	}
 	

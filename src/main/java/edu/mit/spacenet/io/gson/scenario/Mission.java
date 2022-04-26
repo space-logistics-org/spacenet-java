@@ -44,10 +44,10 @@ public class Mission {
 		context.getId(id, m); // register id for consumables model
 		m.setName(name);
 		m.setStartDate(start_date);
-		m.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObjectViaId(origin));
-		m.setDestination((edu.mit.spacenet.domain.network.node.Node) context.getObjectViaId(destination));
-		m.setReturnOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObjectViaId(return_origin));
-		m.setReturnDestination((edu.mit.spacenet.domain.network.node.Node) context.getObjectViaId(return_destination));
+		m.setOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(origin));
+		m.setDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(destination));
+		m.setReturnOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(return_origin));
+		m.setReturnDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(return_destination));
 		m.getEventList().addAll(Event.toSpaceNet(events, context));
 		m.getDemandModels().addAll(DemandModel.toSpaceNet(demand_models, context));
 		return m;

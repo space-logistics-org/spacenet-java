@@ -30,6 +30,7 @@ public class Carrier extends Element {
 		e.maxCargoMass = element.getMaxCargoMass();
 		e.maxCargoVolume = element.getMaxCargoVolume();
 		e.cargoEnvironment = element.getCargoEnvironment().getName();
+		e.maxCrewSize = element.getMaxCrewSize();
 		e.contents = context.getUUIDs(element.getContents());
 		return e;
 	}
@@ -46,11 +47,12 @@ public class Carrier extends Element {
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
 		e.setStates(State.toSpaceNet(states, context));
-		e.setCurrentState((I_State) context.getObjectViaId(currentState));
+		e.setCurrentState((I_State) context.getObject(currentState));
 		e.setParts(Part.toSpaceNet(parts, context));
 		e.setMaxCargoMass(maxCargoMass);
 		e.setMaxCargoVolume(maxCargoVolume);
 		e.setCargoEnvironment(Environment.getInstance(cargoEnvironment));
+		e.setMaxCrewSize(maxCrewSize);
 		e.getContents().addAll(Element.toSpaceNet(contents, context));
 		return e;
 	}

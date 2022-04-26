@@ -36,10 +36,10 @@ public class TransferResources extends Event {
 		e.setName(name);
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
-		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObjectViaId(location));
+		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObject(location));
 		e.setTransferDemands(Resource.toSpaceNet(resources, context));
-		e.setOriginContainer((I_ResourceContainer) context.getObjectViaId(origin));
-		e.setDestinationContainer((I_ResourceContainer) context.getObjectViaId(destination));
+		e.setOriginContainer((I_ResourceContainer) context.getObject(origin));
+		e.setDestinationContainer((I_ResourceContainer) context.getObject(destination));
 		return e;
 	}
 }

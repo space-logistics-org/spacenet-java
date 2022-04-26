@@ -29,6 +29,7 @@ public class SurfaceVehicle extends Carrier {
 		e.maxCargoMass = element.getMaxCargoMass();
 		e.maxCargoVolume = element.getMaxCargoVolume();
 		e.cargoEnvironment = element.getCargoEnvironment().getName();
+		e.maxCrewSize = element.getMaxCrewSize();
 		e.contents = context.getUUIDs(element.getContents());
 		e.maxSpeed = element.getMaxSpeed();
 		e.fuelType = context.getUUID(element.getFuelTank().getResource());
@@ -49,11 +50,12 @@ public class SurfaceVehicle extends Carrier {
 		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
 		e.setEnvironment(Environment.getInstance(environment));
 		e.setStates(State.toSpaceNet(states, context));
-		e.setCurrentState((I_State) context.getObjectViaId(currentState));
+		e.setCurrentState((I_State) context.getObject(currentState));
 		e.setParts(Part.toSpaceNet(parts, context));
 		e.setMaxCargoMass(maxCargoMass);
 		e.setMaxCargoVolume(maxCargoVolume);
 		e.setCargoEnvironment(Environment.getInstance(cargoEnvironment));
+		e.setMaxCrewSize(maxCrewSize);
 		e.getContents().addAll(Element.toSpaceNet(contents, context));
 		e.setMaxSpeed(maxSpeed);
 		edu.mit.spacenet.domain.element.ResourceTank t = new edu.mit.spacenet.domain.element.ResourceTank();

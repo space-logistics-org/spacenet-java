@@ -53,13 +53,13 @@ public class Exploration extends Event {
 		e.setName(name);
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
-		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObjectViaId(location));
-		e.setVehicle((I_Carrier) context.getObjectViaId(vehicle));
+		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObject(location));
+		e.setVehicle((I_Carrier) context.getObject(vehicle));
 		SortedMap<I_Element, I_State> stateMap = new TreeMap<I_Element, I_State>();
 		for(int i = 0; i < elements.size(); i++) {
 			stateMap.put(
-				(I_Element) context.getObjectViaId(elements.get(i)), 
-				(I_State) context.getObjectViaId(states.get(i))
+				(I_Element) context.getObject(elements.get(i)), 
+				(I_State) context.getObject(states.get(i))
 			);
 		}
 		e.setStateMap(stateMap);

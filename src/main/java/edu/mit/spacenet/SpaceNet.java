@@ -269,6 +269,9 @@ public class SpaceNet {
 				BufferedReader in = new BufferedReader(new FileReader(scenarioFilePath.replace("xml", "json")));
 				scenario = gson.fromJson(in, edu.mit.spacenet.io.gson.scenario.Scenario.class).toSpaceNet();
 				in.close();
+				
+				scenario.setFilePath(scenarioFilePath.replace(".xml", "_2.xml"));
+				XStreamEngine.saveScenario(scenario);
 				// FIXME
 			} catch(IOException ex) {
 				System.err.println("Failed to read scenario file: " + ex.getMessage());

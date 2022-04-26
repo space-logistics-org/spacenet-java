@@ -21,7 +21,7 @@ public abstract class Location {
 		}
 	}
 	
-	public static List<Location> createFrom(Collection<edu.mit.spacenet.domain.network.Location> locations, Context context) {
+	public static List<Location> createFrom(Collection<? extends edu.mit.spacenet.domain.network.Location> locations, Context context) {
 		List<Location> ls = new ArrayList<Location>();
 		for(edu.mit.spacenet.domain.network.Location l : locations) {
 			ls.add(Location.createFrom(l, context));

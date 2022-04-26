@@ -1,6 +1,5 @@
 package edu.mit.spacenet.io.gson.scenario;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,10 +23,11 @@ public class Scenario {
 	public String description;
 	public Date startDate;
 	public String scenarioType;
-	public List<Location> locations;
-	public List<Mission> missions = new ArrayList<Mission>();
-	public List<ResourceType> resources = new ArrayList<ResourceType>();
-	public List<Element> elements = new ArrayList<Element>();
+	public List<Location> nodes;
+	public List<Location> edges;
+	public List<Mission> missions;
+	public List<ResourceType> resources;
+	public List<Element> elements;
 	
 	public static Scenario createFrom(edu.mit.spacenet.scenario.Scenario scenario) {
 		Scenario s = new Scenario();
@@ -37,7 +37,8 @@ public class Scenario {
 		s.startDate = scenario.getStartDate();
 		s.scenarioType = TYPE_MAP.inverse().get(scenario.getScenarioType());
 		Context context = new Context();
-		s.locations = Location.createFrom(scenario.getNetwork().getLocations(), context);
+		s.nodes = Location.createFrom(scenario.getNetwork().getNodes(), context);
+		s.edges = Location.createFrom(scenario.getNetwork().getEdges(), context);
 		s.missions = Mission.createFrom(scenario.getMissionList(), context);
 		s.resources = ResourceType.createFrom(scenario.getDataSource().getResourceLibrary(), context);
 		s.elements = Element.createFrom(scenario.getElements(), context);
@@ -53,16 +54,12 @@ public class Scenario {
 		s.setScenarioType(TYPE_MAP.get(scenarioType));
 		Context context = new Context();
 		// load nodes
-		for(Location location : locations) {
-			if(location instanceof Node) {
-				s.getNetwork().add(location.toSpaceNet(context));
-			}
+		for(Location node : nodes) {
+			s.getNetwork().add(node.toSpaceNet(context));
 		}
-		// load edges (must be after nodes due to runtime dependency)
-		for(Location location : locations) {
-			if(location instanceof Edge) {
-				s.getNetwork().add(location.toSpaceNet(context));
-			}
+		// load edges
+		for(Location edge : edges) {
+			s.getNetwork().add(edge.toSpaceNet(context));
 		}
 		// load resources
 		for(ResourceType r : resources) {

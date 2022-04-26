@@ -19,6 +19,7 @@ public class Scenario {
 			.put("SolarSystem", ScenarioType.SOLAR_SYSTEM)
 			.build();
 	
+	public String createdBy;
 	public String name;
 	public String description;
 	public Date startDate;
@@ -30,6 +31,7 @@ public class Scenario {
 	
 	public static Scenario createFrom(edu.mit.spacenet.scenario.Scenario scenario) {
 		Scenario s = new Scenario();
+		s.createdBy = scenario.getCreatedBy();
 		s.name = scenario.getName();
 		s.description = scenario.getDescription();
 		s.startDate = scenario.getStartDate();
@@ -44,6 +46,7 @@ public class Scenario {
 	
 	public edu.mit.spacenet.scenario.Scenario toSpaceNet() {
 		edu.mit.spacenet.scenario.Scenario s = new edu.mit.spacenet.scenario.Scenario();
+		s.setCreatedBy(createdBy);
 		s.setName(name);
 		s.setDescription(description);
 		s.setStartDate(startDate);

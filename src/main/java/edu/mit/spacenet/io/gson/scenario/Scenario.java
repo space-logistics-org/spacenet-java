@@ -23,8 +23,7 @@ public class Scenario {
 	public String description;
 	public Date startDate;
 	public String scenarioType;
-	public List<Location> nodes;
-	public List<Location> edges;
+	public Network network;
 	public List<Mission> missions;
 	public List<ResourceType> resources;
 	public List<Element> elements;
@@ -37,8 +36,7 @@ public class Scenario {
 		s.startDate = scenario.getStartDate();
 		s.scenarioType = TYPE_MAP.inverse().get(scenario.getScenarioType());
 		Context context = new Context();
-		s.nodes = Location.createFrom(scenario.getNetwork().getNodes(), context);
-		s.edges = Location.createFrom(scenario.getNetwork().getEdges(), context);
+		s.network = Network.createFrom(scenario.getNetwork(), context);
 		s.missions = Mission.createFrom(scenario.getMissionList(), context);
 		s.resources = ResourceType.createFrom(scenario.getDataSource().getResourceLibrary(), context);
 		s.elements = Element.createFrom(scenario.getElements(), context);
@@ -53,14 +51,8 @@ public class Scenario {
 		s.setStartDate(startDate);
 		s.setScenarioType(TYPE_MAP.get(scenarioType));
 		Context context = new Context();
-		// load nodes
-		for(Location node : nodes) {
-			s.getNetwork().add(node.toSpaceNet(context));
-		}
-		// load edges
-		for(Location edge : edges) {
-			s.getNetwork().add(edge.toSpaceNet(context));
-		}
+		// load network
+		network.toSpaceNet(s, context);
 		// load resources
 		for(ResourceType r : resources) {
 			context.getId(r.id, r.toSpaceNet(context));

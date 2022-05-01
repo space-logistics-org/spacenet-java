@@ -218,6 +218,16 @@ public class SpaceNet {
 						.registerSubtype(SurfaceEdge.class, Edge.TYPE_MAP.inverse().get(EdgeType.SURFACE))
 						.registerSubtype(SpaceEdge.class, Edge.TYPE_MAP.inverse().get(EdgeType.SPACE))
 						.registerSubtype(FlightEdge.class, Edge.TYPE_MAP.inverse().get(EdgeType.FLIGHT));
+				RuntimeTypeAdapterFactory<Node> nodeAdapterFactory = RuntimeTypeAdapterFactory
+						.of(Node.class, "type")
+						.registerSubtype(SurfaceNode.class, Node.TYPE_MAP.inverse().get(NodeType.SURFACE))
+						.registerSubtype(OrbitalNode.class, Node.TYPE_MAP.inverse().get(NodeType.ORBITAL))
+						.registerSubtype(LagrangeNode.class, Node.TYPE_MAP.inverse().get(NodeType.LAGRANGE));
+				RuntimeTypeAdapterFactory<Edge> edgeAdapterFactory = RuntimeTypeAdapterFactory
+						.of(Edge.class, "type")
+						.registerSubtype(SurfaceEdge.class, Edge.TYPE_MAP.inverse().get(EdgeType.SURFACE))
+						.registerSubtype(SpaceEdge.class, Edge.TYPE_MAP.inverse().get(EdgeType.SPACE))
+						.registerSubtype(FlightEdge.class, Edge.TYPE_MAP.inverse().get(EdgeType.FLIGHT));
 				RuntimeTypeAdapterFactory<Event> eventAdapterFactory = RuntimeTypeAdapterFactory
 						.of(Event.class, "type")
 						.registerSubtype(CreateElements.class, Event.TYPE_MAP.inverse().get(EventType.CREATE))
@@ -254,6 +264,8 @@ public class SpaceNet {
 						.registerTypeAdapter(Date.class, new UtcDateTypeAdapter())
 						.registerTypeAdapter(PeriodDuration.class, new PeriodDurationTypeAdpater())
 						.registerTypeAdapterFactory(locationAdapterFactory)
+						.registerTypeAdapterFactory(nodeAdapterFactory)
+						.registerTypeAdapterFactory(edgeAdapterFactory)
 						.registerTypeAdapterFactory(eventAdapterFactory)
 						.registerTypeAdapterFactory(demandModelAdapterFactory)
 						.registerTypeAdapterFactory(elementAdapterFactory)

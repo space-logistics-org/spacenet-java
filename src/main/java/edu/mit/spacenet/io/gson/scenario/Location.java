@@ -21,6 +21,7 @@ public abstract class Location {
 		}
 	}
 	
+	/* TODO remove due to type conflict with node/edge methods
 	public static List<Location> createFrom(Collection<? extends edu.mit.spacenet.domain.network.Location> locations, Context context) {
 		List<Location> ls = new ArrayList<Location>();
 		for(edu.mit.spacenet.domain.network.Location l : locations) {
@@ -28,6 +29,7 @@ public abstract class Location {
 		}
 		return ls;
 	}
+	*/
 	
 	public abstract edu.mit.spacenet.domain.network.Location toSpaceNet(Context context);
 	

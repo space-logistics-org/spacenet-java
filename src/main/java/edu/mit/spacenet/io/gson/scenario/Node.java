@@ -1,5 +1,9 @@
 package edu.mit.spacenet.io.gson.scenario;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
@@ -24,6 +28,14 @@ public abstract class Node extends Location {
 		} else {
 			throw new UnsupportedOperationException("unknown node type: " + node.getNodeType());
 		}
+	}
+	
+	public static List<Node> createFrom(Collection<? extends edu.mit.spacenet.domain.network.node.Node> nodes, Context context) {
+		List<Node> ns = new ArrayList<Node>();
+		for(edu.mit.spacenet.domain.network.node.Node n : nodes) {
+			ns.add(Node.createFrom(n, context));
+		}
+		return ns;
 	}
 	
 	@Override

@@ -1,5 +1,8 @@
 package edu.mit.spacenet.io.gson.scenario;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import com.google.common.collect.BiMap;
@@ -27,6 +30,14 @@ public abstract class Edge extends Location {
 		} else {
 			throw new UnsupportedOperationException("unknown edge type: " + edge.getEdgeType());
 		}
+	}
+	
+	public static List<Edge> createFrom(Collection<? extends edu.mit.spacenet.domain.network.edge.Edge> edges, Context context) {
+		List<Edge> es = new ArrayList<Edge>();
+		for(edu.mit.spacenet.domain.network.edge.Edge e : edges) {
+			es.add(Edge.createFrom(e, context));
+		}
+		return es;
 	}
 
 	@Override

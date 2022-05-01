@@ -40,4 +40,14 @@ public abstract class Node extends Location {
 	
 	@Override
 	public abstract edu.mit.spacenet.domain.network.node.Node toSpaceNet(Context context);
+	
+	public static List<edu.mit.spacenet.domain.network.node.Node> toSpaceNet(Collection<Node> nodes, Context context) {
+		List<edu.mit.spacenet.domain.network.node.Node> ns = new ArrayList<edu.mit.spacenet.domain.network.node.Node>();
+		if(nodes != null) {
+			for(Node n : nodes) {
+				ns.add(n.toSpaceNet(context));
+			}
+		}
+		return ns;
+	}
 }

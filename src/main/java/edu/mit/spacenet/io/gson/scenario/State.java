@@ -46,21 +46,21 @@ public class State {
 		return ss;
 	}
 	
-	public I_State toSpaceNet(Context context) {
+	public I_State toSpaceNet(UUID source, Context context) {
 		edu.mit.spacenet.domain.element.State s = new edu.mit.spacenet.domain.element.State();
 		s.setTid(context.getId(id, s));
 		s.setName(name);
 		s.setDescription(description);
 		s.setStateType(TYPE_MAP.get(type));
-		s.setDemandModels(DemandModel.toSpaceNet(demandModels, context));
+		s.setDemandModels(DemandModel.toSpaceNet(source, demandModels, context));
 		return s;
 	}
 
-	public static SortedSet<I_State> toSpaceNet(Collection<State> states, Context context) {
+	public static SortedSet<I_State> toSpaceNet(UUID source, Collection<State> states, Context context) {
 		SortedSet<I_State> ss = new TreeSet<I_State>();
 		if(states != null) {
 			for(State state : states) {
-				ss.add(state.toSpaceNet(context));
+				ss.add(state.toSpaceNet(source, context));
 			}
 		}
 		return ss;

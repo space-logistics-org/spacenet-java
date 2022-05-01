@@ -1,7 +1,5 @@
 package edu.mit.spacenet.io.gson.scenario;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +30,8 @@ public abstract class Location {
 	*/
 	
 	public abstract edu.mit.spacenet.domain.network.Location toSpaceNet(Context context);
-	
+
+	/* TODO remove due to type conflict with node/edge methods
 	public static List<edu.mit.spacenet.domain.network.Location> toSpaceNet(Collection<Location> locations, Context context) {
 		List<edu.mit.spacenet.domain.network.Location> ls = new ArrayList<edu.mit.spacenet.domain.network.Location>();
 		if(locations != null) {
@@ -42,4 +41,5 @@ public abstract class Location {
 		}
 		return ls;
 	}
+	*/
 }

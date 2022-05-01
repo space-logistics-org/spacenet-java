@@ -47,12 +47,12 @@ public abstract class DemandModel {
 		return ds;
 	}
 	
-	public abstract I_DemandModel toSpaceNet(Context context);
+	public abstract I_DemandModel toSpaceNet(UUID source, Context context);
 	
-	public static SortedSet<I_DemandModel> toSpaceNet(Collection<DemandModel> demandModels, Context context) {
+	public static SortedSet<I_DemandModel> toSpaceNet(UUID source, Collection<DemandModel> demandModels, Context context) {
 		SortedSet<I_DemandModel> ds = new TreeSet<I_DemandModel>();
 		for(DemandModel d : demandModels) {
-			ds.add(d.toSpaceNet(context));
+			ds.add(d.toSpaceNet(source, context));
 		}
 		return ds;
 	}

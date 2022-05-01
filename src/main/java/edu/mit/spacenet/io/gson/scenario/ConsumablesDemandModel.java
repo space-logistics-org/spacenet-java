@@ -3,7 +3,6 @@ package edu.mit.spacenet.io.gson.scenario;
 import java.util.UUID;
 
 public class ConsumablesDemandModel extends DemandModel {	
-	public UUID mission; // TODO remove
 	public double reservesDuration;
 	public double waterRecoveryRate;
 	public double clothingLifetime;
@@ -36,7 +35,6 @@ public class ConsumablesDemandModel extends DemandModel {
 		m.id = context.getUUID(demandModel);
 		m.name = demandModel.getName();
 		m.description = demandModel.getDescription();
-		m.mission = context.getUUID(demandModel.getMission());
 		m.reservesDuration = demandModel.getReservesDuration();
 		m.waterRecoveryRate = demandModel.getWaterRecoveryRate();
 		m.clothingLifetime = demandModel.getClothingLifetime();
@@ -67,8 +65,8 @@ public class ConsumablesDemandModel extends DemandModel {
 	}
 	
 	@Override
-	public edu.mit.spacenet.domain.model.CrewConsumablesDemandModel toSpaceNet(Context context) {
-		edu.mit.spacenet.domain.model.CrewConsumablesDemandModel m = new edu.mit.spacenet.domain.model.CrewConsumablesDemandModel((edu.mit.spacenet.scenario.Mission) context.getObject(mission));
+	public edu.mit.spacenet.domain.model.CrewConsumablesDemandModel toSpaceNet(UUID source, Context context) {
+		edu.mit.spacenet.domain.model.CrewConsumablesDemandModel m = new edu.mit.spacenet.domain.model.CrewConsumablesDemandModel((edu.mit.spacenet.scenario.Mission) context.getObject(source));
 		m.setTid(context.getId(id, m));
 		m.setName(name);
 		m.setDescription(description);

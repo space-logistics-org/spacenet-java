@@ -14,6 +14,8 @@ public class Context {
 	public BiMap<UUID, Object> uuids = HashBiMap.create();
 	public Map<UUID, Integer> ids = new HashMap<UUID, Integer>();
 	public BiMap<Integer, Object> objects = HashBiMap.create();
+
+	public BiMap<UUID, Integer> templateIds = HashBiMap.create();
 	
 	public Object getObject(UUID uuid) {
 		return objects.get(ids.get(uuid));
@@ -28,6 +30,26 @@ public class Context {
 			objects.put(id, object);
 		}
 		return ids.get(uuid);
+	}
+	
+	public UUID getTemplateUUID(int templateId) {
+		if(!templateIds.containsValue(templateId)) {
+			templateIds.put(UUID.randomUUID(), templateId);
+		}
+		return templateIds.inverse().get(templateId);
+	}
+	
+	public boolean isTemplateUUID(int templateId) {
+		return templateIds.containsValue(templateId);
+	}
+	
+	private int nextTemplateId = 0;
+	
+	public int getTemplateId(UUID uuid) {
+		if(!templateIds.containsKey(uuid)) {
+			templateIds.put(uuid, ++nextTemplateId);
+		}
+		return templateIds.get(uuid);
 	}
 	
 	public UUID getUUID(Object object) {

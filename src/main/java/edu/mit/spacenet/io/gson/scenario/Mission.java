@@ -49,7 +49,7 @@ public class Mission {
 		m.setReturnOrigin((edu.mit.spacenet.domain.network.node.Node) context.getObject(return_origin));
 		m.setReturnDestination((edu.mit.spacenet.domain.network.node.Node) context.getObject(return_destination));
 		m.getEventList().addAll(Event.toSpaceNet(events, context));
-		m.getDemandModels().addAll(DemandModel.toSpaceNet(demand_models, context));
+		m.getDemandModels().addAll(DemandModel.toSpaceNet(id, demand_models, context));
 		return m;
 	}
 	

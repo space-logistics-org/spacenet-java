@@ -2,6 +2,7 @@ package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class RatedDemandModel extends DemandModel {
 	public List<Resource> demandRates = new ArrayList<Resource>();
@@ -16,7 +17,7 @@ public class RatedDemandModel extends DemandModel {
 	}
 	
 	@Override
-	public edu.mit.spacenet.domain.model.RatedDemandModel toSpaceNet(Context context) {
+	public edu.mit.spacenet.domain.model.RatedDemandModel toSpaceNet(UUID source, Context context) {
 		edu.mit.spacenet.domain.model.RatedDemandModel m = new edu.mit.spacenet.domain.model.RatedDemandModel();
 		m.setTid(context.getId(id, m));
 		m.setName(name);

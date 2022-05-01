@@ -9,7 +9,16 @@ import edu.mit.spacenet.domain.network.node.Node;
 import edu.mit.spacenet.domain.resource.I_Resource;
 
 public class InMemoryDataSource extends AbstractDataSource {
-	private List<I_Element> elementLibrary;
+	private List<I_Element> elementTemplateLibrary;
+	
+	public InMemoryDataSource() {
+		super();
+		elementTemplateLibrary = new ArrayList<I_Element>();
+	}
+	
+	public List<I_Element> getElementLibrary() {
+		return elementTemplateLibrary;
+	}
 	
 	@Override
 	public boolean deleteEdge(int tid) throws Exception {
@@ -92,7 +101,7 @@ public class InMemoryDataSource extends AbstractDataSource {
 
 	@Override
 	public I_Element loadElement(int tid) throws Exception {
-		for(I_Element e : elementLibrary) {
+		for(I_Element e : elementTemplateLibrary) {
 			if(e.getTid() == tid) {
 				return e;
 			}

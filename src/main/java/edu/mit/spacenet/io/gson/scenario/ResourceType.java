@@ -45,7 +45,7 @@ public class ResourceType {
 		return r;
 	}
 	
-	public static List<ResourceType> createFrom(Collection<I_Resource> resources, Context context) {
+	public static List<ResourceType> createFrom(Collection<? extends I_Resource> resources, Context context) {
 		List<ResourceType> rs = new ArrayList<ResourceType>();
 		for(I_Resource r : resources) {
 			rs.add(ResourceType.createFrom(r, context));

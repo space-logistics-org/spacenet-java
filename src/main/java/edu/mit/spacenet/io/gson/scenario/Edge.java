@@ -42,4 +42,14 @@ public abstract class Edge extends Location {
 
 	@Override
 	public abstract edu.mit.spacenet.domain.network.edge.Edge toSpaceNet(Context context);
+
+	public static List<edu.mit.spacenet.domain.network.edge.Edge> toSpaceNet(Collection<Edge> edges, Context context) {
+		List<edu.mit.spacenet.domain.network.edge.Edge> es = new ArrayList<edu.mit.spacenet.domain.network.edge.Edge>();
+		if(edges != null) {
+			for(Edge e : edges) {
+				es.add(e.toSpaceNet(context));
+			}
+		}
+		return es;
+	}
 }

@@ -1,6 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ImpulseDemandModel extends DemandModel {
 	public List<Resource> demands;
@@ -15,7 +16,7 @@ public class ImpulseDemandModel extends DemandModel {
 	}
 	
 	@Override
-	public edu.mit.spacenet.domain.model.TimedImpulseDemandModel toSpaceNet(Context context) {
+	public edu.mit.spacenet.domain.model.TimedImpulseDemandModel toSpaceNet(UUID source, Context context) {
 		edu.mit.spacenet.domain.model.TimedImpulseDemandModel m = new edu.mit.spacenet.domain.model.TimedImpulseDemandModel();
 		m.setTid(context.getId(id, m));
 		m.setName(name);

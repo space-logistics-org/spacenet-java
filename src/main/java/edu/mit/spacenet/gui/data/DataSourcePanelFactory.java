@@ -17,6 +17,7 @@ package edu.mit.spacenet.gui.data;
 
 import edu.mit.spacenet.data.Database;
 import edu.mit.spacenet.data.I_DataSource;
+import edu.mit.spacenet.data.InMemoryDataSource;
 import edu.mit.spacenet.data.Spreadsheet_2_5;
 
 /**
@@ -43,6 +44,8 @@ public abstract class DataSourcePanelFactory {
 			return new ExcelDataSourcePanel(dialog, (Spreadsheet_2_5)dataSource);
 		case SQL_DB:
 			return new MySqlDataSourcePanel(dialog, (Database)dataSource);
+		case IN_MEMORY:
+			return new InMemoryDataSourcePanel(dialog, (InMemoryDataSource)dataSource);
 		default: throw new RuntimeException("Unsupported Data Source");
 		}
 	}

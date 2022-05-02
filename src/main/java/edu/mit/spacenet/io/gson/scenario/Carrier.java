@@ -20,7 +20,7 @@ public class Carrier extends Element {
 	public static Carrier createFrom(edu.mit.spacenet.domain.element.Carrier element, Context context) {
 		Carrier e = new Carrier();
 		e.id = context.getUUID(element);
-		e.templateId = context.getTemplateUUID(element.getTid());
+		e.templateId = context.getElementTemplateUUID(element);
 		Carrier template = (Carrier) context.getObject(e.templateId);
 		if(template == null) {
 			e.name = element.getName();
@@ -33,14 +33,10 @@ public class Carrier extends Element {
 			if(element.getIconType() != element.getElementType().getIconType()) {
 				e.icon = element.getIconType().getName();
 			}
-			e.states = State.createFrom(element.getStates(), context);
-			e.currentState = context.getUUID(element.getCurrentState());
-			e.parts = Part.createFrom(element.getParts(), context);
 			e.maxCargoMass = element.getMaxCargoMass();
 			e.maxCargoVolume = element.getMaxCargoVolume();
 			e.cargoEnvironment = element.getCargoEnvironment().getName();
 			e.maxCrewSize = element.getMaxCrewSize();
-			e.contents = context.getUUIDs(element.getContents());
 		} else {
 			if(!template.name.equals(element.getName())) {
 				e.name = element.getName();
@@ -80,6 +76,10 @@ public class Carrier extends Element {
 				e.maxCrewSize = element.getMaxCrewSize();
 			}
 		}
+		e.states = State.createFrom(element.getStates(), context);
+		e.currentState = context.getUUID(element.getCurrentState());
+		e.parts = Part.createFrom(element.getParts(), context);
+		e.contents = context.getUUIDs(element.getContents());
 		return e;
 	}
 	
@@ -87,7 +87,7 @@ public class Carrier extends Element {
 	public edu.mit.spacenet.domain.element.Carrier toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.Carrier e = new edu.mit.spacenet.domain.element.Carrier();
 		e.setUid(context.getId(id, e));
-		e.setTid(context.getTemplateId(templateId));
+		e.setTid(templateId == null ? context.getId(id, e) : context.getId(templateId));
 		edu.mit.spacenet.domain.element.Carrier template = (edu.mit.spacenet.domain.element.Carrier) context.getObject(templateId);
 		e.setName(name == null ? template.getName() : name);
 		e.setDescription(description == null ? template.getDescription() : description);
@@ -99,23 +99,20 @@ public class Carrier extends Element {
 		if(icon == null && template != null && template.getIconType() != template.getElementType().getIconType()) {
 			e.setIconType(template.getIconType());
 		}
-		e.setStates(states == null ? template.getStates() : State.toSpaceNet(id, states, context));
-		if(currentState == null && template != null) {
-			e.setCurrentState(template.getCurrentState());
-		} else if(currentState != null) {
-			e.setCurrentState((I_State) context.getObject(currentState));
-		}
-		e.setParts(parts == null ? template.getParts() : Part.toSpaceNet(parts, context));
 		e.setMaxCargoMass(maxCargoMass == null ? template.getMaxCargoMass() : maxCargoMass);
 		e.setMaxCargoVolume(maxCargoVolume == null ? template.getMaxCargoVolume() : maxCargoVolume);
 		e.setCargoEnvironment(cargoEnvironment == null ? template.getCargoEnvironment() : Environment.getInstance(cargoEnvironment));
 		e.setMaxCrewSize(maxCrewSize == null ? template.getMaxCrewSize() : maxCrewSize);
-		e.getContents().addAll(contents == null ? template.getContents() : Element.toSpaceNet(contents, context));
+		
+		e.setStates(State.toSpaceNet(e, states, context));
+		e.setCurrentState((I_State) context.getObject(currentState));
+		e.setParts(Part.toSpaceNet(parts, context));
+		e.getContents().addAll(Element.toSpaceNet(contents, context));
 		return e;
 	}
 	
 	@Override
 	public ElementPreview getPreview(Context context) {
-		return new ElementPreview(context.getTemplateId(templateId), name, ElementType.CARRIER, ElementIcon.getInstance(icon));
+		return new ElementPreview(context.getId(id), name, ElementType.CARRIER, ElementIcon.getInstance(icon));
 	}
 }

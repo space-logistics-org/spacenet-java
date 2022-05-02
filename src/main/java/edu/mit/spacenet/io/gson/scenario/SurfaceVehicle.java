@@ -19,7 +19,7 @@ public class SurfaceVehicle extends Carrier {
 	public static SurfaceVehicle createFrom(edu.mit.spacenet.domain.element.SurfaceVehicle element, Context context) {
 		SurfaceVehicle e = new SurfaceVehicle();
 		e.id = context.getUUID(element);
-		e.templateId = context.getTemplateUUID(element.getTid());
+		e.templateId = context.getElementTemplateUUID(element);
 		SurfaceVehicle template = (SurfaceVehicle) context.getObject(e.templateId);
 		if(template == null) {
 			e.name = element.getName();
@@ -32,9 +32,6 @@ public class SurfaceVehicle extends Carrier {
 			if(element.getIconType() != element.getElementType().getIconType()) {
 				e.icon = element.getIconType().getName();
 			}
-			e.states = State.createFrom(element.getStates(), context);
-			e.currentState = context.getUUID(element.getCurrentState());
-			e.parts = Part.createFrom(element.getParts(), context);
 			e.maxCargoMass = element.getMaxCargoMass();
 			e.maxCargoVolume = element.getMaxCargoVolume();
 			e.cargoEnvironment = element.getCargoEnvironment().getName();
@@ -43,7 +40,6 @@ public class SurfaceVehicle extends Carrier {
 			e.fuelType = context.getUUID(element.getFuelTank().getResource());
 			e.fuelMaxAmount = element.getFuelTank().getMaxAmount();
 			e.fuelAmount = element.getFuelTank().getAmount();
-			e.contents = context.getUUIDs(element.getContents());
 		} else {
 			if(!template.name.equals(element.getName())) {
 				e.name = element.getName();
@@ -95,6 +91,10 @@ public class SurfaceVehicle extends Carrier {
 				e.fuelAmount = element.getFuelTank().getAmount();
 			}
 		}
+		e.states = State.createFrom(element.getStates(), context);
+		e.currentState = context.getUUID(element.getCurrentState());
+		e.parts = Part.createFrom(element.getParts(), context);
+		e.contents = context.getUUIDs(element.getContents());
 		return e;
 	}
 	
@@ -102,7 +102,7 @@ public class SurfaceVehicle extends Carrier {
 	public edu.mit.spacenet.domain.element.SurfaceVehicle toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.SurfaceVehicle e = new edu.mit.spacenet.domain.element.SurfaceVehicle();
 		e.setUid(context.getId(id, e));
-		e.setTid(context.getTemplateId(templateId));
+		e.setTid(templateId == null ? context.getId(id, e) : context.getId(templateId));
 		edu.mit.spacenet.domain.element.SurfaceVehicle template = (edu.mit.spacenet.domain.element.SurfaceVehicle) context.getObject(templateId);
 		e.setName(name == null ? template.getName() : name);
 		e.setDescription(description == null ? template.getDescription() : description);
@@ -114,13 +114,6 @@ public class SurfaceVehicle extends Carrier {
 		if(icon == null && template != null && template.getIconType() != template.getElementType().getIconType()) {
 			e.setIconType(template.getIconType());
 		}
-		e.setStates(states == null ? template.getStates() : State.toSpaceNet(id, states, context));
-		if(currentState == null && template != null) {
-			e.setCurrentState(template.getCurrentState());
-		} else if(currentState != null) {
-			e.setCurrentState((I_State) context.getObject(currentState));
-		}
-		e.setParts(parts == null ? template.getParts() : Part.toSpaceNet(parts, context));
 		e.setMaxCargoMass(maxCargoMass == null ? template.getMaxCargoMass() : maxCargoMass);
 		e.setMaxCargoVolume(maxCargoVolume == null ? template.getMaxCargoVolume() : maxCargoVolume);
 		e.setCargoEnvironment(cargoEnvironment == null ? template.getCargoEnvironment() : Environment.getInstance(cargoEnvironment));
@@ -131,12 +124,16 @@ public class SurfaceVehicle extends Carrier {
 		t.setMaxAmount(fuelMaxAmount == null ? template.getFuelTank().getMaxAmount() : fuelMaxAmount);
 		t.setAmount(fuelAmount == null ? template.getFuelTank().getAmount() : fuelAmount);
 		e.setFuelTank(t);
-		e.getContents().addAll(contents == null ? template.getContents() : Element.toSpaceNet(contents, context));
+
+		e.setStates(State.toSpaceNet(e, states, context));
+		e.setCurrentState((I_State) context.getObject(currentState));
+		e.setParts(Part.toSpaceNet(parts, context));
+		e.getContents().addAll(Element.toSpaceNet(contents, context));
 		return e;
 	}
 	
 	@Override
 	public ElementPreview getPreview(Context context) {
-		return new ElementPreview(context.getTemplateId(templateId), name, ElementType.SURFACE_VEHICLE, ElementIcon.getInstance(icon));
+		return new ElementPreview(context.getId(id), name, ElementType.SURFACE_VEHICLE, ElementIcon.getInstance(icon));
 	}
 }

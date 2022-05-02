@@ -269,6 +269,7 @@ public class SpaceNet {
 						.registerTypeAdapterFactory(eventAdapterFactory)
 						.registerTypeAdapterFactory(demandModelAdapterFactory)
 						.registerTypeAdapterFactory(elementAdapterFactory)
+						.setPrettyPrinting()
 						.create();
 				
 				

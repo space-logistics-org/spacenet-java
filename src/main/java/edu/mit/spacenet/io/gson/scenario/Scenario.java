@@ -10,6 +10,8 @@ import com.google.common.collect.ImmutableBiMap;
 
 import edu.mit.spacenet.data.ElementPreview;
 import edu.mit.spacenet.domain.element.I_Element;
+import edu.mit.spacenet.domain.element.I_State;
+import edu.mit.spacenet.domain.model.I_DemandModel;
 import edu.mit.spacenet.scenario.ScenarioType;
 
 public class Scenario {
@@ -32,6 +34,7 @@ public class Scenario {
 	public List<ResourceType> resourceList;
 	public List<Element> elementTemplates;
 	public List<Element> instantiatedElements;
+	public List<DemandModel> demandModels;
 	
 	public static Scenario createFrom(edu.mit.spacenet.scenario.Scenario scenario) {
 		Scenario s = new Scenario();
@@ -42,17 +45,42 @@ public class Scenario {
 		s.scenarioType = TYPE_MAP.inverse().get(scenario.getScenarioType());
 		Context context = new Context();
 		s.network = Network.createFrom(scenario.getNetwork(), context);
-		s.missionList = Mission.createFrom(scenario.getMissionList(), context);
+		s.demandModels = new ArrayList<DemandModel>();
+		for(edu.mit.spacenet.scenario.Mission mission : scenario.getMissionList()) {
+			for(I_DemandModel model : mission.getDemandModels()) {
+				UUID templateId = context.getModelTemplateUUID(model);
+				DemandModel m = DemandModel.createFrom(model, context);
+				m.id = templateId;
+				m.templateId = null;
+				context.getId(templateId, m);
+				s.demandModels.add(m);
+			}
+		}
+		for(I_Element element : scenario.getElements()) {
+			for(I_State state : element.getStates()) {
+				for(I_DemandModel model : state.getDemandModels()) {
+					if(!context.isModelTemplateUUID(model.getTid())) {
+						UUID templateId = context.getModelTemplateUUID(model);
+						DemandModel m = DemandModel.createFrom(model, context);
+						m.id = templateId;
+						m.templateId = null;
+						context.getId(templateId, m);
+						s.demandModels.add(m);
+					}
+				}
+			}
+		}
 		s.resourceList = ResourceType.createFrom(scenario.getDataSource().getResourceLibrary(), context);
 		s.elementTemplates = new ArrayList<Element>();
 		for(I_Element element : scenario.getElements()) {
-			if(!context.isTemplateUUID(element.getTid())) {
-				UUID templateId = context.getTemplateUUID(element.getTid());
+			if(!context.isElementTemplateUUID(element.getTid())) {
+				UUID templateId = context.getElementTemplateUUID(element);
 				Element e = Element.createFrom(element, context);
 				e.id = templateId;
 				e.templateId = null;
+				context.getId(templateId, e);
 				for(ElementPreview p : scenario.getDataSource().getElementPreviewLibrary()) {
-					if(p.ID == context.getTemplateId(e.id)) {
+					if(p.ID == context.getElementTemplateId(e.id)) {
 						e.name = p.NAME;
 					}
 				}
@@ -60,6 +88,7 @@ public class Scenario {
 			}
 		}
 		s.instantiatedElements = Element.createFrom(scenario.getElements(), context);
+		s.missionList = Mission.createFrom(scenario.getMissionList(), context);
 		return s;
 	}
 	
@@ -77,6 +106,7 @@ public class Scenario {
 		dataSource.edgeLibrary = new ArrayList<Edge>(network.edges);
 		dataSource.resourceTypeLibrary = new ArrayList<ResourceType>(resourceList);
 		dataSource.elementTemplateLibrary = new ArrayList<Element>(elementTemplates);
+		dataSource.demandModelLibrary = new ArrayList<DemandModel>(demandModels);
 		s.setDataSource(dataSource.toSpaceNet(context));
 		
 		// load network

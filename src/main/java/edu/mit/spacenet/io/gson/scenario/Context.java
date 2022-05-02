@@ -10,12 +10,16 @@ import java.util.UUID;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import edu.mit.spacenet.domain.element.I_Element;
+import edu.mit.spacenet.domain.model.I_DemandModel;
+
 public class Context {
 	public BiMap<UUID, Object> uuids = HashBiMap.create();
 	public Map<UUID, Integer> ids = new HashMap<UUID, Integer>();
 	public BiMap<Integer, Object> objects = HashBiMap.create();
 
-	public BiMap<UUID, Integer> templateIds = HashBiMap.create();
+	public BiMap<UUID, Integer> elementTemplateIds = HashBiMap.create();
+	public BiMap<UUID, Integer> modelTemplateIds = HashBiMap.create();
 	
 	public Object getObject(UUID uuid) {
 		return objects.get(ids.get(uuid));
@@ -32,24 +36,8 @@ public class Context {
 		return ids.get(uuid);
 	}
 	
-	public UUID getTemplateUUID(int templateId) {
-		if(!templateIds.containsValue(templateId)) {
-			templateIds.put(UUID.randomUUID(), templateId);
-		}
-		return templateIds.inverse().get(templateId);
-	}
-	
-	public boolean isTemplateUUID(int templateId) {
-		return templateIds.containsValue(templateId);
-	}
-	
-	private int nextTemplateId = 0;
-	
-	public int getTemplateId(UUID uuid) {
-		if(!templateIds.containsKey(uuid)) {
-			templateIds.put(uuid, ++nextTemplateId);
-		}
-		return templateIds.get(uuid);
+	public int getId(UUID uuid) {
+		return ids.get(uuid);
 	}
 	
 	public UUID getUUID(Object object) {
@@ -68,5 +56,45 @@ public class Context {
 			uuids.add(getUUID(o));
 		}
 		return uuids;
+	}
+	
+	public UUID getElementTemplateUUID(I_Element element) {
+		if(!elementTemplateIds.containsValue(element.getTid())) {
+			elementTemplateIds.put(UUID.randomUUID(), element.getTid());
+		}
+		return elementTemplateIds.inverse().get(element.getTid());
+	}
+	
+	public boolean isElementTemplateUUID(int templateId) {
+		return elementTemplateIds.containsValue(templateId);
+	}
+	
+	private int nextElementTemplateId = 0;
+	
+	public int getElementTemplateId(UUID uuid) {
+		if(!elementTemplateIds.containsKey(uuid)) {
+			elementTemplateIds.put(uuid, ++nextElementTemplateId);
+		}
+		return elementTemplateIds.get(uuid);
+	}
+	
+	public UUID getModelTemplateUUID(I_DemandModel model) {
+		if(!modelTemplateIds.containsValue(model.getTid())) {
+			modelTemplateIds.put(UUID.randomUUID(), model.getTid());
+		}
+		return modelTemplateIds.inverse().get(model.getTid());
+	}
+	
+	public boolean isModelTemplateUUID(int templateId) {
+		return modelTemplateIds.containsValue(templateId);
+	}
+	
+	private int nextModelTemplateId = 0;
+	
+	public int getModelTemplateId(UUID uuid) {
+		if(!modelTemplateIds.containsKey(uuid)) {
+			modelTemplateIds.put(uuid, ++nextModelTemplateId);
+		}
+		return modelTemplateIds.get(uuid);
 	}
 }

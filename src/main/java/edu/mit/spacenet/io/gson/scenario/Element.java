@@ -47,7 +47,7 @@ public class Element {
 		if(element.getElementType() == ElementType.ELEMENT) {
 			Element e = new Element();
 			e.id = context.getUUID(element);
-			e.templateId = context.getTemplateUUID(element.getTid());
+			e.templateId = context.getElementTemplateUUID(element);
 			Element template = (Element) context.getObject(e.templateId);
 			if(template == null) {
 				e.name = element.getName();
@@ -60,9 +60,6 @@ public class Element {
 				if(element.getIconType() != element.getElementType().getIconType()) {
 					e.icon = element.getIconType().getName();
 				}
-				e.states = State.createFrom(element.getStates(), context);
-				e.currentState = context.getUUID(element.getCurrentState());
-				e.parts = Part.createFrom(element.getParts(), context);
 			} else {
 				if(!template.name.equals(element.getName())) {
 					e.name = element.getName();
@@ -90,6 +87,9 @@ public class Element {
 					e.icon = element.getIconType().getName();
 				}
 			}
+			e.states = State.createFrom(element.getStates(), context);
+			e.currentState = context.getUUID(element.getCurrentState());
+			e.parts = Part.createFrom(element.getParts(), context);
 			return e;
 		} else if(element.getElementType() == ElementType.RESOURCE_CONTAINER) {
 			return ResourceContainer.createFrom((edu.mit.spacenet.domain.element.ResourceContainer) element, context);
@@ -119,7 +119,7 @@ public class Element {
 	public edu.mit.spacenet.domain.element.Element toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.Element e = new edu.mit.spacenet.domain.element.Element();
 		e.setUid(context.getId(id, e));
-		e.setTid(context.getId(templateId, context.getObject(templateId)));
+		e.setTid(templateId == null ? context.getId(id, e) : context.getId(templateId));
 		edu.mit.spacenet.domain.element.Element template = (edu.mit.spacenet.domain.element.Element) context.getObject(templateId);
 		e.setName(name == null ? template.getName() : name);
 		e.setDescription(description == null ? template.getDescription() : description);
@@ -132,18 +132,15 @@ public class Element {
 			e.setIconType(template.getIconType());
 		}
 		e.setIconType(icon == null && template != null ? template.getIconType() : ElementIcon.getInstance(icon));
-		e.setStates(states == null ? template.getStates() : State.toSpaceNet(id, states, context));
-		if(currentState == null && template != null) {
-			e.setCurrentState(template.getCurrentState());
-		} else if(currentState != null) {
-			e.setCurrentState((I_State) context.getObject(currentState));
-		}
-		e.setParts(parts == null ? template.getParts() : Part.toSpaceNet(parts, context));
+		
+		e.setStates(State.toSpaceNet(e, states, context));
+		e.setCurrentState((I_State) context.getObject(currentState));
+		e.setParts(Part.toSpaceNet(parts, context));
 		return e;
 	}
 	
 	public ElementPreview getPreview(Context context) {
-		return new ElementPreview(context.getTemplateId(templateId), name, ElementType.ELEMENT, ElementIcon.getInstance(icon));
+		return new ElementPreview(context.getId(id), name, ElementType.ELEMENT, ElementIcon.getInstance(icon));
 	}
 	
 	public static SortedSet<I_Element> toSpaceNet(Collection<UUID> elements, Context context) {

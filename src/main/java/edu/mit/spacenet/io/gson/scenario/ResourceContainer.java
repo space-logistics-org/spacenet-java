@@ -19,7 +19,7 @@ public class ResourceContainer extends Element {
 	public static ResourceContainer createFrom(edu.mit.spacenet.domain.element.ResourceContainer element, Context context) {
 		ResourceContainer e = new ResourceContainer();
 		e.id = context.getUUID(element);
-		e.templateId = context.getTemplateUUID(element.getTid());
+		e.templateId = context.getElementTemplateUUID(element);
 		ResourceContainer template = (ResourceContainer) context.getObject(e.templateId);
 		if(template == null) {
 			e.name = element.getName();
@@ -32,13 +32,9 @@ public class ResourceContainer extends Element {
 			if(element.getIconType() != element.getElementType().getIconType()) {
 				e.icon = element.getIconType().getName();
 			}
-			e.states = State.createFrom(element.getStates(), context);
-			e.currentState = context.getUUID(element.getCurrentState());
-			e.parts = Part.createFrom(element.getParts(), context);
 			e.maxCargoMass = element.getMaxCargoMass();
 			e.maxCargoVolume = element.getMaxCargoVolume();
 			e.cargoEnvironment = element.getCargoEnvironment().getName();
-			e.contents = Resource.createFrom(element.getContents(), context);
 		} else {
 			if(!template.name.equals(element.getName())) {
 				e.name = element.getName();
@@ -75,6 +71,10 @@ public class ResourceContainer extends Element {
 				e.cargoEnvironment = element.getCargoEnvironment().getName();
 			}
 		}
+		e.states = State.createFrom(element.getStates(), context);
+		e.currentState = context.getUUID(element.getCurrentState());
+		e.parts = Part.createFrom(element.getParts(), context);
+		e.contents = Resource.createFrom(element.getContents(), context);
 		return e;
 	}
 	
@@ -82,7 +82,7 @@ public class ResourceContainer extends Element {
 	public edu.mit.spacenet.domain.element.ResourceContainer toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.ResourceContainer e = new edu.mit.spacenet.domain.element.ResourceContainer();
 		e.setUid(context.getId(id, e));
-		e.setTid(context.getTemplateId(templateId));
+		e.setTid(templateId == null ? context.getId(id, e) : context.getId(templateId));
 		edu.mit.spacenet.domain.element.ResourceContainer template = (edu.mit.spacenet.domain.element.ResourceContainer) context.getObject(templateId);
 		e.setName(name == null ? template.getName() : name);
 		e.setDescription(description == null ? template.getDescription() : description);
@@ -94,22 +94,19 @@ public class ResourceContainer extends Element {
 		if(icon == null && template != null && template.getIconType() != template.getElementType().getIconType()) {
 			e.setIconType(template.getIconType());
 		}
-		e.setStates(states == null ? template.getStates() : State.toSpaceNet(id, states, context));
-		if(currentState == null && template != null) {
-			e.setCurrentState(template.getCurrentState());
-		} else if(currentState != null) {
-			e.setCurrentState((I_State) context.getObject(currentState));
-		}
-		e.setParts(parts == null ? template.getParts() : Part.toSpaceNet(parts, context));
 		e.setMaxCargoMass(maxCargoMass == null ? template.getMaxCargoMass() : maxCargoMass);
 		e.setMaxCargoVolume(maxCargoVolume == null ? template.getMaxCargoVolume() : maxCargoVolume);
 		e.setCargoEnvironment(cargoEnvironment == null ? template.getCargoEnvironment() : Environment.getInstance(cargoEnvironment));
-		e.getContents().putAll(contents == null ? template.getContents() : Resource.toSpaceNetMap(contents, context));
+
+		e.setStates(State.toSpaceNet(e, states, context));
+		e.setCurrentState((I_State) context.getObject(currentState));
+		e.setParts(Part.toSpaceNet(parts, context));
+		e.getContents().putAll(Resource.toSpaceNetMap(contents, context));
 		return e;
 	}
 	
 	@Override
 	public ElementPreview getPreview(Context context) {
-		return new ElementPreview(context.getTemplateId(templateId), name, ElementType.RESOURCE_CONTAINER, ElementIcon.getInstance(icon));
+		return new ElementPreview(context.getId(id), name, ElementType.RESOURCE_CONTAINER, ElementIcon.getInstance(icon));
 	}
 }

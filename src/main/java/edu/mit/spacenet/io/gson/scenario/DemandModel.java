@@ -22,36 +22,37 @@ public abstract class DemandModel {
 			.build();
 	
 	public UUID id;
+	public UUID templateId;
 	public String name;
 	public String description;
 
-	public static DemandModel createFrom(I_DemandModel demandModel, Context context) {
-		if(demandModel.getDemandModelType() == DemandModelType.TIMED_IMPULSE) {
-			return ImpulseDemandModel.createFrom((edu.mit.spacenet.domain.model.TimedImpulseDemandModel) demandModel, context);
-		} else if(demandModel.getDemandModelType() == DemandModelType.RATED) {
-			return RatedDemandModel.createFrom((edu.mit.spacenet.domain.model.RatedDemandModel) demandModel, context);
-		} else if(demandModel.getDemandModelType() == DemandModelType.SPARING_BY_MASS) {
-			return SparingByMassDemandModel.createFrom((edu.mit.spacenet.domain.model.SparingByMassDemandModel) demandModel, context);
-		} else if(demandModel.getDemandModelType() == DemandModelType.CREW_CONSUMABLES) {
-			return ConsumablesDemandModel.createFrom((edu.mit.spacenet.domain.model.CrewConsumablesDemandModel) demandModel, context);
+	public static DemandModel createFrom(I_DemandModel model, Context context) {
+		if(model.getDemandModelType() == DemandModelType.TIMED_IMPULSE) {
+			return ImpulseDemandModel.createFrom((edu.mit.spacenet.domain.model.TimedImpulseDemandModel) model, context);
+		} else if(model.getDemandModelType() == DemandModelType.RATED) {
+			return RatedDemandModel.createFrom((edu.mit.spacenet.domain.model.RatedDemandModel) model, context);
+		} else if(model.getDemandModelType() == DemandModelType.SPARING_BY_MASS) {
+			return SparingByMassDemandModel.createFrom((edu.mit.spacenet.domain.model.SparingByMassDemandModel) model, context);
+		} else if(model.getDemandModelType() == DemandModelType.CREW_CONSUMABLES) {
+			return ConsumablesDemandModel.createFrom((edu.mit.spacenet.domain.model.CrewConsumablesDemandModel) model, context);
 		} else {
-			throw new UnsupportedOperationException("unknown demand model type: " + demandModel.getDemandModelType());
+			throw new UnsupportedOperationException("unknown demand model type: " + model.getDemandModelType());
 		}
 	}
 	
-	public static List<DemandModel> createFrom(Collection<I_DemandModel> demandModels, Context context) {
+	public static List<DemandModel> createFrom(Collection<I_DemandModel> models, Context context) {
 		List<DemandModel> ds = new ArrayList<DemandModel>();
-		for(I_DemandModel d : demandModels) {
+		for(I_DemandModel d : models) {
 			ds.add(DemandModel.createFrom(d, context));
 		}
 		return ds;
 	}
 	
-	public abstract I_DemandModel toSpaceNet(UUID source, Context context);
+	public abstract I_DemandModel toSpaceNet(Object source, Context context);
 	
-	public static SortedSet<I_DemandModel> toSpaceNet(UUID source, Collection<DemandModel> demandModels, Context context) {
+	public static SortedSet<I_DemandModel> toSpaceNet(Object source, Collection<DemandModel> models, Context context) {
 		SortedSet<I_DemandModel> ds = new TreeSet<I_DemandModel>();
-		for(DemandModel d : demandModels) {
+		for(DemandModel d : models) {
 			ds.add(d.toSpaceNet(source, context));
 		}
 		return ds;

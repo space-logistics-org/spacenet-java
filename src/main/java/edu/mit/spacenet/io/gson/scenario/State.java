@@ -46,7 +46,7 @@ public class State {
 		return ss;
 	}
 	
-	public I_State toSpaceNet(UUID source, Context context) {
+	public I_State toSpaceNet(Object source, Context context) {
 		edu.mit.spacenet.domain.element.State s = new edu.mit.spacenet.domain.element.State();
 		s.setTid(context.getId(id, s));
 		s.setName(name);
@@ -56,7 +56,7 @@ public class State {
 		return s;
 	}
 
-	public static SortedSet<I_State> toSpaceNet(UUID source, Collection<State> states, Context context) {
+	public static SortedSet<I_State> toSpaceNet(Object source, Collection<State> states, Context context) {
 		SortedSet<I_State> ss = new TreeSet<I_State>();
 		if(states != null) {
 			for(State state : states) {

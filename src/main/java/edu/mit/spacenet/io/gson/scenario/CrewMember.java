@@ -13,7 +13,7 @@ public class CrewMember extends Element {
 	public static CrewMember createFrom(edu.mit.spacenet.domain.element.CrewMember element, Context context) {
 		CrewMember e = new CrewMember();
 		e.id = context.getUUID(element);
-		e.templateId = context.getTemplateUUID(element.getTid());
+		e.templateId = context.getElementTemplateUUID(element);
 		CrewMember template = (CrewMember) context.getObject(e.templateId);
 		if(template == null) {
 			e.name = element.getName();
@@ -26,9 +26,6 @@ public class CrewMember extends Element {
 			if(element.getIconType() != element.getElementType().getIconType()) {
 				e.icon = element.getIconType().getName();
 			}
-			e.states = State.createFrom(element.getStates(), context);
-			e.currentState = context.getUUID(element.getCurrentState());
-			e.parts = Part.createFrom(element.getParts(), context);
 			e.availableTimeFraction = element.getAvailableTimeFraction();
 		} else {
 			if(!template.name.equals(element.getName())) {
@@ -60,6 +57,9 @@ public class CrewMember extends Element {
 				e.availableTimeFraction = element.getAvailableTimeFraction();
 			}
 		}
+		e.states = State.createFrom(element.getStates(), context);
+		e.currentState = context.getUUID(element.getCurrentState());
+		e.parts = Part.createFrom(element.getParts(), context);
 		return e;
 	}
 	
@@ -67,7 +67,7 @@ public class CrewMember extends Element {
 	public edu.mit.spacenet.domain.element.CrewMember toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.CrewMember e = new edu.mit.spacenet.domain.element.CrewMember();
 		e.setUid(context.getId(id, e));
-		e.setTid(context.getTemplateId(templateId));
+		e.setTid(templateId == null ? context.getId(id, e) : context.getId(templateId));
 		edu.mit.spacenet.domain.element.CrewMember template = (edu.mit.spacenet.domain.element.CrewMember) context.getObject(templateId);
 		e.setName(name == null ? template.getName() : name);
 		e.setDescription(description == null ? template.getDescription() : description);
@@ -81,19 +81,16 @@ public class CrewMember extends Element {
 		} else if(icon != null) {
 			e.setIconType(ElementIcon.getInstance(icon));
 		}
-		e.setStates(states == null ? template.getStates() : State.toSpaceNet(id, states, context));
-		if(currentState == null && template != null) {
-			e.setCurrentState(template.getCurrentState());
-		} else if(currentState != null) {
-			e.setCurrentState((I_State) context.getObject(currentState));
-		}
-		e.setParts(parts == null ? template.getParts() : Part.toSpaceNet(parts, context));
 		e.setAvailableTimeFraction(availableTimeFraction == null ? template.getAvailableTimeFraction() : availableTimeFraction);
+
+		e.setStates(State.toSpaceNet(e, states, context));
+		e.setCurrentState((I_State) context.getObject(currentState));
+		e.setParts(Part.toSpaceNet(parts, context));
 		return e;
 	}
 	
 	@Override
 	public ElementPreview getPreview(Context context) {
-		return new ElementPreview(context.getTemplateId(templateId), name, ElementType.CREW_MEMBER, ElementIcon.getInstance(icon));
+		return new ElementPreview(context.getId(id), name, ElementType.CREW_MEMBER, ElementIcon.getInstance(icon));
 	}
 }

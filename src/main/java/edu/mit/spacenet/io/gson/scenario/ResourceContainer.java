@@ -112,4 +112,27 @@ public class ResourceContainer extends Element {
 	public ElementPreview getPreview(Context context) {
 		return new ElementPreview(context.getTemplateId(templateId), name, ElementType.RESOURCE_CONTAINER, ElementIcon.getInstance(icon));
 	}
+	
+	@Override
+	public ResourceContainer clone() {
+		ResourceContainer e = new ResourceContainer();
+		e.id = id;
+		e.templateId = templateId;
+		e.name = name;
+		e.description = description;
+		e.accommodatationMass = accommodatationMass;
+		e.mass = mass;
+		e.volume = volume;
+		e.classOfSupply = classOfSupply;
+		e.environment = environment;
+		e.states = State.clone(states);
+		e.currentState = currentState;
+		e.parts = Part.clone(parts);
+		e.icon = icon;
+		e.maxCargoMass = maxCargoMass;
+		e.maxCargoVolume = maxCargoVolume;
+		e.cargoEnvironment = cargoEnvironment;
+		e.contents = Resource.clone(contents);
+		return e;
+	}
 }

@@ -31,4 +31,16 @@ public class SparingByMassDemandModel extends DemandModel {
 		m.setPartsListEnabled(partsListEnabled);
 		return m;
 	}
+	
+	@Override
+	public SparingByMassDemandModel clone() {
+		SparingByMassDemandModel m = new SparingByMassDemandModel();
+		m.id = id;
+		m.name = name;
+		m.description = description;
+		m.unpressurizedSparesRate = unpressurizedSparesRate;
+		m.pressurizedSparesRate = pressurizedSparesRate;
+		m.partsListEnabled = partsListEnabled;
+		return m;
+	}
 }

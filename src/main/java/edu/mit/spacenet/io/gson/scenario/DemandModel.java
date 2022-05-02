@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableBiMap;
 import edu.mit.spacenet.domain.model.DemandModelType;
 import edu.mit.spacenet.domain.model.I_DemandModel;
 
-public abstract class DemandModel {
+public abstract class DemandModel implements Cloneable {
 	public static final BiMap<String, DemandModelType> TYPE_MAP = new ImmutableBiMap.Builder<String, DemandModelType>()
 			.put("Crew Consumables Demand Model", DemandModelType.CREW_CONSUMABLES)
 			.put("Timed Impulse Demand Model", DemandModelType.TIMED_IMPULSE)
@@ -55,5 +55,16 @@ public abstract class DemandModel {
 			ds.add(d.toSpaceNet(source, context));
 		}
 		return ds;
+	}
+	
+	@Override
+	public abstract DemandModel clone();
+	
+	public static List<DemandModel> clone(Collection<? extends DemandModel> models) {
+		List<DemandModel> ms = new ArrayList<DemandModel>();
+		for(DemandModel m : models) {
+			ms.add(m.clone());
+		}
+		return ms;
 	}
 }

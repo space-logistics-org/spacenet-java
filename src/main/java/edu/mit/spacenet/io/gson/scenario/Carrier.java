@@ -1,5 +1,6 @@
 package edu.mit.spacenet.io.gson.scenario;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -117,5 +118,29 @@ public class Carrier extends Element {
 	@Override
 	public ElementPreview getPreview(Context context) {
 		return new ElementPreview(context.getTemplateId(templateId), name, ElementType.CARRIER, ElementIcon.getInstance(icon));
+	}
+	
+	@Override
+	public Carrier clone() {
+		Carrier e = new Carrier();
+		e.id = id;
+		e.templateId = templateId;
+		e.name = name;
+		e.description = description;
+		e.accommodatationMass = accommodatationMass;
+		e.mass = mass;
+		e.volume = volume;
+		e.classOfSupply = classOfSupply;
+		e.environment = environment;
+		e.states = State.clone(states);
+		e.currentState = currentState;
+		e.parts = Part.clone(parts);
+		e.icon = icon;
+		e.maxCargoMass = maxCargoMass;
+		e.maxCargoVolume = maxCargoVolume;
+		e.cargoEnvironment = cargoEnvironment;
+		e.maxCrewSize = maxCrewSize;
+		e.contents = new ArrayList<UUID>(contents);
+		return e;
 	}
 }

@@ -96,4 +96,24 @@ public class CrewMember extends Element {
 	public ElementPreview getPreview(Context context) {
 		return new ElementPreview(context.getTemplateId(templateId), name, ElementType.CREW_MEMBER, ElementIcon.getInstance(icon));
 	}
+	
+	@Override
+	public CrewMember clone() {
+		CrewMember e = new CrewMember();
+		e.id = id;
+		e.templateId = templateId;
+		e.name = name;
+		e.description = description;
+		e.accommodatationMass = accommodatationMass;
+		e.mass = mass;
+		e.volume = volume;
+		e.classOfSupply = classOfSupply;
+		e.environment = environment;
+		e.states = State.clone(states);
+		e.currentState = currentState;
+		e.parts = Part.clone(parts);
+		e.icon = icon;
+		e.availableTimeFraction = availableTimeFraction;
+		return e;
+	}
 }

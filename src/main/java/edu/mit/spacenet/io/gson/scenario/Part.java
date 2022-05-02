@@ -10,7 +10,7 @@ import java.util.UUID;
 import edu.mit.spacenet.domain.element.PartApplication;
 import edu.mit.spacenet.domain.resource.Item;
 
-public class Part {
+public class Part implements Cloneable {
 	public UUID resource;
 	private double meanTimeToFailure;
 	private double meanTimeToRepair;
@@ -54,6 +54,26 @@ public class Part {
 			for(Part part : parts) {
 				ps.add(part.toSpaceNet(context));
 			}
+		}
+		return ps;
+	}
+	
+	@Override
+	public Part clone() {
+		Part p = new Part();
+		p.resource = resource;
+		p.meanTimeToFailure = meanTimeToFailure;
+		p.meanTimeToRepair = meanTimeToRepair;
+		p.massToRepair = massToRepair;
+		p.quantity = quantity;
+		p.dutyCycle = dutyCycle;
+		return p;
+	}
+	
+	public static List<Part> clone(Collection<Part> parts) {
+		List<Part> ps = new ArrayList<Part>();
+		for(Part p : parts) {
+			ps.add(p.clone());
 		}
 		return ps;
 	}

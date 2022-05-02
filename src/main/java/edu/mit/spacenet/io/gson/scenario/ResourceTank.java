@@ -109,4 +109,26 @@ public class ResourceTank extends Element {
 	public ElementPreview getPreview(Context context) {
 		return new ElementPreview(context.getTemplateId(templateId), name, ElementType.RESOURCE_TANK, ElementIcon.getInstance(icon));
 	}
+	
+	@Override
+	public ResourceTank clone() {
+		ResourceTank e = new ResourceTank();
+		e.id = id;
+		e.templateId = templateId;
+		e.name = name;
+		e.description = description;
+		e.accommodatationMass = accommodatationMass;
+		e.mass = mass;
+		e.volume = volume;
+		e.classOfSupply = classOfSupply;
+		e.environment = environment;
+		e.states = State.clone(states);
+		e.currentState = currentState;
+		e.parts = Part.clone(parts);
+		e.icon = icon;
+		e.resource = resource;
+		e.maxAmount = maxAmount;
+		e.amount = amount;
+		return e;
+	}
 }

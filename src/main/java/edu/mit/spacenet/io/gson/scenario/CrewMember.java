@@ -1,5 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
+import java.util.UUID;
+
 import edu.mit.spacenet.data.ElementPreview;
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
@@ -100,7 +102,7 @@ public class CrewMember extends Element {
 	@Override
 	public CrewMember clone() {
 		CrewMember e = new CrewMember();
-		e.id = id;
+		e.id = UUID.randomUUID();
 		e.templateId = templateId;
 		e.name = name;
 		e.description = description;

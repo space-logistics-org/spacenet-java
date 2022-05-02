@@ -123,7 +123,7 @@ public class Carrier extends Element {
 	@Override
 	public Carrier clone() {
 		Carrier e = new Carrier();
-		e.id = id;
+		e.id = UUID.randomUUID();
 		e.templateId = templateId;
 		e.name = name;
 		e.description = description;

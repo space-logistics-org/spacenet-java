@@ -2,6 +2,7 @@ package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import edu.mit.spacenet.data.ElementPreview;
 import edu.mit.spacenet.domain.ClassOfSupply;
@@ -116,7 +117,7 @@ public class ResourceContainer extends Element {
 	@Override
 	public ResourceContainer clone() {
 		ResourceContainer e = new ResourceContainer();
-		e.id = id;
+		e.id = UUID.randomUUID();
 		e.templateId = templateId;
 		e.name = name;
 		e.description = description;

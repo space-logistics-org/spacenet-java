@@ -113,7 +113,7 @@ public class ResourceTank extends Element {
 	@Override
 	public ResourceTank clone() {
 		ResourceTank e = new ResourceTank();
-		e.id = id;
+		e.id = UUID.randomUUID();
 		e.templateId = templateId;
 		e.name = name;
 		e.description = description;

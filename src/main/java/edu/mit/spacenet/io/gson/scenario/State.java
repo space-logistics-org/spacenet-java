@@ -69,7 +69,7 @@ public class State implements Cloneable {
 	@Override
 	public State clone() {
 		State s = new State();
-		s.id = id;
+		s.id = UUID.randomUUID();
 		s.name = name;
 		s.description = description;
 		s.type = type;

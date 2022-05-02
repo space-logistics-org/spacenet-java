@@ -29,7 +29,7 @@ public class RatedDemandModel extends DemandModel {
 	@Override
 	public RatedDemandModel clone() {
 		RatedDemandModel m = new RatedDemandModel();
-		m.id = id;
+		m.id = UUID.randomUUID();
 		m.name = name;
 		m.description = description;
 		m.demandRates = Resource.clone(demandRates);

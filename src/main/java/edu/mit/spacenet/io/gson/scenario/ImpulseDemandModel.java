@@ -28,7 +28,7 @@ public class ImpulseDemandModel extends DemandModel {
 	@Override
 	public ImpulseDemandModel clone() {
 		ImpulseDemandModel m = new ImpulseDemandModel();
-		m.id = id;
+		m.id = UUID.randomUUID();
 		m.name = name;
 		m.description = description;
 		m.demands = Resource.clone(demands);

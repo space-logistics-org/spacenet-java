@@ -159,7 +159,7 @@ public class Element implements Cloneable {
 	@Override
 	public Element clone() {
 		Element e = new Element();
-		e.id = id;
+		e.id = UUID.randomUUID();
 		e.templateId = templateId;
 		e.name = name;
 		e.description = description;

@@ -35,7 +35,7 @@ public class SparingByMassDemandModel extends DemandModel {
 	@Override
 	public SparingByMassDemandModel clone() {
 		SparingByMassDemandModel m = new SparingByMassDemandModel();
-		m.id = id;
+		m.id = UUID.randomUUID();
 		m.name = name;
 		m.description = description;
 		m.unpressurizedSparesRate = unpressurizedSparesRate;

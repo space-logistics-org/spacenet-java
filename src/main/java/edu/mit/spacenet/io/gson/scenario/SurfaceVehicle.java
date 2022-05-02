@@ -144,7 +144,7 @@ public class SurfaceVehicle extends Carrier {
 	@Override
 	public SurfaceVehicle clone() {
 		SurfaceVehicle e = new SurfaceVehicle();
-		e.id = id;
+		e.id = UUID.randomUUID();
 		e.templateId = templateId;
 		e.name = name;
 		e.description = description;

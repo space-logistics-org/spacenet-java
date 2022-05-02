@@ -102,7 +102,7 @@ public class ConsumablesDemandModel extends DemandModel {
 	@Override
 	public ConsumablesDemandModel clone() {
 		ConsumablesDemandModel m = new ConsumablesDemandModel();
-		m.id = id;
+		m.id = UUID.randomUUID();
 		m.name = name;
 		m.description = description;
 		m.reservesDuration = reservesDuration;

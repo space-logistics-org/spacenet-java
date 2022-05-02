@@ -151,7 +151,7 @@ public class PropulsiveVehicle extends Carrier {
 	@Override
 	public PropulsiveVehicle clone() {
 		PropulsiveVehicle e = new PropulsiveVehicle();
-		e.id = id;
+		e.id = UUID.randomUUID();
 		e.templateId = templateId;
 		e.name = name;
 		e.description = description;

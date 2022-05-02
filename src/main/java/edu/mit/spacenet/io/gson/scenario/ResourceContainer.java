@@ -127,7 +127,11 @@ public class ResourceContainer extends Element {
 		e.classOfSupply = classOfSupply;
 		e.environment = environment;
 		e.states = State.clone(states);
-		e.currentState = currentState;
+		for(int i = 0; i < states.size(); i++) {
+			if(states.get(i).id.equals(currentState)) {
+				e.currentState = e.states.get(i).id;
+			}
+		}
 		e.parts = Part.clone(parts);
 		e.icon = icon;
 		e.maxCargoMass = maxCargoMass;

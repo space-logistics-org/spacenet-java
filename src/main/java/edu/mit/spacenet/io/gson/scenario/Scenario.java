@@ -111,10 +111,6 @@ public class Scenario {
 		
 		// load network
 		network.toSpaceNet(s, context);
-		// load resources
-		for(ResourceType r : resourceList) {
-			context.getId(r.id, r.toSpaceNet(context));
-		}
 		// load elements
 		for(Element e : instantiatedElements) {
 			context.getId(e.id, e.toSpaceNet(context));

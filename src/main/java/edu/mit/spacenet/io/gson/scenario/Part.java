@@ -12,15 +12,15 @@ import edu.mit.spacenet.domain.resource.Item;
 
 public class Part {
 	public UUID resource;
-	private double meanTimeToFailure;
-	private double meanTimeToRepair;
-	private double massToRepair;
-	private double quantity;
-	private double dutyCycle;
+	public Double meanTimeToFailure;
+	public Double meanTimeToRepair;
+	public Double massToRepair;
+	public Double quantity;
+	public Double dutyCycle;
 
 	public static Part createFrom(edu.mit.spacenet.domain.element.PartApplication part, Context context) {
 		Part p = new Part();
-		p.resource = context.getUUID(part);
+		p.resource = context.getUUID(part.getPart());
 		p.meanTimeToFailure = part.getMeanTimeToFailure();
 		p.meanTimeToRepair = part.getMeanTimeToRepair();
 		p.massToRepair = part.getMassToRepair();

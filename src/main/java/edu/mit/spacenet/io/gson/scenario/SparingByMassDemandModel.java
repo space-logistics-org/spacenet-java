@@ -1,5 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
+import java.util.UUID;
+
 import edu.mit.spacenet.domain.element.I_Element;
 
 public class SparingByMassDemandModel extends DemandModel {
@@ -9,9 +11,8 @@ public class SparingByMassDemandModel extends DemandModel {
 
 	public static SparingByMassDemandModel createFrom(edu.mit.spacenet.domain.model.SparingByMassDemandModel model, Context context) {
 		SparingByMassDemandModel m = new SparingByMassDemandModel();
-		context.getUUID(model); // register object
-		m.templateId = context.getModelTemplateUUID(model);
-		SparingByMassDemandModel template = (SparingByMassDemandModel) context.getObject(m.templateId);
+		m.templateId = context.getModelTemplate(model.getTid());
+		SparingByMassDemandModel template = (SparingByMassDemandModel) context.getJsonObject(m.templateId);
 		if(template == null) {
 			m.name = model.getName();
 			m.description = model.getDescription();
@@ -41,20 +42,26 @@ public class SparingByMassDemandModel extends DemandModel {
 	@Override
 	public edu.mit.spacenet.domain.model.SparingByMassDemandModel toSpaceNet(Object source, Context context) {
 		edu.mit.spacenet.domain.model.SparingByMassDemandModel m = new edu.mit.spacenet.domain.model.SparingByMassDemandModel((I_Element) source);
-		m.setTid(templateId == null ? context.getId(id, m) : context.getId(templateId, context.getObject(templateId)));
-		edu.mit.spacenet.domain.model.SparingByMassDemandModel template = (edu.mit.spacenet.domain.model.SparingByMassDemandModel) context.getObject(templateId);
-		m.setName(name == null ? template.getName() : name);
-		m.setDescription(description == null ? template.getDescription() : description);
-		m.setUnpressurizedSparesRate(unpressurizedSparesRate == null ? template.getUnpressurizedSparesRate() : unpressurizedSparesRate);
-		m.setPressurizedSparesRate(pressurizedSparesRate == null ? template.getPressurizedSparesRate() : pressurizedSparesRate);
-		m.setPartsListEnabled(partsListEnabled == null ? template.isPartsListEnabled() : partsListEnabled);
+		if(id != null) {
+			context.putModelTemplate(m, id, this);
+		}
+		m.setTid(context.getJavaId(templateId == null ? id : templateId));
+		SparingByMassDemandModel template = (SparingByMassDemandModel) context.getJsonObject(templateId);
+		m.setName(name == null ? template.name : name);
+		m.setDescription(description == null ? template.description : description);
+		m.setUnpressurizedSparesRate(unpressurizedSparesRate == null ? template.unpressurizedSparesRate : unpressurizedSparesRate);
+		m.setPressurizedSparesRate(pressurizedSparesRate == null ? template.pressurizedSparesRate : pressurizedSparesRate);
+		m.setPartsListEnabled(partsListEnabled == null ? template.partsListEnabled : partsListEnabled);
 		return m;
 	}
 	
 	@Override
 	public SparingByMassDemandModel clone() {
 		SparingByMassDemandModel m = new SparingByMassDemandModel();
-		m.id = UUID.randomUUID();
+		if(id != null) {
+			m.id = UUID.randomUUID();
+		}
+		m.templateId = templateId;
 		m.name = name;
 		m.description = description;
 		m.unpressurizedSparesRate = unpressurizedSparesRate;

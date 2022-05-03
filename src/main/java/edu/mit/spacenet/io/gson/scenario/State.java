@@ -30,7 +30,8 @@ public class State implements Cloneable {
 
 	public static State createFrom(I_State state, Context context) {
 		State s = new State();
-		s.id = context.getUUID(state);
+		s.id = UUID.randomUUID();
+		context.put(state, s.id, s);
 		s.name = state.getName();
 		s.description = state.getDescription();
 		s.type = TYPE_MAP.inverse().get(state.getStateType());
@@ -48,7 +49,8 @@ public class State implements Cloneable {
 	
 	public I_State toSpaceNet(Object source, Context context) {
 		edu.mit.spacenet.domain.element.State s = new edu.mit.spacenet.domain.element.State();
-		s.setTid(context.getId(id, s));
+		context.put(s, id, this);
+		s.setTid(context.getJavaId(id));
 		s.setName(name);
 		s.setDescription(description);
 		s.setStateType(TYPE_MAP.get(type));

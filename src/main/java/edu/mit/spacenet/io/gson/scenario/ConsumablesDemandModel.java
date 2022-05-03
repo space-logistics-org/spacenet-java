@@ -1,5 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
+import java.util.UUID;
+
 public class ConsumablesDemandModel extends DemandModel {	
 	public Double reservesDuration;
 	public Double waterRecoveryRate;
@@ -30,9 +32,8 @@ public class ConsumablesDemandModel extends DemandModel {
 
 	public static ConsumablesDemandModel createFrom(edu.mit.spacenet.domain.model.CrewConsumablesDemandModel model, Context context) {
 		ConsumablesDemandModel m = new ConsumablesDemandModel();
-		context.getUUID(model); // register object
-		m.templateId = context.getModelTemplateUUID(model);
-		ConsumablesDemandModel template = (ConsumablesDemandModel) context.getObject(m.templateId);
+		m.templateId = context.getModelTemplate(model.getTid());
+		ConsumablesDemandModel template = (ConsumablesDemandModel) context.getJsonObject(m.templateId);
 		if(template == null) {
 			m.name = model.getName();
 			m.description = model.getDescription();
@@ -154,43 +155,49 @@ public class ConsumablesDemandModel extends DemandModel {
 	@Override
 	public edu.mit.spacenet.domain.model.CrewConsumablesDemandModel toSpaceNet(Object source, Context context) {
 		edu.mit.spacenet.domain.model.CrewConsumablesDemandModel m = new edu.mit.spacenet.domain.model.CrewConsumablesDemandModel((edu.mit.spacenet.scenario.Mission) source);
-		m.setTid(templateId == null ? context.getId(id, m) : context.getId(templateId, context.getObject(templateId)));
-		edu.mit.spacenet.domain.model.CrewConsumablesDemandModel template = (edu.mit.spacenet.domain.model.CrewConsumablesDemandModel) context.getObject(templateId);
-		m.setName(name == null ? template.getName() : name);
-		m.setDescription(description == null ? template.getDescription() : description);
-		m.setReservesDuration(reservesDuration == null ? template.getReservesDuration() : reservesDuration);
-		m.setWaterRecoveryRate(waterRecoveryRate == null ? template.getWaterRecoveryRate() : waterRecoveryRate);
-		m.setClothingLifetime(clothingLifetime == null ? template.getClothingLifetime() : clothingLifetime);
-		m.setTransitDemandsOmitted(transitDemandsOmitted == null ? template.isTransitDemandsOmitted() : transitDemandsOmitted);
-		m.setWaterRate(waterRate == null ? template.getWaterRate() : waterRate);
-		m.setEvaWaterRate(evaWaterRate == null ? template.getEvaWaterRate() : evaWaterRate);
-		m.setFoodSupportRate(foodSupportRate == null ? template.getFoodSupportRate() : foodSupportRate);
-		m.setAmbientFoodRate(ambientFoodRate == null ? template.getAmbientFoodRate() : ambientFoodRate);
-		m.setRfFoodRate(rfFoodRate == null ? template.getRfFoodRate() : rfFoodRate);
-		m.setOxygenRate(oxygenRate == null ? template.getOxygenRate() : oxygenRate);
-		m.setEvaOxygenRate(evaOxygenRate == null ? template.getEvaOxygenRate() : evaOxygenRate);
-		m.setNitrogenRate(nitrogenRate == null ? template.getNitrogenRate() : nitrogenRate);
-		m.setHygieneRate(hygieneRate == null ? template.getHygieneRate() : hygieneRate);
-		m.setHygieneKit(hygieneKit == null ? template.getHygieneKit() : hygieneKit);
-		m.setClothingRate(clothingRate == null ? template.getClothingRate() : clothingRate);
-		m.setPersonalItems(personalItems == null ? template.getPersonalItems() : personalItems);
-		m.setOfficeEquipment(officeEquipment == null ? template.getOfficeEquipment() : officeEquipment);
-		m.setEvaSuit(evaSuit == null ? template.getEvaSuit() : evaSuit);
-		m.setEvaLithiumHydroxide(evaLithiumHydroxide == null ? template.getEvaLithiumHydroxide() : evaLithiumHydroxide);
-		m.setHealthEquipment(healthEquipment == null ? template.getHealthEquipment() : healthEquipment);
-		m.setHealthConsumables(healthConsumables == null ? template.getHealthConsumables() : healthConsumables);
-		m.setSafetyEquipment(safetyEquipment == null ? template.getSafetyEquipment() : safetyEquipment);
-		m.setCommEquipment(commEquipment == null ? template.getCommEquipment() : commEquipment);
-		m.setComputerEquipment(computerEquipment == null ? template.getComputerEquipment() : computerEquipment);
-		m.setTrashBagRate(trashBagRate == null ? template.getTrashBagRate() : trashBagRate);
-		m.setWasteContainmentRate(wasteContainmentRate == null ? template.getWasteContainmentRate() : wasteContainmentRate);
+		if(id != null) {
+			context.putModelTemplate(m, id, this);
+		}
+		m.setTid(context.getJavaId(templateId == null ? id : templateId));
+		ConsumablesDemandModel template = (ConsumablesDemandModel) context.getJsonObject(templateId);
+		m.setName(name == null ? template.name : name);
+		m.setDescription(description == null ? template.description : description);
+		m.setReservesDuration(reservesDuration == null ? template.reservesDuration : reservesDuration);
+		m.setWaterRecoveryRate(waterRecoveryRate == null ? template.waterRecoveryRate : waterRecoveryRate);
+		m.setClothingLifetime(clothingLifetime == null ? template.clothingLifetime : clothingLifetime);
+		m.setTransitDemandsOmitted(transitDemandsOmitted == null ? template.transitDemandsOmitted : transitDemandsOmitted);
+		m.setWaterRate(waterRate == null ? template.waterRate : waterRate);
+		m.setEvaWaterRate(evaWaterRate == null ? template.evaWaterRate : evaWaterRate);
+		m.setFoodSupportRate(foodSupportRate == null ? template.foodSupportRate : foodSupportRate);
+		m.setAmbientFoodRate(ambientFoodRate == null ? template.ambientFoodRate : ambientFoodRate);
+		m.setRfFoodRate(rfFoodRate == null ? template.rfFoodRate : rfFoodRate);
+		m.setOxygenRate(oxygenRate == null ? template.oxygenRate : oxygenRate);
+		m.setEvaOxygenRate(evaOxygenRate == null ? template.evaOxygenRate : evaOxygenRate);
+		m.setNitrogenRate(nitrogenRate == null ? template.nitrogenRate : nitrogenRate);
+		m.setHygieneRate(hygieneRate == null ? template.hygieneRate : hygieneRate);
+		m.setHygieneKit(hygieneKit == null ? template.hygieneKit : hygieneKit);
+		m.setClothingRate(clothingRate == null ? template.clothingRate : clothingRate);
+		m.setPersonalItems(personalItems == null ? template.personalItems : personalItems);
+		m.setOfficeEquipment(officeEquipment == null ? template.officeEquipment : officeEquipment);
+		m.setEvaSuit(evaSuit == null ? template.evaSuit : evaSuit);
+		m.setEvaLithiumHydroxide(evaLithiumHydroxide == null ? template.evaLithiumHydroxide : evaLithiumHydroxide);
+		m.setHealthEquipment(healthEquipment == null ? template.healthEquipment : healthEquipment);
+		m.setHealthConsumables(healthConsumables == null ? template.healthConsumables : healthConsumables);
+		m.setSafetyEquipment(safetyEquipment == null ? template.safetyEquipment : safetyEquipment);
+		m.setCommEquipment(commEquipment == null ? template.commEquipment : commEquipment);
+		m.setComputerEquipment(computerEquipment == null ? template.computerEquipment : computerEquipment);
+		m.setTrashBagRate(trashBagRate == null ? template.trashBagRate : trashBagRate);
+		m.setWasteContainmentRate(wasteContainmentRate == null ? template.wasteContainmentRate : wasteContainmentRate);
 		return m;
 	}
 	
 	@Override
 	public ConsumablesDemandModel clone() {
 		ConsumablesDemandModel m = new ConsumablesDemandModel();
-		m.id = UUID.randomUUID();
+		if(id != null) {
+			m.id = UUID.randomUUID();
+		}
+		m.templateId = templateId;
 		m.name = name;
 		m.description = description;
 		m.reservesDuration = reservesDuration;

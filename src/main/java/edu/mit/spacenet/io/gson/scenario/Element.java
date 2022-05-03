@@ -39,16 +39,17 @@ public class Element implements Cloneable {
 	public Integer classOfSupply;
 	public String environment;
 	public List<State> states;
-	public UUID currentState;
+	public Integer currentStateIndex;
 	public List<Part> parts;
 	public String icon;
 
 	public static Element createFrom(I_Element element, Context context) {
 		if(element.getElementType() == ElementType.ELEMENT) {
 			Element e = new Element();
-			e.id = context.getUUID(element);
-			e.templateId = context.getElementTemplateUUID(element);
-			Element template = (Element) context.getObject(e.templateId);
+			e.id = UUID.randomUUID();
+			context.put(element, e.id, e);
+			e.templateId = context.getElementTemplate(element.getTid());
+			Element template = (Element) context.getJsonObject(e.templateId);
 			if(template == null) {
 				e.name = element.getName();
 				e.description = element.getDescription();
@@ -60,6 +61,11 @@ public class Element implements Cloneable {
 				if(element.getIconType() != element.getElementType().getIconType()) {
 					e.icon = element.getIconType().getName();
 				}
+				e.states = State.createFrom(element.getStates(), context);
+				if(element.getCurrentState() != null) {
+					e.currentStateIndex = e.states.indexOf(context.getJsonObjectFromJavaObject(element.getCurrentState()));
+				}
+				e.parts = Part.createFrom(element.getParts(), context);
 			} else {
 				if(!template.name.equals(element.getName())) {
 					e.name = element.getName();
@@ -86,10 +92,13 @@ public class Element implements Cloneable {
 						|| (template.icon != null && !template.icon.equals(element.getIconType().getName()))) {
 					e.icon = element.getIconType().getName();
 				}
+				if(element.getCurrentState() != null) {
+					List<I_State> states = new ArrayList<I_State>(element.getStates());
+					if(!template.currentStateIndex.equals(states.indexOf(element.getCurrentState()))) {
+						e.currentStateIndex = states.indexOf(element.getCurrentState());
+					}
+				}
 			}
-			e.states = State.createFrom(element.getStates(), context);
-			e.currentState = context.getUUID(element.getCurrentState());
-			e.parts = Part.createFrom(element.getParts(), context);
 			return e;
 		} else if(element.getElementType() == ElementType.RESOURCE_CONTAINER) {
 			return ResourceContainer.createFrom((edu.mit.spacenet.domain.element.ResourceContainer) element, context);
@@ -118,36 +127,45 @@ public class Element implements Cloneable {
 	
 	public edu.mit.spacenet.domain.element.Element toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.Element e = new edu.mit.spacenet.domain.element.Element();
-		e.setUid(context.getId(id, e));
-		e.setTid(templateId == null ? context.getId(id, e) : context.getId(templateId));
-		edu.mit.spacenet.domain.element.Element template = (edu.mit.spacenet.domain.element.Element) context.getObject(templateId);
-		e.setName(name == null ? template.getName() : name);
-		e.setDescription(description == null ? template.getDescription() : description);
-		e.setAccommodationMass(accommodatationMass == null ? template.getAccommodationMass() : accommodatationMass);
-		e.setMass(mass == null ? template.getMass() : mass);
-		e.setVolume(volume == null ? template.getVolume() : volume);
-		e.setClassOfSupply(classOfSupply == null ? template.getClassOfSupply() : ClassOfSupply.getInstance(classOfSupply));
-		e.setEnvironment(environment == null ? template.getEnvironment() : Environment.getInstance(environment));
-		if(icon == null && template != null && template.getIconType() != template.getElementType().getIconType()) {
-			e.setIconType(template.getIconType());
+		context.put(e, id, this);
+		e.setUid(context.getJavaId(id));
+		e.setTid(templateId == null ? context.getJavaId(id) : context.getJavaId(templateId));
+		Element template = (Element) context.getJsonObject(templateId);
+		e.setName(name == null ? template.name : name);
+		e.setDescription(description == null ? template.description : description);
+		e.setAccommodationMass(accommodatationMass == null ? template.accommodatationMass : accommodatationMass);
+		e.setMass(mass == null ? template.mass : mass);
+		e.setVolume(volume == null ? template.volume : volume);
+		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply == null ? template.classOfSupply : classOfSupply));
+		e.setEnvironment(Environment.getInstance(environment == null ? template.environment : environment));
+		e.setIconType(ElementIcon.getInstance(icon == null && template != null ? template.icon : icon));
+		e.setStates(State.toSpaceNet(e, states == null ? State.clone(template.states) : states, context));
+		if(currentStateIndex != null || (template != null && template.currentStateIndex != null)) {
+			e.setCurrentState(new ArrayList<I_State>(e.getStates()).get(currentStateIndex == null ? template.currentStateIndex : currentStateIndex));
 		}
-		e.setIconType(icon == null && template != null ? template.getIconType() : ElementIcon.getInstance(icon));
-		
-		e.setStates(State.toSpaceNet(e, states, context));
-		e.setCurrentState((I_State) context.getObject(currentState));
-		e.setParts(Part.toSpaceNet(parts, context));
+		e.setParts(Part.toSpaceNet(parts == null ? template.parts : parts, context));
 		return e;
 	}
 	
 	public ElementPreview getPreview(Context context) {
-		return new ElementPreview(context.getId(id), name, ElementType.ELEMENT, ElementIcon.getInstance(icon));
+		return new ElementPreview(context.getJavaId(id), name, ElementType.ELEMENT, ElementIcon.getInstance(icon));
 	}
 	
-	public static SortedSet<I_Element> toSpaceNet(Collection<UUID> elements, Context context) {
+	public static SortedSet<I_Element> toSpaceNet(Collection<Element> elements, Context context) {
+		SortedSet<I_Element> es = new TreeSet<I_Element>();
+		if(elements != null) {
+			for(Element e : elements) {
+				es.add(e.toSpaceNet(context));
+			}
+		}
+		return es;
+	}
+	
+	public static SortedSet<I_Element> toSpaceNetViaId(Collection<UUID> elements, Context context) {
 		SortedSet<I_Element> es = new TreeSet<I_Element>();
 		if(elements != null) {
 			for(UUID uuid : elements) {
-				es.add(((I_Element) context.getObject(uuid)));
+				es.add(((I_Element) context.getJavaObjectFromJsonId(uuid)));
 			}
 		}
 		return es;
@@ -166,11 +184,7 @@ public class Element implements Cloneable {
 		e.classOfSupply = classOfSupply;
 		e.environment = environment;
 		e.states = State.clone(states);
-		for(int i = 0; i < states.size(); i++) {
-			if(states.get(i).id.equals(currentState)) {
-				e.currentState = e.states.get(i).id;
-			}
-		}
+		e.currentStateIndex = currentStateIndex;
 		e.parts = Part.clone(parts);
 		e.icon = icon;
 		return e;

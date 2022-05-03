@@ -22,9 +22,9 @@ public class ReconfigureElement extends Event {
 				Duration.ofSeconds((long) (event.getTime() - (int) event.getTime())*24*60*60)
 			);
 		e.priority = event.getPriority();
-		e.location = context.getUUID(event.getLocation());
-		e.element = context.getUUID(event.getElement());
-		e.state = context.getUUID(event.getState());
+		e.location = context.getJsonIdFromJavaObject(event.getLocation());
+		e.element = context.getJsonIdFromJavaObject(event.getElement());
+		e.state = context.getJsonIdFromJavaObject(event.getState());
 		return e;
 	}
 	
@@ -34,9 +34,9 @@ public class ReconfigureElement extends Event {
 		e.setName(name);
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
-		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObject(location));
-		e.setElement((I_Element) context.getObject(element));
-		e.setState((I_State) context.getObject(state));
+		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getJavaObjectFromJsonId(location));
+		e.setElement((I_Element) context.getJavaObjectFromJsonId(element));
+		e.setState((I_State) context.getJavaObjectFromJsonId(state));
 		return e;
 	}
 

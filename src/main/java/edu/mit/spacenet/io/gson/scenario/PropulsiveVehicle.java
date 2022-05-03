@@ -1,6 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import edu.mit.spacenet.data.ElementPreview;
@@ -19,9 +20,10 @@ public class PropulsiveVehicle extends Carrier {
 
 	public static PropulsiveVehicle createFrom(edu.mit.spacenet.domain.element.PropulsiveVehicle element, Context context) {
 		PropulsiveVehicle e = new PropulsiveVehicle();
-		e.id = context.getUUID(element);
-		e.templateId = context.getElementTemplateUUID(element);
-		PropulsiveVehicle template = (PropulsiveVehicle) context.getObject(e.templateId);
+		e.id = UUID.randomUUID();
+		context.put(element, e.id, e);
+		e.templateId = context.getElementTemplate(element.getTid());
+		PropulsiveVehicle template = (PropulsiveVehicle) context.getJsonObject(e.templateId);
 		if(template == null) {
 			e.name = element.getName();
 			e.description = element.getDescription();
@@ -33,18 +35,26 @@ public class PropulsiveVehicle extends Carrier {
 			if(element.getIconType() != element.getElementType().getIconType()) {
 				e.icon = element.getIconType().getName();
 			}
+			e.states = State.createFrom(element.getStates(), context);
+			if(element.getCurrentState() != null) {
+				e.currentStateIndex = e.states.indexOf(context.getJsonObjectFromJavaObject(element.getCurrentState()));
+			}
+			e.parts = Part.createFrom(element.getParts(), context);
+			
 			e.maxCargoMass = element.getMaxCargoMass();
 			e.maxCargoVolume = element.getMaxCargoVolume();
 			e.cargoEnvironment = element.getCargoEnvironment().getName();
 			e.maxCrewSize = element.getMaxCrewSize();
+			e.contents = Element.createFrom(element.getContents(), context);
+			
 			if(element.getOmsFuelTank() != null) {
 				e.isp = element.getOmsIsp();
-				e.fuelType = context.getUUID(element.getOmsFuelTank().getResource());
+				e.fuelType = context.getJsonIdFromJavaObject(element.getOmsFuelTank().getResource());
 				e.fuelMaxAmount = element.getOmsFuelTank().getMaxAmount();
 				e.fuelAmount = element.getOmsFuelTank().getAmount();
 			} else if(element.getRcsFuelTank() != null) {
 				e.isp = element.getRcsIsp();
-				e.fuelType = context.getUUID(element.getRcsFuelTank().getResource());
+				e.fuelType = context.getJsonIdFromJavaObject(element.getRcsFuelTank().getResource());
 				e.fuelMaxAmount = element.getRcsFuelTank().getMaxAmount();
 				e.fuelAmount = element.getRcsFuelTank().getAmount();
 			}
@@ -74,6 +84,12 @@ public class PropulsiveVehicle extends Carrier {
 					|| (template.icon != null && !template.icon.equals(element.getIconType().getName()))) {
 				e.icon = element.getIconType().getName();
 			}
+			if(element.getCurrentState() != null) {
+				List<I_State> states = new ArrayList<I_State>(element.getStates());
+				if(!template.currentStateIndex.equals(states.indexOf(element.getCurrentState()))) {
+					e.currentStateIndex = states.indexOf(element.getCurrentState());
+				}
+			}
 			if(!template.maxCargoMass.equals(element.getMaxCargoMass())) {
 				e.maxCargoMass = element.getMaxCargoMass();
 			}
@@ -89,8 +105,8 @@ public class PropulsiveVehicle extends Carrier {
 			if(!template.isp.equals(element.getOmsFuelTank() != null ? element.getOmsIsp() : element.getRcsIsp())) {
 				e.isp = element.getOmsFuelTank() != null ? element.getOmsIsp() : element.getRcsIsp();
 			}
-			if(!template.fuelType.equals(element.getOmsFuelTank() != null ? context.getUUID(element.getOmsFuelTank().getResource()) : context.getUUID(element.getRcsFuelTank().getResource()))) {
-				e.fuelType = element.getOmsFuelTank() != null ? context.getUUID(element.getOmsFuelTank().getResource()) : context.getUUID(element.getRcsFuelTank().getResource());
+			if(!template.fuelType.equals(element.getOmsFuelTank() != null ? context.getJsonIdFromJavaObject(element.getOmsFuelTank().getResource()) : context.getJsonIdFromJavaObject(element.getRcsFuelTank().getResource()))) {
+				e.fuelType = element.getOmsFuelTank() != null ? context.getJsonIdFromJavaObject(element.getOmsFuelTank().getResource()) : context.getJsonIdFromJavaObject(element.getRcsFuelTank().getResource());
 			}
 			if(!template.fuelMaxAmount.equals(element.getOmsFuelTank() != null ? element.getOmsFuelTank().getMaxAmount() : element.getRcsFuelTank().getMaxAmount())) {
 				e.fuelMaxAmount = element.getOmsFuelTank() != null ? element.getOmsFuelTank().getMaxAmount() : element.getRcsFuelTank().getMaxAmount();
@@ -99,50 +115,48 @@ public class PropulsiveVehicle extends Carrier {
 				e.fuelAmount = element.getOmsFuelTank() != null ? element.getOmsFuelTank().getAmount() : element.getRcsFuelTank().getAmount();
 			}
 		}
-		e.states = State.createFrom(element.getStates(), context);
-		e.currentState = context.getUUID(element.getCurrentState());
-		e.parts = Part.createFrom(element.getParts(), context);
-		e.contents = context.getUUIDs(element.getContents());
 		return e;
 	}
 	
 	@Override
 	public edu.mit.spacenet.domain.element.PropulsiveVehicle toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.PropulsiveVehicle e = new edu.mit.spacenet.domain.element.PropulsiveVehicle();
-		e.setUid(context.getId(id, e));
-		e.setTid(templateId == null ? context.getId(id, e) : context.getId(templateId));
-		edu.mit.spacenet.domain.element.PropulsiveVehicle template = (edu.mit.spacenet.domain.element.PropulsiveVehicle) context.getObject(templateId);
-		e.setName(name == null ? template.getName() : name);
-		e.setDescription(description == null ? template.getDescription() : description);
-		e.setAccommodationMass(accommodatationMass == null ? template.getAccommodationMass() : accommodatationMass);
-		e.setMass(mass == null ? template.getMass() : mass);
-		e.setVolume(volume == null ? template.getVolume() : volume);
-		e.setClassOfSupply(classOfSupply == null ? template.getClassOfSupply() : ClassOfSupply.getInstance(classOfSupply));
-		e.setEnvironment(environment == null ? template.getEnvironment() : Environment.getInstance(environment));
-		if(icon == null && template != null && template.getIconType() != template.getElementType().getIconType()) {
-			e.setIconType(template.getIconType());
+		context.put(e, id, this);
+		e.setUid(context.getJavaId(id));
+		e.setTid(templateId == null ? context.getJavaId(id) : context.getJavaId(templateId));
+		PropulsiveVehicle template = (PropulsiveVehicle) context.getJsonObject(templateId);
+		e.setName(name == null ? template.name : name);
+		e.setDescription(description == null ? template.description : description);
+		e.setAccommodationMass(accommodatationMass == null ? template.accommodatationMass : accommodatationMass);
+		e.setMass(mass == null ? template.mass : mass);
+		e.setVolume(volume == null ? template.volume : volume);
+		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply == null ? template.classOfSupply : classOfSupply));
+		e.setEnvironment(Environment.getInstance(environment == null ? template.environment : environment));
+		e.setIconType(ElementIcon.getInstance(icon == null && template != null ? template.icon : icon));
+		e.setStates(State.toSpaceNet(e, states == null ? State.clone(template.states) : states, context));
+		if(currentStateIndex != null || (template != null && template.currentStateIndex != null)) {
+			e.setCurrentState(new ArrayList<I_State>(e.getStates()).get(currentStateIndex == null ? template.currentStateIndex : currentStateIndex));
 		}
-		e.setMaxCargoMass(maxCargoMass == null ? template.getMaxCargoMass() : maxCargoMass);
-		e.setMaxCargoVolume(maxCargoVolume == null ? template.getMaxCargoVolume() : maxCargoVolume);
-		e.setCargoEnvironment(cargoEnvironment == null ? template.getCargoEnvironment() : Environment.getInstance(cargoEnvironment));
-		e.setMaxCrewSize(maxCrewSize == null ? template.getMaxCrewSize() : maxCrewSize);
-		e.setOmsIsp(isp == null ? template.getOmsIsp() : isp);
-		edu.mit.spacenet.domain.element.ResourceTank t = new edu.mit.spacenet.domain.element.ResourceTank();
-		t.setResource(fuelType == null ? template.getOmsFuelTank().getResource() : (I_Resource) context.getObject(fuelType));
-		t.setMaxAmount(fuelMaxAmount == null ? template.getOmsFuelTank().getMaxAmount() : fuelMaxAmount);
-		t.setAmount(fuelAmount == null ? template.getOmsFuelTank().getAmount() : fuelAmount);
-		e.setOmsFuelTank(t);
+		e.setParts(Part.toSpaceNet(parts == null ? template.parts : parts, context));
+		
+		e.setMaxCargoMass(maxCargoMass == null ? template.maxCargoMass : maxCargoMass);
+		e.setMaxCargoVolume(maxCargoVolume == null ? template.maxCargoVolume : maxCargoVolume);
+		e.setCargoEnvironment(Environment.getInstance(cargoEnvironment == null ? template.cargoEnvironment : cargoEnvironment));
+		e.setMaxCrewSize(maxCrewSize == null ? template.maxCrewSize : maxCrewSize);
+		e.getContents().addAll(Element.toSpaceNet(contents == null ? Element.clone(template.contents) : contents, context));
 
-		e.setStates(State.toSpaceNet(e, states, context));
-		e.setCurrentState((I_State) context.getObject(currentState));
-		e.setParts(Part.toSpaceNet(parts, context));
-		e.getContents().addAll(Element.toSpaceNet(contents, context));
+		e.setOmsIsp(isp == null ? template.isp : isp);
+		edu.mit.spacenet.domain.element.ResourceTank t = new edu.mit.spacenet.domain.element.ResourceTank();
+		t.setResource((I_Resource) context.getJavaObjectFromJsonId(fuelType == null ? template.fuelType : fuelType));
+		t.setMaxAmount(fuelMaxAmount == null ? template.fuelMaxAmount : fuelMaxAmount);
+		t.setAmount(fuelAmount == null ? template.fuelAmount : fuelAmount);
+		e.setOmsFuelTank(t);
 		return e;
 	}
 	
 	@Override
 	public ElementPreview getPreview(Context context) {
-		return new ElementPreview(context.getId(id), name, ElementType.PROPULSIVE_VEHICLE, ElementIcon.getInstance(icon));
+		return new ElementPreview(context.getJavaId(id), name, ElementType.PROPULSIVE_VEHICLE, ElementIcon.getInstance(icon));
 	}
 	
 	@Override
@@ -158,18 +172,14 @@ public class PropulsiveVehicle extends Carrier {
 		e.classOfSupply = classOfSupply;
 		e.environment = environment;
 		e.states = State.clone(states);
-		for(int i = 0; i < states.size(); i++) {
-			if(states.get(i).id.equals(currentState)) {
-				e.currentState = e.states.get(i).id;
-			}
-		}
+		e.currentStateIndex = currentStateIndex;
 		e.parts = Part.clone(parts);
 		e.icon = icon;
 		e.maxCargoMass = maxCargoMass;
 		e.maxCargoVolume = maxCargoVolume;
 		e.cargoEnvironment = cargoEnvironment;
 		e.maxCrewSize = maxCrewSize;
-		e.contents = new ArrayList<UUID>(contents);
+		e.contents = Element.clone(contents);
 		e.isp = isp;
 		e.fuelType = fuelType;
 		e.fuelMaxAmount = fuelMaxAmount;

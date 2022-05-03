@@ -1,5 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import edu.mit.spacenet.data.ElementPreview;
@@ -17,9 +19,10 @@ public class ResourceTank extends Element {
 
 	public static ResourceTank createFrom(edu.mit.spacenet.domain.element.ResourceTank element, Context context) {
 		ResourceTank e = new ResourceTank();
-		e.id = context.getUUID(element);
-		e.templateId = context.getElementTemplateUUID(element);
-		ResourceTank template = (ResourceTank) context.getObject(e.templateId);
+		e.id = UUID.randomUUID();
+		context.put(element, e.id, e);
+		e.templateId = context.getElementTemplate(element.getTid());
+		ResourceTank template = (ResourceTank) context.getJsonObject(e.templateId);
 		if(template == null) {
 			e.name = element.getName();
 			e.description = element.getDescription();
@@ -31,7 +34,13 @@ public class ResourceTank extends Element {
 			if(element.getIconType() != element.getElementType().getIconType()) {
 				e.icon = element.getIconType().getName();
 			}
-			e.resource = context.getUUID(element.getResource());
+			e.states = State.createFrom(element.getStates(), context);
+			if(element.getCurrentState() != null) {
+				e.currentStateIndex = e.states.indexOf(context.getJsonObjectFromJavaObject(element.getCurrentState()));
+			}
+			e.parts = Part.createFrom(element.getParts(), context);
+			
+			e.resource = context.getJsonIdFromJavaObject(element.getResource());
 			e.maxAmount = element.getMaxAmount();
 			e.amount = element.getAmount();
 		} else {
@@ -60,8 +69,14 @@ public class ResourceTank extends Element {
 					|| (template.icon != null && !template.icon.equals(element.getIconType().getName()))) {
 				e.icon = element.getIconType().getName();
 			}
-			if(!template.resource.equals(context.getUUID(element.getResource()))) {
-				e.resource = context.getUUID(element.getResource());
+			if(element.getCurrentState() != null) {
+				List<I_State> states = new ArrayList<I_State>(element.getStates());
+				if(!template.currentStateIndex.equals(states.indexOf(element.getCurrentState()))) {
+					e.currentStateIndex = states.indexOf(element.getCurrentState());
+				}
+			}
+			if(!template.resource.equals(context.getJsonIdFromJavaObject(element.getResource()))) {
+				e.resource = context.getJsonIdFromJavaObject(element.getResource());
 			}
 			if(!template.maxAmount.equals(element.getMaxAmount())) {
 				e.maxAmount = element.getMaxAmount();
@@ -70,41 +85,39 @@ public class ResourceTank extends Element {
 				e.amount = element.getAmount();
 			}
 		}
-		e.states = State.createFrom(element.getStates(), context);
-		e.currentState = context.getUUID(element.getCurrentState());
-		e.parts = Part.createFrom(element.getParts(), context);
 		return e;
 	}
 	
 	@Override
 	public edu.mit.spacenet.domain.element.ResourceTank toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.ResourceTank e = new edu.mit.spacenet.domain.element.ResourceTank();
-		e.setUid(context.getId(id, e));
-		e.setTid(templateId == null ? context.getId(id, e) : context.getId(templateId));
-		edu.mit.spacenet.domain.element.ResourceTank template = (edu.mit.spacenet.domain.element.ResourceTank) context.getObject(templateId);
-		e.setName(name == null ? template.getName() : name);
-		e.setDescription(description == null ? template.getDescription() : description);
-		e.setAccommodationMass(accommodatationMass == null ? template.getAccommodationMass() : accommodatationMass);
-		e.setMass(mass == null ? template.getMass() : mass);
-		e.setVolume(volume == null ? template.getVolume() : volume);
-		e.setClassOfSupply(classOfSupply == null ? template.getClassOfSupply() : ClassOfSupply.getInstance(classOfSupply));
-		e.setEnvironment(environment == null ? template.getEnvironment() : Environment.getInstance(environment));
-		if(icon == null && template != null && template.getIconType() != template.getElementType().getIconType()) {
-			e.setIconType(template.getIconType());
+		context.put(e, id, this);
+		e.setUid(context.getJavaId(id));
+		e.setTid(templateId == null ? context.getJavaId(id) : context.getJavaId(templateId));
+		ResourceTank template = (ResourceTank) context.getJsonObject(templateId);
+		e.setName(name == null ? template.name : name);
+		e.setDescription(description == null ? template.description : description);
+		e.setAccommodationMass(accommodatationMass == null ? template.accommodatationMass : accommodatationMass);
+		e.setMass(mass == null ? template.mass : mass);
+		e.setVolume(volume == null ? template.volume : volume);
+		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply == null ? template.classOfSupply : classOfSupply));
+		e.setEnvironment(Environment.getInstance(environment == null ? template.environment : environment));
+		e.setIconType(ElementIcon.getInstance(icon == null && template != null ? template.icon : icon));
+		e.setStates(State.toSpaceNet(e, states == null ? State.clone(template.states) : states, context));
+		if(currentStateIndex != null || (template != null && template.currentStateIndex != null)) {
+			e.setCurrentState(new ArrayList<I_State>(e.getStates()).get(currentStateIndex == null ? template.currentStateIndex : currentStateIndex));
 		}
-		e.setResource(resource == null ? template.getResource() : (I_Resource) context.getObject(resource));
-		e.setMaxAmount(maxAmount == null ? template.getMaxAmount() : maxAmount);
-		e.setAmount(amount == null ? template.getAmount() : amount);
-
-		e.setStates(State.toSpaceNet(e, states, context));
-		e.setCurrentState((I_State) context.getObject(currentState));
-		e.setParts(Part.toSpaceNet(parts, context));
+		e.setParts(Part.toSpaceNet(parts == null ? template.parts : parts, context));
+		
+		e.setResource((I_Resource) context.getJavaObjectFromJsonId(resource == null ? template.resource : resource));
+		e.setMaxAmount(maxAmount == null ? template.maxAmount : maxAmount);
+		e.setAmount(amount == null ? template.amount : amount);
 		return e;
 	}
 	
 	@Override
 	public ElementPreview getPreview(Context context) {
-		return new ElementPreview(context.getId(id), name, ElementType.RESOURCE_TANK, ElementIcon.getInstance(icon));
+		return new ElementPreview(context.getJavaId(id), name, ElementType.RESOURCE_TANK, ElementIcon.getInstance(icon));
 	}
 	
 	@Override
@@ -120,11 +133,7 @@ public class ResourceTank extends Element {
 		e.classOfSupply = classOfSupply;
 		e.environment = environment;
 		e.states = State.clone(states);
-		for(int i = 0; i < states.size(); i++) {
-			if(states.get(i).id.equals(currentState)) {
-				e.currentState = e.states.get(i).id;
-			}
-		}
+		e.currentStateIndex = currentStateIndex;
 		e.parts = Part.clone(parts);
 		e.icon = icon;
 		e.resource = resource;

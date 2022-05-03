@@ -23,12 +23,12 @@ public class SurfaceTransport extends Event {
 				Duration.ofSeconds((long) (event.getTime() - (int) event.getTime())*24*60*60)
 			);
 		e.priority = event.getPriority();
-		e.location = context.getUUID(event.getLocation());
+		e.location = context.getJsonIdFromJavaObject(event.getLocation());
 		e.dutyCycle = event.getDutyCycle();
-		e.vehicle = context.getUUID(event.getVehicle());
-		e.transportState = context.getUUID(event.getTransportState());
+		e.vehicle = context.getJsonIdFromJavaObject(event.getVehicle());
+		e.transportState = context.getJsonIdFromJavaObject(event.getTransportState());
 		e.speed = event.getSpeed();
-		e.edge = context.getUUID(event.getEdge());
+		e.edge = context.getJsonIdFromJavaObject(event.getEdge());
 		return e;
 	}
 	
@@ -38,12 +38,12 @@ public class SurfaceTransport extends Event {
 		e.setName(name);
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
-		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObject(location));
+		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getJavaObjectFromJsonId(location));
 		e.setDutyCycle(dutyCycle);
-		e.setVehicle((edu.mit.spacenet.domain.element.SurfaceVehicle) context.getObject(vehicle));
-		e.setTransportState((I_State) context.getObject(transportState));
+		e.setVehicle((edu.mit.spacenet.domain.element.SurfaceVehicle) context.getJavaObjectFromJsonId(vehicle));
+		e.setTransportState((I_State) context.getJavaObjectFromJsonId(transportState));
 		e.setSpeed(speed);
-		e.setEdge((edu.mit.spacenet.domain.network.edge.SurfaceEdge) context.getObject(edge));
+		e.setEdge((edu.mit.spacenet.domain.network.edge.SurfaceEdge) context.getJavaObjectFromJsonId(edge));
 		return e;
 	}
 

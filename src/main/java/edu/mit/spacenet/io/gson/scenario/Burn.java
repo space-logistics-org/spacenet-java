@@ -16,7 +16,7 @@ public class Burn {
 
 	public static Burn createFrom(edu.mit.spacenet.domain.network.edge.Burn burn, Context context) {
 		Burn b = new Burn();
-		b.id = context.getUUID(burn);
+		b.id = context.getJsonIdFromJavaObject(burn);
 		b.time = PeriodDuration.of(
 				Period.ofDays((int) burn.getTime()), 
 				Duration.ofSeconds((long) (burn.getTime() - (int) burn.getTime())*24*60*60)
@@ -35,7 +35,8 @@ public class Burn {
 	
 	public edu.mit.spacenet.domain.network.edge.Burn toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.network.edge.Burn b = new edu.mit.spacenet.domain.network.edge.Burn();
-		b.setTid(context.getId(id, b));
+		context.put(b, id, this);
+		b.setTid(context.getJavaId(id));
 		b.setTime(time.getPeriod().getDays() + time.getDuration().getSeconds() / (24*60*60d));
 		b.setDeltaV(delta_v);
 		return b;

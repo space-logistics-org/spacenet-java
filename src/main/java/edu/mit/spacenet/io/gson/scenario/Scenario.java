@@ -48,23 +48,21 @@ public class Scenario {
 		s.demandModels = new ArrayList<DemandModel>();
 		for(edu.mit.spacenet.scenario.Mission mission : scenario.getMissionList()) {
 			for(I_DemandModel model : mission.getDemandModels()) {
-				UUID templateId = context.getModelTemplateUUID(model);
 				DemandModel m = DemandModel.createFrom(model, context);
-				m.id = templateId;
+				m.id = UUID.randomUUID();
 				m.templateId = null;
-				context.getId(templateId, m);
+				context.putModelTemplate(model, m.id, m);
 				s.demandModels.add(m);
 			}
 		}
 		for(I_Element element : scenario.getElements()) {
 			for(I_State state : element.getStates()) {
 				for(I_DemandModel model : state.getDemandModels()) {
-					if(!context.isModelTemplateUUID(model.getTid())) {
-						UUID templateId = context.getModelTemplateUUID(model);
+					if(context.getModelTemplate(model.getTid()) == null) {
 						DemandModel m = DemandModel.createFrom(model, context);
-						m.id = templateId;
+						m.id = UUID.randomUUID();
 						m.templateId = null;
-						context.getId(templateId, m);
+						context.putModelTemplate(model, m.id, m);
 						s.demandModels.add(m);
 					}
 				}
@@ -73,14 +71,11 @@ public class Scenario {
 		s.resourceList = ResourceType.createFrom(scenario.getDataSource().getResourceLibrary(), context);
 		s.elementTemplates = new ArrayList<Element>();
 		for(I_Element element : scenario.getElements()) {
-			if(!context.isElementTemplateUUID(element.getTid())) {
-				UUID templateId = context.getElementTemplateUUID(element);
+			if(context.getElementTemplate(element.getTid()) == null) {
 				Element e = Element.createFrom(element, context);
-				e.id = templateId;
-				e.templateId = null;
-				context.getId(templateId, e);
+				context.putElementTemplate(element, e.id, e);
 				for(ElementPreview p : scenario.getDataSource().getElementPreviewLibrary()) {
-					if(p.ID == context.getElementTemplateId(e.id)) {
+					if(context.getElementTemplate(p.ID) == e.id) {
 						e.name = p.NAME;
 					}
 				}
@@ -100,7 +95,7 @@ public class Scenario {
 		s.setStartDate(startDate);
 		s.setScenarioType(TYPE_MAP.get(scenarioType));
 		Context context = new Context();
-
+		// load data source
 		DataSource dataSource = new DataSource();
 		dataSource.nodeLibrary = new ArrayList<Node>(network.nodes);
 		dataSource.edgeLibrary = new ArrayList<Edge>(network.edges);
@@ -108,13 +103,11 @@ public class Scenario {
 		dataSource.elementTemplateLibrary = new ArrayList<Element>(elementTemplates);
 		dataSource.demandModelLibrary = new ArrayList<DemandModel>(demandModels);
 		s.setDataSource(dataSource.toSpaceNet(context));
-		
 		// load network
 		network.toSpaceNet(s, context);
 		// load elements
-		for(Element e : instantiatedElements) {
-			context.getId(e.id, e.toSpaceNet(context));
-		}
+		Element.toSpaceNet(instantiatedElements, context);
+		// load missions
 		s.getMissionList().addAll(Mission.toSpaceNet(missionList, s, context));
 		return s;
 	}

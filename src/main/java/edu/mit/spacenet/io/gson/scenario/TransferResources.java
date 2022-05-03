@@ -23,10 +23,10 @@ public class TransferResources extends Event {
 				Duration.ofSeconds((long) (event.getTime() - (int) event.getTime())*24*60*60)
 			);
 		e.priority = event.getPriority();
-		e.location = context.getUUID(event.getLocation());
+		e.location = context.getJsonIdFromJavaObject(event.getLocation());
 		e.resources = Resource.createFrom(event.getTransferDemands(), context);
-		e.origin = context.getUUID(event.getOriginContainer());
-		e.destination = context.getUUID(event.getDestinationContainer());
+		e.origin = context.getJsonIdFromJavaObject(event.getOriginContainer());
+		e.destination = context.getJsonIdFromJavaObject(event.getDestinationContainer());
 		return e;
 	}
 	
@@ -36,10 +36,10 @@ public class TransferResources extends Event {
 		e.setName(name);
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
-		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObject(location));
+		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getJavaObjectFromJsonId(location));
 		e.setTransferDemands(Resource.toSpaceNet(resources, context));
-		e.setOriginContainer((I_ResourceContainer) context.getObject(origin));
-		e.setDestinationContainer((I_ResourceContainer) context.getObject(destination));
+		e.setOriginContainer((I_ResourceContainer) context.getJavaObjectFromJsonId(origin));
+		e.setDestinationContainer((I_ResourceContainer) context.getJavaObjectFromJsonId(destination));
 		return e;
 	}
 }

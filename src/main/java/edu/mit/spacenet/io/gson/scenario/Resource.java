@@ -18,7 +18,7 @@ public class Resource implements Cloneable {
 	
 	public static Resource createFrom(edu.mit.spacenet.domain.resource.Demand demand, Context context) {
 		Resource d = new Resource();
-		d.type = context.getUUID(demand.getResource());
+		d.type = context.getJsonIdFromJavaObject(demand.getResource());
 		d.amount = demand.getAmount();
 		return d;
 	}
@@ -43,7 +43,7 @@ public class Resource implements Cloneable {
 		List<Resource> rs = new ArrayList<Resource>();
 		for(edu.mit.spacenet.domain.resource.I_Resource d : resources.keySet()) {
 			Resource r = new Resource();
-			r.type = context.getUUID(d);
+			r.type = context.getJsonIdFromJavaObject(d);
 			r.amount = resources.get(d);
 			rs.add(r);
 		}
@@ -52,7 +52,7 @@ public class Resource implements Cloneable {
 
 	public edu.mit.spacenet.domain.resource.Demand toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.resource.Demand d = new edu.mit.spacenet.domain.resource.Demand();
-		d.setResource((I_Resource) context.getObject(type));
+		d.setResource((I_Resource) context.getJavaObjectFromJsonId(type));
 		d.setAmount(amount);
 		return d;
 	}
@@ -81,7 +81,7 @@ public class Resource implements Cloneable {
 		SortedMap<edu.mit.spacenet.domain.resource.I_Resource, Double> ds = new TreeMap<edu.mit.spacenet.domain.resource.I_Resource, Double>();
 		if(resources != null) {
 			for(Resource r : resources) {
-				ds.put((I_Resource) context.getObject(r.type), r.amount);
+				ds.put((I_Resource) context.getJavaObjectFromJsonId(r.type), r.amount);
 			}
 		}
 		return ds;

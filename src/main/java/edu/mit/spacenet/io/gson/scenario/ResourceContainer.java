@@ -19,9 +19,10 @@ public class ResourceContainer extends Element {
 
 	public static ResourceContainer createFrom(edu.mit.spacenet.domain.element.ResourceContainer element, Context context) {
 		ResourceContainer e = new ResourceContainer();
-		e.id = context.getUUID(element);
-		e.templateId = context.getElementTemplateUUID(element);
-		ResourceContainer template = (ResourceContainer) context.getObject(e.templateId);
+		e.id = UUID.randomUUID();
+		context.put(element, e.id, e);
+		e.templateId = context.getElementTemplate(element.getTid());
+		ResourceContainer template = (ResourceContainer) context.getJsonObject(e.templateId);
 		if(template == null) {
 			e.name = element.getName();
 			e.description = element.getDescription();
@@ -33,9 +34,16 @@ public class ResourceContainer extends Element {
 			if(element.getIconType() != element.getElementType().getIconType()) {
 				e.icon = element.getIconType().getName();
 			}
+			e.states = State.createFrom(element.getStates(), context);
+			if(element.getCurrentState() != null) {
+				e.currentStateIndex = e.states.indexOf(context.getJsonObjectFromJavaObject(element.getCurrentState()));
+			}
+			e.parts = Part.createFrom(element.getParts(), context);
+			
 			e.maxCargoMass = element.getMaxCargoMass();
 			e.maxCargoVolume = element.getMaxCargoVolume();
 			e.cargoEnvironment = element.getCargoEnvironment().getName();
+			e.contents = Resource.createFrom(element.getContents(), context);
 		} else {
 			if(!template.name.equals(element.getName())) {
 				e.name = element.getName();
@@ -62,6 +70,12 @@ public class ResourceContainer extends Element {
 					|| (template.icon != null && !template.icon.equals(element.getIconType().getName()))) {
 				e.icon = element.getIconType().getName();
 			}
+			if(element.getCurrentState() != null) {
+				List<I_State> states = new ArrayList<I_State>(element.getStates());
+				if(!template.currentStateIndex.equals(states.indexOf(element.getCurrentState()))) {
+					e.currentStateIndex = states.indexOf(element.getCurrentState());
+				}
+			}
 			if(!template.maxCargoMass.equals(element.getMaxCargoMass())) {
 				e.maxCargoMass = element.getMaxCargoMass();
 			}
@@ -72,43 +86,40 @@ public class ResourceContainer extends Element {
 				e.cargoEnvironment = element.getCargoEnvironment().getName();
 			}
 		}
-		e.states = State.createFrom(element.getStates(), context);
-		e.currentState = context.getUUID(element.getCurrentState());
-		e.parts = Part.createFrom(element.getParts(), context);
-		e.contents = Resource.createFrom(element.getContents(), context);
 		return e;
 	}
 	
 	@Override
 	public edu.mit.spacenet.domain.element.ResourceContainer toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.ResourceContainer e = new edu.mit.spacenet.domain.element.ResourceContainer();
-		e.setUid(context.getId(id, e));
-		e.setTid(templateId == null ? context.getId(id, e) : context.getId(templateId));
-		edu.mit.spacenet.domain.element.ResourceContainer template = (edu.mit.spacenet.domain.element.ResourceContainer) context.getObject(templateId);
-		e.setName(name == null ? template.getName() : name);
-		e.setDescription(description == null ? template.getDescription() : description);
-		e.setAccommodationMass(accommodatationMass == null ? template.getAccommodationMass() : accommodatationMass);
-		e.setMass(mass == null ? template.getMass() : mass);
-		e.setVolume(volume == null ? template.getVolume() : volume);
-		e.setClassOfSupply(classOfSupply == null ? template.getClassOfSupply() : ClassOfSupply.getInstance(classOfSupply));
-		e.setEnvironment(environment == null ? template.getEnvironment() : Environment.getInstance(environment));
-		if(icon == null && template != null && template.getIconType() != template.getElementType().getIconType()) {
-			e.setIconType(template.getIconType());
+		context.put(e, id, this);
+		e.setUid(context.getJavaId(id));
+		e.setTid(templateId == null ? context.getJavaId(id) : context.getJavaId(templateId));
+		ResourceContainer template = (ResourceContainer) context.getJsonObject(templateId);
+		e.setName(name == null ? template.name : name);
+		e.setDescription(description == null ? template.description : description);
+		e.setAccommodationMass(accommodatationMass == null ? template.accommodatationMass : accommodatationMass);
+		e.setMass(mass == null ? template.mass : mass);
+		e.setVolume(volume == null ? template.volume : volume);
+		e.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply == null ? template.classOfSupply : classOfSupply));
+		e.setEnvironment(Environment.getInstance(environment == null ? template.environment : environment));
+		e.setIconType(ElementIcon.getInstance(icon == null && template != null ? template.icon : icon));
+		e.setStates(State.toSpaceNet(e, states == null ? State.clone(template.states) : states, context));
+		if(currentStateIndex != null || (template != null && template.currentStateIndex != null)) {
+			e.setCurrentState(new ArrayList<I_State>(e.getStates()).get(currentStateIndex == null ? template.currentStateIndex : currentStateIndex));
 		}
-		e.setMaxCargoMass(maxCargoMass == null ? template.getMaxCargoMass() : maxCargoMass);
-		e.setMaxCargoVolume(maxCargoVolume == null ? template.getMaxCargoVolume() : maxCargoVolume);
-		e.setCargoEnvironment(cargoEnvironment == null ? template.getCargoEnvironment() : Environment.getInstance(cargoEnvironment));
-
-		e.setStates(State.toSpaceNet(e, states, context));
-		e.setCurrentState((I_State) context.getObject(currentState));
-		e.setParts(Part.toSpaceNet(parts, context));
-		e.getContents().putAll(Resource.toSpaceNetMap(contents, context));
+		e.setParts(Part.toSpaceNet(parts == null ? template.parts : parts, context));
+		
+		e.setMaxCargoMass(maxCargoMass == null ? template.maxCargoMass : maxCargoMass);
+		e.setMaxCargoVolume(maxCargoVolume == null ? template.maxCargoVolume : maxCargoVolume);
+		e.setCargoEnvironment(Environment.getInstance(cargoEnvironment == null ? template.cargoEnvironment : cargoEnvironment));
+		e.getContents().putAll(Resource.toSpaceNetMap(contents == null ? template.contents : contents, context));
 		return e;
 	}
 	
 	@Override
 	public ElementPreview getPreview(Context context) {
-		return new ElementPreview(context.getId(id), name, ElementType.RESOURCE_CONTAINER, ElementIcon.getInstance(icon));
+		return new ElementPreview(context.getJavaId(id), name, ElementType.RESOURCE_CONTAINER, ElementIcon.getInstance(icon));
 	}
 	
 	@Override
@@ -124,11 +135,7 @@ public class ResourceContainer extends Element {
 		e.classOfSupply = classOfSupply;
 		e.environment = environment;
 		e.states = State.clone(states);
-		for(int i = 0; i < states.size(); i++) {
-			if(states.get(i).id.equals(currentState)) {
-				e.currentState = e.states.get(i).id;
-			}
-		}
+		e.currentStateIndex = currentStateIndex;
 		e.parts = Part.clone(parts);
 		e.icon = icon;
 		e.maxCargoMass = maxCargoMass;

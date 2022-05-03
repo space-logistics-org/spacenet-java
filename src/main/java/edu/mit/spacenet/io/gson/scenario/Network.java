@@ -15,10 +15,10 @@ public class Network {
 	
 	public void toSpaceNet(edu.mit.spacenet.scenario.Scenario scenario, Context context) {
 		for(Location node : nodes) {
-			scenario.getNetwork().add(node.toSpaceNet(context));
+			scenario.getNetwork().add((edu.mit.spacenet.domain.network.node.Node) context.getJavaObjectFromJsonId(node.id));
 		}
 		for(Location edge : edges) {
-			scenario.getNetwork().add(edge.toSpaceNet(context));
+			scenario.getNetwork().add((edu.mit.spacenet.domain.network.edge.Edge) context.getJavaObjectFromJsonId(edge.id));
 		}
 	}
 }

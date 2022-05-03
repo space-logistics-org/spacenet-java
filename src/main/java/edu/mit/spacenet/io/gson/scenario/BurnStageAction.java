@@ -23,7 +23,7 @@ public class BurnStageAction {
 	public static BurnStageAction createFrom(edu.mit.spacenet.simulator.event.BurnStageItem action, Context context) {
 		BurnStageAction a = new BurnStageAction();
 		a.type = TYPE_MAP.inverse().get(action.getBurnStage());
-		a.element = context.getUUID(action.getElement());
+		a.element = context.getJsonIdFromJavaObject(action.getElement());
 		return a;
 	}
 	
@@ -46,7 +46,7 @@ public class BurnStageAction {
 	public edu.mit.spacenet.simulator.event.BurnStageItem toSpaceNet(Context context) {
 		edu.mit.spacenet.simulator.event.BurnStageItem a = new edu.mit.spacenet.simulator.event.BurnStageItem();
 		a.setBurnStage(TYPE_MAP.get(type));
-		a.setElement((I_Element) context.getObject(element));
+		a.setElement((I_Element) context.getJavaObjectFromJsonId(element));
 		return a;
 	}
 	

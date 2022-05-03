@@ -30,19 +30,19 @@ public class Exploration extends Event {
 				Duration.ofSeconds((long) (event.getTime() - (int) event.getTime())*24*60*60)
 			);
 		e.priority = event.getPriority();
-		e.location = context.getUUID(event.getLocation());
+		e.location = context.getJsonIdFromJavaObject(event.getLocation());
 		e.duration = PeriodDuration.of(
 				Period.ofDays((int) event.getDuration()), 
 				Duration.ofSeconds((long) (event.getDuration() - (int) event.getDuration())*24*60*60)
 			);
 		e.evaPerWeek = event.getEvaPerWeek();
-		e.vehicle = context.getUUID(event.getVehicle());
+		e.vehicle = context.getJsonIdFromJavaObject(event.getVehicle());
 		e.evaDuration = PeriodDuration.of(
 				Period.ofDays((int) event.getEvaDuration()), 
 				Duration.ofSeconds((long) (event.getEvaDuration() - (int) event.getEvaDuration())*24*60*60)
 			);
-		e.elements = context.getUUIDs(event.getStateMap().keySet());
-		e.states = context.getUUIDs(event.getStateMap().values());
+		e.elements = context.getJsonIdsFromJavaObjects(event.getStateMap().keySet());
+		e.states = context.getJsonIdsFromJavaObjects(event.getStateMap().values());
 		e.demands = Resource.createFrom(event.getDemands(), context);
 		return e;
 	}
@@ -53,13 +53,13 @@ public class Exploration extends Event {
 		e.setName(name);
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
-		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getObject(location));
-		e.setVehicle((I_Carrier) context.getObject(vehicle));
+		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getJavaObjectFromJsonId(location));
+		e.setVehicle((I_Carrier) context.getJavaObjectFromJsonId(vehicle));
 		SortedMap<I_Element, I_State> stateMap = new TreeMap<I_Element, I_State>();
 		for(int i = 0; i < elements.size(); i++) {
 			stateMap.put(
-				(I_Element) context.getObject(elements.get(i)), 
-				(I_State) context.getObject(states.get(i))
+				(I_Element) context.getJavaObjectFromJsonId(elements.get(i)), 
+				(I_State) context.getJavaObjectFromJsonId(states.get(i))
 			);
 		}
 		e.setStateMap(stateMap);

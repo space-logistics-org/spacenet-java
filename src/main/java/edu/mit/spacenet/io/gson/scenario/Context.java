@@ -14,87 +14,80 @@ import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.model.I_DemandModel;
 
 public class Context {
-	public BiMap<UUID, Object> uuids = HashBiMap.create();
-	public Map<UUID, Integer> ids = new HashMap<UUID, Integer>();
-	public BiMap<Integer, Object> objects = HashBiMap.create();
-
-	public BiMap<UUID, Integer> elementTemplateIds = HashBiMap.create();
-	public BiMap<UUID, Integer> modelTemplateIds = HashBiMap.create();
-	
-	public Object getObject(UUID uuid) {
-		return objects.get(ids.get(uuid));
+	private BiMap<Integer, Object> javaId_javaObject = HashBiMap.create();
+	private BiMap<UUID, Object> jsonId_jsonObject = HashBiMap.create();
+	private BiMap<Integer, UUID> javaId_jsonId = HashBiMap.create();
+		
+	public int getJavaId(Object javaObject) {
+		return javaId_javaObject.inverse().get(javaObject);
 	}
 	
-	private int nextId = 0;
-	
-	public int getId(UUID uuid, Object object) {
-		if(!ids.containsKey(uuid)) {
-			int id = ++nextId;
-			ids.put(uuid, id);
-			objects.put(id, object);
-		}
-		return ids.get(uuid);
+	public int getJavaId(UUID jsonId) {
+		return javaId_jsonId.inverse().get(jsonId);
 	}
 	
-	public int getId(UUID uuid) {
-		return ids.get(uuid);
+	public Object getJsonObject(UUID jsonId) {
+		return jsonId_jsonObject.get(jsonId);
 	}
 	
-	public UUID getUUID(Object object) {
-		if(object == null) {
+	public Object getJsonObjectFromJavaObject(Object javaObject) {
+		if(javaObject == null) {
 			return null;
 		}
-		if(!uuids.containsValue(object)) {
-			uuids.put(UUID.randomUUID(), object);
+		return jsonId_jsonObject.get(getJsonIdFromJavaObject(javaObject));
+	}
+		
+	public UUID getJsonIdFromJavaObject(Object javaObject) {
+		if(javaObject == null) {
+			return null;
 		}
-		return uuids.inverse().get(object);
+		return javaId_jsonId.get(getJavaId(javaObject));
 	}
 	
-	public List<UUID> getUUIDs(Collection<? extends Object> objects) {
-		List<UUID> uuids = new ArrayList<UUID>();
-		for(Object o : objects) {
-			uuids.add(getUUID(o));
+	public List<UUID> getJsonIdsFromJavaObjects(Collection<? extends Object> javaObjects) {
+		List<UUID> jsonIds = new ArrayList<UUID>();
+		for(Object o : javaObjects) {
+			jsonIds.add(getJsonIdFromJavaObject(o));
 		}
-		return uuids;
+		return jsonIds;
 	}
 	
-	public UUID getElementTemplateUUID(I_Element element) {
-		if(!elementTemplateIds.containsValue(element.getTid())) {
-			elementTemplateIds.put(UUID.randomUUID(), element.getTid());
+	public Object getJavaObjectFromJsonId(UUID jsonId) {
+		if(jsonId == null) {
+			return null;
 		}
-		return elementTemplateIds.inverse().get(element.getTid());
+		return javaId_javaObject.get(getJavaId(jsonId));
 	}
+
+	private int nextJavaId = 0;
 	
-	public boolean isElementTemplateUUID(int templateId) {
-		return elementTemplateIds.containsValue(templateId);
-	}
-	
-	private int nextElementTemplateId = 0;
-	
-	public int getElementTemplateId(UUID uuid) {
-		if(!elementTemplateIds.containsKey(uuid)) {
-			elementTemplateIds.put(uuid, ++nextElementTemplateId);
+	public void put(Object javaObject, UUID jsonId, Object jsonObject) {
+		if(javaId_javaObject.inverse().get(javaObject) == null) {
+			javaId_javaObject.put(++nextJavaId, javaObject);
 		}
-		return elementTemplateIds.get(uuid);
+		jsonId_jsonObject.put(jsonId, jsonObject);
+		javaId_jsonId.put(getJavaId(javaObject), jsonId);
 	}
 	
-	public UUID getModelTemplateUUID(I_DemandModel model) {
-		if(!modelTemplateIds.containsValue(model.getTid())) {
-			modelTemplateIds.put(UUID.randomUUID(), model.getTid());
-		}
-		return modelTemplateIds.inverse().get(model.getTid());
+	private Map<Integer, UUID> modelTemplates = new HashMap<Integer, UUID>();
+	
+	public void putModelTemplate(I_DemandModel template, UUID jsonId, Object jsonObject) {
+		modelTemplates.put(template.getTid(), jsonId);
+		put(template, jsonId, jsonObject);
 	}
 	
-	public boolean isModelTemplateUUID(int templateId) {
-		return modelTemplateIds.containsValue(templateId);
+	public UUID getModelTemplate(int templateId) {
+		return modelTemplates.get(templateId);
 	}
 	
-	private int nextModelTemplateId = 0;
+	private Map<Integer, UUID> elementTemplates = new HashMap<Integer, UUID>();
 	
-	public int getModelTemplateId(UUID uuid) {
-		if(!modelTemplateIds.containsKey(uuid)) {
-			modelTemplateIds.put(uuid, ++nextModelTemplateId);
-		}
-		return modelTemplateIds.get(uuid);
+	public void putElementTemplate(I_Element template, UUID jsonId, Object jsonObject) {
+		elementTemplates.put(template.getTid(), jsonId);
+		put(template, jsonId, jsonObject);
+	}
+	
+	public UUID getElementTemplate(int templateId) {
+		return elementTemplates.get(templateId);
 	}
 }

@@ -20,7 +20,7 @@ public class Part implements Cloneable {
 
 	public static Part createFrom(edu.mit.spacenet.domain.element.PartApplication part, Context context) {
 		Part p = new Part();
-		p.resource = context.getUUID(part.getPart());
+		p.resource = context.getJsonIdFromJavaObject(part.getPart());
 		p.meanTimeToFailure = part.getMeanTimeToFailure();
 		p.meanTimeToRepair = part.getMeanTimeToRepair();
 		p.massToRepair = part.getMassToRepair();
@@ -39,7 +39,7 @@ public class Part implements Cloneable {
 	
 	public edu.mit.spacenet.domain.element.PartApplication toSpaceNet(Context context) {
 		edu.mit.spacenet.domain.element.PartApplication p = new edu.mit.spacenet.domain.element.PartApplication();
-		p.setPart((Item) context.getObject(resource));
+		p.setPart((Item) context.getJavaObjectFromJsonId(resource));
 		p.setMeanTimeToFailure(meanTimeToFailure);
 		p.setMeanTimeToRepair(meanTimeToRepair);
 		p.setMassToRepair(massToRepair);

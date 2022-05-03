@@ -32,7 +32,8 @@ public class ResourceType {
 
 	public static ResourceType createFrom(I_Resource resource, Context context) {
 		ResourceType r = new ResourceType();
-		r.id = context.getUUID(resource);
+		r.id = UUID.randomUUID();
+		context.put(resource, r.id, r);
 		r.type = TYPE_MAP.inverse().get(resource.getResourceType());
 		r.name = resource.getName();
 		r.description = resource.getDescription();
@@ -60,7 +61,8 @@ public class ResourceType {
 		} else {
 			r = new edu.mit.spacenet.domain.resource.Resource();
 		}
-		r.setTid(context.getId(id, r));
+		context.put(r, id, this);
+		r.setTid(context.getJavaId(id));
 		r.setName(name);
 		r.setDescription(description);
 		r.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));

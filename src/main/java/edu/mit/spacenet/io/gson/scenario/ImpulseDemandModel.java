@@ -1,15 +1,15 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ImpulseDemandModel extends DemandModel {
 	public List<Resource> demands;
 
 	public static ImpulseDemandModel createFrom(edu.mit.spacenet.domain.model.TimedImpulseDemandModel model, Context context) {
 		ImpulseDemandModel m = new ImpulseDemandModel();
-		context.getUUID(model); // register object
-		m.templateId = context.getModelTemplateUUID(model);
-		ImpulseDemandModel template = (ImpulseDemandModel) context.getObject(m.templateId);
+		m.templateId = context.getModelTemplate(model.getTid());
+		ImpulseDemandModel template = (ImpulseDemandModel) context.getJsonObject(m.templateId);
 		if(template == null) {
 			m.name = model.getName();
 			m.description = model.getDescription();
@@ -28,18 +28,24 @@ public class ImpulseDemandModel extends DemandModel {
 	@Override
 	public edu.mit.spacenet.domain.model.TimedImpulseDemandModel toSpaceNet(Object source, Context context) {
 		edu.mit.spacenet.domain.model.TimedImpulseDemandModel m = new edu.mit.spacenet.domain.model.TimedImpulseDemandModel();
-		m.setTid(templateId == null ? context.getId(id, m) : context.getId(templateId, context.getObject(templateId)));
-		edu.mit.spacenet.domain.model.TimedImpulseDemandModel template = (edu.mit.spacenet.domain.model.TimedImpulseDemandModel) context.getObject(templateId);
-		m.setName(name == null ? template.getName() : name);
-		m.setDescription(description == null ? template.getDescription() : description);
-		m.setDemands(demands == null ? template.getDemands() : Resource.toSpaceNetSet(demands, context));
+		if(id != null) {
+			context.putModelTemplate(m, id, this);
+		}
+		m.setTid(context.getJavaId(templateId == null ? id : templateId));
+		ImpulseDemandModel template = (ImpulseDemandModel) context.getJsonObject(templateId);
+		m.setName(name == null ? template.name : name);
+		m.setDescription(description == null ? template.description : description);
+		m.setDemands(Resource.toSpaceNetSet(demands == null ? template.demands : demands, context));
 		return m;
 	}
 	
 	@Override
 	public ImpulseDemandModel clone() {
 		ImpulseDemandModel m = new ImpulseDemandModel();
-		m.id = UUID.randomUUID();
+		if(id != null) {
+			m.id = UUID.randomUUID();
+		}
+		m.templateId = templateId;
 		m.name = name;
 		m.description = description;
 		m.demands = Resource.clone(demands);

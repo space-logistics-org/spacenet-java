@@ -18,7 +18,7 @@ import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.element.I_State;
 
-public class Element {
+public class Element implements Cloneable {
 	public static final BiMap<String, ElementType> TYPE_MAP = new ImmutableBiMap.Builder<String, ElementType>()
 			.put("Element", ElementType.ELEMENT)
 			.put("Crew Member", ElementType.CREW_MEMBER)
@@ -149,6 +149,37 @@ public class Element {
 			for(UUID uuid : elements) {
 				es.add(((I_Element) context.getObject(uuid)));
 			}
+		}
+		return es;
+	}
+	
+	@Override
+	public Element clone() {
+		Element e = new Element();
+		e.id = UUID.randomUUID();
+		e.templateId = templateId;
+		e.name = name;
+		e.description = description;
+		e.accommodatationMass = accommodatationMass;
+		e.mass = mass;
+		e.volume = volume;
+		e.classOfSupply = classOfSupply;
+		e.environment = environment;
+		e.states = State.clone(states);
+		for(int i = 0; i < states.size(); i++) {
+			if(states.get(i).id.equals(currentState)) {
+				e.currentState = e.states.get(i).id;
+			}
+		}
+		e.parts = Part.clone(parts);
+		e.icon = icon;
+		return e;
+	}
+	
+	public static List<Element> clone(Collection<? extends Element> elements) {
+		List<Element> es = new ArrayList<Element>();
+		for(Element e : elements) {
+			es.add(e.clone());
 		}
 		return es;
 	}

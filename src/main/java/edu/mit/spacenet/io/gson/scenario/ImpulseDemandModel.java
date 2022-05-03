@@ -35,4 +35,14 @@ public class ImpulseDemandModel extends DemandModel {
 		m.setDemands(demands == null ? template.getDemands() : Resource.toSpaceNetSet(demands, context));
 		return m;
 	}
+	
+	@Override
+	public ImpulseDemandModel clone() {
+		ImpulseDemandModel m = new ImpulseDemandModel();
+		m.id = UUID.randomUUID();
+		m.name = name;
+		m.description = description;
+		m.demands = Resource.clone(demands);
+		return m;
+	}
 }

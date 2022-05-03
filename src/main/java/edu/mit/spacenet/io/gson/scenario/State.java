@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableBiMap;
 import edu.mit.spacenet.domain.element.I_State;
 import edu.mit.spacenet.domain.element.StateType;
 
-public class State {
+public class State implements Cloneable {
 	public static final BiMap<String, StateType> TYPE_MAP = new ImmutableBiMap.Builder<String, StateType>()
 			.put("Active", StateType.ACTIVE)
 			.put("Quiescent", StateType.QUIESCENT)
@@ -62,6 +62,26 @@ public class State {
 			for(State state : states) {
 				ss.add(state.toSpaceNet(source, context));
 			}
+		}
+		return ss;
+	}
+	
+	@Override
+	public State clone() {
+		State s = new State();
+		s.id = UUID.randomUUID();
+		s.name = name;
+		s.description = description;
+		s.type = type;
+		s.demandModels = DemandModel.clone(demandModels);
+		return s;
+	}
+
+	
+	public static List<State> clone(Collection<State> states) {
+		List<State> ss = new ArrayList<State>();
+		for(State s : states) {
+			ss.add(s.clone());
 		}
 		return ss;
 	}

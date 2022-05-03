@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import edu.mit.spacenet.domain.resource.I_Resource;
 
-public class Resource {
+public class Resource implements Cloneable {
 	public UUID type;
 	public double amount;
 	
@@ -85,5 +85,21 @@ public class Resource {
 			}
 		}
 		return ds;
+	}
+	
+	@Override
+	public Resource clone() {
+		Resource r = new Resource();
+		r.type = type;
+		r.amount = amount;
+		return r;
+	}
+	
+	public static List<Resource> clone(Collection<Resource> resources) {
+		List<Resource> rs = new ArrayList<Resource>();
+		for(Resource r : resources) {
+			rs.add(r.clone());
+		}
+		return rs;
 	}
 }

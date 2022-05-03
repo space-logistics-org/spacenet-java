@@ -1,5 +1,6 @@
 package edu.mit.spacenet.io.gson.scenario;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import edu.mit.spacenet.data.ElementPreview;
@@ -135,5 +136,37 @@ public class SurfaceVehicle extends Carrier {
 	@Override
 	public ElementPreview getPreview(Context context) {
 		return new ElementPreview(context.getId(id), name, ElementType.SURFACE_VEHICLE, ElementIcon.getInstance(icon));
+	}
+	
+	@Override
+	public SurfaceVehicle clone() {
+		SurfaceVehicle e = new SurfaceVehicle();
+		e.id = UUID.randomUUID();
+		e.templateId = templateId;
+		e.name = name;
+		e.description = description;
+		e.accommodatationMass = accommodatationMass;
+		e.mass = mass;
+		e.volume = volume;
+		e.classOfSupply = classOfSupply;
+		e.environment = environment;
+		e.states = State.clone(states);
+		for(int i = 0; i < states.size(); i++) {
+			if(states.get(i).id.equals(currentState)) {
+				e.currentState = e.states.get(i).id;
+			}
+		}
+		e.parts = Part.clone(parts);
+		e.icon = icon;
+		e.maxCargoMass = maxCargoMass;
+		e.maxCargoVolume = maxCargoVolume;
+		e.cargoEnvironment = cargoEnvironment;
+		e.maxCrewSize = maxCrewSize;
+		e.contents = new ArrayList<UUID>(contents);
+		e.maxSpeed = maxSpeed;
+		e.fuelType = fuelType;
+		e.fuelMaxAmount = fuelMaxAmount;
+		e.fuelAmount = fuelAmount;
+		return e;
 	}
 }

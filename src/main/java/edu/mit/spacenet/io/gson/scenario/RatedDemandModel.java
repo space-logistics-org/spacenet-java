@@ -36,4 +36,14 @@ public class RatedDemandModel extends DemandModel {
 		m.setDemandRates(demandRates == null ? template.getDemandRates() : Resource.toSpaceNetSet(demandRates, context));
 		return m;
 	}
+	
+	@Override
+	public RatedDemandModel clone() {
+		RatedDemandModel m = new RatedDemandModel();
+		m.id = UUID.randomUUID();
+		m.name = name;
+		m.description = description;
+		m.demandRates = Resource.clone(demandRates);
+		return m;
+	}
 }

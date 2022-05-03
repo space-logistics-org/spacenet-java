@@ -186,4 +186,39 @@ public class ConsumablesDemandModel extends DemandModel {
 		m.setWasteContainmentRate(wasteContainmentRate == null ? template.getWasteContainmentRate() : wasteContainmentRate);
 		return m;
 	}
+	
+	@Override
+	public ConsumablesDemandModel clone() {
+		ConsumablesDemandModel m = new ConsumablesDemandModel();
+		m.id = UUID.randomUUID();
+		m.name = name;
+		m.description = description;
+		m.reservesDuration = reservesDuration;
+		m.waterRecoveryRate = waterRecoveryRate;
+		m.clothingLifetime = clothingLifetime;
+		m.transitDemandsOmitted = transitDemandsOmitted;
+		m.waterRate = waterRate;
+		m.evaWaterRate = evaWaterRate;
+		m.foodSupportRate = foodSupportRate;
+		m.ambientFoodRate = ambientFoodRate;
+		m.rfFoodRate = rfFoodRate;
+		m.oxygenRate = oxygenRate;
+		m.evaOxygenRate = evaOxygenRate;
+		m.nitrogenRate = nitrogenRate;
+		m.hygieneRate = hygieneRate;
+		m.hygieneKit = hygieneKit;
+		m.clothingRate = clothingRate;
+		m.personalItems = personalItems;
+		m.officeEquipment = officeEquipment;
+		m.evaSuit = evaSuit;
+		m.evaLithiumHydroxide = evaLithiumHydroxide;
+		m.healthEquipment = healthEquipment;
+		m.healthConsumables = healthConsumables;
+		m.safetyEquipment = safetyEquipment;
+		m.commEquipment = commEquipment;
+		m.computerEquipment = computerEquipment;
+		m.trashBagRate = trashBagRate;
+		m.wasteContainmentRate = wasteContainmentRate;
+		return m;
+	}
 }

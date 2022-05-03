@@ -50,4 +50,16 @@ public class SparingByMassDemandModel extends DemandModel {
 		m.setPartsListEnabled(partsListEnabled == null ? template.isPartsListEnabled() : partsListEnabled);
 		return m;
 	}
+	
+	@Override
+	public SparingByMassDemandModel clone() {
+		SparingByMassDemandModel m = new SparingByMassDemandModel();
+		m.id = UUID.randomUUID();
+		m.name = name;
+		m.description = description;
+		m.unpressurizedSparesRate = unpressurizedSparesRate;
+		m.pressurizedSparesRate = pressurizedSparesRate;
+		m.partsListEnabled = partsListEnabled;
+		return m;
+	}
 }

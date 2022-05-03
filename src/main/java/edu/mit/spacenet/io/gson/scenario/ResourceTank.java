@@ -106,4 +106,30 @@ public class ResourceTank extends Element {
 	public ElementPreview getPreview(Context context) {
 		return new ElementPreview(context.getId(id), name, ElementType.RESOURCE_TANK, ElementIcon.getInstance(icon));
 	}
+	
+	@Override
+	public ResourceTank clone() {
+		ResourceTank e = new ResourceTank();
+		e.id = UUID.randomUUID();
+		e.templateId = templateId;
+		e.name = name;
+		e.description = description;
+		e.accommodatationMass = accommodatationMass;
+		e.mass = mass;
+		e.volume = volume;
+		e.classOfSupply = classOfSupply;
+		e.environment = environment;
+		e.states = State.clone(states);
+		for(int i = 0; i < states.size(); i++) {
+			if(states.get(i).id.equals(currentState)) {
+				e.currentState = e.states.get(i).id;
+			}
+		}
+		e.parts = Part.clone(parts);
+		e.icon = icon;
+		e.resource = resource;
+		e.maxAmount = maxAmount;
+		e.amount = amount;
+		return e;
+	}
 }

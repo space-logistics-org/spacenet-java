@@ -33,7 +33,7 @@ public class CrewMember extends Element {
 			}
 			e.states = State.createFrom(element.getStates(), context);
 			if(element.getCurrentState() != null) {
-				e.currentStateIndex = e.states.indexOf(context.getJsonObjectFromJavaObject(element.getCurrentState()));
+				e.currentStateIndex = new ArrayList<I_State>(element.getStates()).indexOf(element.getCurrentState());
 			}
 			e.parts = Part.createFrom(element.getParts(), context);
 			

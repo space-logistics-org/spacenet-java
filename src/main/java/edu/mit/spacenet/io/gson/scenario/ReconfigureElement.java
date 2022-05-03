@@ -2,6 +2,7 @@ package edu.mit.spacenet.io.gson.scenario;
 
 import java.time.Duration;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.threeten.extra.PeriodDuration;
@@ -12,7 +13,7 @@ import edu.mit.spacenet.domain.element.I_State;
 public class ReconfigureElement extends Event {
 	
 	protected UUID element;
-	protected UUID state;
+	protected Integer stateIndex;
 
 	public static ReconfigureElement createFrom(edu.mit.spacenet.simulator.event.ReconfigureEvent event, Context context) {
 		ReconfigureElement e = new ReconfigureElement();
@@ -24,7 +25,7 @@ public class ReconfigureElement extends Event {
 		e.priority = event.getPriority();
 		e.location = context.getJsonIdFromJavaObject(event.getLocation());
 		e.element = context.getJsonIdFromJavaObject(event.getElement());
-		e.state = context.getJsonIdFromJavaObject(event.getState());
+		e.stateIndex = new ArrayList<I_State>(event.getElement().getStates()).indexOf(event.getState());
 		return e;
 	}
 	
@@ -35,8 +36,9 @@ public class ReconfigureElement extends Event {
 		e.setTime(mission_time.getPeriod().getDays() + mission_time.getDuration().getSeconds() / (24*60*60d));
 		e.setPriority(priority);
 		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getJavaObjectFromJsonId(location));
-		e.setElement((I_Element) context.getJavaObjectFromJsonId(element));
-		e.setState((I_State) context.getJavaObjectFromJsonId(state));
+		I_Element el = (I_Element) context.getJavaObjectFromJsonId(element);
+		e.setElement(el);
+		e.setState((I_State) new ArrayList<I_State>(el.getStates()).get(stateIndex));
 		return e;
 	}
 

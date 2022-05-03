@@ -48,11 +48,13 @@ public class Scenario {
 		s.demandModels = new ArrayList<DemandModel>();
 		for(edu.mit.spacenet.scenario.Mission mission : scenario.getMissionList()) {
 			for(I_DemandModel model : mission.getDemandModels()) {
-				DemandModel m = DemandModel.createFrom(model, context);
-				m.id = UUID.randomUUID();
-				m.templateId = null;
-				context.putModelTemplate(model, m.id, m);
-				s.demandModels.add(m);
+				if(context.getModelTemplate(model.getTid()) == null) {
+					DemandModel m = DemandModel.createFrom(model, context);
+					m.id = UUID.randomUUID();
+					m.templateId = null;
+					context.putModelTemplate(model, m.id, m);
+					s.demandModels.add(m);
+				}
 			}
 		}
 		for(I_Element element : scenario.getElements()) {

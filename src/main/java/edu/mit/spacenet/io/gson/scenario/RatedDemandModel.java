@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class RatedDemandModel extends DemandModel {
-	public List<Resource> demandRates = new ArrayList<Resource>();
+	protected List<Resource> demandRates = new ArrayList<Resource>();
 
 	public static RatedDemandModel createFrom(edu.mit.spacenet.domain.model.RatedDemandModel model, Context context) {
 		RatedDemandModel m = new RatedDemandModel();

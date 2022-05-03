@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class Location {
-	public UUID id;
-	public String name;
-	public String description;
-	public List<UUID> contents;
+	protected UUID id;
+	protected String name;
+	protected String description;
+	protected List<UUID> contents;
 	
 	public static Location createFrom(edu.mit.spacenet.domain.network.Location location, Context context) {
 		if(location instanceof edu.mit.spacenet.domain.network.node.Node) {

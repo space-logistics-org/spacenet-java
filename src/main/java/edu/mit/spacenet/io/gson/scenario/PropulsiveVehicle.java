@@ -13,10 +13,10 @@ import edu.mit.spacenet.domain.element.I_State;
 import edu.mit.spacenet.domain.resource.I_Resource;
 
 public class PropulsiveVehicle extends Carrier {
-	public Double isp;
-	public UUID fuelType;
-	public Double fuelMaxAmount;
-	public Double fuelAmount;
+	protected Double isp;
+	protected UUID fuelType;
+	protected Double fuelMaxAmount;
+	protected Double fuelAmount;
 
 	public static PropulsiveVehicle createFrom(edu.mit.spacenet.domain.element.PropulsiveVehicle element, Context context) {
 		PropulsiveVehicle e = new PropulsiveVehicle();

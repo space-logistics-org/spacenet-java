@@ -3,7 +3,7 @@ package edu.mit.spacenet.io.gson.scenario;
 import java.util.UUID;
 
 public class SurfaceEdge extends Edge {
-	public double distance;
+	protected Double distance;
 
 	public static SurfaceEdge createFrom(edu.mit.spacenet.domain.network.edge.SurfaceEdge edge, Context context) {
 		SurfaceEdge e = new SurfaceEdge();

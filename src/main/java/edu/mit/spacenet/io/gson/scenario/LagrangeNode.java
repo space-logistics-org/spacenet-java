@@ -5,8 +5,8 @@ import java.util.UUID;
 import edu.mit.spacenet.domain.network.node.Body;
 
 public class LagrangeNode extends Node {
-	public String body_2;
-	public int lp_number;
+	protected String body_2;
+	protected Integer lp_number;
 	
 	public static LagrangeNode createFrom(edu.mit.spacenet.domain.network.node.LagrangeNode node, Context context) {
 		LagrangeNode n = new LagrangeNode();

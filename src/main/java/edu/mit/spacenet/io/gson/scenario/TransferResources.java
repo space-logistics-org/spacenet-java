@@ -11,9 +11,9 @@ import edu.mit.spacenet.domain.element.I_ResourceContainer;
 
 public class TransferResources extends Event {
 
-	public List<Resource> resources;
-	public UUID origin;
-	public UUID destination;
+	protected List<Resource> resources;
+	protected UUID origin;
+	protected UUID destination;
 
 	public static TransferResources createFrom(edu.mit.spacenet.simulator.event.TransferEvent event, Context context) {
 		TransferResources e = new TransferResources();

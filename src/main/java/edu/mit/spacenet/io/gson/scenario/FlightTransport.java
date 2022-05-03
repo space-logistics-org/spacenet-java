@@ -8,8 +8,8 @@ import java.util.UUID;
 import org.threeten.extra.PeriodDuration;
 
 public class FlightTransport extends Event {
-	public UUID edge;
-	public List<UUID> elements;
+	protected UUID edge;
+	protected List<UUID> elements;
 
 	public static FlightTransport createFrom(edu.mit.spacenet.simulator.event.FlightTransport event, Context context) {
 		FlightTransport e = new FlightTransport();

@@ -9,8 +9,8 @@ import org.threeten.extra.PeriodDuration;
 
 public class MoveElements extends Event {
 	
-	public List<UUID> elements;
-	public UUID container;
+	protected List<UUID> elements;
+	protected UUID container;
 
 	public static MoveElements createFrom(edu.mit.spacenet.simulator.event.MoveEvent event, Context context) {
 		MoveElements e = new MoveElements();

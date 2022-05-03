@@ -19,16 +19,16 @@ public class ResourceType {
 			.put("Item", edu.mit.spacenet.domain.resource.ResourceType.ITEM)
 			.build();
 	
-	public UUID id;
-	public String type;
-	public String name;
-	public String description;
-	public int classOfSupply;
-	public String environment;
-	public String units;
-	public double unitMass;
-	public double unitVolume;
-	public double packingFactor;
+	protected UUID id;
+	protected String type;
+	protected String name;
+	protected String description;
+	protected Integer classOfSupply;
+	protected String environment;
+	protected String units;
+	protected Double unitMass;
+	protected Double unitVolume;
+	protected Double packingFactor;
 
 	public static ResourceType createFrom(I_Resource resource, Context context) {
 		ResourceType r = new ResourceType();

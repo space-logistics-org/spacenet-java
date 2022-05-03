@@ -6,11 +6,11 @@ import edu.mit.spacenet.data.I_DataSource;
 import edu.mit.spacenet.data.InMemoryDataSource;
 
 public class DataSource {
-	public List<Node> nodeLibrary;
-	public List<Edge> edgeLibrary;
-	public List<ResourceType> resourceTypeLibrary;
-	public List<DemandModel> demandModelLibrary;
-	public List<Element> elementTemplateLibrary;
+	protected List<Node> nodeLibrary;
+	protected List<Edge> edgeLibrary;
+	protected List<ResourceType> resourceTypeLibrary;
+	protected List<DemandModel> demandModelLibrary;
+	protected List<Element> elementTemplateLibrary;
 	
 	public I_DataSource toSpaceNet(Context context) {
 		InMemoryDataSource d = new InMemoryDataSource();

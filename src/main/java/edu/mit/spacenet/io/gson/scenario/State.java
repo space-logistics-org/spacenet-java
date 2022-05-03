@@ -22,11 +22,11 @@ public class State implements Cloneable {
 			.put("Decommissioned", StateType.DECOMMISSIONED)
 			.build();
 	
-	public UUID id;
-	public String name;
-	public String description;
-	public String type;
-	public List<DemandModel> demandModels;
+	protected UUID id;
+	protected String name;
+	protected String description;
+	protected String type;
+	protected List<DemandModel> demandModels;
 
 	public static State createFrom(I_State state, Context context) {
 		State s = new State();

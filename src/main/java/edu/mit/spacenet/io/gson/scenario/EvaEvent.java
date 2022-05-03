@@ -14,11 +14,11 @@ import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.element.I_State;
 
 public class EvaEvent extends Event {
-	public UUID vehicle;
-	public PeriodDuration evaDuration;
-	public List<UUID> elements;
-	public List<UUID> states;
-	public List<Resource> demands;
+	protected UUID vehicle;
+	protected PeriodDuration evaDuration;
+	protected List<UUID> elements;
+	protected List<UUID> states;
+	protected List<Resource> demands;
 
 	public static EvaEvent createFrom(edu.mit.spacenet.simulator.event.EvaEvent event, Context context) {
 		EvaEvent e = new EvaEvent();

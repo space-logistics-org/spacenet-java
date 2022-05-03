@@ -11,8 +11,8 @@ import edu.mit.spacenet.domain.element.I_ResourceContainer;
 
 public class AddResources extends Event {
 
-	public List<Resource> resources;
-	public UUID container;
+	protected List<Resource> resources;
+	protected UUID container;
 	
 	public static AddResources createFrom(edu.mit.spacenet.simulator.event.AddEvent event, Context context) {
 		AddResources e = new AddResources();

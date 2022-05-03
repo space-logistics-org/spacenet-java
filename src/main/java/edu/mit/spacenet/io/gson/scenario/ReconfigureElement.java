@@ -11,8 +11,8 @@ import edu.mit.spacenet.domain.element.I_State;
 
 public class ReconfigureElement extends Event {
 	
-	public UUID element;
-	public UUID state;
+	protected UUID element;
+	protected UUID state;
 
 	public static ReconfigureElement createFrom(edu.mit.spacenet.simulator.event.ReconfigureEvent event, Context context) {
 		ReconfigureElement e = new ReconfigureElement();

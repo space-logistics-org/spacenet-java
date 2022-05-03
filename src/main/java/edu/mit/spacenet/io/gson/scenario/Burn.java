@@ -10,9 +10,9 @@ import java.util.UUID;
 import org.threeten.extra.PeriodDuration;
 
 public class Burn {
-	public UUID id;
-	public PeriodDuration time;
-	public double delta_v;
+	protected UUID id;
+	protected PeriodDuration time;
+	protected Double delta_v;
 
 	public static Burn createFrom(edu.mit.spacenet.domain.network.edge.Burn burn, Context context) {
 		Burn b = new Burn();

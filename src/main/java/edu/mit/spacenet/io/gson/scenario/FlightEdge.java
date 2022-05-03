@@ -7,9 +7,9 @@ import java.util.UUID;
 import org.threeten.extra.PeriodDuration;
 
 public class FlightEdge extends Edge {
-	public PeriodDuration duration;
-	public int max_crew;
-	public double max_cargo;
+	protected PeriodDuration duration;
+	protected Integer max_crew;
+	protected Double max_cargo;
 
 	public static FlightEdge createFrom(edu.mit.spacenet.domain.network.edge.FlightEdge edge, Context context) {
 		FlightEdge e = new FlightEdge();

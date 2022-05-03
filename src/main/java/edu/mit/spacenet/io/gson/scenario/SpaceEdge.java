@@ -8,8 +8,8 @@ import java.util.UUID;
 import org.threeten.extra.PeriodDuration;
 
 public class SpaceEdge extends Edge {
-	public PeriodDuration duration;
-	public List<Burn> burns;
+	protected PeriodDuration duration;
+	protected List<Burn> burns;
 
 	public static SpaceEdge createFrom(edu.mit.spacenet.domain.network.edge.SpaceEdge edge, Context context) {
 		SpaceEdge e = new SpaceEdge();

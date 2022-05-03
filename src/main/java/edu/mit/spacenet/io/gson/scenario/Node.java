@@ -16,7 +16,7 @@ public abstract class Node extends Location {
 			.put("LagrangeNode", NodeType.LAGRANGE)
 			.build();
 
-	public String body_1;
+	protected String body_1;
 	
 	public static Node createFrom(edu.mit.spacenet.domain.network.node.Node node, Context context) {
 		if(node.getNodeType() == NodeType.SURFACE) {

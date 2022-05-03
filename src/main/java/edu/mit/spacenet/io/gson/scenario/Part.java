@@ -11,12 +11,12 @@ import edu.mit.spacenet.domain.element.PartApplication;
 import edu.mit.spacenet.domain.resource.Item;
 
 public class Part implements Cloneable {
-	public UUID resource;
-	public Double meanTimeToFailure;
-	public Double meanTimeToRepair;
-	public Double massToRepair;
-	public Double quantity;
-	public Double dutyCycle;
+	protected UUID resource;
+	protected Double meanTimeToFailure;
+	protected Double meanTimeToRepair;
+	protected Double massToRepair;
+	protected Double quantity;
+	protected Double dutyCycle;
 
 	public static Part createFrom(edu.mit.spacenet.domain.element.PartApplication part, Context context) {
 		Part p = new Part();

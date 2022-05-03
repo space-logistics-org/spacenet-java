@@ -3,8 +3,8 @@ package edu.mit.spacenet.io.gson.scenario;
 import java.util.List;
 
 public class Network {
-	public List<Node> nodes;
-	public List<Edge> edges;
+	protected List<Node> nodes;
+	protected List<Edge> edges;
 	
 	public static Network createFrom(edu.mit.spacenet.domain.network.Network network, Context context) {
 		Network n = new Network();

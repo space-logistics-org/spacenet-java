@@ -5,8 +5,8 @@ import java.util.UUID;
 import edu.mit.spacenet.domain.network.node.Body;
 
 public class SurfaceNode extends Node {
-	public double latitude;
-	public double longitude;
+	protected Double latitude;
+	protected Double longitude;
 	
 	public static SurfaceNode createFrom(edu.mit.spacenet.domain.network.node.SurfaceNode node, Context context) {
 		SurfaceNode n = new SurfaceNode();

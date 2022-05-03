@@ -12,11 +12,11 @@ import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_State;
 
 public class Carrier extends Element {
-	public Double maxCargoMass;
-	public Double maxCargoVolume;
-	public String cargoEnvironment;
-	public Integer maxCrewSize;
-	public List<Element> contents;
+	protected Double maxCargoMass;
+	protected Double maxCargoVolume;
+	protected String cargoEnvironment;
+	protected Integer maxCrewSize;
+	protected List<Element> contents;
 
 	public static Carrier createFrom(edu.mit.spacenet.domain.element.Carrier element, Context context) {
 		Carrier e = new Carrier();

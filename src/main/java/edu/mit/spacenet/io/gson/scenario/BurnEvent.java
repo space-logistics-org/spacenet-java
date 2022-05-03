@@ -8,9 +8,9 @@ import java.util.UUID;
 import org.threeten.extra.PeriodDuration;
 
 public class BurnEvent extends Event {
-	public List<UUID> elements;
-	public UUID burn;
-	public BurnStageActions actions;
+	protected List<UUID> elements;
+	protected UUID burn;
+	protected BurnStageActions actions;
 	
 	public static BurnEvent createFrom(edu.mit.spacenet.simulator.event.BurnEvent event, Context context) {
 		BurnEvent e = new BurnEvent();

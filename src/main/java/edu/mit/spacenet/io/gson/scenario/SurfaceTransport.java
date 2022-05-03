@@ -9,11 +9,11 @@ import org.threeten.extra.PeriodDuration;
 import edu.mit.spacenet.domain.element.I_State;
 
 public class SurfaceTransport extends Event {
-	public double dutyCycle;
-	public UUID vehicle;
-	public UUID transportState;
-	public double speed;
-	public UUID edge;
+	protected Double dutyCycle;
+	protected UUID vehicle;
+	protected UUID transportState;
+	protected Double speed;
+	protected UUID edge;
 
 	public static SurfaceTransport createFrom(edu.mit.spacenet.simulator.event.SurfaceTransport event, Context context) {
 		SurfaceTransport e = new SurfaceTransport();

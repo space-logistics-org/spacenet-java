@@ -5,9 +5,9 @@ import java.util.UUID;
 import edu.mit.spacenet.domain.element.I_Element;
 
 public class SparingByMassDemandModel extends DemandModel {
-	public Double unpressurizedSparesRate;
-	public Double pressurizedSparesRate;
-	public Boolean partsListEnabled;
+	protected Double unpressurizedSparesRate;
+	protected Double pressurizedSparesRate;
+	protected Boolean partsListEnabled;
 
 	public static SparingByMassDemandModel createFrom(edu.mit.spacenet.domain.model.SparingByMassDemandModel model, Context context) {
 		SparingByMassDemandModel m = new SparingByMassDemandModel();

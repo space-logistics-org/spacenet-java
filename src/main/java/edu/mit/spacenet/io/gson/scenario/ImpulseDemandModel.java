@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class ImpulseDemandModel extends DemandModel {
-	public List<Resource> demands;
+	protected List<Resource> demands;
 
 	public static ImpulseDemandModel createFrom(edu.mit.spacenet.domain.model.TimedImpulseDemandModel model, Context context) {
 		ImpulseDemandModel m = new ImpulseDemandModel();

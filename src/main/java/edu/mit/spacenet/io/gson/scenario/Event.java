@@ -31,10 +31,10 @@ public abstract class Event {
 			.put("Flight Transport", EventType.FLIGHT_TRANSPORT)
 			.build();
 	
-	public String name;
-	public int priority;
-	public PeriodDuration mission_time;
-	public UUID location;
+	protected String name;
+	protected Integer priority;
+	protected PeriodDuration mission_time;
+	protected UUID location;
 
 	public static Event createFrom(edu.mit.spacenet.simulator.event.I_Event event, Context context) {
 		if(event.getEventType() == EventType.CREATE) {

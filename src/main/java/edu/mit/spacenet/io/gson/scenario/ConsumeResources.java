@@ -11,8 +11,8 @@ import edu.mit.spacenet.domain.element.I_Element;
 
 public class ConsumeResources extends Event {
 
-	public List<Resource> resources;
-	public UUID source;
+	protected List<Resource> resources;
+	protected UUID source;
 
 	public static ConsumeResources createFrom(edu.mit.spacenet.simulator.event.DemandEvent event, Context context) {
 		ConsumeResources e = new ConsumeResources();

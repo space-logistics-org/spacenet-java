@@ -29,19 +29,19 @@ public class Element implements Cloneable {
 			.put("Surface Vehicle", ElementType.SURFACE_VEHICLE)
 			.build();
 
-	public UUID id;
-	public UUID templateId;
-	public String name;
-	public String description;
-	public Double accommodatationMass;
-	public Double mass;
-	public Double volume;
-	public Integer classOfSupply;
-	public String environment;
-	public List<State> states;
-	public Integer currentStateIndex;
-	public List<Part> parts;
-	public String icon;
+	protected UUID id;
+	protected UUID templateId;
+	protected String name;
+	protected String description;
+	protected Double accommodatationMass;
+	protected Double mass;
+	protected Double volume;
+	protected Integer classOfSupply;
+	protected String environment;
+	protected List<State> states;
+	protected Integer currentStateIndex;
+	protected List<Part> parts;
+	protected String icon;
 
 	public static Element createFrom(I_Element element, Context context) {
 		if(element.getElementType() == ElementType.ELEMENT) {

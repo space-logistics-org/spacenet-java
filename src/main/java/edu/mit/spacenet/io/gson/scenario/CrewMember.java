@@ -12,7 +12,7 @@ import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_State;
 
 public class CrewMember extends Element {
-	public Double availableTimeFraction;
+	protected Double availableTimeFraction;
 
 	public static CrewMember createFrom(edu.mit.spacenet.domain.element.CrewMember element, Context context) {
 		CrewMember e = new CrewMember();

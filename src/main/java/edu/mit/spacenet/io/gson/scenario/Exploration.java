@@ -14,13 +14,13 @@ import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.element.I_State;
 
 public class Exploration extends Event {
-	public UUID vehicle;
-	public PeriodDuration duration;
-	public double evaPerWeek;
-	public PeriodDuration evaDuration;
-	public List<UUID> elements;
-	public List<UUID> states;
-	public List<Resource> demands;
+	protected UUID vehicle;
+	protected PeriodDuration duration;
+	protected Double evaPerWeek;
+	protected PeriodDuration evaDuration;
+	protected List<UUID> elements;
+	protected List<UUID> states;
+	protected List<Resource> demands;
 
 	public static Exploration createFrom(edu.mit.spacenet.simulator.event.ExplorationProcess event, Context context) {
 		Exploration e = new Exploration();

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class BurnStageActions {
-	public UUID burn;
-	public List<BurnStageAction> actions;
+	protected UUID burn;
+	protected List<BurnStageAction> actions;
 
 	public static BurnStageActions createFrom(edu.mit.spacenet.domain.network.edge.Burn burn, Collection<edu.mit.spacenet.simulator.event.BurnStageItem> actions, Context context) {
 		BurnStageActions a = new BurnStageActions();

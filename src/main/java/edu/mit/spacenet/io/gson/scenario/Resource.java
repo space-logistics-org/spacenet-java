@@ -15,10 +15,10 @@ import edu.mit.spacenet.domain.Environment;
 import edu.mit.spacenet.domain.resource.I_Resource;
 
 public class Resource implements Cloneable {
-	public UUID type;
-	public Integer classOfSupply; // for generic only
-	public String environment; // for generic only
-	public double amount;
+	protected UUID type;
+	protected Integer classOfSupply; // for generic only
+	protected String environment; // for generic only
+	protected Double amount;
 	
 	public static Resource createFrom(edu.mit.spacenet.domain.resource.Demand demand, Context context) {
 		Resource d = new Resource();

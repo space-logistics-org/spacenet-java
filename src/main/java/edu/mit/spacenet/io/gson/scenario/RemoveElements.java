@@ -10,7 +10,7 @@ import org.threeten.extra.PeriodDuration;
 
 public class RemoveElements extends Event {
 	
-	public List<UUID> elements = new ArrayList<UUID>();
+	protected List<UUID> elements = new ArrayList<UUID>();
 
 	public static RemoveElements createFrom(edu.mit.spacenet.simulator.event.RemoveEvent event, Context context) {
 		RemoveElements e = new RemoveElements();

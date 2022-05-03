@@ -12,10 +12,10 @@ import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_State;
 
 public class ResourceContainer extends Element {
-	public Double maxCargoMass;
-	public Double maxCargoVolume;
-	public String cargoEnvironment;
-	public List<Resource> contents = new ArrayList<Resource>();
+	protected Double maxCargoMass;
+	protected Double maxCargoVolume;
+	protected String cargoEnvironment;
+	protected List<Resource> contents = new ArrayList<Resource>();
 
 	public static ResourceContainer createFrom(edu.mit.spacenet.domain.element.ResourceContainer element, Context context) {
 		ResourceContainer e = new ResourceContainer();

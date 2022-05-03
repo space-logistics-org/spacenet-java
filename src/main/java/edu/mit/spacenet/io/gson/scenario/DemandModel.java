@@ -21,10 +21,10 @@ public abstract class DemandModel implements Cloneable {
 			.put("Sparing by Mass Demand Model", DemandModelType.SPARING_BY_MASS)
 			.build();
 	
-	public UUID id;
-	public UUID templateId;
-	public String name;
-	public String description;
+	protected UUID id;
+	protected UUID templateId;
+	protected String name;
+	protected String description;
 
 	public static DemandModel createFrom(I_DemandModel model, Context context) {
 		if(model.getDemandModelType() == DemandModelType.TIMED_IMPULSE) {

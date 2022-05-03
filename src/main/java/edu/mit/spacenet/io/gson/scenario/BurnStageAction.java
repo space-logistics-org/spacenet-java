@@ -17,8 +17,8 @@ public class BurnStageAction {
 			.put("Stage", BurnStageItem.STAGE)
 			.build();
 	
-	public String type;
-	public UUID element;
+	protected String type;
+	protected UUID element;
 
 	public static BurnStageAction createFrom(edu.mit.spacenet.simulator.event.BurnStageItem action, Context context) {
 		BurnStageAction a = new BurnStageAction();

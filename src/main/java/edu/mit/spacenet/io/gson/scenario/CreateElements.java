@@ -9,8 +9,8 @@ import org.threeten.extra.PeriodDuration;
 
 public class CreateElements extends Event {
 	
-	public List<UUID> elements;
-	public UUID container;
+	protected List<UUID> elements;
+	protected UUID container;
 
 	public static CreateElements createFrom(edu.mit.spacenet.simulator.event.CreateEvent event, Context context) {
 		CreateElements e = new CreateElements();

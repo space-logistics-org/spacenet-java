@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.UUID;
 
 public class Mission {
-	public String name;
-	public Date start_date;
-	public List<Event> events;
-	public List<DemandModel> demand_models = new ArrayList<DemandModel>();
-	public UUID origin;
-	public UUID destination;
-	public UUID return_origin;
-	public UUID return_destination;
+	protected String name;
+	protected Date start_date;
+	protected List<Event> events;
+	protected List<DemandModel> demand_models = new ArrayList<DemandModel>();
+	protected UUID origin;
+	protected UUID destination;
+	protected UUID return_origin;
+	protected UUID return_destination;
 
 	public static Mission createFrom(edu.mit.spacenet.scenario.Mission mission, Context context) {
 		Mission m = new Mission();

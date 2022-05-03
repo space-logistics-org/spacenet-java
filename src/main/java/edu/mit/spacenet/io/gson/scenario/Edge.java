@@ -17,8 +17,8 @@ public abstract class Edge extends Location {
 			.put("FlightEdge", EdgeType.FLIGHT)
 			.build();
 	
-	public UUID origin_id;
-	public UUID destination_id;
+	protected UUID origin_id;
+	protected UUID destination_id;
 	
 	public static Edge createFrom(edu.mit.spacenet.domain.network.edge.Edge edge, Context context) {
 		if(edge.getEdgeType() == EdgeType.SURFACE) {

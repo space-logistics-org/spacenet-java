@@ -13,10 +13,10 @@ import edu.mit.spacenet.domain.element.I_State;
 import edu.mit.spacenet.domain.resource.I_Resource;
 
 public class SurfaceVehicle extends Carrier {
-	public Double maxSpeed;
-	public UUID fuelType;
-	public Double fuelMaxAmount;
-	public Double fuelAmount;
+	protected Double maxSpeed;
+	protected UUID fuelType;
+	protected Double fuelMaxAmount;
+	protected Double fuelAmount;
 
 	public static SurfaceVehicle createFrom(edu.mit.spacenet.domain.element.SurfaceVehicle element, Context context) {
 		SurfaceVehicle e = new SurfaceVehicle();

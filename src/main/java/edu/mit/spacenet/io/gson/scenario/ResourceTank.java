@@ -13,9 +13,9 @@ import edu.mit.spacenet.domain.element.I_State;
 import edu.mit.spacenet.domain.resource.I_Resource;
 
 public class ResourceTank extends Element {
-	public UUID resource;
-	public Double maxAmount;
-	public Double amount;
+	protected UUID resource;
+	protected Double maxAmount;
+	protected Double amount;
 
 	public static ResourceTank createFrom(edu.mit.spacenet.domain.element.ResourceTank element, Context context) {
 		ResourceTank e = new ResourceTank();

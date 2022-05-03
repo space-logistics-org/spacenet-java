@@ -5,9 +5,9 @@ import java.util.UUID;
 import edu.mit.spacenet.domain.network.node.Body;
 
 public class OrbitalNode extends Node {
-	public double inclination;
-	public double periapsis;
-	public double apoapsis;
+	protected double inclination;
+	protected double periapsis;
+	protected double apoapsis;
 	
 	public static OrbitalNode createFrom(edu.mit.spacenet.domain.network.node.OrbitalNode node, Context context) {
 		OrbitalNode n = new OrbitalNode();

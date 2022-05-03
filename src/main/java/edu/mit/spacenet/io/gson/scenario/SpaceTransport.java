@@ -8,9 +8,9 @@ import java.util.UUID;
 import org.threeten.extra.PeriodDuration;
 
 public class SpaceTransport extends Event {
-	public UUID edge;
-	public List<UUID> elements;
-	public List<BurnStageActions> burnStageSequence;
+	protected UUID edge;
+	protected List<UUID> elements;
+	protected List<BurnStageActions> burnStageSequence;
 
 	public static SpaceTransport createFrom(edu.mit.spacenet.simulator.event.SpaceTransport event, Context context) {
 		SpaceTransport e = new SpaceTransport();

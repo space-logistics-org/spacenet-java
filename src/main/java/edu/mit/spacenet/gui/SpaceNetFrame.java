@@ -34,9 +34,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.apache.commons.io.FilenameUtils;
+
 import edu.mit.spacenet.domain.element.I_Element;
-import edu.mit.spacenet.io.XMLFileFilter;
+import edu.mit.spacenet.io.ScenarioFileFilter;
 import edu.mit.spacenet.io.XStreamEngine;
+import edu.mit.spacenet.io.gson.scenario.GsonEngine;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.util.IconLibrary;
 import edu.mit.spacenet.util.IdGenerator;
@@ -87,7 +90,7 @@ public class SpaceNetFrame extends JFrame {
 				super.approveSelection();
 		    }
 		};
-		scenarioChooser.setFileFilter(new XMLFileFilter());
+		scenarioChooser.setFileFilter(new ScenarioFileFilter());
 		scenarioPanel = new ScenarioPanel(this);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setMinimumSize(new Dimension(800,600));
@@ -188,9 +191,16 @@ public class SpaceNetFrame extends JFrame {
 	 */
 	public void openScenario(String filePath) {
 		try {
-			Scenario scenario = XStreamEngine.openScenario(filePath);
-			scenario.setFilePath(filePath);
-			setScenario(scenario);
+			String extension = FilenameUtils.getExtension(filePath);
+			if(extension.equals("xml")) {
+				Scenario scenario = XStreamEngine.openScenario(filePath);
+				scenario.setFilePath(filePath);
+				setScenario(scenario);
+			} else if(extension.equals("json")) {
+				Scenario scenario = GsonEngine.openScenario(filePath);
+				scenario.setFilePath(filePath);
+				setScenario(scenario);
+			}
 		} catch(FileNotFoundException e) {
 			JOptionPane.showMessageDialog(this, 
 					"The scenario file path (" + filePath + ") is invalid.", 
@@ -216,7 +226,12 @@ public class SpaceNetFrame extends JFrame {
 	 */
 	public void saveScenario() {
 		try {
-			XStreamEngine.saveScenario(scenarioPanel.getScenario());
+			String extension = FilenameUtils.getExtension(scenarioPanel.getScenario().getFileName());
+			if(extension.equals("xml")) {
+				XStreamEngine.saveScenario(scenarioPanel.getScenario());
+			} else if(extension.equals("json")) {
+				GsonEngine.saveScenario(scenarioPanel.getScenario());
+			}
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(this, 
 					"The scenario file path (" + scenarioPanel.getScenario().getFilePath() + ") is invalid.", 

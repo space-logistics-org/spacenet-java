@@ -19,12 +19,14 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.commons.io.FilenameUtils;
+
 /**
- * A filter for file dialogs to only show .xml files.
+ * A filter for file dialogs to only show .xml and .json files.
  * 
  * @author Paul Grogan
  */
-public class XMLFileFilter extends FileFilter {
+public class ScenarioFileFilter extends FileFilter {
 	
 	/* (non-Javadoc)
 	 * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
@@ -33,24 +35,17 @@ public class XMLFileFilter extends FileFilter {
 		if(f.isDirectory()) {
 			return true;
 		}
-		String extension = null;
-		
-		String s = f.getName();
-		int i = s.lastIndexOf('.');
-		if (i > 0 &&  i < s.length() - 1) {
-			extension = s.substring(i+1).toLowerCase();
-        }
-		
-		if(extension != null) {
-			if(extension.equals("xml")) return true;
-			else return false;
-		} else return false;
+		String extension = FilenameUtils.getExtension(f.getName());
+		if(extension != null && (extension.equals("xml") || extension.equals("json"))) {
+			return true; 
+		}
+		return false;
 	}
 	
 	/* (non-Javadoc)
 	 * @see javax.swing.filechooser.FileFilter#getDescription()
 	 */
 	public String getDescription() {
-		return "XML Files";
+		return "Scenario Files (.xml or .json)";
 	}
 }

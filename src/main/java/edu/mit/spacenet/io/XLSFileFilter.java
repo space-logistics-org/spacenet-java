@@ -19,6 +19,8 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.commons.io.FilenameUtils;
+
 /**
  * A filter for file dialogs to only show .xls files.
  * 
@@ -33,18 +35,11 @@ public class XLSFileFilter extends FileFilter {
 		if(f.isDirectory()) {
 			return true;
 		}
-		String extension = null;
-		
-		String s = f.getName();
-		int i = s.lastIndexOf('.');
-		if (i > 0 &&  i < s.length() - 1) {
-			extension = s.substring(i+1).toLowerCase();
-        }
-		
-		if(extension != null) {
-			if(extension.equals("xls")) return true;
-			else return false;
-		} else return false;
+		String extension = FilenameUtils.getExtension(f.getName());
+		if(extension != null && extension.equals("xls")) {
+			return true; 
+		}
+		return false;
 	}
 	
 	/* (non-Javadoc)

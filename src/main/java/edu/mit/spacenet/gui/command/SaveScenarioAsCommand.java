@@ -20,9 +20,11 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.io.FilenameUtils;
+
 import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
-import edu.mit.spacenet.io.XMLFileFilter;
+import edu.mit.spacenet.io.ScenarioFileFilter;
 
 /**
  * The command to save a scenario with a new filename.
@@ -60,10 +62,11 @@ public class SaveScenarioAsCommand implements I_Command {
 				super.approveSelection();
 		    }
 		};
-		fileChooser.setFileFilter(new XMLFileFilter());
+		fileChooser.setFileFilter(new ScenarioFileFilter());
 		if (fileChooser.showSaveDialog(spaceNetFrame) == JFileChooser.APPROVE_OPTION) {
 			String filepath = fileChooser.getSelectedFile().getAbsolutePath();
-			if(!filepath.substring(filepath.length() - 4, filepath.length()).equals(".xml")) {
+			String extension = FilenameUtils.getExtension(filepath);
+			if(extension == null || !(extension.equals("xml") || extension.equals("json"))) {
 				filepath += ".xml";
 			}
 			spaceNetFrame.getScenarioPanel().getScenario().setFilePath(filepath);

@@ -48,7 +48,7 @@ public abstract class Event {
 		} else if(event.getEventType() == EventType.REMOVE) {
 			return RemoveElements.createFrom((edu.mit.spacenet.simulator.event.RemoveEvent) event, context);
 		} else if(event.getEventType() == EventType.RECONFIGURE) {
-			return ReconfigureElements.createFrom((edu.mit.spacenet.simulator.event.ReconfigureEvent) event, context);
+			return ReconfigureElement.createFrom((edu.mit.spacenet.simulator.event.ReconfigureEvent) event, context);
 		} else if(event.getEventType() == EventType.RECONFIGURE_GROUP) {
 			return ReconfigureElements.createFrom((edu.mit.spacenet.simulator.event.ReconfigureGroupEvent) event, context);
 		} else if(event.getEventType() == EventType.DEMAND) {

@@ -10,7 +10,7 @@ import org.threeten.extra.PeriodDuration;
 public class BurnEvent extends Event {
 	public List<UUID> elements;
 	public UUID burn;
-	public List<BurnStageAction> actions;
+	public BurnStageActions actions;
 	
 	public static BurnEvent createFrom(edu.mit.spacenet.simulator.event.BurnEvent event, Context context) {
 		BurnEvent e = new BurnEvent();
@@ -23,7 +23,7 @@ public class BurnEvent extends Event {
 		e.location = context.getJsonIdFromJavaObject(event.getLocation());
 		e.elements = context.getJsonIdsFromJavaObjects(event.getElements());
 		e.burn = context.getJsonIdFromJavaObject(event.getBurn());
-		e.actions = BurnStageAction._createFrom(event.getBurnStageSequence(), context);
+		e.actions = BurnStageActions.createFrom(event.getBurn(), event.getBurnStageSequence(), context);
 		return e;
 	}
 	
@@ -36,7 +36,7 @@ public class BurnEvent extends Event {
 		e.setLocation((edu.mit.spacenet.domain.network.Location) context.getJavaObjectFromJsonId(location));
 		e.setElements(Element.toSpaceNetViaId(elements, context));
 		e.setBurn((edu.mit.spacenet.domain.network.edge.Burn) context.getJavaObjectFromJsonId(burn));
-		e.setBurnStateSequence(BurnStageAction.actionsToSpaceNet(actions, context));
+		e.setBurnStateSequence(actions.toSpaceNet(context));
 		return e;
 	}
 

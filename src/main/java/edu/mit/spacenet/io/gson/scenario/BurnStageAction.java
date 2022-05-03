@@ -27,20 +27,12 @@ public class BurnStageAction {
 		return a;
 	}
 	
-	public static List<BurnStageAction> _createFrom(Collection<edu.mit.spacenet.simulator.event.BurnStageItem> actions, Context context) {
+	public static List<BurnStageAction> createFrom(Collection<edu.mit.spacenet.simulator.event.BurnStageItem> actions, Context context) {
 		List<BurnStageAction> as = new ArrayList<BurnStageAction>();
 		for(edu.mit.spacenet.simulator.event.BurnStageItem action : actions) {
 			as.add(BurnStageAction.createFrom(action, context));
 		}
 		return as;
-	}
-	
-	public static List<List<BurnStageAction>> createFrom(Collection<List<edu.mit.spacenet.simulator.event.BurnStageItem>> sequence, Context context) {
-		List<List<BurnStageAction>> s = new ArrayList<List<BurnStageAction>>();
-		for(List<edu.mit.spacenet.simulator.event.BurnStageItem> actions : sequence) {
-			s.add(BurnStageAction._createFrom(actions, context));
-		}
-		return s;
 	}
 	
 	public edu.mit.spacenet.simulator.event.BurnStageItem toSpaceNet(Context context) {
@@ -56,13 +48,5 @@ public class BurnStageAction {
 			as.add(a.toSpaceNet(context));
 		}
 		return as;
-	}
-	
-	public static List<List<edu.mit.spacenet.simulator.event.BurnStageItem>> sequenceToSpaceNet(Collection<List<BurnStageAction>> sequence, Context context) {
-		List<List<edu.mit.spacenet.simulator.event.BurnStageItem>> s = new ArrayList<List<edu.mit.spacenet.simulator.event.BurnStageItem>>();
-		for(List<BurnStageAction> actions : sequence) {
-			s.add(actionsToSpaceNet(actions, context));
-		}
-		return s;
 	}
 }

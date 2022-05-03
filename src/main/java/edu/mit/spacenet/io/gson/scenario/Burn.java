@@ -16,7 +16,8 @@ public class Burn {
 
 	public static Burn createFrom(edu.mit.spacenet.domain.network.edge.Burn burn, Context context) {
 		Burn b = new Burn();
-		b.id = context.getJsonIdFromJavaObject(burn);
+		b.id = UUID.randomUUID();
+		context.put(burn, b.id, b);
 		b.time = PeriodDuration.of(
 				Period.ofDays((int) burn.getTime()), 
 				Duration.ofSeconds((long) (burn.getTime() - (int) burn.getTime())*24*60*60)

@@ -10,7 +10,7 @@ import org.threeten.extra.PeriodDuration;
 public class SpaceTransport extends Event {
 	public UUID edge;
 	public List<UUID> elements;
-	public List<List<BurnStageAction>> burnStageSequence;
+	public List<BurnStageActions> burnStageSequence;
 
 	public static SpaceTransport createFrom(edu.mit.spacenet.simulator.event.SpaceTransport event, Context context) {
 		SpaceTransport e = new SpaceTransport();
@@ -23,7 +23,7 @@ public class SpaceTransport extends Event {
 		e.location = context.getJsonIdFromJavaObject(event.getLocation());
 		e.edge = context.getJsonIdFromJavaObject(event.getEdge());
 		e.elements = context.getJsonIdsFromJavaObjects(event.getElements());
-		e.burnStageSequence = BurnStageAction.createFrom(event.getBurnStageSequence(), context);
+		e.burnStageSequence = BurnStageActions.createFrom(event.getEdge().getBurns(), event.getBurnStageSequence(), context);
 		return e;
 	}
 	
@@ -37,7 +37,7 @@ public class SpaceTransport extends Event {
 		e.setEdge((edu.mit.spacenet.domain.network.edge.SpaceEdge) context.getJavaObjectFromJsonId(edge));
 		e.setElements(Element.toSpaceNetViaId(elements, context));
 		e.getBurnStageSequence().clear();
-		e.getBurnStageSequence().addAll(BurnStageAction.sequenceToSpaceNet(burnStageSequence, context));
+		e.getBurnStageSequence().addAll(BurnStageActions.toSpaceNet((SpaceEdge) context.getJsonObject(edge), burnStageSequence, context));
 		return e;
 	}
 

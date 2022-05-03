@@ -26,7 +26,7 @@ public abstract class GsonEngine {
 	public static Scenario openScenario(String filePath) 
 			throws FileNotFoundException, IOException {
 		BufferedReader in = new BufferedReader(new FileReader(filePath));
-		Scenario scenario = buildGson().fromJson(in, edu.mit.spacenet.io.gson.scenario.Scenario.class).toSpaceNet();
+		Scenario scenario = getGson().fromJson(in, edu.mit.spacenet.io.gson.scenario.Scenario.class).toSpaceNet();
 		in.close();
 		return scenario;
 	}
@@ -34,14 +34,14 @@ public abstract class GsonEngine {
 	public static void saveScenario(Scenario scenario) 
 			throws FileNotFoundException, IOException {
 		BufferedWriter out = new BufferedWriter(new FileWriter(scenario.getFilePath()));
-		buildGson().toJson(
+		getGson().toJson(
 			edu.mit.spacenet.io.gson.scenario.Scenario.createFrom(scenario),
 			out
 		);
 		out.close();
 	}
 	
-	public static Gson buildGson() {
+	private static Gson getGson() {
 		RuntimeTypeAdapterFactory<Location> locationAdapterFactory = RuntimeTypeAdapterFactory
 				.of(Location.class, "type")
 				.registerSubtype(SurfaceNode.class, Node.TYPE_MAP.inverse().get(NodeType.SURFACE))

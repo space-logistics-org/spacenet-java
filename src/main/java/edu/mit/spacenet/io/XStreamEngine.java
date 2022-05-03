@@ -49,9 +49,24 @@ import edu.mit.spacenet.scenario.Scenario;
  * 
  * @author Paul Grogan
  */
-public class XStreamEngine {
+public abstract class XStreamEngine {
 	
-	public static XStream getXStream() {
+	private static XStream getXStream() {
+		XStream xs = new XStream();
+		xs.addPermission(NoTypePermission.NONE);
+		xs.addPermission(NullPermission.NULL);
+		xs.addPermission(PrimitiveTypePermission.PRIMITIVES);
+		xs.allowTypesByWildcard(new String[] { 
+				"edu.mit.spacenet.**",
+				"java.util.*"
+		});
+		// skip loading manifest (breaking changes in data structure)
+		xs.omitField(Scenario.class, "manifest");
+
+		return xs;
+	}
+	
+	private static XStream getXStreamRead() {
 		XStream xs = new XStream();
 		xs.addPermission(NoTypePermission.NONE);
 		xs.addPermission(NullPermission.NULL);
@@ -103,10 +118,8 @@ public class XStreamEngine {
 	 */
 	public static void saveScenario(Scenario scenario) 
 		throws FileNotFoundException, IOException {
-		XStream xs = getXStream();
-		
 		FileOutputStream fos = new FileOutputStream(scenario.getFilePath());
-		xs.toXML(scenario, fos);
+		getXStream().toXML(scenario, fos);
 		fos.close();
 	}
 	
@@ -122,11 +135,10 @@ public class XStreamEngine {
 	 */
 	public static Scenario openScenario(String filePath) 
 		throws FileNotFoundException, IOException {
-		XStream xs = getXStream();		
 		Scenario scenario = new Scenario();
 		
 		FileInputStream fis = new FileInputStream(filePath);
-		xs.fromXML(fis, scenario);
+		getXStreamRead().fromXML(fis, scenario);
 		// TODO: re-load libraries when opening scenario
 		//scenario.getDataSource().loadLibraries();
 		fis.close();

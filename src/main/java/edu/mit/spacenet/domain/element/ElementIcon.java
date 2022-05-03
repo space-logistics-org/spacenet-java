@@ -209,8 +209,10 @@ public enum ElementIcon {
 	 * @return single instance of ElementIcon
 	 */
 	public static ElementIcon getInstance(String string) {
-		for(ElementIcon icon : values()) {
-			if(icon.getName().toLowerCase().equals(string.toLowerCase())) return icon;
+		if(string != null) {
+			for(ElementIcon icon : values()) {
+				if(icon.getName().toLowerCase().equals(string.toLowerCase())) return icon;
+			}
 		}
 		return null;
 	}

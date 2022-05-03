@@ -1,4 +1,4 @@
-package edu.mit.spacenet.io.gson;
+package edu.mit.spacenet.io.gson.demands;
 
 public class Element {
 	public int id;

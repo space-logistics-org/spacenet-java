@@ -36,7 +36,6 @@ import edu.mit.spacenet.domain.resource.Resource;
 public abstract class AbstractDataSource implements I_DataSource {
 	protected List<Node> nodeLibrary;
 	protected List<Edge> edgeLibrary;
-	protected List<Edge> burnLibrary;
 	protected List<I_Resource> resourceTypeLibrary;
 	protected List<ElementPreview> elementPreviewLibrary;
 	protected List<I_DemandModel> demandModelLibrary;
@@ -65,13 +64,6 @@ public abstract class AbstractDataSource implements I_DataSource {
 	 */
 	public final List<Edge> getEdgeLibrary() {
 		return edgeLibrary;
-	}
-	
-	/* (non-Javadoc)
-	 * @see edu.mit.spacenet.scenario.data.I_DataSource#getEdgeLibrary()
-	 */
-	public final List<Edge> getBurnLibrary() {
-		return burnLibrary;
 	}
 	
 	/* (non-Javadoc)

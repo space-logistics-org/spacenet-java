@@ -39,6 +39,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.io.FilenameUtils;
 
 import com.google.gson.Gson;
 
@@ -46,8 +47,9 @@ import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.gui.SplashScreen;
 import edu.mit.spacenet.io.XStreamEngine;
-import edu.mit.spacenet.io.gson.AggregatedDemandsAnalysis;
-import edu.mit.spacenet.io.gson.RawDemandsAnalysis;
+import edu.mit.spacenet.io.gson.demands.AggregatedDemandsAnalysis;
+import edu.mit.spacenet.io.gson.demands.RawDemandsAnalysis;
+import edu.mit.spacenet.io.gson.scenario.GsonEngine;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.simulator.DemandSimulator;
 
@@ -59,7 +61,8 @@ import edu.mit.spacenet.simulator.DemandSimulator;
 public class SpaceNet {
 	public static enum HeadlessMode {
 		DEMANDS_RAW("demands-raw"),
-		DEMANDS_AGGREGATED("demands-agg");
+		DEMANDS_AGGREGATED("demands-agg"),
+		CONVERT_SCENARIO("convert");
 		
 		public final String label;
 		
@@ -79,7 +82,11 @@ public class SpaceNet {
 				.longOpt("headless")
 				.argName("mode")
 				.hasArg()
-				.desc("Headless execution mode. Alternatives: demand (demand simulator).")
+				.desc("Headless execution mode. Alternatives: " +
+						HeadlessMode.DEMANDS_RAW.label + " (raw demand simulator)" +
+						HeadlessMode.DEMANDS_AGGREGATED.label + " (aggregated demand simulator)" +
+						HeadlessMode.CONVERT_SCENARIO.label + " (convert scenario format: xml <--> json)" +
+						".")
 				.build();
 		options.addOption(headless);
 		Option input = Option.builder("i")
@@ -128,8 +135,25 @@ public class SpaceNet {
 						helper.printHelp("Usage:", options);
 						System.exit(0);
 					}
-					
 					runDemandSimulator(scenarioFilePath, outputFilePath, line.hasOption(confirm), mode.equalsIgnoreCase(HeadlessMode.DEMANDS_RAW.label));
+				} else if(mode.equalsIgnoreCase(HeadlessMode.CONVERT_SCENARIO.label)) {
+					String inputFilePath = null;
+					if(line.hasOption(input)) {
+						inputFilePath = new File(line.getOptionValue(input)).getAbsolutePath();
+					} else {
+						System.err.println("Missing input file path.");
+						helper.printHelp("Usage:", options);
+						System.exit(0);
+					}
+					String outputFilePath = null;
+					if(line.hasOption(output)) {
+						outputFilePath = new File(line.getOptionValue(output)).getAbsolutePath();
+					} else {
+						System.err.println("Missing output file path.");
+						helper.printHelp("Usage:", options);
+						System.exit(0);
+					}
+					convertScenario(inputFilePath, outputFilePath, line.hasOption(confirm));
 				} else {
 					System.err.println("Unknown headless mode: " + mode);
 					System.exit(0);
@@ -149,15 +173,64 @@ public class SpaceNet {
 		}
 	}
 	
-	private static void runDemandSimulator(String scenarioFilePath, String outputFilePath, boolean isOverwriteConfirmed, boolean isRawDemands) {
+	private static Scenario openScenario(String filePath) {
+		String extension = FilenameUtils.getExtension(filePath);
 		Scenario scenario = null;
 		try {
-			scenario = XStreamEngine.openScenario(scenarioFilePath);
-			scenario.setFilePath(scenarioFilePath);
+			if(extension.equals("xml")) {
+				scenario = XStreamEngine.openScenario(filePath);
+				scenario.setFilePath(filePath);
+			} else if(extension.equals("json")) {
+				scenario = GsonEngine.openScenario(filePath);
+				scenario.setFilePath(filePath);
+			} else {
+				throw new UnsupportedOperationException("Invalid file path: " + filePath);
+			}
 		} catch(IOException ex) {
 			System.err.println("Failed to read scenario file: " + ex.getMessage());
 			System.exit(1);
 		}
+		return scenario;
+	}
+	
+	private static void saveScenario(Scenario scenario, boolean isOverwriteConfirmed) {
+		File file = new File(scenario.getFilePath());
+		if(file.exists() && !isOverwriteConfirmed) {
+			Scanner in = new Scanner(System.in);
+			String lastInput = "";
+			do {
+				System.out.println("Confirm to overwrite existing file " + scenario.getFilePath() + " (yes/no)");
+				lastInput = in.nextLine();
+				if(lastInput.equalsIgnoreCase("no") || lastInput.equalsIgnoreCase("n")) {
+					in.close();
+					return;
+				}
+			} while(!(lastInput.equalsIgnoreCase("yes") || lastInput.equalsIgnoreCase("y")));
+			in.close();
+		}
+		String extension = FilenameUtils.getExtension(scenario.getFilePath());
+		try {
+			if(extension.equals("xml")) {
+				XStreamEngine.saveScenario(scenario);
+			} else if(extension.equals("json")) {
+				GsonEngine.saveScenario(scenario);
+			} else {
+				throw new UnsupportedOperationException("Invalid file path: " + scenario);
+			}
+		} catch(IOException ex) {
+			System.err.println("Failed to write scenario file: " + ex.getMessage());
+			System.exit(1);
+		}
+	}
+	
+	private static void convertScenario(String inputFilePath, String outputFilePath, boolean isOverwriteConfirmed) {
+		Scenario scenario = openScenario(inputFilePath);
+		scenario.setFilePath(outputFilePath);
+		saveScenario(scenario, isOverwriteConfirmed);
+	}
+	
+	private static void runDemandSimulator(String scenarioFilePath, String outputFilePath, boolean isOverwriteConfirmed, boolean isRawDemands) {
+		Scenario scenario = openScenario(scenarioFilePath);
 		
 		DemandSimulator simulator = new DemandSimulator(scenario);
 		simulator.setDemandsSatisfied(false);

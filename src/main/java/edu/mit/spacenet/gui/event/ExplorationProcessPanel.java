@@ -181,8 +181,8 @@ public class ExplorationProcessPanel extends AbstractEventPanel {
 			}
 		});
 		
-		for(CrewMember c : event.getStateMap().keySet()) {
-			CrewMember simCrew = (CrewMember)getEventDialog().getSimElement(c.getUid());
+		for(I_Element c : event.getStateMap().keySet()) {
+			I_Element simCrew = getEventDialog().getSimElement(c.getUid());
 			if(simCrew != null) {
 				if(event.getStateMap().get(c) == null) {
 					contentsTable.getModel().put(simCrew, null, true);
@@ -255,8 +255,8 @@ public class ExplorationProcessPanel extends AbstractEventPanel {
 		event.setVehicle((I_Carrier)getEventDialog().getElement(elementTree.getElementSelection().getUid()));
 
 		event.getStateMap().clear();
-		for(CrewMember simCrew : contentsTable.getModel().getData().keySet()) {
-			CrewMember crew = (CrewMember)getEventDialog().getElement(simCrew.getUid());
+		for(I_Element simCrew : contentsTable.getModel().getData().keySet()) {
+			I_Element crew = getEventDialog().getElement(simCrew.getUid());
 			if(crew != null) {
 				if(contentsTable.getModel().getData().get(simCrew)==null) {
 					event.getStateMap().put(crew, null);
@@ -294,14 +294,14 @@ public class ExplorationProcessPanel extends AbstractEventPanel {
 		elementTree.addTreeSelectionListener(treeListener);
 		
 		if(elementTree.getElementSelection() instanceof I_Carrier) {
-			SortedMap<CrewMember, I_State> stateMap = contentsTable.getModel().getData();
+			SortedMap<I_Element, I_State> stateMap = contentsTable.getModel().getData();
 			contentsTable.getModel().clear();
 			for(I_Element element : ((I_Carrier)elementTree.getElementSelection()).getContents()) {
 				if(element instanceof CrewMember) {
 					if(stateMap.keySet().contains(element)) {
-						contentsTable.getModel().put((CrewMember)element, stateMap.get(element), true);
+						contentsTable.getModel().put(element, stateMap.get(element), true);
 					} else {
-						contentsTable.getModel().put((CrewMember)element, stateMap.get(element), false);
+						contentsTable.getModel().put(element, stateMap.get(element), false);
 					}
 				}
 			}

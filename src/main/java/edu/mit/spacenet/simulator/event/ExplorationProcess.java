@@ -18,8 +18,8 @@ package edu.mit.spacenet.simulator.event;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import edu.mit.spacenet.domain.element.CrewMember;
 import edu.mit.spacenet.domain.element.I_Carrier;
+import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.element.I_State;
 import edu.mit.spacenet.domain.resource.DemandSet;
 import edu.mit.spacenet.simulator.I_Simulator;
@@ -38,7 +38,7 @@ public class ExplorationProcess extends AbstractEvent implements I_Process {
 	private double duration;
 	private double evaPerWeek;
 	private double evaDuration;
-	private SortedMap<CrewMember, I_State> stateMap;
+	private SortedMap<I_Element, I_State> stateMap;
 	private DemandSet demands;
 	
 	/**
@@ -47,7 +47,7 @@ public class ExplorationProcess extends AbstractEvent implements I_Process {
 	 */
 	public ExplorationProcess() {
 		super();
-		stateMap = new TreeMap<CrewMember, I_State>();
+		stateMap = new TreeMap<I_Element, I_State>();
 		demands = new DemandSet();
 		setEvaDuration(8);
 	}
@@ -90,7 +90,7 @@ public class ExplorationProcess extends AbstractEvent implements I_Process {
 			throw new SimSpatialError(simulator.getTime(), this, 
 					vehicle + " is located at " + vehicle.getLocation() + " instead of " + getLocation() + ".");
 		}
-		for(CrewMember member : stateMap.keySet()) {
+		for(I_Element member : stateMap.keySet()) {
 			if(member.getLocation()==null) {
 				throw new SimSpatialError(simulator.getTime(), this, 
 						member + " was not found.");
@@ -159,7 +159,7 @@ public class ExplorationProcess extends AbstractEvent implements I_Process {
 	 * 
 	 * @return the map of crew member's EVA states
 	 */
-	public SortedMap<CrewMember, I_State> getStateMap() {
+	public SortedMap<I_Element, I_State> getStateMap() {
 		return stateMap;
 	}
 	
@@ -168,7 +168,7 @@ public class ExplorationProcess extends AbstractEvent implements I_Process {
 	 * 
 	 * @param evaStates the mapping of crew member's EVA states
 	 */
-	public void setStateMap(SortedMap<CrewMember, I_State> evaStates) {
+	public void setStateMap(SortedMap<I_Element, I_State> evaStates) {
 		this.stateMap = evaStates;
 	}
 	

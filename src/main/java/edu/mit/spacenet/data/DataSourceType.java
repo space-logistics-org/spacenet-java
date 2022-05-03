@@ -30,9 +30,12 @@ public enum DataSourceType {
 	SQL_DB("SpaceNet 2.5 (SQL Database)", "icons/database_yellow.png"),
 	
 	/** An excel-based spreadsheet database */
-	EXCEL_2_5("SpaceNet 2.5 (Excel)", "icons/page_white_excel.png");
+	EXCEL_2_5("SpaceNet 2.5 (Excel)", "icons/page_white_excel.png"),
 	//EXCEL_1_3("SpaceNet 1.3 (Excel)", Spreadsheet_1_3.class, "icons/page_white_excel.png");
 	//, ONLINE("SpaceNet Online", SpaceNetOnline.class, "icons/database.png"); 
+	
+	/** An in-memory database */
+	IN_MEMORY("In-memory", "icons/database.png");
 	
 	private String name;
 	private ImageIcon icon;

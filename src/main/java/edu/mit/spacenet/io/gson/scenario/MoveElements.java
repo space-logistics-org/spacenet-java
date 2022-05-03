@@ -17,7 +17,7 @@ public class MoveElements extends Event {
 		e.name = event.getName();
 		e.mission_time = PeriodDuration.of(
 				Period.ofDays((int) event.getTime()), 
-				Duration.ofSeconds((long) (event.getTime() - (int) event.getTime())*24*60*60)
+				Duration.ofSeconds((long) ((event.getTime() - (int) event.getTime())*24*60*60))
 			);
 		e.priority = event.getPriority();
 		e.location = context.getJsonIdFromJavaObject(event.getLocation());

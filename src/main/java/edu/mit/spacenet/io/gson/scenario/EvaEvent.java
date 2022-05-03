@@ -25,14 +25,14 @@ public class EvaEvent extends Event {
 		e.name = event.getName();
 		e.mission_time = PeriodDuration.of(
 				Period.ofDays((int) event.getTime()), 
-				Duration.ofSeconds((long) (event.getTime() - (int) event.getTime())*24*60*60)
+				Duration.ofSeconds((long) ((event.getTime() - (int) event.getTime())*24*60*60))
 			);
 		e.priority = event.getPriority();
 		e.location = context.getJsonIdFromJavaObject(event.getLocation());
 		e.vehicle = context.getJsonIdFromJavaObject(event.getVehicle());
 		e.evaDuration = PeriodDuration.of(
 				Period.ofDays((int) event.getEvaDuration()), 
-				Duration.ofSeconds((long) (event.getEvaDuration() - (int) event.getEvaDuration())*24*60*60)
+				Duration.ofSeconds((long) ((event.getEvaDuration() - (int) event.getEvaDuration())*24*60*60))
 			);
 		e.elements = context.getJsonIdsFromJavaObjects(event.getStateMap().keySet());
 		e.states = context.getJsonIdsFromJavaObjects(event.getStateMap().values());

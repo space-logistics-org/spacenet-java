@@ -21,7 +21,7 @@ public class SpaceEdge extends Edge {
 		e.destination_id = context.getJsonIdFromJavaObject(edge.getDestination());
 		e.duration = PeriodDuration.of(
 				Period.ofDays((int) edge.getDuration()), 
-				Duration.ofSeconds((long) (edge.getDuration() - (int) edge.getDuration())*24*60*60)
+				Duration.ofSeconds((long) ((edge.getDuration() - (int) edge.getDuration())*24*60*60))
 			);
 		e.burns = Burn.createFrom(edge.getBurns(), context);
 		e.contents = context.getJsonIdsFromJavaObjects(edge.getContents());

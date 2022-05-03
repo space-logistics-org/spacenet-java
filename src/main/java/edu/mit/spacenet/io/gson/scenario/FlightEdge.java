@@ -21,7 +21,7 @@ public class FlightEdge extends Edge {
 		e.destination_id = context.getJsonIdFromJavaObject(edge.getDestination());
 		e.duration = PeriodDuration.of(
 				Period.ofDays((int) edge.getDuration()), 
-				Duration.ofSeconds((long) (edge.getDuration() - (int) edge.getDuration())*24*60*60)
+				Duration.ofSeconds((long) ((edge.getDuration() - (int) edge.getDuration())*24*60*60))
 			);
 		e.max_crew = edge.getMaxCrewSize();
 		e.max_cargo = edge.getMaxCargoMass();

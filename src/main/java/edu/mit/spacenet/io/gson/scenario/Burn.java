@@ -20,7 +20,7 @@ public class Burn {
 		context.put(burn, b.id, b);
 		b.time = PeriodDuration.of(
 				Period.ofDays((int) burn.getTime()), 
-				Duration.ofSeconds((long) (burn.getTime() - (int) burn.getTime())*24*60*60)
+				Duration.ofSeconds((long) ((burn.getTime() - (int) burn.getTime())*24*60*60))
 			);
 		b.delta_v = burn.getDeltaV();
 		return b;

@@ -55,4 +55,20 @@ public enum ItemDiscretization {
 	public String toString() {
 		return getName();
 	}
+	
+	/**
+	 * Gets an item discretization instance based on a give name.
+	 * 
+	 * @param name the item discretization name to match
+	 * 
+	 * @return the item discretization, null if no match was found.
+	 */
+	public static ItemDiscretization getInstance(String name) {
+		for(ItemDiscretization t : ItemDiscretization.values()) {
+			if(t.getName().toLowerCase().equals(name.toLowerCase())) {
+				return t;
+			}
+		}
+		return null;
+	}
 }

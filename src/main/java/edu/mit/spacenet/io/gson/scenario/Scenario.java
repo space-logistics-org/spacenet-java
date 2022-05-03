@@ -12,6 +12,7 @@ import edu.mit.spacenet.data.ElementPreview;
 import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.element.I_State;
 import edu.mit.spacenet.domain.model.I_DemandModel;
+import edu.mit.spacenet.scenario.ItemDiscretization;
 import edu.mit.spacenet.scenario.ScenarioType;
 
 public class Scenario {
@@ -24,17 +25,19 @@ public class Scenario {
 			.put("SolarSystem", ScenarioType.SOLAR_SYSTEM)
 			.build();
 	
-	public String createdBy;
-	public String name;
-	public String description;
-	public Date startDate;
-	public String scenarioType;
-	public Network network;
-	public List<Mission> missionList;
-	public List<ResourceType> resourceList;
-	public List<Element> elementTemplates;
-	public List<Element> instantiatedElements;
-	public List<DemandModel> demandModels;
+	protected String createdBy;
+	protected String name;
+	protected String description;
+	protected Date startDate;
+	protected String scenarioType;
+	protected Network network;
+	protected List<Mission> missionList;
+	protected List<ResourceType> resourceList;
+	protected List<Element> elementTemplates;
+	protected List<Element> instantiatedElements;
+	protected List<DemandModel> demandModels;
+	// TODO add manifest
+	protected Configuration configuration;
 	
 	public static Scenario createFrom(edu.mit.spacenet.scenario.Scenario scenario) {
 		Scenario s = new Scenario();
@@ -86,6 +89,7 @@ public class Scenario {
 		}
 		s.instantiatedElements = Element.createFrom(scenario.getElements(), context);
 		s.missionList = Mission.createFrom(scenario.getMissionList(), context);
+		s.configuration = Configuration.createFrom(scenario, context);
 		return s;
 	}
 	
@@ -111,6 +115,21 @@ public class Scenario {
 		Element.toSpaceNet(instantiatedElements, context);
 		// load missions
 		s.getMissionList().addAll(Mission.toSpaceNet(missionList, s, context));
+		
+		// TODO add manifest
+		
+		// load configuration
+		s.setTimePrecision(configuration.timePrecision);
+		s.setDemandPrecision(configuration.demandPrecision);
+		s.setMassPrecision(configuration.massPrecision);
+		s.setVolumePrecision(configuration.volumePrecision);
+		s.setVolumeConstrained(configuration.volumeConstrained);
+		s.setItemDiscretization(ItemDiscretization.getInstance(configuration.itemDiscretization));
+		s.setItemAggregation(configuration.itemAggregation);
+		s.setScavengeSpares(configuration.scavangeSpares);
+		// TODO add repaired items
+		s.setDetailedEva(configuration.detailedEva);
+		s.setDetailedExploration(configuration.detailedExploration);
 		return s;
 	}
 }

@@ -93,13 +93,14 @@ public class Resource implements Cloneable {
 	}
 	
 	public static SortedMap<edu.mit.spacenet.domain.resource.I_Resource, Double> toSpaceNetMap(Collection<Resource> resources, Context context) {
-		SortedMap<edu.mit.spacenet.domain.resource.I_Resource, Double> ds = new TreeMap<edu.mit.spacenet.domain.resource.I_Resource, Double>();
+		SortedMap<edu.mit.spacenet.domain.resource.I_Resource, Double> rs = new TreeMap<edu.mit.spacenet.domain.resource.I_Resource, Double>();
 		if(resources != null) {
 			for(Resource r : resources) {
-				ds.put((I_Resource) context.getJavaObjectFromJsonId(r.type), r.amount);
+				edu.mit.spacenet.domain.resource.Demand d = r.toSpaceNet(context);
+				rs.put(d.getResource(), d.getAmount());
 			}
 		}
-		return ds;
+		return rs;
 	}
 	
 	@Override

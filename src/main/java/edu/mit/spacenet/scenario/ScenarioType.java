@@ -21,7 +21,6 @@ import edu.mit.spacenet.domain.network.edge.Edge;
 import edu.mit.spacenet.domain.network.node.Body;
 import edu.mit.spacenet.domain.network.node.Node;
 
-// TODO: Auto-generated Javadoc
 /**
  * An enumeration of the different types of scenarios used for network filtering.
  * 
@@ -121,6 +120,8 @@ public enum ScenarioType {
 		case MARS_ONLY:
 			if(node.getBody()==Body.MARS) return true;
 			else return false;
+		case SOLAR_SYSTEM:
+			return true;
 		}
 		return false;
 	}

@@ -1,17 +1,15 @@
 /*
  * Copyright 2010 MIT Strategic Engineering Research Group
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package edu.mit.spacenet.gui.mission;
 
@@ -37,209 +35,231 @@ import edu.mit.spacenet.simulator.event.I_Event;
  * @author Paul Grogan
  */
 public class MissionsTable extends JTable {
-	private static final long serialVersionUID = -5960985748957372743L;
-	
-	private CustomTableModel model;
-	private MissionsPanel missionListPanel;
-	
-	/**
-	 * Instantiates a new mission table.
-	 * 
-	 * @param missionListPanel the mission list panel
-	 */
-	public MissionsTable(MissionsPanel missionListPanel) {
-		super();
-		this.missionListPanel = missionListPanel;
-				
-		model = new CustomTableModel();
-		setModel(model);
-		
-		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-		renderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
-		
-		getColumnModel().getColumn(0).setHeaderValue("#");
-		getColumnModel().getColumn(0).setCellRenderer(renderer);
-		getColumnModel().getColumn(0).setMaxWidth(25);
-		getColumnModel().getColumn(1).setHeaderValue("Start Date");
-		getColumnModel().getColumn(1).setMaxWidth(100);
-		getColumnModel().getColumn(2).setHeaderValue("Mission Name");
-		getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
-			// a custom renderer to display simulation error icons and messages
-			private static final long serialVersionUID = 7793722593255866883L;
-			public Component getTableCellRendererComponent(JTable table, Object value,
-					boolean isSelected, boolean hasFocus, int row, int column) {
-				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				setIcon(null);
-				setIconTextGap(0);
-				setToolTipText(null);
-				for(SimSpatialError error : getSimulator().getSpatialErrors()) {
-					for(I_Event event : getMission(row).getEventList()) {
-						if(error.getEvent().getRoot().equals(event)) {
-							setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/bullet_error.png")));
-							setToolTipText("This mission has errors.");
-							return this;
-						}
-					}
-				}
-				return this;
-			}
-		});
-		
-		getTableHeader().setReorderingAllowed(false);
-	}
-	
-	/**
-	 * Initializes the table for a new scenario.
-	 */
-	public void initialize() {
-		model.setScenario(getScenario());
-	}
-	
-	/**
-	 * Gets the scenario.
-	 * 
-	 * @return the scenario
-	 */
-	private Scenario getScenario() {
-		return missionListPanel.getMissionsSplitPane().getMissionsTab().getScenarioPanel().getScenario();
-	}
-	
-	/**
-	 * Gets the simulator.
-	 * 
-	 * @return the simulator
-	 */
-	private MiniSimulator getSimulator() {
-		return missionListPanel.getMissionsSplitPane().getMissionsTab().getSimulator();
-	}
-	
-	/**
-	 * A custom table model to manage the mission data in a campaign.
-	 */
-	class CustomTableModel extends AbstractTableModel {
-		private static final long serialVersionUID = -678300273079091701L;
-		private List<Mission> data;
-		
-		/**
-		 * Sets the scenario.
-		 * 
-		 * @param scenario the new scenario
-		 */
-		public void setScenario(Scenario scenario) {
-			if(scenario==null) data = null;
-			else data = scenario.getMissionList();
-			fireTableDataChanged();
-		}
-		
-		/* (non-Javadoc)
-		 * @see javax.swing.table.TableModel#getColumnCount()
-		 */
-		public int getColumnCount() {
-			return 3;
-		}
-		
-		/* (non-Javadoc)
-		 * @see javax.swing.table.TableModel#getRowCount()
-		 */
-		public int getRowCount() {
-			return data==null?0:data.size();
-		}
-		
-		/* (non-Javadoc)
-		 * @see javax.swing.table.AbstractTableModel#isCellEditable(int, int)
-		 */
-		public boolean isCellEditable(int row, int col) {
-	    	if(col==0) return false;
-	    	else return true;
-	    }
-		
-		/* (non-Javadoc)
-		 * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
-		 */
-		public Class<?> getColumnClass(int col) {
-			if(col==0) {
-				return Integer.class;
-			} else if(col==1) {
-				return Date.class;
-			} else {
-				return String.class;
-			}
-	    }
-		
-		/* (non-Javadoc)
-		 * @see javax.swing.table.TableModel#getValueAt(int, int)
-		 */
-		public Object getValueAt(int row, int col) {
-			if(col==0) {
-				return new Integer(row+1);
-			} else if(col==1) {
-				return data.get(row).getStartDate();
-			} else {
-				return data.get(row).getName();
-			}
-		}
-	    
-    	/* (non-Javadoc)
-    	 * @see javax.swing.table.AbstractTableModel#setValueAt(java.lang.Object, int, int)
-    	 */
-    	public void setValueAt(Object value, int row, int col) {
-	    	if(col==1) {
-	    		data.get(row).setStartDate((Date)value);
-	    	} else if(col==2) {
-	    		data.get(row).setName((String)value);
-	    	}
-	    	sortMissions();
-	    	missionListPanel.getMissionsSplitPane().getMissionsTab().updateView();
-	    }
-    	
-    	/**
-	     * Gets the mission in a particular row.
-	     * 
-	     * @param row the row
-	     * 
-	     * @return the mission
-	     */
-	    public Mission getMission(int row) {
-    		return data.get(row);
-    	}
-	    
-	    /**
-    	 * Sorts the missions.
-    	 */
-    	public void sortMissions() {
-	    	Collections.sort(data);
-			fireTableDataChanged();
-	    }
-	}
-	
-	/**
-	 * Updates the view.
-	 */
-	public void updateView() {
-		int selectedRow = getSelectedRow();
-		model.sortMissions();
-		if(selectedRow<getRowCount());
-			getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
-	}
-	
-	/**
-	 * Gets the mission in a particular row.
-	 * 
-	 * @param row the row
-	 * 
-	 * @return the mission
-	 */
-	public Mission getMission(int row) {
-		return model.getMission(row);
-	}
-	
-	/**
-	 * Gets the selected mission.
-	 * 
-	 * @return the selected mission
-	 */
-	public Mission getSelectedMission() {
-		if(getSelectedRow()<0) return null;
-		else return getMission(getSelectedRow());
-	}
+  private static final long serialVersionUID = -5960985748957372743L;
+
+  private CustomTableModel model;
+  private MissionsPanel missionListPanel;
+
+  /**
+   * Instantiates a new mission table.
+   * 
+   * @param missionListPanel the mission list panel
+   */
+  public MissionsTable(MissionsPanel missionListPanel) {
+    super();
+    this.missionListPanel = missionListPanel;
+
+    model = new CustomTableModel();
+    setModel(model);
+
+    DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+    renderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+
+    getColumnModel().getColumn(0).setHeaderValue("#");
+    getColumnModel().getColumn(0).setCellRenderer(renderer);
+    getColumnModel().getColumn(0).setMaxWidth(25);
+    getColumnModel().getColumn(1).setHeaderValue("Start Date");
+    getColumnModel().getColumn(1).setMaxWidth(100);
+    getColumnModel().getColumn(2).setHeaderValue("Mission Name");
+    getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
+      // a custom renderer to display simulation error icons and messages
+      private static final long serialVersionUID = 7793722593255866883L;
+
+      public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+          boolean hasFocus, int row, int column) {
+        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        setIcon(null);
+        setIconTextGap(0);
+        setToolTipText(null);
+        for (SimSpatialError error : getSimulator().getSpatialErrors()) {
+          for (I_Event event : getMission(row).getEventList()) {
+            if (error.getEvent().getRoot().equals(event)) {
+              setIcon(
+                  new ImageIcon(getClass().getClassLoader().getResource("icons/bullet_error.png")));
+              setToolTipText("This mission has errors.");
+              return this;
+            }
+          }
+        }
+        return this;
+      }
+    });
+
+    getTableHeader().setReorderingAllowed(false);
+  }
+
+  /**
+   * Initializes the table for a new scenario.
+   */
+  public void initialize() {
+    model.setScenario(getScenario());
+  }
+
+  /**
+   * Gets the scenario.
+   * 
+   * @return the scenario
+   */
+  private Scenario getScenario() {
+    return missionListPanel.getMissionsSplitPane().getMissionsTab().getScenarioPanel()
+        .getScenario();
+  }
+
+  /**
+   * Gets the simulator.
+   * 
+   * @return the simulator
+   */
+  private MiniSimulator getSimulator() {
+    return missionListPanel.getMissionsSplitPane().getMissionsTab().getSimulator();
+  }
+
+  /**
+   * A custom table model to manage the mission data in a campaign.
+   */
+  class CustomTableModel extends AbstractTableModel {
+    private static final long serialVersionUID = -678300273079091701L;
+    private List<Mission> data;
+
+    /**
+     * Sets the scenario.
+     * 
+     * @param scenario the new scenario
+     */
+    public void setScenario(Scenario scenario) {
+      if (scenario == null)
+        data = null;
+      else
+        data = scenario.getMissionList();
+      fireTableDataChanged();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.table.TableModel#getColumnCount()
+     */
+    public int getColumnCount() {
+      return 3;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.table.TableModel#getRowCount()
+     */
+    public int getRowCount() {
+      return data == null ? 0 : data.size();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.table.AbstractTableModel#isCellEditable(int, int)
+     */
+    public boolean isCellEditable(int row, int col) {
+      if (col == 0)
+        return false;
+      else
+        return true;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
+     */
+    public Class<?> getColumnClass(int col) {
+      if (col == 0) {
+        return Integer.class;
+      } else if (col == 1) {
+        return Date.class;
+      } else {
+        return String.class;
+      }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.table.TableModel#getValueAt(int, int)
+     */
+    public Object getValueAt(int row, int col) {
+      if (col == 0) {
+        return new Integer(row + 1);
+      } else if (col == 1) {
+        return data.get(row).getStartDate();
+      } else {
+        return data.get(row).getName();
+      }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.table.AbstractTableModel#setValueAt(java.lang.Object, int, int)
+     */
+    public void setValueAt(Object value, int row, int col) {
+      if (col == 1) {
+        data.get(row).setStartDate((Date) value);
+      } else if (col == 2) {
+        data.get(row).setName((String) value);
+      }
+      sortMissions();
+      missionListPanel.getMissionsSplitPane().getMissionsTab().updateView();
+    }
+
+    /**
+     * Gets the mission in a particular row.
+     * 
+     * @param row the row
+     * 
+     * @return the mission
+     */
+    public Mission getMission(int row) {
+      return data.get(row);
+    }
+
+    /**
+     * Sorts the missions.
+     */
+    public void sortMissions() {
+      Collections.sort(data);
+      fireTableDataChanged();
+    }
+  }
+
+  /**
+   * Updates the view.
+   */
+  public void updateView() {
+    int selectedRow = getSelectedRow();
+    model.sortMissions();
+    if (selectedRow < getRowCount())
+      ;
+    getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
+  }
+
+  /**
+   * Gets the mission in a particular row.
+   * 
+   * @param row the row
+   * 
+   * @return the mission
+   */
+  public Mission getMission(int row) {
+    return model.getMission(row);
+  }
+
+  /**
+   * Gets the selected mission.
+   * 
+   * @return the selected mission
+   */
+  public Mission getSelectedMission() {
+    if (getSelectedRow() < 0)
+      return null;
+    else
+      return getMission(getSelectedRow());
+  }
 }

@@ -50,7 +50,7 @@ public class SurfaceVehiclePanel extends AbstractElementPanel {
 	private JSpinner maxSpeedSpinner, maxFuelSpinner, fuelSpinner;
 	private SpinnerNumberModel maxSpeedModel, maxFuelModel, fuelModel;
 	private UnitsWrapper maxFuelWrapper, fuelWrapper;
-	private JComboBox resourceCombo;
+	private JComboBox<I_Resource> resourceCombo;
 	
 	/**
 	 * Instantiates a new surface vehicle panel.
@@ -101,7 +101,7 @@ public class SurfaceVehiclePanel extends AbstractElementPanel {
 		maxSpeedSpinner.setToolTipText("Maximum surface transport speed [kilometers per hour]");
 		
 		c.gridy++;
-		resourceCombo = new JComboBox();
+		resourceCombo = new JComboBox<I_Resource>();
 		resourceCombo.addItem(null);
 		for(I_Resource r : SpaceNetFrame.getInstance().getScenarioPanel().getScenario().getDataSource().getResourceLibrary()) {					
 			if(r.getClassOfSupply().equals(ClassOfSupply.COS1)

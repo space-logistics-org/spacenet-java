@@ -79,14 +79,18 @@ public class ElementDialog extends JDialog {
 	private EventDialog eventDialog;
 	private DataSourceDialog dataSourceDialog;
 	
-	private JComboBox typeCombo;
+	private JComboBox<ElementType> typeCombo;
 	private JTextField nameText;
-	private JComboBox iconCombo, classOfSupplyCombo, environmentCombo;
+	private JComboBox<ElementIcon> iconCombo;
+	private JComboBox<ClassOfSupply> classOfSupplyCombo;
+	private JComboBox<Environment> environmentCombo;
 	private SpinnerNumberModel accommodationMassModel, massModel, volumeModel;
 	private JSpinner accommodationMassSpinner, massSpinner, volumeSpinner;
 	private I_State initialState;
-	private DefaultListModel statesModel, partsModel;
-	private JList statesList, partsList;
+	private DefaultListModel<I_State> statesModel;
+	private DefaultListModel<PartApplication> partsModel;
+	private JList<I_State> statesList;
+	private JList<PartApplication> partsList;
 	private JButton editStateButton, setInitialStateButton, removeStateButton, 
 		editPartButton, removePartButton;
 	private List<AbstractElementPanel> elementPanels;
@@ -160,7 +164,7 @@ public class ElementDialog extends JDialog {
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridwidth = 3;
-		typeCombo = new JComboBox();
+		typeCombo = new JComboBox<ElementType>();
 		for(ElementType t : ElementType.values())
 			if(t!=ElementType.RESOURCE_TANK) typeCombo.addItem(t); // TODO add support / datasource
 		typeCombo.setRenderer(new ElementTypeListCellRenderer());
@@ -180,13 +184,13 @@ public class ElementDialog extends JDialog {
 		c.fill = GridBagConstraints.NONE;
 		c.gridwidth = 3;
 		JPanel iconPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		iconCombo = new JComboBox();
+		iconCombo = new JComboBox<ElementIcon>();
 		for(ElementIcon i : ElementIcon.values()) {
 			iconCombo.addItem(i);
 		}
 		iconCombo.setRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = -2255885956722142642L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				setIcon(((ElementIcon)value).getIcon());
@@ -210,14 +214,14 @@ public class ElementDialog extends JDialog {
 		c.gridy++;
 		c.fill = GridBagConstraints.NONE;
 		c.gridwidth = 3;
-		classOfSupplyCombo = new JComboBox();
+		classOfSupplyCombo = new JComboBox<ClassOfSupply>();
 		for(ClassOfSupply cos : ClassOfSupply.values())
 			classOfSupplyCombo.addItem(cos);
 		contentPanel.add(classOfSupplyCombo, c);
 		
 		c.gridy++;
 		c.gridwidth = 1;
-		environmentCombo = new JComboBox();
+		environmentCombo = new JComboBox<Environment>();
 		for(Environment e : Environment.values())
 			environmentCombo.addItem(e);
 		contentPanel.add(environmentCombo, c);
@@ -309,11 +313,11 @@ public class ElementDialog extends JDialog {
 		statesPanel.setBorder(BorderFactory.createTitledBorder("States"));
 		statesPanel.setLayout(new BorderLayout());
 		
-		statesModel = new DefaultListModel();
-		statesList = new JList(statesModel);
+		statesModel = new DefaultListModel<I_State>();
+		statesList = new JList<I_State>(statesModel);
 		statesList.setCellRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 1271331296677711150L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				label.setIcon((((I_State)value).getStateType()).getIcon());
@@ -328,7 +332,7 @@ public class ElementDialog extends JDialog {
 		statesList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount()==2 && statesList.getSelectedIndex()>=0) {
-					StateDialog.createAndShowGUI(getThis(), (I_State)statesList.getSelectedValue());
+					StateDialog.createAndShowGUI(getThis(), statesList.getSelectedValue());
 				}
 			}
 		});
@@ -370,7 +374,7 @@ public class ElementDialog extends JDialog {
 		editStateButton.setToolTipText("Edit State");
 		editStateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				StateDialog.createAndShowGUI(getThis(), (I_State)statesList.getSelectedValue());
+				StateDialog.createAndShowGUI(getThis(), statesList.getSelectedValue());
 			}
 		});
 		editStateButton.setEnabled(false);
@@ -379,7 +383,7 @@ public class ElementDialog extends JDialog {
 		setInitialStateButton.setToolTipText("Set Initial");
 		setInitialStateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				initialState = (I_State)statesList.getSelectedValue();
+				initialState = statesList.getSelectedValue();
 				statesList.repaint();
 			}
 		});
@@ -389,11 +393,11 @@ public class ElementDialog extends JDialog {
 		removeStateButton.setToolTipText("Remove State");
 		removeStateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				for(Object state : statesList.getSelectedValues()) {
+				for(I_State state : statesList.getSelectedValuesList()) {
 					statesModel.removeElement(state);
 					if(state.equals(initialState)) {
 						if(statesModel.size()>0) {
-							initialState = (I_State)statesModel.toArray()[0];
+							initialState = statesModel.firstElement();
 						} else {
 							initialState = null;
 						}
@@ -414,11 +418,11 @@ public class ElementDialog extends JDialog {
 		partsPanel.setBorder(BorderFactory.createTitledBorder("Parts"));
 		partsPanel.setLayout(new BorderLayout());
 		
-		partsModel = new DefaultListModel();
-		partsList = new JList(partsModel);
+		partsModel = new DefaultListModel<PartApplication>();
+		partsList = new JList<PartApplication>(partsModel);
 		partsList.setCellRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 1271331296677711150L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				label.setIcon(ResourceType.ITEM.getIcon());
@@ -428,7 +432,7 @@ public class ElementDialog extends JDialog {
 		partsList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount()==2 && partsList.getSelectedIndex()>=0) {
-					PartApplicationDialog.createAndShowGUI(getThis(), (PartApplication)partsList.getSelectedValue());
+					PartApplicationDialog.createAndShowGUI(getThis(), partsList.getSelectedValue());
 				}
 			}
 		});
@@ -467,7 +471,7 @@ public class ElementDialog extends JDialog {
 		editPartButton.setToolTipText("Edit Part");
 		editPartButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PartApplicationDialog.createAndShowGUI(getThis(), (PartApplication)partsList.getSelectedValue());
+				PartApplicationDialog.createAndShowGUI(getThis(), partsList.getSelectedValue());
 			}
 		});
 		editPartButton.setEnabled(false);
@@ -476,7 +480,7 @@ public class ElementDialog extends JDialog {
 		removePartButton.setToolTipText("Remove Part");
 		removePartButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				for(Object part : partsList.getSelectedValues()) {
+				for(PartApplication part : partsList.getSelectedValuesList()) {
 					partsModel.removeElement(part);
 				}
 			}
@@ -573,13 +577,13 @@ public class ElementDialog extends JDialog {
 			element.setMass(massModel.getNumber().doubleValue());
 			element.setVolume(volumeModel.getNumber().doubleValue());
 			element.getStates().clear();
-			for(Object state : statesModel.toArray()) {
-				element.getStates().add((I_State)state);
+			for(int i = 0; i < statesModel.size(); i++) {
+				element.getStates().add(statesModel.get(i));
 			}
 			element.setCurrentState(initialState);
 			element.getParts().clear();
-			for(Object part : partsModel.toArray()) {
-				element.getParts().add((PartApplication)part);
+			for(int i = 0; i < partsModel.getSize(); i++) {
+				element.getParts().add(partsModel.get(i));
 			}
 			for(AbstractElementPanel panel : elementPanels) {
 				panel.saveElement();

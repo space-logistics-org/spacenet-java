@@ -49,7 +49,8 @@ public class TransferEventPanel extends AbstractEventPanel {
 	
 	private TransferEvent event;
 	
-	private JComboBox ddlDestinationContainer, ddlOriginContainer;
+	private JComboBox<I_ResourceContainer> ddlDestinationContainer;
+	private JComboBox<I_ResourceContainer> ddlOriginContainer;
 	private CapacityPanel capacityPanel;
 	private TransferDemandsTable demandsTable;
 	
@@ -78,7 +79,7 @@ public class TransferEventPanel extends AbstractEventPanel {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		ddlOriginContainer = new JComboBox();
+		ddlOriginContainer = new JComboBox<I_ResourceContainer>();
 		add(ddlOriginContainer, c);
 		c.gridy++;
 		c.gridwidth = 1;
@@ -91,7 +92,7 @@ public class TransferEventPanel extends AbstractEventPanel {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		ddlDestinationContainer = new JComboBox();
+		ddlDestinationContainer = new JComboBox<I_ResourceContainer>();
 		add(ddlDestinationContainer, c);
 		c.gridy++;
 		c.fill = GridBagConstraints.BOTH;
@@ -220,8 +221,8 @@ public class TransferEventPanel extends AbstractEventPanel {
 		
 		for(I_Element i : getEventDialog().getSimNode().getCompleteContents()) {
 			if(i instanceof I_ResourceContainer) {
-				ddlDestinationContainer.addItem(i);
-				ddlOriginContainer.addItem(i);
+				ddlDestinationContainer.addItem((I_ResourceContainer) i);
+				ddlOriginContainer.addItem((I_ResourceContainer) i);
 			} else if(i instanceof PropulsiveVehicle) {
 				PropulsiveVehicle v = (PropulsiveVehicle)i;
 				if(v.getOmsFuelTank()!=null) {

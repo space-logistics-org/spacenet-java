@@ -70,11 +70,14 @@ public class MissionPanel extends JPanel {
 
 	private MissionSplitPane missionSplitPane;
 	
-	private JComboBox ddlOrigin, ddlDestination, ddlReturnOrigin, ddlReturnDestination;
+	private JComboBox<Node> ddlOrigin;
+	private JComboBox<Node> ddlDestination;
+	private JComboBox<Node> ddlReturnOrigin;
+	private JComboBox<Node> ddlReturnDestination;
 	private JTextField txtName;
 	private JDateChooser calStartDate;
-	private DefaultListModel demandModelsModel;
-	private JList demandModelsList;
+	private DefaultListModel<I_DemandModel> demandModelsModel;
+	private JList<I_DemandModel> demandModelsList;
 	private EventsTable eventsTable;
 	private JButton btnEditDemandModel, btnRemoveDemandModel, btnEditEvent, btnRemoveEvent;
 	
@@ -126,7 +129,7 @@ public class MissionPanel extends JPanel {
 		g.anchor = GridBagConstraints.LINE_START;
 		g.fill = GridBagConstraints.BOTH;
 		g.weightx = 1;
-		ddlOrigin = new ContainerComboBox();
+		ddlOrigin = new ContainerComboBox<Node>();
 		ddlOrigin.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange()==ItemEvent.SELECTED) {
@@ -136,7 +139,7 @@ public class MissionPanel extends JPanel {
 		});
 		departurePanel.add(ddlOrigin, g);
 		g.gridy++;
-		ddlDestination = new ContainerComboBox();
+		ddlDestination = new ContainerComboBox<Node>();
 		ddlDestination.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange()==ItemEvent.SELECTED) {
@@ -161,7 +164,7 @@ public class MissionPanel extends JPanel {
 		g.anchor = GridBagConstraints.LINE_START;
 		g.fill = GridBagConstraints.BOTH;
 		g.weightx = 1;
-		ddlReturnOrigin = new ContainerComboBox();
+		ddlReturnOrigin = new ContainerComboBox<Node>();
 		ddlReturnOrigin.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				missionSplitPane.getMission().setReturnOrigin((Node)ddlReturnOrigin.getSelectedItem());
@@ -169,7 +172,7 @@ public class MissionPanel extends JPanel {
 		});
 		returnPanel.add(ddlReturnOrigin, g);
 		g.gridy++;
-		ddlReturnDestination = new ContainerComboBox();
+		ddlReturnDestination = new ContainerComboBox<Node>();
 		ddlReturnDestination.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				missionSplitPane.getMission().setReturnDestination((Node)ddlReturnDestination.getSelectedItem());
@@ -223,11 +226,11 @@ public class MissionPanel extends JPanel {
 		c.gridx = 0;
 		c.weighty = 0.1;
 		c.weightx = 1;
-		demandModelsModel = new DefaultListModel();
-		demandModelsList = new JList(demandModelsModel);
+		demandModelsModel = new DefaultListModel<I_DemandModel>();
+		demandModelsList = new JList<I_DemandModel>(demandModelsModel);
 		demandModelsList.setCellRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 1271331296677711150L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				label.setIcon(((I_DemandModel)value).getDemandModelType().getIcon());
@@ -237,7 +240,7 @@ public class MissionPanel extends JPanel {
 		demandModelsList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount()==2 && demandModelsList.getSelectedIndex()>=0) {
-					DemandModelDialog.createAndShowGUI(getThis(), (I_DemandModel)demandModelsList.getSelectedValue());
+					DemandModelDialog.createAndShowGUI(getThis(), demandModelsList.getSelectedValue());
 				}
 			}
 		});
@@ -264,7 +267,7 @@ public class MissionPanel extends JPanel {
 		btnEditDemandModel.setEnabled(false);
 		btnEditDemandModel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DemandModelDialog.createAndShowGUI(getThis(), (I_DemandModel)demandModelsList.getSelectedValue());
+				DemandModelDialog.createAndShowGUI(getThis(), demandModelsList.getSelectedValue());
 			}
 		});
 		demandsButtonPanel.add(btnEditDemandModel);
@@ -345,11 +348,11 @@ public class MissionPanel extends JPanel {
 				warningPanel.add(new JLabel("Permanently delete the following events?"), c);
 				c.gridy++;
 				c.weighty = 1;
-				DefaultListModel eventsList = new DefaultListModel();
+				DefaultListModel<I_Event> eventsList = new DefaultListModel<I_Event>();
 				for(I_Event v : events) {
 					eventsList.addElement(v);
 				}
-				warningPanel.add(new JScrollPane(new JList(eventsList)), c);
+				warningPanel.add(new JScrollPane(new JList<I_Event>(eventsList)), c);
 				int answer = JOptionPane.showOptionDialog(missionSplitPane, 
 						warningPanel, 
 						"Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);

@@ -151,7 +151,7 @@ public class ScenarioFeasibilityTab extends JSplitPane {
 		
 		private ScenarioFeasibilityTab feasibilityTab;
 		
-		private JComboBox nodeCombo;
+		private JComboBox<Node> nodeCombo;
 		private CheckBoxTableModel<SupplyEdge> supplyEdgesModel;
 		private CheckBoxTableModel<String> dataModel;
 		private JCheckBox cumulativeCheck, timeDomainCheck, legendCheck, smoothDemandsCheck;
@@ -177,7 +177,7 @@ public class ScenarioFeasibilityTab extends JSplitPane {
 			c.gridy = 0;
 			c.anchor = GridBagConstraints.LINE_START;
 			c.gridwidth = 2;
-			nodeCombo = new JComboBox();
+			nodeCombo = new JComboBox<Node>();
 			nodeCombo.setRenderer(new NodeListCellRenderer());
 			nodeCombo.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {

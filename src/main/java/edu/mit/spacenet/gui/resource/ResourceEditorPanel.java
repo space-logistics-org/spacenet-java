@@ -51,7 +51,8 @@ public class ResourceEditorPanel extends JPanel {
 	private ResourceEditorDialog dialog;
 	
 	private JTextField nameText, unitsText;
-	private JComboBox classOfSupplyCombo, environmentCombo;
+	private JComboBox<ClassOfSupply> classOfSupplyCombo;
+	private JComboBox<Environment> environmentCombo;
 	private SpinnerNumberModel unitMassModel, unitVolumeModel, packingFactorModel;
 	private JSpinner unitMassSpinner, unitVolumeSpinner, packingFactorSpinner;
 	private JTextArea descriptionText;
@@ -102,7 +103,7 @@ public class ResourceEditorPanel extends JPanel {
 		c.gridwidth = 3;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		classOfSupplyCombo= new JComboBox();
+		classOfSupplyCombo= new JComboBox<ClassOfSupply>();
 		for(ClassOfSupply t : ClassOfSupply.values()) classOfSupplyCombo.addItem(t);
 		add(classOfSupplyCombo, c);
 		
@@ -117,7 +118,7 @@ public class ResourceEditorPanel extends JPanel {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		environmentCombo= new JComboBox();
+		environmentCombo= new JComboBox<Environment>();
 		for(Environment t : Environment.values()) environmentCombo.addItem(t);
 		add(environmentCombo, c);
 		environmentCombo.setToolTipText("Required environment for storage");

@@ -52,7 +52,7 @@ import edu.mit.spacenet.gui.renderer.ResourceListCellRenderer;
 public class PartApplicationDialog extends JDialog {
 	private static final long serialVersionUID = -9173211009538452900L;
 	
-	private JComboBox partCombo;
+	private JComboBox<I_Item> partCombo;
 	private JCheckBox failureCheck, repairCheck;
 	private SpinnerNumberModel mttfModel, mttrModel, repairMassModel, quantityModel, dutyCycleModel;
 	private JSpinner mttfSpinner, mttrSpinner, repairMassSpinner, quantitySpinner, dutyCycleSpinner;
@@ -100,7 +100,7 @@ public class PartApplicationDialog extends JDialog {
 		c.gridx = 1;
 		c.gridy = 0;
 		c.weightx = 1;
-		partCombo = new JComboBox();
+		partCombo = new JComboBox<I_Item>();
 		partCombo.setRenderer(new ResourceListCellRenderer());
 		contentPanel.add(partCombo, c);
 		c.gridy++;

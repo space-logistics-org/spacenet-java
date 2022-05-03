@@ -54,7 +54,7 @@ public class BurnEditorDialog extends JDialog {
 	
 	private JButton okButton;
 	private JButton cancelButton;
-	private JComboBox burnTypeCombo;
+	private JComboBox<BurnType> burnTypeCombo;
 	private SpinnerNumberModel timeModel, deltaVModel;
 	private JSpinner timeSpinner, deltaVSpinner;
 	private JTextArea descriptionText;
@@ -93,7 +93,7 @@ public class BurnEditorDialog extends JDialog {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		burnTypeCombo = new JComboBox();
+		burnTypeCombo = new JComboBox<BurnType>();
 		for(BurnType t : BurnType.values()) burnTypeCombo.addItem(t);
 		burnTypeCombo.setToolTipText("Type of burn: orbital maneuvering system (OMS) or reaction control system (RCS)");
 		contentPanel.add(burnTypeCombo, c);

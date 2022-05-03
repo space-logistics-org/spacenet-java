@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.event.TreeModelEvent;
@@ -49,7 +48,7 @@ public class MoveEventPanel extends AbstractEventPanel {
 	
 	private MoveEvent event;
 	
-	private JComboBox containerCombo;
+	private ContainerComboBox<I_Container> containerCombo;
 	private CapacityPanel capacityPanel;
 	
 	private CheckBoxTreeModel elementModel;
@@ -82,7 +81,7 @@ public class MoveEventPanel extends AbstractEventPanel {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		containerCombo = new ContainerComboBox();
+		containerCombo = new ContainerComboBox<I_Container>();
 		add(containerCombo, c);
 		c.gridy++;
 		c.weightx = 0;
@@ -167,9 +166,9 @@ public class MoveEventPanel extends AbstractEventPanel {
 		if(getEventDialog().getNode().equals(container)) 
 			containerCombo.setSelectedItem(container);
 		for(I_Element element: getEventDialog().getSimNode().getCompleteContents()) {
-			if(element instanceof I_Container) {
-				containerCombo.addItem(element);
-				if(element.equals(container)) {
+			if(element instanceof I_Carrier) {
+				containerCombo.addItem((I_Carrier) element);
+				if(((I_Carrier)element).equals(container)) {
 					containerCombo.setSelectedItem(element);
 				}
 			}

@@ -53,7 +53,7 @@ public class ResourceEditorDialog extends JDialog {
 	private ResourceEditorPanel resourcePanel;
 	private DataSourceDialog dialog;
 	
-	private JComboBox resourceTypeCombo;
+	private JComboBox<ResourceType> resourceTypeCombo;
 	private JButton okButton;
 	private JButton cancelButton;
 	
@@ -91,10 +91,12 @@ public class ResourceEditorDialog extends JDialog {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		resourceTypeCombo = new JComboBox();
+		resourceTypeCombo = new JComboBox<ResourceType>();
 		resourceTypeCombo.setRenderer(new ResourceTypeListCellRenderer());
 		for(ResourceType t : ResourceType.values()) 
-			if(t!=ResourceType.GENERIC) resourceTypeCombo.addItem(t);
+			if(t!=ResourceType.GENERIC) {
+				resourceTypeCombo.addItem(t);
+			}
 		resourceTypeCombo.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange()==ItemEvent.SELECTED 
@@ -107,6 +109,10 @@ public class ResourceEditorDialog extends JDialog {
 					case ITEM:
 						resource = new Item();
 						reset();
+						break;
+					case GENERIC:
+						break;
+					default:
 						break;
 					}
 				}

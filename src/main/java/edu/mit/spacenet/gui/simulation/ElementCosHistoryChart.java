@@ -31,7 +31,6 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -54,7 +53,7 @@ import org.jfree.ui.RectangleInsets;
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.gui.component.CheckBoxTableModel;
-import edu.mit.spacenet.gui.component.ContainerComboBox;
+import edu.mit.spacenet.gui.component.ElementComboBox;
 import edu.mit.spacenet.gui.component.SNChartPanel;
 import edu.mit.spacenet.gui.renderer.VisibilityTableCellHeaderRenderer;
 import edu.mit.spacenet.scenario.Scenario;
@@ -70,7 +69,7 @@ import edu.mit.spacenet.util.DateFunctions;
 public class ElementCosHistoryChart extends JSplitPane {
 	private static final long serialVersionUID = -6405124067606236705L;
 	private SimulationTab tab;
-	private JComboBox elementCombo;
+	private ElementComboBox elementCombo;
 	private CheckBoxTableModel<ClassOfSupply> cosModel;
 	private ChartPanel chartPanel;
 	private JCheckBox linearizeDataCheck;
@@ -104,7 +103,7 @@ public class ElementCosHistoryChart extends JSplitPane {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.BOTH;
-		elementCombo = new ContainerComboBox();
+		elementCombo = new ElementComboBox();
 		elementCombo.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange()==ItemEvent.SELECTED) {

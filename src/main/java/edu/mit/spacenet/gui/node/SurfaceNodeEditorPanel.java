@@ -51,7 +51,9 @@ public class SurfaceNodeEditorPanel extends AbstractNodeEditorPanel {
 	private SurfaceNode node;
 	
 	private JTextField nameText;
-	private JComboBox bodyCombo, latitudeCombo, longitudeCombo;
+	private JComboBox<Body> bodyCombo;
+	private JComboBox<String> latitudeCombo;
+	private JComboBox<String> longitudeCombo;
 	private SpinnerNumberModel latitudeModel, longitudeModel;
 	private JSpinner latitudeSpinner, longitudeSpinner;
 	private JTextArea descriptionText;
@@ -101,11 +103,11 @@ public class SurfaceNodeEditorPanel extends AbstractNodeEditorPanel {
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		bodyCombo= new JComboBox();
+		bodyCombo= new JComboBox<Body>();
 		for(Body t : Body.values()) bodyCombo.addItem(t);
 		bodyCombo.setRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = -1061418828847174455L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if(value!=null) setIcon(((Body)value).getIcon());
@@ -133,7 +135,7 @@ public class SurfaceNodeEditorPanel extends AbstractNodeEditorPanel {
 		latitudeSpinner.setToolTipText("Latitude of location [degrees]");
 		c.gridx++;
 		c.weightx = 1;
-		latitudeCombo = new JComboBox(new String[]{N,S});
+		latitudeCombo = new JComboBox<String>(new String[]{N,S});
 		add(latitudeCombo, c);
 		latitudeCombo.setToolTipText("N: North; S: South");
 		
@@ -155,7 +157,7 @@ public class SurfaceNodeEditorPanel extends AbstractNodeEditorPanel {
 		longitudeSpinner.setToolTipText("Longitude of location [degrees]");
 		c.gridx++;
 		c.weightx = 1;
-		longitudeCombo = new JComboBox(new String[]{E,W});
+		longitudeCombo = new JComboBox<String>(new String[]{E,W});
 		add(longitudeCombo, c);
 		longitudeCombo.setToolTipText("E: East; W: West");
 

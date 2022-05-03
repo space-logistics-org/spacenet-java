@@ -48,7 +48,7 @@ public class ReconfigureGroupEventPanel extends AbstractEventPanel {
 	
 	private CheckBoxTreeModel elementModel;
 	private CheckBoxTree elementTree;
-	private JComboBox ddlStateType;
+	private JComboBox<StateType> ddlStateType;
 	
 	/**
 	 * Instantiates a new reconfigure group event panel.
@@ -77,13 +77,13 @@ public class ReconfigureGroupEventPanel extends AbstractEventPanel {
 		c.gridy = 0;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		ddlStateType = new JComboBox();
+		ddlStateType = new JComboBox<StateType>();
 		for(StateType t : StateType.values()) {
 			ddlStateType.addItem(t);
 		}
 		ddlStateType.setRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 1271331296677711150L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if(value instanceof StateType)

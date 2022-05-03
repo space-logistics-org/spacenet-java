@@ -176,11 +176,11 @@ public class NodeTable extends JTable {
 	    				warningPanel.add(new JLabel("The following use " + node + " and must be changed before removal:"), c);
 	    				c.gridy++;
 	    				c.weighty = 1;
-	    				DefaultListModel usagesList = new DefaultListModel();
+	    				DefaultListModel<Object> usagesList = new DefaultListModel<Object>();
 	    				for(Object o : uses) {
 	    					usagesList.addElement(o);
 	    				}
-	    				warningPanel.add(new JScrollPane(new JList(usagesList)), c);
+	    				warningPanel.add(new JScrollPane(new JList<Object>(usagesList)), c);
 	    				JOptionPane.showMessageDialog(networkTab.getScenarioPanel(), warningPanel, "SpaceNet Warning", JOptionPane.WARNING_MESSAGE);
 	    			} else {
 		    			scenario.getNetwork().remove(node);

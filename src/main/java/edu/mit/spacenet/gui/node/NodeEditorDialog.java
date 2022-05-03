@@ -52,7 +52,7 @@ public class NodeEditorDialog extends JDialog {
 	private static final long serialVersionUID = 8072239734759253813L;
 	
 	private Node node;
-	private JComboBox nodeTypeCombo;
+	private JComboBox<NodeType> nodeTypeCombo;
 	private AbstractNodeEditorPanel nodePanel;
 	private DataSourceDialog dialog;
 	private JButton okButton;
@@ -93,8 +93,10 @@ public class NodeEditorDialog extends JDialog {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		nodeTypeCombo = new JComboBox();
-		for(NodeType t : NodeType.values()) nodeTypeCombo.addItem(t);
+		nodeTypeCombo = new JComboBox<NodeType>();
+		for(NodeType t : NodeType.values()) {
+			nodeTypeCombo.addItem(t);
+		}
 		if(node!=null){
 			nodeTypeCombo.setSelectedItem(node.getNodeType());
 		}

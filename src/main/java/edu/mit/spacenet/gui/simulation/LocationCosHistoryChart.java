@@ -32,7 +32,6 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -73,7 +72,7 @@ import edu.mit.spacenet.util.DateFunctions;
 public class LocationCosHistoryChart extends JSplitPane {
 	private static final long serialVersionUID = -6405124067606236705L;
 	private SimulationTab tab;
-	private JComboBox locationCombo;
+	private ContainerComboBox<Location> locationCombo;
 	private CheckBoxTableModel<ClassOfSupply> cosModel;
 	private ChartPanel chartPanel;
 	private JCheckBox linearizeDataCheck;
@@ -107,7 +106,7 @@ public class LocationCosHistoryChart extends JSplitPane {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.BOTH;
-		locationCombo = new ContainerComboBox();
+		locationCombo = new ContainerComboBox<Location>();
 		locationCombo.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange()==ItemEvent.SELECTED) {

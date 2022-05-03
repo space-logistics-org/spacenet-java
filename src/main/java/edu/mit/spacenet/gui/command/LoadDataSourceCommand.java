@@ -81,11 +81,11 @@ public class LoadDataSourceCommand implements I_Command {
 						JPanel errorPanel = new JPanel();
 						errorPanel.setLayout(new BoxLayout(errorPanel, BoxLayout.PAGE_AXIS));
 						errorPanel.add(new JLabel("The following errors occurred: "));
-						DefaultListModel errorsModel = new DefaultListModel();
+						DefaultListModel<String> errorsModel = new DefaultListModel<String>();
 						for(String e : errors) {
 							errorsModel.addElement(e);
 						}
-						errorPanel.add(new JScrollPane(new JList(errorsModel)));
+						errorPanel.add(new JScrollPane(new JList<String>(errorsModel)));
 						errorPanel.add(new JLabel("Please make the necessary changes and reload database."));
 						JOptionPane.showMessageDialog(getComponent(), errorPanel, "Load Error", JOptionPane.ERROR_MESSAGE);
 					} else {

@@ -157,6 +157,8 @@ public class TimeDependentEdge extends Edge {
 		// end for
 		}
 		
+		wb.close();
+		
 		return edges;
 	}
 	public String getFilePath() {

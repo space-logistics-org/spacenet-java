@@ -77,7 +77,7 @@ import edu.mit.spacenet.util.DateFunctions;
 public class MoeHistoryChart extends JSplitPane {
 	private static final long serialVersionUID = -6405124067606236705L;
 	private SimulationTab tab;
-	private JComboBox moeCombo;
+	private JComboBox<MoeType> moeCombo;
 	private CheckBoxTableModel<Location> locationsModel;
 	private JLabel totalValueLabel, valueLabel;
 	private ChartPanel chartPanel;
@@ -108,7 +108,7 @@ public class MoeHistoryChart extends JSplitPane {
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.BOTH;
-		moeCombo = new JComboBox();
+		moeCombo = new JComboBox<MoeType>();
 		for(MoeType t : MoeType.values()) {
 			moeCombo.addItem(t);
 		}

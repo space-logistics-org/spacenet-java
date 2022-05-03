@@ -26,7 +26,6 @@ import java.text.DecimalFormat;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -54,7 +53,7 @@ public class FlightTransportPanel extends AbstractEventPanel {
 	
 	private FlightTransport event;
 	
-	private JComboBox ddlFlight;
+	private ContainerComboBox<FlightEdge> ddlFlight;
 	private JProgressBar cargoCapacity, crewCapacity;
 	
 	private JLabel lblDestination, lblDuration;
@@ -98,7 +97,7 @@ public class FlightTransportPanel extends AbstractEventPanel {
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		ddlFlight = new ContainerComboBox();
+		ddlFlight = new ContainerComboBox<FlightEdge>();
 		add(ddlFlight, c);
 		c.gridy = 1;
 		JPanel flightPanel = new JPanel();
@@ -188,7 +187,7 @@ public class FlightTransportPanel extends AbstractEventPanel {
 		for(Edge e : SpaceNetFrame.getInstance().getScenarioPanel().getScenario().getNetwork().getEdges()) {
 			if(e.getOrigin().equals(getEventDialog().getNode())
 					&& e instanceof FlightEdge) {
-				ddlFlight.addItem(e);
+				ddlFlight.addItem((FlightEdge) e);
 				if(e.equals(flight)) {
 					ddlFlight.setSelectedItem(e);
 				}

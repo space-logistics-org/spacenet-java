@@ -60,8 +60,8 @@ public class SimulationTab extends JSplitPane {
 	private JPanel controlPanel;
 	private JCheckBox detailedExplorationsCheck, detailedEvasCheck;
 	private JButton simulateButton;
-	private DefaultListModel errorsModel;
-	private JList errorsList;
+	private DefaultListModel<SimError> errorsModel;
+	private JList<SimError> errorsList;
 	private JTabbedPane tabs;
 	
 	private NetworkHistoryVisualization networkVisualization;
@@ -155,11 +155,11 @@ public class SimulationTab extends JSplitPane {
 		c.gridy++;
 		c.weighty = .5;
 		c.fill = GridBagConstraints.BOTH;
-		errorsModel = new DefaultListModel();
-		errorsList = new JList(errorsModel);
+		errorsModel = new DefaultListModel<SimError>();
+		errorsList = new JList<SimError>(errorsModel);
 		errorsList.setCellRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 635852745823206059L;
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus)  {
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)  {
 				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if(value instanceof SimError) {
 					SimError error = (SimError)value;

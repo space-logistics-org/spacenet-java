@@ -57,7 +57,7 @@ public class EdgeEditorDialog extends JDialog {
 	
 	private JButton okButton;
 	private JButton cancelButton;
-	private JComboBox edgeTypeCombo;
+	private JComboBox<EdgeType> edgeTypeCombo;
 	
 	/**
 	 * Instantiates a new edge editor dialog editor.
@@ -92,9 +92,12 @@ public class EdgeEditorDialog extends JDialog {
 		c.gridx++;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		edgeTypeCombo = new JComboBox();
-		for(EdgeType t : EdgeType.values()) 
-			if (t.getName()!="Time-Dependent") edgeTypeCombo.addItem(t);
+		edgeTypeCombo = new JComboBox<EdgeType>();
+		for(EdgeType t : EdgeType.values()) {
+			if (t != EdgeType.TIME_DEPENDENT) {
+				edgeTypeCombo.addItem(t);
+			}
+		}
 		edgeTypeCombo.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange()==ItemEvent.SELECTED && (edge.getEdgeType()!=e.getItem())) {
@@ -110,6 +113,8 @@ public class EdgeEditorDialog extends JDialog {
 					case SURFACE:
 						edge = new SurfaceEdge();
 						reset();
+						break;
+					case TIME_DEPENDENT:
 						break;
 					}
 				}

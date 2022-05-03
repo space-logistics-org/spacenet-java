@@ -53,6 +53,7 @@ import edu.mit.spacenet.data.DataSourceType;
 import edu.mit.spacenet.data.Database;
 import edu.mit.spacenet.data.ElementPreview;
 import edu.mit.spacenet.data.I_DataSource;
+import edu.mit.spacenet.data.InMemoryDataSource;
 import edu.mit.spacenet.data.Spreadsheet_2_5;
 import edu.mit.spacenet.domain.element.Element;
 import edu.mit.spacenet.domain.element.I_Element;
@@ -77,7 +78,7 @@ public class DataSourceDialog extends JDialog {
 	private ScenarioPanel scenarioPanel;
 	private I_DataSource dataSource;
 	
-	private JComboBox dataSourceTypeCombo;
+	private JComboBox<DataSourceType> dataSourceTypeCombo;
 	private AbstractDataSourcePanel dataSourcePanel;
 	
 	private JCheckBox nodesCheck, edgesCheck, resourcesCheck, elementsCheck;
@@ -118,14 +119,14 @@ public class DataSourceDialog extends JDialog {
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 1;
-		dataSourceTypeCombo = new JComboBox();
+		dataSourceTypeCombo = new JComboBox<DataSourceType>();
 		for(DataSourceType t : DataSourceType.values()) {
 			dataSourceTypeCombo.addItem(t);
 		}
 		dataSourceTypeCombo.setSelectedItem(dataSource==null?DataSourceType.NONE:dataSource.getDataSourceType());
 		dataSourceTypeCombo.setRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = -2255885956722142642L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				setIcon(((DataSourceType)value).getIcon());
@@ -150,6 +151,9 @@ public class DataSourceDialog extends JDialog {
 							break;
 						case SQL_DB:
 							getScenarioPanel().getScenario().setDataSource(new Database());
+							break;
+						case IN_MEMORY:
+							getScenarioPanel().getScenario().setDataSource(new InMemoryDataSource());
 							break;
 						case NONE:
 							getScenarioPanel().getScenario().setDataSource(null);

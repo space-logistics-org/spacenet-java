@@ -45,7 +45,9 @@ public class LagrangeNodeEditorPanel extends AbstractNodeEditorPanel {
 	
 	private LagrangeNode node;
 	private JTextField nameText;
-	private JComboBox majorBodyCombo, minorBodyCombo, numberCombo;
+	private JComboBox<Body> majorBodyCombo;
+	private JComboBox<Body> minorBodyCombo;
+	private JComboBox<Integer> numberCombo;
 	private JTextArea descriptionText;
 	
 	/**
@@ -94,11 +96,11 @@ public class LagrangeNodeEditorPanel extends AbstractNodeEditorPanel {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		majorBodyCombo= new JComboBox();
+		majorBodyCombo= new JComboBox<Body>();
 		for(Body t : Body.values()) majorBodyCombo.addItem(t);
 		majorBodyCombo.setRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = -1061418828847174455L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if(value!=null) setIcon(((Body)value).getIcon());
@@ -118,11 +120,11 @@ public class LagrangeNodeEditorPanel extends AbstractNodeEditorPanel {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		minorBodyCombo= new JComboBox();
+		minorBodyCombo= new JComboBox<Body>();
 		for(Body t : Body.values()) minorBodyCombo.addItem(t);
 		minorBodyCombo.setRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = -1061418828847174455L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if(value!=null) setIcon(((Body)value).getIcon());
@@ -143,7 +145,7 @@ public class LagrangeNodeEditorPanel extends AbstractNodeEditorPanel {
 		c.gridwidth = 3;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		numberCombo= new JComboBox(new Integer[]{1,2,3,4,5});
+		numberCombo= new JComboBox<Integer>(new Integer[]{1,2,3,4,5});
 		add(numberCombo, c);
 		numberCombo.setToolTipText("1: between bodies; 2: outside minor body; 3: outside major body; 4: leading triangular; 5: lagging triangular");
 		

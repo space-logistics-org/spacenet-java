@@ -58,7 +58,7 @@ public class ResourceContainerPanel extends AbstractElementPanel {
 	
 	private SpinnerNumberModel maxCargoMassModel, maxCargoVolumeModel;
 	private JSpinner maxCargoMassSpinner, maxCargoVolumeSpinner;
-	private JComboBox environmentCombo;
+	private JComboBox<Environment> environmentCombo;
 	private DemandTable resourcesList;
 	private JButton removeResourceButton;
 	
@@ -118,7 +118,7 @@ public class ResourceContainerPanel extends AbstractElementPanel {
 		c.gridy++;
 		c.gridx = 1;
 		c.gridwidth = 3;
-		environmentCombo = new JComboBox();
+		environmentCombo = new JComboBox<Environment>();
 		for(Environment e : Environment.values()) {
 			environmentCombo.addItem(e);
 		}

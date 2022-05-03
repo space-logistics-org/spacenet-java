@@ -170,7 +170,7 @@ public class EventsTable extends JTable {
 	 */
 	public TableCellEditor getCellEditor(int row, int col) {
     	if(col==2) {
-    		JComboBox comboBox = new JComboBox();
+    		JComboBox<String> comboBox = new JComboBox<String>();
     		for(int i = 1; i <= 5; i++) {
     			comboBox.addItem(new Integer(i).toString());
     		}

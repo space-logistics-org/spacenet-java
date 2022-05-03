@@ -153,7 +153,7 @@ public class SupplyNetworkTab extends JSplitPane {
 		
 		private JDateChooser startDate, endDate;
 		private JCheckBox demandsCheck, capacitiesCheck;
-		private JComboBox transportDisplayCombo;
+		private JComboBox<String> transportDisplayCombo;
 		private CheckBoxTableModel<SupplyEdge> supplyEdgesModel;
 		
 		private JButton refreshButton;
@@ -207,7 +207,7 @@ public class SupplyNetworkTab extends JSplitPane {
 			});
 			add(endDate, c);
 			c.gridy++;
-			transportDisplayCombo = new JComboBox();
+			transportDisplayCombo = new JComboBox<String>();
 			transportDisplayCombo.addItem(DEMANDS);
 			transportDisplayCombo.addItem(RAW_CAPACITY);
 			transportDisplayCombo.addItem(REMAINING_CAPACITY);

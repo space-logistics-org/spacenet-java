@@ -32,7 +32,7 @@ public class BurnListCellRenderer extends DefaultListCellRenderer {
 	/* (non-Javadoc)
 	 * @see javax.swing.DefaultListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
 	 */
-	public Component getListCellRendererComponent(JList list, Object value, 
+	public Component getListCellRendererComponent(JList<?> list, Object value, 
 			int index, boolean isSelected, boolean cellHasFocus) {
 		super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		if(value instanceof Burn) {

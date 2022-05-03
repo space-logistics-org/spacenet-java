@@ -93,10 +93,10 @@ public class EvaTable extends JTable {
 	 */
 	public TableCellEditor getCellEditor(int row, int column) {
 		if(column==2) {
-			JComboBox stateCombo = new JComboBox();
+			JComboBox<I_State> stateCombo = new JComboBox<I_State>();
 			stateCombo.setRenderer(new DefaultListCellRenderer() {
 				private static final long serialVersionUID = -2255885956722142642L;
-				public Component getListCellRendererComponent(JList list, Object value, 
+				public Component getListCellRendererComponent(JList<?> list, Object value, 
 						int index, boolean isSelected, boolean cellHasFocus) {
 					super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 					if(value instanceof I_State)

@@ -71,14 +71,15 @@ public class CreateEventPanel extends AbstractEventPanel {
 	
 	private CreateEvent event;
 	
-	private JComboBox containerCombo, elementTypeCombo;
+	private JComboBox<I_Container> containerCombo;
+	private JComboBox<String> elementTypeCombo;
 	private CapacityPanel capacityPanel;
-	private JList elementLibraryList;
+	private JList<ElementPreview> elementLibraryList;
 	private ElementTree elementTree;
 	private SearchTextField searchText;
 	private JButton addElementButton, editElementButton, removeElementButton;
 	
-	private DefaultListModel elementLibraryModel;
+	private DefaultListModel<ElementPreview> elementLibraryModel;
 	
 	/**
 	 * Instantiates a new creates the event panel.
@@ -132,7 +133,7 @@ public class CreateEventPanel extends AbstractEventPanel {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		containerCombo = new ContainerComboBox();
+		containerCombo = new ContainerComboBox<I_Container>();
 		leftPanel.add(containerCombo, c);
 		c.gridy++;
 		c.weightx = 0;
@@ -229,10 +230,10 @@ public class CreateEventPanel extends AbstractEventPanel {
 			}
 		});
 		filterPanel.add(searchText);
-		elementTypeCombo = new JComboBox();
+		elementTypeCombo = new JComboBox<String>();
 		elementTypeCombo.addItem("All");
 		for(ElementType t : ElementType.values()) {
-			elementTypeCombo.addItem(t);
+			elementTypeCombo.addItem(t.getName());
 		}
 		elementTypeCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -243,8 +244,8 @@ public class CreateEventPanel extends AbstractEventPanel {
 		rightPanel.add(filterPanel, c);
 		c.gridy++;
 		c.weighty = 1;
-		elementLibraryModel = new DefaultListModel();
-		elementLibraryList = new JList(elementLibraryModel);
+		elementLibraryModel = new DefaultListModel<ElementPreview>();
+		elementLibraryList = new JList<ElementPreview>(elementLibraryModel);
 		elementLibraryList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				addElementButton.setEnabled(elementLibraryList.getSelectedIndex()>=0);
@@ -255,7 +256,7 @@ public class CreateEventPanel extends AbstractEventPanel {
 				if (e.getClickCount() == 2 && elementLibraryList.getSelectedIndex()>=0) {
 					try {
 						addElement(SpaceNetFrame.getInstance().getScenarioPanel().getScenario().getDataSource().loadElement(
-								((ElementPreview)elementLibraryList.getSelectedValue()).ID));
+								elementLibraryList.getSelectedValue().ID));
 					} catch(Exception ex) {
 						ex.printStackTrace();
 						JOptionPane.showMessageDialog(null, 
@@ -276,9 +277,9 @@ public class CreateEventPanel extends AbstractEventPanel {
 		addElementButton = new JButton("Add", new ImageIcon(getClass().getClassLoader().getResource("icons/brick_add.png")));
 		addElementButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				for (Object o : elementLibraryList.getSelectedValues()) {
+				for (ElementPreview o : elementLibraryList.getSelectedValuesList()) {
 					try {
-						addElement(SpaceNetFrame.getInstance().getScenarioPanel().getScenario().getDataSource().loadElement(((ElementPreview)o).ID));
+						addElement(SpaceNetFrame.getInstance().getScenarioPanel().getScenario().getDataSource().loadElement(o.ID));
 					} catch(Exception ex) {
 						ex.printStackTrace();
 						JOptionPane.showMessageDialog(null, 
@@ -347,9 +348,9 @@ public class CreateEventPanel extends AbstractEventPanel {
 		if(getEventDialog().getNode().equals(container)) 
 			containerCombo.setSelectedItem(container);
 		for(I_Element element: getEventDialog().getSimNode().getCompleteContents()) {
-			if(element instanceof I_Container) {
-				containerCombo.addItem(element);
-				if(element.equals(container)) {
+			if(element instanceof I_Carrier) {
+				containerCombo.addItem((I_Carrier) element);
+				if(((I_Carrier)element).equals(container)) {
 					containerCombo.setSelectedItem(element);
 				}
 			}
@@ -413,7 +414,7 @@ public class CreateEventPanel extends AbstractEventPanel {
 			if((searchText.getText().equals(searchText.getDefaultText())
 					|| prev.NAME.toLowerCase().contains(searchText.getText().toLowerCase()))
 					&& (elementTypeCombo.getSelectedItem().equals("All")
-					|| prev.TYPE == ((ElementType)elementTypeCombo.getSelectedItem()))) {
+					|| prev.TYPE == (ElementType.getInstance((String) elementTypeCombo.getSelectedItem())))) {
 				elementLibraryModel.addElement(prev);
 			}
 		}

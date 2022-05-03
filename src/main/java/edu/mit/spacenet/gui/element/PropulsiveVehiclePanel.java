@@ -63,7 +63,8 @@ public class PropulsiveVehiclePanel extends AbstractElementPanel {
 	private JSpinner omsIspSpinner, maxOmsFuelSpinner, omsFuelSpinner,
 		rcsIspSpinner, maxRcsFuelSpinner, rcsFuelSpinner;
 	private UnitsWrapper maxOmsFuelWrapper, omsFuelWrapper, maxRcsFuelWrapper, rcsFuelWrapper;
-	private JComboBox omsResourceCombo, rcsResourceCombo;
+	private JComboBox<I_Resource> omsResourceCombo;
+	private JComboBox<I_Resource> rcsResourceCombo;
 	
 	/**
 	 * Instantiates a new propulsive vehicle panel.
@@ -118,7 +119,7 @@ public class PropulsiveVehiclePanel extends AbstractElementPanel {
 		omsIspSpinner.setToolTipText("Specific impulse of orbital maneuvering system [seconds]");
 		
 		c.gridy++;
-		omsResourceCombo = new JComboBox();
+		omsResourceCombo = new JComboBox<I_Resource>();
 		omsResourceCombo.setRenderer(new ResourceListCellRenderer());
 		omsResourceCombo.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
@@ -199,7 +200,7 @@ public class PropulsiveVehiclePanel extends AbstractElementPanel {
 		sharedCheck.setToolTipText("Share fuel between the orbital maneuvering and reaction control systems");
 		
 		c.gridy++;
-		rcsResourceCombo = new JComboBox();
+		rcsResourceCombo = new JComboBox<I_Resource>();
 		rcsResourceCombo.setRenderer(new ResourceListCellRenderer());
 		rcsResourceCombo.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {

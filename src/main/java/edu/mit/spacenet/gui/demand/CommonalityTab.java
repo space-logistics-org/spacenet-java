@@ -167,7 +167,7 @@ public class CommonalityTab extends JSplitPane {
 	private class OptionsPanel extends JPanel {
 		private static final long serialVersionUID = -4853327538110812961L;
 
-		private JComboBox optionCombo;
+		private JComboBox<String> optionCombo;
 		private CheckBoxTableModel<I_Item> partsModel;
 		private CheckBoxTableModel<I_Element> elementsModel;
 		private JButton refreshButton;
@@ -194,7 +194,7 @@ public class CommonalityTab extends JSplitPane {
 			c.gridx++;
 			c.anchor = GridBagConstraints.LINE_START;
 			c.fill = GridBagConstraints.HORIZONTAL;
-			optionCombo = new JComboBox();
+			optionCombo = new JComboBox<String>();
 			optionCombo.addItem(CUMULATIVE_MASS);
 			optionCombo.addItem(CUMULATIVE_UNITS);
 			optionCombo.addItem(MASS_BY_SOURCE);

@@ -71,7 +71,9 @@ public class NetworkTab extends JSplitPane {
 	private static String NODE_DETAILS = "Node Details Panel";
 	private static String EDGE_DETAILS = "Edge Details Panel";
 	
-	private JComboBox scenarioTypeCombo, nodeTypeCombo, edgeTypeCombo;
+	private JComboBox<ScenarioType> scenarioTypeCombo;
+	private JComboBox<Object> nodeTypeCombo;
+	private JComboBox<Object> edgeTypeCombo;
 	private JTabbedPane locationSelectionTabbedPane;
 	private JPanel nodeSelectionPanel, edgeSelectionPanel;
 	private SearchTextField nodeSearchText, edgeSearchText;
@@ -121,13 +123,13 @@ public class NetworkTab extends JSplitPane {
 		c.gridx++;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		scenarioTypeCombo = new JComboBox();
+		scenarioTypeCombo = new JComboBox<ScenarioType>();
 		for(ScenarioType type : ScenarioType.values()) {
 			scenarioTypeCombo.addItem(type);
 		}
 		scenarioTypeCombo.setRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = -2255885956722142642L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				setIcon(((ScenarioType)value).getIcon());
@@ -164,14 +166,14 @@ public class NetworkTab extends JSplitPane {
 			}
 		});
 		nodeSearchPanel.add(nodeSearchText);
-		nodeTypeCombo = new JComboBox();
+		nodeTypeCombo = new JComboBox<Object>();
 		nodeTypeCombo.addItem("All");
 		for(NodeType type : NodeType.values()) {
 			nodeTypeCombo.addItem(type);
 		}
 		nodeTypeCombo.setRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = -2255885956722142642L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if(value instanceof NodeType) setIcon(((NodeType)value).getIcon());
@@ -238,15 +240,16 @@ public class NetworkTab extends JSplitPane {
 			}
 		});
 		edgeSearchPanel.add(edgeSearchText);
-		edgeTypeCombo = new JComboBox();
+		edgeTypeCombo = new JComboBox<Object>();
 		edgeTypeCombo.addItem("All");
 		for(EdgeType type : EdgeType.values()) {
-			if(type!=EdgeType.TIME_DEPENDENT)
+			if(type!=EdgeType.TIME_DEPENDENT) {
 				edgeTypeCombo.addItem(type);
+			}
 		}
 		edgeTypeCombo.setRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = -2255885956722142642L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if(value instanceof EdgeType) setIcon(((EdgeType)value).getIcon());

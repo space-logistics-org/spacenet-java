@@ -67,11 +67,11 @@ public class RemoveMissionCommand implements I_Command {
 		warningPanel.add(new JLabel("Permanently delete the following missions?"), c);
 		c.gridy++;
 		c.weighty = 1;
-		DefaultListModel missionsList = new DefaultListModel();
+		DefaultListModel<Mission> missionsList = new DefaultListModel<Mission>();
 		for(Mission m : missions) {
 			missionsList.addElement(m);
 		}
-		warningPanel.add(new JScrollPane(new JList(missionsList)), c);
+		warningPanel.add(new JScrollPane(new JList<Mission>(missionsList)), c);
 		int answer = JOptionPane.showOptionDialog(missionsTab, 
 				warningPanel, 
 				"Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);

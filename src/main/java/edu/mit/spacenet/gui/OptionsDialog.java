@@ -56,7 +56,7 @@ public class OptionsDialog extends JDialog {
 	private JSpinner timeSpinner, demandSpinner, massSpinner, volumeSpinner;
 	private JCheckBox volumeConstrained, environmentConstrained;
 	
-	private JComboBox discretizationCombo;
+	private JComboBox<ItemDiscretization> discretizationCombo;
 	private JSlider aggregationSlider;
 	private JCheckBox scavengeSparesCheck;
 	
@@ -230,7 +230,7 @@ public class OptionsDialog extends JDialog {
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.BOTH;
-		discretizationCombo = new JComboBox();
+		discretizationCombo = new JComboBox<ItemDiscretization>();
 		discretizationCombo.setToolTipText("Discretize demands for items to integer values at the selected level");
 		for(ItemDiscretization t : ItemDiscretization.values()) {
 			discretizationCombo.addItem(t);

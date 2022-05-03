@@ -63,13 +63,14 @@ public class SpaceEdgeEditorPanel extends AbstractEdgeEditorPanel {
 	
 	private SpaceEdge edge;
 	
-	private JComboBox originCombo, destinationCombo;
+	private JComboBox<Node> originCombo;
+	private JComboBox<Node> destinationCombo;
 	private JTextField nameText;
 	private SpinnerNumberModel durationModel;
 	private JSpinner durationSpinner;
 	private JTextArea descriptionText;
-	private DefaultListModel burnListModel;
-	private JList burnList;
+	private DefaultListModel<Burn> burnListModel;
+	private JList<Burn> burnList;
 	private JButton addBurnButton, editBurnButton, removeBurnButton, 
 		moveBurnUpButton, moveBurnDownButton;
 	
@@ -119,7 +120,7 @@ public class SpaceEdgeEditorPanel extends AbstractEdgeEditorPanel {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		originCombo = new JComboBox();
+		originCombo = new JComboBox<Node>();
 		originCombo.setRenderer(new NodeListCellRenderer());
 		for(Node t : getDialog().getDialog().getDataSource().getNodeLibrary()) 
 			originCombo.addItem(t);
@@ -141,7 +142,7 @@ public class SpaceEdgeEditorPanel extends AbstractEdgeEditorPanel {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		destinationCombo = new JComboBox();
+		destinationCombo = new JComboBox<Node>();
 		destinationCombo.setRenderer(new NodeListCellRenderer());
 		for(Node t : getDialog().getDialog().getDataSource().getNodeLibrary()) 
 			destinationCombo.addItem(t);
@@ -186,8 +187,8 @@ public class SpaceEdgeEditorPanel extends AbstractEdgeEditorPanel {
 		c.gridwidth = 3;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.BOTH;
-		burnListModel = new DefaultListModel();
-		burnList = new JList(burnListModel);
+		burnListModel = new DefaultListModel<Burn>();
+		burnList = new JList<Burn>(burnListModel);
 		burnList.setCellRenderer(new BurnListCellRenderer());
 		burnList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
@@ -314,7 +315,7 @@ public class SpaceEdgeEditorPanel extends AbstractEdgeEditorPanel {
 	 * 
 	 * @return the burn list model
 	 */
-	public DefaultListModel getBurnListModel() {
+	public DefaultListModel<Burn> getBurnListModel() {
 		return burnListModel;
 	}
 	
@@ -323,7 +324,7 @@ public class SpaceEdgeEditorPanel extends AbstractEdgeEditorPanel {
 	 * 
 	 * @return the burn list
 	 */
-	public JList getBurnList() {
+	public JList<Burn> getBurnList() {
 		return burnList;
 	}
 	

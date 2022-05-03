@@ -53,7 +53,6 @@ public class Manifest {
 	private Map<SupplyEdge, DemandSet> aggregatedEdgeDemands;
 	private Map<Demand, Set<Demand>> demandsAsPacked;
 	private Map<I_ResourceContainer, Set<Demand>> packedDemands;
-	@Deprecated private Map<SupplyPoint, Set<I_ResourceContainer>> cachedContainerDemands;
 	private Map<SupplyEdge, Map<I_Carrier, Set<I_ResourceContainer>>> manifestedContainers;
 	
 	/**

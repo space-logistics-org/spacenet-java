@@ -74,7 +74,8 @@ public class EventDialog extends JDialog {
 	private SpinnerNumberModel timeModel;
 	private JSpinner timeSpinner;
 	private JTextField nameText;
-	private JComboBox priorityCombo, nodeCombo;
+	private JComboBox<Integer> priorityCombo;
+	private ContainerComboBox<Node> nodeCombo;
 	private JButton okButton, cancelButton;
 	
 	private AbstractEventPanel eventPanel;
@@ -181,7 +182,7 @@ public class EventDialog extends JDialog {
 		
 		c.gridy++;
 		c.fill = GridBagConstraints.NONE;
-		nodeCombo = new ContainerComboBox();
+		nodeCombo = new ContainerComboBox<Node>();
 		for(Node n : SpaceNetFrame.getInstance().getScenarioPanel().getScenario().getNetwork().getNodes()) {
 			nodeCombo.addItem(n);
 			if(n.equals(event.getLocation())) nodeCombo.setSelectedItem(n);
@@ -200,7 +201,7 @@ public class EventDialog extends JDialog {
 		c.gridx+=2;
 		c.weightx = 1;
 		c.fill = GridBagConstraints.NONE;
-		priorityCombo = new JComboBox();
+		priorityCombo = new JComboBox<Integer>();
 		priorityCombo.setPreferredSize(new Dimension(50,20));
 		priorityCombo.setToolTipText("Priority over concurrent events");
 		for(int i = 1; i <= 5; i++) priorityCombo.addItem(i);

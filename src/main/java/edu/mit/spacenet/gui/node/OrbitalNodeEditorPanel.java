@@ -50,7 +50,7 @@ public class OrbitalNodeEditorPanel extends AbstractNodeEditorPanel {
 	private OrbitalNode node;
 	
 	private JTextField nameText;
-	private JComboBox bodyCombo;
+	private JComboBox<Body> bodyCombo;
 	private SpinnerNumberModel inclinationModel, apoapsisModel, periapsisModel;
 	private JSpinner inclinationSpinner, apoapsisSpinner, periapsisSpinner;
 	private JTextArea descriptionText;
@@ -100,11 +100,13 @@ public class OrbitalNodeEditorPanel extends AbstractNodeEditorPanel {
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
 		c.gridwidth = 3;
-		bodyCombo= new JComboBox();
-		for(Body t : Body.values()) bodyCombo.addItem(t);
+		bodyCombo= new JComboBox<Body>();
+		for(Body t : Body.values()) {
+			bodyCombo.addItem(t);
+		}
 		bodyCombo.setRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = -1061418828847174455L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if(value!=null) setIcon(((Body)value).getIcon());

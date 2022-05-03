@@ -61,7 +61,8 @@ public class SurfaceTransportPanel extends AbstractEventPanel {
 	private SurfaceTransport event;
 	
 	private JLabel lblDestination, lblDistance, lblDuration;
-	private JComboBox ddlEdge, ddlState;
+	private ContainerComboBox<Edge> ddlEdge;
+	private JComboBox<I_State> ddlState;
 	private SpinnerNumberModel speedModel, dutyCycleModel;
 	private JSpinner speedSpinner, dutyCycleSpinner;
 	
@@ -105,7 +106,7 @@ public class SurfaceTransportPanel extends AbstractEventPanel {
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		ddlEdge = new ContainerComboBox();
+		ddlEdge = new ContainerComboBox<Edge>();
 		add(ddlEdge, c);
 		c.gridy++;
 		JPanel edgePanel = new JPanel();
@@ -128,10 +129,10 @@ public class SurfaceTransportPanel extends AbstractEventPanel {
 		c.gridy++;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		ddlState = new JComboBox();
+		ddlState = new JComboBox<I_State>();
 		ddlState.setRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 1271331296677711150L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if(value instanceof I_State)

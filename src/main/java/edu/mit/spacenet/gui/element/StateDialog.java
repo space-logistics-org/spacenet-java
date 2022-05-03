@@ -61,9 +61,9 @@ public class StateDialog extends JDialog {
 	private static final long serialVersionUID = -2572640622351398778L;
 	
 	private JTextField txtName;
-	private JComboBox ddlType;
-	private DefaultListModel demandModelsModel;
-	private JList demandModelsList;
+	private JComboBox<StateType> ddlType;
+	private DefaultListModel<I_DemandModel> demandModelsModel;
+	private JList<I_DemandModel> demandModelsList;
 	private JScrollPane demandModelsScroll;
 	private DropDownButton btnAddDemandModel;
 	private JMenuItem addTimedImpulseDemandModel, addRatedDemandModel, 
@@ -122,7 +122,7 @@ public class StateDialog extends JDialog {
 		
 		c.gridy++;
 		c.fill = GridBagConstraints.NONE;
-		ddlType = new JComboBox();
+		ddlType = new JComboBox<StateType>();
 		for(StateType t : StateType.values()) ddlType.addItem(t);
 		ddlType.setRenderer(new StateTypeListCellRenderer());
 		contentPanel.add(ddlType, c);
@@ -130,13 +130,13 @@ public class StateDialog extends JDialog {
 		c.gridy++;
 		c.fill = GridBagConstraints.BOTH;
 		c.weighty = 1;
-		demandModelsModel = new DefaultListModel();
-		demandModelsList = new JList(demandModelsModel);
+		demandModelsModel = new DefaultListModel<I_DemandModel>();
+		demandModelsList = new JList<I_DemandModel>(demandModelsModel);
 		demandModelsList.setCellRenderer(new DemandModelListCellRenderer());
 		demandModelsList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount()==2 && demandModelsList.getSelectedIndex()>=0) {
-					DemandModelDialog.createAndShowGUI(getThis(), (I_DemandModel)demandModelsList.getSelectedValue());
+					DemandModelDialog.createAndShowGUI(getThis(), demandModelsList.getSelectedValue());
 				}
 			}
 		});
@@ -199,7 +199,7 @@ public class StateDialog extends JDialog {
 		btnEditDemandModel.setToolTipText("Edit Demand Model");
 		btnEditDemandModel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DemandModelDialog.createAndShowGUI(getThis(), (I_DemandModel)demandModelsList.getSelectedValue());
+				DemandModelDialog.createAndShowGUI(getThis(), demandModelsList.getSelectedValue());
 			}
 		});
 		btnEditDemandModel.setEnabled(false);

@@ -47,7 +47,7 @@ public class ResourceTankPanel extends AbstractElementPanel {
 	
 	private ResourceTank tank;
 	
-	private JComboBox resourceCombo;
+	private JComboBox<I_Resource> resourceCombo;
 	private SpinnerNumberModel amountModel, maxAmountModel;
 	private JSpinner amountSpinner, maxAmountSpinner;
 	private UnitsWrapper amountWrapper, maxAmountWrapper;
@@ -90,7 +90,7 @@ public class ResourceTankPanel extends AbstractElementPanel {
 		c.weightx = 1;
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.LINE_START;
-		resourceCombo = new JComboBox();
+		resourceCombo = new JComboBox<I_Resource>();
 		for(I_Resource resource : SpaceNetFrame.getInstance().getScenarioPanel().getScenario().getDataSource().getResourceLibrary()) {
 			resourceCombo.addItem(resource);
 		}

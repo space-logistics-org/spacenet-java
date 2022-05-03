@@ -92,10 +92,10 @@ public class DemandTable extends JTable {
 	 */
 	public TableCellEditor getCellEditor(int row, int col) {
     	if(col==0) {
-    		JComboBox comboBox = new JComboBox();
+    		JComboBox<ResourceType> comboBox = new JComboBox<ResourceType>();
     		comboBox.setRenderer(new DefaultListCellRenderer() {
 				private static final long serialVersionUID = -8350081466318995133L;
-				public Component getListCellRendererComponent(JList list, Object value, 
+				public Component getListCellRendererComponent(JList<?> list, Object value, 
 						int index, boolean isSelected, boolean cellHasFocus) {
 					JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 					label.setIcon(((ResourceType)value).getIcon());
@@ -108,7 +108,7 @@ public class DemandTable extends JTable {
     		comboBox.setSelectedItem(getValueAt(row,col));
     		return new DefaultCellEditor(comboBox);
     	} else if(col == 1){
-	    	JComboBox comboBox = new JComboBox();
+	    	JComboBox<I_Resource> comboBox = new JComboBox<I_Resource>();
 	    	for(I_Resource r : resourceTypeList) {
 	    		if(this.getModel().getValueAt(row, 0).equals(ResourceType.RESOURCE)) {
 	    			if(r.getClass().equals(Resource.class))

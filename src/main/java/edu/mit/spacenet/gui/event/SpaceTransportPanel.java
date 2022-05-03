@@ -36,7 +36,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -80,7 +79,7 @@ public class SpaceTransportPanel extends AbstractEventPanel {
 	private SpaceTransport event;
 	
 	private JLabel lblDestination, lblDuration;
-	private JComboBox ddlTrajectory;
+	private ContainerComboBox<SpaceEdge> ddlTrajectory;
 	private JButton btnAddBurn, btnAddStage;
 	private JTabbedPane tabbedBurnPane;
 	
@@ -119,7 +118,7 @@ public class SpaceTransportPanel extends AbstractEventPanel {
 		c.gridx = 1;
 		c.gridy = 0;
 		c.weightx = 1;
-		ddlTrajectory = new ContainerComboBox();
+		ddlTrajectory = new ContainerComboBox<SpaceEdge>();
 		add(ddlTrajectory, c);
 		c.gridy++;
 		JPanel trajectoryPanel = new JPanel();
@@ -277,7 +276,7 @@ public class SpaceTransportPanel extends AbstractEventPanel {
 		for(Edge e : SpaceNetFrame.getInstance().getScenarioPanel().getScenario().getNetwork().getEdges()) {
 			if(e.getOrigin().equals(getEventDialog().getNode())
 					&& e instanceof SpaceEdge) {
-				ddlTrajectory.addItem(e);
+				ddlTrajectory.addItem((SpaceEdge) e);
 				if(e.equals(trajectory)) {
 					ddlTrajectory.setSelectedItem(e);
 				}
@@ -323,8 +322,8 @@ public class SpaceTransportPanel extends AbstractEventPanel {
 		private static final long serialVersionUID = -2491575968761743630L;
 		public JProgressBar deltaV;
 		public JLabel stackMassLabel;
-		public DefaultListModel sequenceModel;
-		public JList sequenceList;
+		public DefaultListModel<BurnStageItem> sequenceModel;
+		public JList<BurnStageItem> sequenceList;
 		public JScrollPane sequenceScroll;
 		public JButton btnClear;
 		
@@ -363,12 +362,12 @@ public class SpaceTransportPanel extends AbstractEventPanel {
 			c.gridy++;
 			c.weighty = 1;
 			c.fill = GridBagConstraints.BOTH;
-			sequenceModel = new DefaultListModel();
-			sequenceList = new JList(sequenceModel);
+			sequenceModel = new DefaultListModel<BurnStageItem>();
+			sequenceList = new JList<BurnStageItem>(sequenceModel);
 			sequenceList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			sequenceList.setCellRenderer(new DefaultListCellRenderer() {
 				private static final long serialVersionUID = 1271331296677711150L;
-				public Component getListCellRendererComponent(JList list, Object value, 
+				public Component getListCellRendererComponent(JList<?> list, Object value, 
 						int index, boolean isSelected, boolean cellHasFocus) {
 					JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 					if(((BurnStageItem)value).getBurnStage().equals(BurnStageItem.BURN)) {
@@ -403,7 +402,7 @@ public class SpaceTransportPanel extends AbstractEventPanel {
 			BurnPanel panel = new BurnPanel();
 			panel.btnClear.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					for(Object o : ((BurnPanel)tabbedBurnPane.getSelectedComponent()).sequenceList.getSelectedValues())
+					for(BurnStageItem o : ((BurnPanel)tabbedBurnPane.getSelectedComponent()).sequenceList.getSelectedValuesList())
 						((BurnPanel)tabbedBurnPane.getSelectedComponent()).sequenceModel.removeElement(o);
 					updateView();
 				}

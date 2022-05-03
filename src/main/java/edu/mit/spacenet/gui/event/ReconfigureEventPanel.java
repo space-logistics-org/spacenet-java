@@ -45,7 +45,8 @@ public class ReconfigureEventPanel extends AbstractEventPanel {
 	private ReconfigureEvent event;
 	
 	private ElementTree elementTree;
-	private JComboBox ddlCurrentState, ddlNewState;
+	private JComboBox<I_State> ddlCurrentState;
+	private JComboBox<I_State> ddlNewState;
 	
 	/**
 	 * Instantiates a new reconfigure event panel.
@@ -86,10 +87,10 @@ public class ReconfigureEventPanel extends AbstractEventPanel {
 		c.gridy++;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		ddlCurrentState = new JComboBox();
+		ddlCurrentState = new JComboBox<I_State>();
 		ddlCurrentState.setRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 1271331296677711150L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if(value instanceof I_State)
@@ -100,10 +101,10 @@ public class ReconfigureEventPanel extends AbstractEventPanel {
 		ddlCurrentState.setEnabled(false);
 		add(ddlCurrentState, c);
 		c.gridy++;
-		ddlNewState = new JComboBox();
+		ddlNewState = new JComboBox<I_State>();
 		ddlNewState.setRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 1271331296677711150L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if(value instanceof I_State)

@@ -78,14 +78,16 @@ public class DemandsTab extends JSplitPane {
 	private static String TAB_DELIMITED = "Tab Delimited";
 
 	private JPanel controlPanel;
-	private JComboBox discretizationCombo;
+	private JComboBox<ItemDiscretization> discretizationCombo;
 	private JSlider aggregationSlider;
 	private JCheckBox scavengeSparesCheck, packingDemandsCheck, demandsSatisfiedCheck;
 	
 	private JTextField directoryPathText, fileNameText;
 	private JCheckBox overwriteCheck;
 	private JButton browseButton, exportButton;
-	private JComboBox demandsCombo, referenceCombo, delimiterCombo;
+	private JComboBox<String> demandsCombo;
+	private JComboBox<String> referenceCombo;
+	private JComboBox<String> delimiterCombo;
 	private JFileChooser directoryChooser;
 	private ExportWorker exportWorker;
 	
@@ -217,7 +219,7 @@ public class DemandsTab extends JSplitPane {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.BOTH;
-		discretizationCombo = new JComboBox();
+		discretizationCombo = new JComboBox<ItemDiscretization>();
 		discretizationCombo.setToolTipText("Discretize demands for items to integer values at the selected level");
 		for(ItemDiscretization t : ItemDiscretization.values()) {
 			discretizationCombo.addItem(t);
@@ -376,17 +378,17 @@ public class DemandsTab extends JSplitPane {
 		overwriteCheck = new JCheckBox("Overwrite existing files", false);
 		exportPanel.add(overwriteCheck, c);
 		c.gridy++;
-		demandsCombo = new JComboBox();
+		demandsCombo = new JComboBox<String>();
 		demandsCombo.addItem(RAW_DEMANDS);
 		demandsCombo.addItem(AGGREGATED_DEMANDS);
 		exportPanel.add(demandsCombo, c);
 		c.gridy++;
-		referenceCombo = new JComboBox();
+		referenceCombo = new JComboBox<String>();
 		referenceCombo.addItem(ID_OUTPUT);
 		referenceCombo.addItem(NAME_OUTPUT);
 		exportPanel.add(referenceCombo, c);
 		c.gridy++;
-		delimiterCombo = new JComboBox();
+		delimiterCombo = new JComboBox<String>();
 		delimiterCombo.addItem(TAB_DELIMITED);
 		delimiterCombo.addItem(COMMA_DELIMITED);
 		delimiterCombo.addItem(SEMICOLON_DELIMITED);

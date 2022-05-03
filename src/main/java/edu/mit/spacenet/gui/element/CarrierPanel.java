@@ -43,7 +43,7 @@ public class CarrierPanel extends AbstractElementPanel {
 	
 	private JSpinner maxCrewSpinner, maxCargoMassSpinner, maxCargoVolumeSpinner;
 	private SpinnerNumberModel maxCargoMassModel, maxCargoVolumeModel, maxCrewModel;
-	private JComboBox cargoEnvironmentCombo;
+	private JComboBox<Environment> cargoEnvironmentCombo;
 	
 	/**
 	 * Instantiates a new carrier panel.
@@ -83,7 +83,7 @@ public class CarrierPanel extends AbstractElementPanel {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		cargoEnvironmentCombo = new JComboBox();
+		cargoEnvironmentCombo = new JComboBox<Environment>();
 		for(Environment e : Environment.values()) {
 			cargoEnvironmentCombo.addItem(e);
 		}

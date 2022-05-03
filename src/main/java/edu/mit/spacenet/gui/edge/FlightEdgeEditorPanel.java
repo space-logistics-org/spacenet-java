@@ -50,7 +50,8 @@ public class FlightEdgeEditorPanel extends AbstractEdgeEditorPanel {
 	
 	private FlightEdge edge;
 
-	private JComboBox originCombo, destinationCombo;
+	private JComboBox<Node> originCombo;
+	private JComboBox<Node> destinationCombo;
 	private JTextField nameText;
 	private SpinnerNumberModel durationModel, maxCargoModel, maxCrewModel;
 	private JSpinner durationSpinner, maxCargoSpinner, maxCrewSpinner;
@@ -102,7 +103,7 @@ public class FlightEdgeEditorPanel extends AbstractEdgeEditorPanel {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		originCombo = new JComboBox();
+		originCombo = new JComboBox<Node>();
 		originCombo.setRenderer(new NodeListCellRenderer());
 		for(Node t : getDialog().getDialog().getDataSource().getNodeLibrary()) 
 			originCombo.addItem(t);
@@ -124,7 +125,7 @@ public class FlightEdgeEditorPanel extends AbstractEdgeEditorPanel {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.NONE;
-		destinationCombo = new JComboBox();
+		destinationCombo = new JComboBox<Node>();
 		destinationCombo.setRenderer(new NodeListCellRenderer());
 		for(Node t : getDialog().getDialog().getDataSource().getNodeLibrary()) 
 			destinationCombo.addItem(t);

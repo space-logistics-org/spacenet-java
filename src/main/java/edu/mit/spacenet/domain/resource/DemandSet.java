@@ -29,7 +29,6 @@ import edu.mit.spacenet.util.GlobalParameters;
  * @author Paul Grogan
  */
 public class DemandSet implements Iterable<Demand> {
-	private static final long serialVersionUID = 153270744123011256L;
 	private SortedSet<Demand> demands;
 	
 	/**

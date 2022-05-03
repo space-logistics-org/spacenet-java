@@ -75,12 +75,12 @@ public class BurnEventPanel extends AbstractEventPanel {
 	
 	private BurnEvent event;
 	
-	private JComboBox ddlBurnType;
+	private JComboBox<BurnType> ddlBurnType;
 	private SpinnerNumberModel burnDeltaVModel;
 	private JSpinner burnDeltaVSpinner;
 	private JButton btnAddBurn, btnAddStage, btnClear;
-	private DefaultListModel sequenceModel;
-	private JList sequenceList;
+	private DefaultListModel<BurnStageItem> sequenceModel;
+	private JList<BurnStageItem> sequenceList;
 	private JProgressBar deltaV;
 	private JLabel stackMassLabel;
 	
@@ -114,7 +114,7 @@ public class BurnEventPanel extends AbstractEventPanel {
 		c.gridx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.gridy = 0;
-		ddlBurnType = new JComboBox();
+		ddlBurnType = new JComboBox<BurnType>();
 		for(BurnType t : BurnType.values())
 			ddlBurnType.addItem(t);
 		add(ddlBurnType, c);
@@ -187,11 +187,11 @@ public class BurnEventPanel extends AbstractEventPanel {
 		c.weightx = 1;
 		c.anchor = GridBagConstraints.LINE_START;
 		c.fill = GridBagConstraints.BOTH;
-		sequenceModel = new DefaultListModel();
-		sequenceList = new JList(sequenceModel);
+		sequenceModel = new DefaultListModel<BurnStageItem>();
+		sequenceList = new JList<BurnStageItem>(sequenceModel);
 		sequenceList.setCellRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 1271331296677711150L;
-			public Component getListCellRendererComponent(JList list, Object value, 
+			public Component getListCellRendererComponent(JList<?> list, Object value, 
 					int index, boolean isSelected, boolean cellHasFocus) {
 				JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 				if(((BurnStageItem)value).getBurnStage().equals(BurnStageItem.BURN)) {
@@ -289,7 +289,7 @@ public class BurnEventPanel extends AbstractEventPanel {
 		});
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				for(Object o : sequenceList.getSelectedValues())
+				for(BurnStageItem o : sequenceList.getSelectedValuesList())
 					sequenceModel.removeElement(o);
 				updateView();
 			}

@@ -15,16 +15,16 @@ import edu.mit.spacenet.simulator.event.I_Event;
 
 public abstract class Event {
   public static final BiMap<String, EventType> TYPE_MAP =
-      new ImmutableBiMap.Builder<String, EventType>().put("Create Elements", EventType.CREATE)
-          .put("Add Resources", EventType.ADD).put("Move Elements", EventType.MOVE)
-          .put("Transfer Resources", EventType.TRANSFER).put("Remove Elements", EventType.REMOVE)
-          .put("Reconfigure Element", EventType.RECONFIGURE)
-          .put("Reconfigure Group", EventType.RECONFIGURE_GROUP)
-          .put("Consume Resources", EventType.DEMAND).put("Propulsive Burn", EventType.BURN)
-          .put("Crewed EVA", EventType.EVA).put("Crewed Exploration", EventType.EXPLORATION)
-          .put("Space Transport", EventType.SPACE_TRANSPORT)
-          .put("Surface Transport", EventType.SURFACE_TRANSPORT)
-          .put("Flight Transport", EventType.FLIGHT_TRANSPORT).build();
+      new ImmutableBiMap.Builder<String, EventType>().put("CreateElements", EventType.CREATE)
+          .put("AddResources", EventType.ADD).put("MoveElements", EventType.MOVE)
+          .put("TransferResources", EventType.TRANSFER).put("RemoveElements", EventType.REMOVE)
+          .put("ReconfigureElement", EventType.RECONFIGURE)
+          .put("ReconfigureGroup", EventType.RECONFIGURE_GROUP)
+          .put("ConsumeResources", EventType.DEMAND).put("PropulsiveBurn", EventType.BURN)
+          .put("CrewedEVA", EventType.EVA).put("CrewedExploration", EventType.EXPLORATION)
+          .put("SpaceTransport", EventType.SPACE_TRANSPORT)
+          .put("SurfaceTransport", EventType.SURFACE_TRANSPORT)
+          .put("FlightTransport", EventType.FLIGHT_TRANSPORT).build();
 
   protected String name;
   protected Integer priority;

@@ -110,11 +110,19 @@ public class ResourceContainer extends Element {
     e.setEnvironment(
         Environment.getInstance(environment == null ? template.environment : environment));
     e.setIconType(ElementIcon.getInstance(icon == null && template != null ? template.icon : icon));
-    e.setStates(
-        State.toSpaceNet(e, states == null ? State.clone(template.states) : states, context));
-    if (currentStateIndex != null || (template != null && template.currentStateIndex != null)) {
-      e.setCurrentState(new ArrayList<I_State>(e.getStates())
-          .get(currentStateIndex == null ? template.currentStateIndex : currentStateIndex));
+    List<State> _states = states;
+    if (states == null) {
+      _states = State.clone(template.states);
+    }
+    e.setStates(State.toSpaceNet(e, states == null ? _states : states, context));
+    if (currentStateIndex == null) {
+      if (template != null && template.currentStateIndex != null) {
+        e.setCurrentState(
+            (I_State) context.getJavaObjectFromJsonId(_states.get(template.currentStateIndex).id));
+      }
+    } else {
+      e.setCurrentState(
+          (I_State) context.getJavaObjectFromJsonId(_states.get(currentStateIndex).id));
     }
     e.setParts(Part.toSpaceNet(parts == null ? template.parts : parts, context));
 

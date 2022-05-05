@@ -2,13 +2,14 @@ package edu.mit.spacenet.io.gson.scenario;
 
 import java.time.Duration;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
-
 import org.threeten.extra.PeriodDuration;
-
 import edu.mit.spacenet.domain.element.I_Carrier;
 import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.element.I_State;
@@ -18,8 +19,7 @@ public class Exploration extends Event {
   protected PeriodDuration duration;
   protected Double evaPerWeek;
   protected PeriodDuration evaDuration;
-  protected List<UUID> elements;
-  protected List<UUID> states;
+  protected Map<UUID, Integer> elementStates;
   protected List<Resource> additionalDemands;
 
   public static Exploration createFrom(edu.mit.spacenet.simulator.event.ExplorationProcess event,
@@ -37,8 +37,15 @@ public class Exploration extends Event {
     e.evaDuration =
         PeriodDuration.of(Period.ofDays((int) event.getEvaDuration()), Duration.ofSeconds(
             (long) ((event.getEvaDuration() - (int) event.getEvaDuration()) * 24 * 60 * 60)));
-    e.elements = context.getJsonIdsFromJavaObjects(event.getStateMap().keySet());
-    e.states = context.getJsonIdsFromJavaObjects(event.getStateMap().values());
+    e.elementStates = new HashMap<UUID, Integer>();
+    for (I_Element element : event.getStateMap().keySet()) {
+      if (event.getStateMap().get(element) == null) {
+        e.elementStates.put(context.getJsonIdFromJavaObject(element), null);
+      } else {
+        e.elementStates.put(context.getJsonIdFromJavaObject(element),
+            new ArrayList<I_State>(element.getStates()).indexOf(event.getStateMap().get(element)));
+      }
+    }
     e.additionalDemands = Resource.createFrom(event.getDemands(), context);
     return e;
   }
@@ -55,9 +62,15 @@ public class Exploration extends Event {
         (edu.mit.spacenet.domain.network.Location) context.getJavaObjectFromJsonId(location));
     e.setVehicle((I_Carrier) context.getJavaObjectFromJsonId(vehicle));
     SortedMap<I_Element, I_State> stateMap = new TreeMap<I_Element, I_State>();
-    for (int i = 0; i < elements.size(); i++) {
-      stateMap.put((I_Element) context.getJavaObjectFromJsonId(elements.get(i)),
-          (I_State) context.getJavaObjectFromJsonId(states.get(i)));
+    for (UUID element : elementStates.keySet()) {
+      if (elementStates.get(element) == null) {
+        stateMap.put((I_Element) context.getJavaObjectFromJsonId(element), null);
+      } else {
+        stateMap.put((I_Element) context.getJavaObjectFromJsonId(element),
+            (I_State) context
+                .getJavaObjectFromJsonId(((Element) context.getJsonObject(element)).states
+                    .get(elementStates.get(element)).id));
+      }
     }
     e.setStateMap(stateMap);
     e.setDuration(

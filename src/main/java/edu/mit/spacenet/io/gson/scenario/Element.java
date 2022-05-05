@@ -150,8 +150,8 @@ public class Element implements Cloneable {
     e.setStates(
         State.toSpaceNet(e, states == null ? State.clone(template.states) : states, context));
     if (currentStateIndex != null || (template != null && template.currentStateIndex != null)) {
-      e.setCurrentState(new ArrayList<I_State>(e.getStates())
-          .get(currentStateIndex == null ? template.currentStateIndex : currentStateIndex));
+      e.setCurrentState((I_State) context.getJavaObjectFromJsonId(states
+          .get(currentStateIndex == null ? template.currentStateIndex : currentStateIndex).id));
     }
     e.setParts(Part.toSpaceNet(parts == null ? template.parts : parts, context));
     return e;

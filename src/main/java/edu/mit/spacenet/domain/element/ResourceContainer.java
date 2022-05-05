@@ -267,16 +267,9 @@ public class ResourceContainer extends Element implements I_ResourceContainer {
           }
         }
       } else { // production
-        // TODO need to check for resource compatibility (e.g. water in water tanks)
-        boolean containsResource = false;
-        for (I_Resource resource : contents.keySet())
-          if (resource.equals(demand.getResource()))
-            containsResource = true;
-        if (!containsResource)
-          contents.put(demand.getResource(), 0d);
+        // only produce resources in containers that have the same resource
         for (I_Resource resource : contents.keySet()) {
           if (resource.equals(demand.getResource())) {
-            containsResource = true;
             if (-demand.getAmount() > getMaxCargoMass() - getCargoMass()) {
               demand.setAmount(demand.getAmount() + (getMaxCargoMass() - getCargoMass()));
               contents.put(resource, contents.get(resource) + getMaxCargoMass() - getCargoMass());

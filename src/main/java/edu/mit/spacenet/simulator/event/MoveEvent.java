@@ -1,17 +1,15 @@
 /*
  * Copyright 2010 MIT Strategic Engineering Research Group
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package edu.mit.spacenet.simulator.event;
 
@@ -32,104 +30,106 @@ import edu.mit.spacenet.simulator.SimWarning;
  * @author Paul Grogan
  */
 public class MoveEvent extends AbstractEvent {
-	private SortedSet<I_Element> elements;
-	private I_Container container;
-	
-	/**
-	 * Instantiates a new move event.
-	 */
-	public MoveEvent() {
-		super();
-		this.elements = new TreeSet<I_Element>();
-	}
-	
-	/* (non-Javadoc)
-	 * @see edu.mit.spacenet.domain.event.I_Event#execute(edu.mit.spacenet.simulator.I_Simulator)
-	 */
-	public void execute(I_Simulator simulator) throws SimError {
-		if(container == null) {
-			simulator.getWarnings().add(new SimWarning(simulator.getTime(), this, 
-					"No container defined, defaulting to " + getLocation() + "."));
-			container = getLocation();
-		}
-		if(container instanceof I_Carrier 
-				&& ((I_Carrier)container).getLocation()==null) {
-			throw new SimSpatialError(simulator.getTime(), this, 
-					container + " was not found.");
-		}
-		
-		if(elements.size() == 0) {
-			simulator.getWarnings().add(new SimWarning(simulator.getTime(), this, 
-				"No elements defined."));
-		} else {
-			System.out.printf("%.3f: %s\n", 
-					getTime(), "Transferring " + elements + " to " + container);
-			for(I_Element element : elements) {
-				if(element.getLocation()==null) {
-					throw new SimSpatialError(simulator.getTime(), this, 
-							element + " was not found.");
-				} else if(!getLocation().equals(element.getLocation())) {
-					throw new SimSpatialError(simulator.getTime(), this, 
-							element + " is located at " + element.getLocation() + " instead of " + getLocation() + ".");
-				} else if(container.add(element)) {
-					// successful for element 'element'
-				} else {
-					throw new SimSpatialError(simulator.getTime(), this, 
-							element + " could not be added to " + container + ".");
-				}
-			}
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see edu.mit.spacenet.domain.event.AbstractEvent#print(int)
-	 */
-	@Override
-	public void print(int tabOrder) {
-		super.print(tabOrder);
-		System.out.println("Move Event for " + elements.toString() + " -> " + container.getName());
-	}
-	
-	/**
-	 * Gets the elements.
-	 * 
-	 * @return the elements
-	 */
-	public SortedSet<I_Element> getElements() {
-		return elements;
-	}
-	
-	/**
-	 * Sets the elements.
-	 * 
-	 * @param elements the new elements
-	 */
-	public void setElements(SortedSet<I_Element> elements) {
-		this.elements = elements;
-	}
-	
-	/**
-	 * Gets the container.
-	 * 
-	 * @return the container
-	 */
-	public I_Container getContainer() {
-		return container;
-	}
-	
-	/**
-	 * Sets the container.
-	 * 
-	 * @param container the new container
-	 */
-	public void setContainer(I_Container container) {
-		this.container = container;
-	}
-	
-	/* (non-Javadoc)
-	 * @see edu.mit.spacenet.domain.event.I_Event#getEventType()
-	 */
-	public EventType getEventType() {
-		return EventType.MOVE;
-	}
+  private SortedSet<I_Element> elements;
+  private I_Container container;
+
+  /**
+   * Instantiates a new move event.
+   */
+  public MoveEvent() {
+    super();
+    this.elements = new TreeSet<I_Element>();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see edu.mit.spacenet.domain.event.I_Event#execute(edu.mit.spacenet.simulator.I_Simulator)
+   */
+  public void execute(I_Simulator simulator) throws SimError {
+    if (container == null) {
+      simulator.getWarnings().add(new SimWarning(simulator.getTime(), this,
+          "No container defined, defaulting to " + getLocation() + "."));
+      container = getLocation();
+    }
+    if (container instanceof I_Carrier && ((I_Carrier) container).getLocation() == null) {
+      throw new SimSpatialError(simulator.getTime(), this, container + " was not found.");
+    }
+
+    if (elements.size() == 0) {
+      simulator.getWarnings()
+          .add(new SimWarning(simulator.getTime(), this, "No elements defined."));
+    } else {
+      System.out.printf("%.3f: %s\n", getTime(), "Transferring " + elements + " to " + container);
+      for (I_Element element : elements) {
+        if (element.getLocation() == null) {
+          throw new SimSpatialError(simulator.getTime(), this, element + " was not found.");
+        } else if (!getLocation().equals(element.getLocation())) {
+          throw new SimSpatialError(simulator.getTime(), this, element + " is located at "
+              + element.getLocation() + " instead of " + getLocation() + ".");
+        } else if (container.add(element)) {
+          // successful for element 'element'
+        } else {
+          throw new SimSpatialError(simulator.getTime(), this,
+              element + " could not be added to " + container + ".");
+        }
+      }
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see edu.mit.spacenet.domain.event.AbstractEvent#print(int)
+   */
+  @Override
+  public void print(int tabOrder) {
+    super.print(tabOrder);
+    System.out.println("Move Event for " + elements.toString() + " -> " + container.getName());
+  }
+
+  /**
+   * Gets the elements.
+   * 
+   * @return the elements
+   */
+  public SortedSet<I_Element> getElements() {
+    return elements;
+  }
+
+  /**
+   * Sets the elements.
+   * 
+   * @param elements the new elements
+   */
+  public void setElements(SortedSet<I_Element> elements) {
+    this.elements = elements;
+  }
+
+  /**
+   * Gets the container.
+   * 
+   * @return the container
+   */
+  public I_Container getContainer() {
+    return container;
+  }
+
+  /**
+   * Sets the container.
+   * 
+   * @param container the new container
+   */
+  public void setContainer(I_Container container) {
+    this.container = container;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see edu.mit.spacenet.domain.event.I_Event#getEventType()
+   */
+  public EventType getEventType() {
+    return EventType.MOVE;
+  }
 }

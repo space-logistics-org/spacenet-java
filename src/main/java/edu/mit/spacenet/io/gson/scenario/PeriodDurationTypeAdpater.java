@@ -12,29 +12,29 @@ import com.google.gson.stream.JsonWriter;
 
 public final class PeriodDurationTypeAdpater extends TypeAdapter<PeriodDuration> {
 
-	@Override
-	public void write(JsonWriter out, PeriodDuration duration) throws IOException {
-		if (duration == null) {
-			out.nullValue();
-		} else {
-			String value = duration.toString();
-			out.value(value);
-		}
-	}
+  @Override
+  public void write(JsonWriter out, PeriodDuration duration) throws IOException {
+    if (duration == null) {
+      out.nullValue();
+    } else {
+      String value = duration.toString();
+      out.value(value);
+    }
+  }
 
-	@Override
-	public PeriodDuration read(JsonReader in) throws IOException {
-		try {
-			switch (in.peek()) {
-			case NULL:
-				in.nextNull();
-				return null;
-			default:
-				String duration = in.nextString();
-				return PeriodDuration.parse(duration);
-			}
-		} catch (DateTimeParseException e) {
-			throw new JsonParseException(e);
-		}
-	}
+  @Override
+  public PeriodDuration read(JsonReader in) throws IOException {
+    try {
+      switch (in.peek()) {
+        case NULL:
+          in.nextNull();
+          return null;
+        default:
+          String duration = in.nextString();
+          return PeriodDuration.parse(duration);
+      }
+    } catch (DateTimeParseException e) {
+      throw new JsonParseException(e);
+    }
+  }
 }

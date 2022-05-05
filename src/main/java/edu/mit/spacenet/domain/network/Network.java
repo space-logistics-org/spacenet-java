@@ -1,17 +1,15 @@
 /*
  * Copyright 2010 MIT Strategic Engineering Research Group
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package edu.mit.spacenet.domain.network;
 
@@ -36,195 +34,198 @@ import edu.mit.spacenet.domain.network.node.Node;
  * @author Paul Grogan
  */
 public class Network {
-	private SortedSet<Node> nodes;
-	private SortedSet<Edge> edges;
-	private SortedMap<Integer, I_Element> registrar;
-	private SortedMap<Integer, I_Element> removedRegistrar;
-	
-	/**
-	 * Default constructor that initializes the structures for the nodes and
-	 * edges.
-	 */
-	public Network() {
-		nodes = new TreeSet<Node>();
-		edges = new TreeSet<Edge>();
-		registrar = new TreeMap<Integer, I_Element>();
-		removedRegistrar = new TreeMap<Integer, I_Element>();
-	}
-	
-	/**
-	 * Gets the set of nodes.
-	 * 
-	 * @return the set of nodes
-	 */
-	public SortedSet<Node> getNodes() {
-		return nodes;
-	}
-	
-	/**
-	 * Gets a node by its type identifier.
-	 * 
-	 * @param tid the node's type identifier (primary key)
-	 * 
-	 * @return the node, or null if not found
-	 */
-	public Node getNodeByTid(int tid) {
-		Node node = null;
-		for(Node n : nodes) {
-			if(n.getTid() == tid) {
-				node = n;
-				break;
-			}
-		}
-		return node;
-	}
-	
-	/**
-	 * Gets the set of edges.
-	 * 
-	 * @return the set of edges
-	 */
-	public SortedSet<Edge> getEdges() {
-		return edges;
-	}
-	
-	/**
-	 * Gets an edge by its type identifier.
-	 * 
-	 * @param tid the edge's type identifier (primary key)
-	 * 
-	 * @return the edge, or null if not found
-	 */
-	public Edge getEdgeByTid(int tid) {
-		Edge edge = null;
-		for(Edge e : edges) { 
-			if(e.getTid() == tid) { 
-				edge = e; 
-				break;
-			}
-		}
-		return edge;
-	}
-	
-	/**
-	 * Adds a network component (node or edge) to the network. In the case of an
-	 * edge, the origin and destination node must exist in the network to be
-	 * successful.
-	 * 
-	 * @param c the network component
-	 * 
-	 * @return true, if successful, false otherwise
-	 */
-	public boolean add(Location c) {
-		if(c instanceof Node) return nodes.add((Node)c);
-		else {
-			Edge e = (Edge)c;
-			if(nodes.contains(e.getOrigin()) && nodes.contains(e.getDestination()))
-				return edges.add(e);	
-			else return false;
-		}
-	}
-	
-	/**
-	 * Removes a network component (node or edge) from the network. In the case
-	 * of a node, it will also remove all associated edges from the network.
-	 * 
-	 * @param n the network component
-	 * 
-	 * @return true, if successful, false otherwise
-	 */
-	public boolean remove(Location n) {
-		if(n instanceof Node) {
-			Set<Edge> edgesToRemove = new HashSet<Edge>();
-			for(Edge e : edges) {
-				if(e.getOrigin().equals(n) || e.getDestination().equals(n))
-					edgesToRemove.add(e);
-			}
-			for(Edge e : edgesToRemove) {
-				edges.remove(e);
-			}
-			return nodes.remove((Node)n);
-		}
-		else return edges.remove((Edge)n);
-	}
-	
-	/**
-	 * Gets the locations.
-	 * 
-	 * @return the locations
-	 */
-	public List<Location> getLocations() {
-		ArrayList<Location> locations = new ArrayList<Location>();
-		for(Node node : getNodes()) {
-			locations.add(node);
-		}
-		for(Edge edge : getEdges()) {
-			locations.add(edge);
-		}
-		Collections.sort(locations);
-		return locations;
-	}
-	
-	/**
-	 * Gets the registry of elements.
-	 * 
-	 * @return the element registry
-	 */
-	public SortedMap<Integer, I_Element> getRegistrar() {
-		return registrar;
-	}
-	
-	/**
-	 * Gets the registry of removed elements.
-	 *
-	 * @return the removed element registry
-	 */
-	public SortedMap<Integer, I_Element> getRemovedRegistrar() {
-		if(removedRegistrar==null) removedRegistrar = new TreeMap<Integer, I_Element>();
-		return removedRegistrar;
-	}
-	
-	/**
-	 * Gets the contents of.
-	 * 
-	 * @param container the container
-	 * 
-	 * @return the contents of
-	 */
-	public SortedSet<I_Element> getContentsOf(I_Container container) {
-		TreeSet<I_Element> elements = new TreeSet<I_Element>();
-		for(I_Element element : getRegistrar().values()) {
-			if(element.getContainer().equals(container)) elements.add(element);
-		}
-		return elements;
-	}
-	
-	/**
-	 * Gets the complete contents of.
-	 * 
-	 * @param location the location
-	 * 
-	 * @return the complete contents of
-	 */
-	public SortedSet<I_Element> getCompleteContentsOf(Location location) {
-		TreeSet<I_Element> elements = new TreeSet<I_Element>();
-		for(I_Element element : getRegistrar().values()) {
-			if(element.getLocation().equals(location)) elements.add(element);
-		}
-		return elements;
-	}
-	
-	/**
-	 * Prints a network representation to console.
-	 */
-	public void print() {
-		System.out.println("Network Nodes");
-		for(Node n : nodes) {
-			n.print(1);
-		}
-		System.out.println("Network Edges");
-		for(Edge e : edges) {
-			e.print(1);
-		}
-	}
+  private SortedSet<Node> nodes;
+  private SortedSet<Edge> edges;
+  private SortedMap<Integer, I_Element> registrar;
+  private SortedMap<Integer, I_Element> removedRegistrar;
+
+  /**
+   * Default constructor that initializes the structures for the nodes and edges.
+   */
+  public Network() {
+    nodes = new TreeSet<Node>();
+    edges = new TreeSet<Edge>();
+    registrar = new TreeMap<Integer, I_Element>();
+    removedRegistrar = new TreeMap<Integer, I_Element>();
+  }
+
+  /**
+   * Gets the set of nodes.
+   * 
+   * @return the set of nodes
+   */
+  public SortedSet<Node> getNodes() {
+    return nodes;
+  }
+
+  /**
+   * Gets a node by its type identifier.
+   * 
+   * @param tid the node's type identifier (primary key)
+   * 
+   * @return the node, or null if not found
+   */
+  public Node getNodeByTid(int tid) {
+    Node node = null;
+    for (Node n : nodes) {
+      if (n.getTid() == tid) {
+        node = n;
+        break;
+      }
+    }
+    return node;
+  }
+
+  /**
+   * Gets the set of edges.
+   * 
+   * @return the set of edges
+   */
+  public SortedSet<Edge> getEdges() {
+    return edges;
+  }
+
+  /**
+   * Gets an edge by its type identifier.
+   * 
+   * @param tid the edge's type identifier (primary key)
+   * 
+   * @return the edge, or null if not found
+   */
+  public Edge getEdgeByTid(int tid) {
+    Edge edge = null;
+    for (Edge e : edges) {
+      if (e.getTid() == tid) {
+        edge = e;
+        break;
+      }
+    }
+    return edge;
+  }
+
+  /**
+   * Adds a network component (node or edge) to the network. In the case of an edge, the origin and
+   * destination node must exist in the network to be successful.
+   * 
+   * @param c the network component
+   * 
+   * @return true, if successful, false otherwise
+   */
+  public boolean add(Location c) {
+    if (c instanceof Node)
+      return nodes.add((Node) c);
+    else {
+      Edge e = (Edge) c;
+      if (nodes.contains(e.getOrigin()) && nodes.contains(e.getDestination()))
+        return edges.add(e);
+      else
+        return false;
+    }
+  }
+
+  /**
+   * Removes a network component (node or edge) from the network. In the case of a node, it will
+   * also remove all associated edges from the network.
+   * 
+   * @param n the network component
+   * 
+   * @return true, if successful, false otherwise
+   */
+  public boolean remove(Location n) {
+    if (n instanceof Node) {
+      Set<Edge> edgesToRemove = new HashSet<Edge>();
+      for (Edge e : edges) {
+        if (e.getOrigin().equals(n) || e.getDestination().equals(n))
+          edgesToRemove.add(e);
+      }
+      for (Edge e : edgesToRemove) {
+        edges.remove(e);
+      }
+      return nodes.remove((Node) n);
+    } else
+      return edges.remove((Edge) n);
+  }
+
+  /**
+   * Gets the locations.
+   * 
+   * @return the locations
+   */
+  public List<Location> getLocations() {
+    ArrayList<Location> locations = new ArrayList<Location>();
+    for (Node node : getNodes()) {
+      locations.add(node);
+    }
+    for (Edge edge : getEdges()) {
+      locations.add(edge);
+    }
+    Collections.sort(locations);
+    return locations;
+  }
+
+  /**
+   * Gets the registry of elements.
+   * 
+   * @return the element registry
+   */
+  public SortedMap<Integer, I_Element> getRegistrar() {
+    return registrar;
+  }
+
+  /**
+   * Gets the registry of removed elements.
+   *
+   * @return the removed element registry
+   */
+  public SortedMap<Integer, I_Element> getRemovedRegistrar() {
+    if (removedRegistrar == null)
+      removedRegistrar = new TreeMap<Integer, I_Element>();
+    return removedRegistrar;
+  }
+
+  /**
+   * Gets the contents of.
+   * 
+   * @param container the container
+   * 
+   * @return the contents of
+   */
+  public SortedSet<I_Element> getContentsOf(I_Container container) {
+    TreeSet<I_Element> elements = new TreeSet<I_Element>();
+    for (I_Element element : getRegistrar().values()) {
+      if (element.getContainer().equals(container))
+        elements.add(element);
+    }
+    return elements;
+  }
+
+  /**
+   * Gets the complete contents of.
+   * 
+   * @param location the location
+   * 
+   * @return the complete contents of
+   */
+  public SortedSet<I_Element> getCompleteContentsOf(Location location) {
+    TreeSet<I_Element> elements = new TreeSet<I_Element>();
+    for (I_Element element : getRegistrar().values()) {
+      if (element.getLocation().equals(location))
+        elements.add(element);
+    }
+    return elements;
+  }
+
+  /**
+   * Prints a network representation to console.
+   */
+  public void print() {
+    System.out.println("Network Nodes");
+    for (Node n : nodes) {
+      n.print(1);
+    }
+    System.out.println("Network Edges");
+    for (Edge e : edges) {
+      e.print(1);
+    }
+  }
 }

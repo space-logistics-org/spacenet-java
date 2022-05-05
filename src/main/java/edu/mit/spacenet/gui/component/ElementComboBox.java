@@ -20,18 +20,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 
-import edu.mit.spacenet.domain.I_Container;
-import edu.mit.spacenet.domain.element.I_Carrier;
-import edu.mit.spacenet.domain.network.edge.Edge;
-import edu.mit.spacenet.domain.network.node.Node;
+import edu.mit.spacenet.domain.element.I_Element;
 
 /**
- * This class extends a combo box to provide icons for objects that implement the Container
- * interface.
+ * This class extends a combo box to provide icons for objects that implement the Element interface.
  * 
  * @author Paul Grogan
  */
-public class ContainerComboBox<E extends I_Container> extends JComboBox<E> {
+public class ElementComboBox extends JComboBox<I_Element> {
   private static final long serialVersionUID = -4738778912721458792L;
   private ImageIcon transparentIcon =
       new ImageIcon(getClass().getClassLoader().getResource("icons/transparent_icon.png"));
@@ -39,19 +35,15 @@ public class ContainerComboBox<E extends I_Container> extends JComboBox<E> {
   /**
    * Instantiates a new container combo box.
    */
-  public ContainerComboBox() {
+  public ElementComboBox() {
     setRenderer(new DefaultListCellRenderer() {
       private static final long serialVersionUID = -2255885956722142642L;
 
       public Component getListCellRendererComponent(JList<?> list, Object value, int index,
           boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        if (value instanceof I_Carrier) {
-          setIcon(((I_Carrier) value).getIcon());
-        } else if (value instanceof Node) {
-          setIcon(((Node) value).getNodeType().getIcon());
-        } else if (value instanceof Edge) {
-          setIcon(((Edge) value).getEdgeType().getIcon());
+        if (value instanceof I_Element) {
+          setIcon(((I_Element) value).getIcon());
         } else if (value == null) {
           setIcon(transparentIcon);
         }

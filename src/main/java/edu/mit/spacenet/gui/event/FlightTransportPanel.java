@@ -235,8 +235,8 @@ public class FlightTransportPanel extends AbstractEventPanel {
     boolean hasErrors = false;
 
     for (I_Element e : elementModel.getTopCheckedElements()) {
+      mass += e.getTotalMass();
       if (e instanceof I_Container) {
-        mass += ((I_Container) e).getCargoMass();
         crew += ((I_Container) e).getCrewSize();
       }
     }

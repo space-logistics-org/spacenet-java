@@ -65,8 +65,8 @@ public class FlightTransport extends AbstractEvent implements I_Transport {
         throw new SimSpatialError(simulator.getTime(), this, element + " is located at "
             + element.getLocation() + " instead of " + getLocation() + ".");
       }
+      mass += element.getTotalMass();
       if (element instanceof I_Carrier) {
-        mass += ((I_Carrier) element).getCargoMass();
         crew += ((I_Carrier) element).getCrewSize();
       }
     }

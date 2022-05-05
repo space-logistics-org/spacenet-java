@@ -171,7 +171,7 @@ public class FullSimulator extends AbstractSimulator {
         double amount = 0;
         for (I_Element element : ((I_Transport) event).getElements()) {
           if (element instanceof I_Carrier) {
-            amount += ((I_Carrier) element).getCargoMass();
+            amount += ((I_Carrier) element).getTotalMass();
           }
         }
         upMassCapacityUtilizationHistory.add(new MoeMassCapacityUtilization(getTime(),
@@ -194,7 +194,7 @@ public class FullSimulator extends AbstractSimulator {
         double amount = 0;
         for (I_Element element : ((I_Transport) event).getElements()) {
           if (element instanceof I_Carrier) {
-            amount += ((I_Carrier) element).getCargoMass();
+            amount += ((I_Carrier) element).getTotalMass();
           }
         }
         downMassCapacityUtilizationHistory.add(new MoeMassCapacityUtilization(getTime(),

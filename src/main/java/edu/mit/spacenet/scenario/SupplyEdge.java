@@ -16,10 +16,10 @@ package edu.mit.spacenet.scenario;
 import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
-
 import edu.mit.spacenet.domain.element.I_Carrier;
 import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.network.edge.Edge;
+import edu.mit.spacenet.domain.network.edge.FlightEdge;
 import edu.mit.spacenet.domain.network.node.Node;
 import edu.mit.spacenet.util.GlobalParameters;
 
@@ -136,9 +136,15 @@ public class SupplyEdge implements Comparable<SupplyEdge> {
    * @return the capacity (kilograms)
    */
   public double getNetCargoMass() {
-    double capacity = 0;
-    for (I_Carrier carrier : getCarriers()) {
-      capacity += carrier.getMaxCargoMass() - carrier.getCargoMass();
+    double capacity = getMaxCargoMass();
+    if (edge instanceof FlightEdge) {
+      for (I_Carrier carrier : getCarriers()) {
+        capacity -= carrier.getTotalMass();
+      }
+    } else {
+      for (I_Carrier carrier : getCarriers()) {
+        capacity -= carrier.getCargoMass();
+      }
     }
     return capacity;
   }
@@ -151,8 +157,12 @@ public class SupplyEdge implements Comparable<SupplyEdge> {
    */
   public double getMaxCargoMass() {
     double capacity = 0;
-    for (I_Carrier carrier : getCarriers()) {
-      capacity += carrier.getMaxCargoMass();
+    if (edge instanceof FlightEdge) {
+      capacity = ((FlightEdge) edge).getMaxCargoMass();
+    } else {
+      for (I_Carrier carrier : getCarriers()) {
+        capacity += carrier.getMaxCargoMass();
+      }
     }
     return capacity;
   }

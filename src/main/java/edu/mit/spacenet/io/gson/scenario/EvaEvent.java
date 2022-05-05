@@ -18,7 +18,7 @@ public class EvaEvent extends Event {
   protected PeriodDuration evaDuration;
   protected List<UUID> elements;
   protected List<UUID> states;
-  protected List<Resource> demands;
+  protected List<Resource> additionalDemands;
 
   public static EvaEvent createFrom(edu.mit.spacenet.simulator.event.EvaEvent event,
       Context context) {
@@ -34,7 +34,7 @@ public class EvaEvent extends Event {
             (long) ((event.getEvaDuration() - (int) event.getEvaDuration()) * 24 * 60 * 60)));
     e.elements = context.getJsonIdsFromJavaObjects(event.getStateMap().keySet());
     e.states = context.getJsonIdsFromJavaObjects(event.getStateMap().values());
-    e.demands = Resource.createFrom(event.getDemands(), context);
+    e.additionalDemands = Resource.createFrom(event.getDemands(), context);
     return e;
   }
 

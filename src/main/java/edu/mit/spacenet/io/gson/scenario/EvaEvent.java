@@ -38,7 +38,7 @@ public class EvaEvent extends Event {
     e.elementStates = new HashMap<UUID, Integer>();
     for (I_Element element : event.getStateMap().keySet()) {
       if (event.getStateMap().get(element) == null) {
-        e.elementStates.put(context.getJsonIdFromJavaObject(element), null);
+        e.elementStates.put(context.getJsonIdFromJavaObject(element), -1);
       } else {
         e.elementStates.put(context.getJsonIdFromJavaObject(element),
             new ArrayList<I_State>(element.getStates()).indexOf(event.getStateMap().get(element)));
@@ -60,7 +60,7 @@ public class EvaEvent extends Event {
     e.setVehicle((I_Carrier) context.getJavaObjectFromJsonId(vehicle));
     SortedMap<I_Element, I_State> stateMap = new TreeMap<I_Element, I_State>();
     for (UUID element : elementStates.keySet()) {
-      if (elementStates.get(element) == null) {
+      if (elementStates.get(element).equals(-1)) {
         stateMap.put((I_Element) context.getJavaObjectFromJsonId(element), null);
       } else {
         stateMap.put((I_Element) context.getJavaObjectFromJsonId(element),

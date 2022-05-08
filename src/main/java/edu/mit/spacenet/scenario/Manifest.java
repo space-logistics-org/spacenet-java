@@ -492,36 +492,32 @@ public class Manifest {
         || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS5)) {
       // ignore demand -- only an estimate of stowage/restraint
     } else if (d.getResource().getClassOfSupply().equals(ClassOfSupply.COS6)
-        || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS6)) {
-      // use custom resource container
-      I_ResourceContainer container;
-      container = new ResourceContainer();
-      container.setMaxCargoMass(d.getMass() * 1.1);
-      container.setVolume(d.getVolume() * 1.1);
-      container.setMaxCargoVolume(d.getVolume() * 1.1);
-      container.setName("Science " + container.getUid());
-      if (d.getResource().getEnvironment().equals(Environment.UNPRESSURIZED)) {
-        container.setMass(d.getMass() * d.getResource().getPackingFactor());
-      } else {
-        container.setMass(d.getMass() * d.getResource().getPackingFactor());
-        container.setCargoEnvironment(Environment.PRESSURIZED);
-      }
-      addContainer(container);
-      packDemand(d, container);
-    } else if (d.getResource().getClassOfSupply().equals(ClassOfSupply.COS8)
+        || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS6)
+        || d.getResource().getClassOfSupply().equals(ClassOfSupply.COS8)
         || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS8)
         || d.getResource().getClassOfSupply().equals(ClassOfSupply.COS9)
-        || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS9)) {
-      throw new RuntimeException("COS8, COS9 demands not yet handled");
-    } else if (d.getResource().getClassOfSupply().equals(ClassOfSupply.COS10)
+        || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS9)
+        || d.getResource().getClassOfSupply().equals(ClassOfSupply.COS10)
         || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS10)) {
       // use custom resource container
       I_ResourceContainer container;
       container = new ResourceContainer();
-      container.setMaxCargoMass(d.getMass() * 1.1);
-      container.setVolume(d.getVolume() * 1.1);
-      container.setMaxCargoVolume(d.getVolume() * 1.1);
-      container.setName("Miscellaneous " + container.getUid());
+      container.setMaxCargoMass(d.getMass());
+      container.setVolume(d.getVolume());
+      container.setMaxCargoVolume(d.getVolume());
+      if (d.getResource().getClassOfSupply().equals(ClassOfSupply.COS6)
+          || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS6)) {
+        container.setName("Science " + container.getUid());
+      } else if (d.getResource().getClassOfSupply().equals(ClassOfSupply.COS8)
+          || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS8)) {
+        container.setName("Infrastructure " + container.getUid());
+      } else if (d.getResource().getClassOfSupply().equals(ClassOfSupply.COS9)
+          || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS9)) {
+        container.setName("Transportation " + container.getUid());
+      } else if (d.getResource().getClassOfSupply().equals(ClassOfSupply.COS10)
+          || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS10)) {
+        container.setName("Miscellaneous " + container.getUid());
+      }
       if (d.getResource().getEnvironment().equals(Environment.UNPRESSURIZED)) {
         container.setMass(d.getMass() * d.getResource().getPackingFactor());
       } else {

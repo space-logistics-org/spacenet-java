@@ -27,10 +27,10 @@ public abstract class ResourceContainerFactory {
   public static final int DCTB_TID = -22;
 
   /** The Constant DCTB_MAX_MASS. */
-  public static final double DCTB_MAX_MASS = 90.72;
+  public static final double DCTB_MAX_MASS = 53.6;
 
   /** The Constant DCTB_MAX_VOLUME. */
-  public static final double DCTB_MAX_VOLUME = 0.1058;
+  public static final double DCTB_MAX_VOLUME = 0.098;
 
   /**
    * Creates a new double cargo transfer bag (DCTB).
@@ -41,9 +41,9 @@ public abstract class ResourceContainerFactory {
     // double cargo transfer bag
     ResourceContainer ctb = new ResourceContainer();
     ctb.setTid(DCTB_TID);
-    ctb.setMass(3.62);
+    ctb.setMass(1.383);
     ctb.setMaxCargoMass(DCTB_MAX_MASS);
-    ctb.setVolume(0.1058);
+    ctb.setVolume(0.106);
     ctb.setMaxCargoVolume(DCTB_MAX_VOLUME);
 
     ctb.setName("DCTB " + ctb.getUid());
@@ -55,10 +55,10 @@ public abstract class ResourceContainerFactory {
   public static final int CTB_TID = -10;
 
   /** The Constant CTB_MAX_MASS. */
-  public static final double CTB_MAX_MASS = 45.36;
+  public static final double CTB_MAX_MASS = 26.8;
 
   /** The Constant CTB_MAX_VOLUME. */
-  public static final double CTB_MAX_VOLUME = 0.0529;
+  public static final double CTB_MAX_VOLUME = 0.049;
 
   /**
    * Creates a cargo transfer bag (CTB).
@@ -69,9 +69,9 @@ public abstract class ResourceContainerFactory {
     // cargo transfer bag
     ResourceContainer ctb = new ResourceContainer();
     ctb.setTid(CTB_TID);
-    ctb.setMass(1.81);
+    ctb.setMass(0.83);
     ctb.setMaxCargoMass(CTB_MAX_MASS);
-    ctb.setVolume(0.0529);
+    ctb.setVolume(0.053);
     ctb.setMaxCargoVolume(CTB_MAX_VOLUME);
 
     ctb.setName("CTB " + ctb.getUid());
@@ -82,10 +82,10 @@ public abstract class ResourceContainerFactory {
   public static final int HCTB_TID = -11;
 
   /** The Constant HCTB_MAX_MASS. */
-  public static final double HCTB_MAX_MASS = 27.22;
+  public static final double HCTB_MAX_MASS = 13.4;
 
   /** The Constant HCTB_MAX_VOLUME. */
-  public static final double HCTB_MAX_VOLUME = 0.0248;
+  public static final double HCTB_MAX_VOLUME = 0.0245;
 
   /**
    * Creates a half-size cargo transfer bag (CTB).
@@ -96,9 +96,9 @@ public abstract class ResourceContainerFactory {
     // half cargo transfer bag
     ResourceContainer ctb = new ResourceContainer();
     ctb.setTid(HCTB_TID);
-    ctb.setMass(1);
+    ctb.setMass(.5532);
     ctb.setMaxCargoMass(HCTB_MAX_MASS);
-    ctb.setVolume(0.0248);
+    ctb.setVolume(0.0265);
     ctb.setMaxCargoVolume(HCTB_MAX_VOLUME);
 
     ctb.setName("Half CTB " + ctb.getUid());

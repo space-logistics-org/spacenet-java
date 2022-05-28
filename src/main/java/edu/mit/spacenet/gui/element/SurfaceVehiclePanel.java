@@ -127,8 +127,8 @@ public class SurfaceVehiclePanel extends AbstractElementPanel {
 
     c.gridy++;
     c.gridwidth = 1;
-    maxFuelModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getMassPrecision());
+    maxFuelModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     maxFuelSpinner = new JSpinner(maxFuelModel);
     maxFuelSpinner.setPreferredSize(new Dimension(75, 20));
     maxFuelWrapper = new UnitsWrapper(maxFuelSpinner, "");
@@ -136,7 +136,8 @@ public class SurfaceVehiclePanel extends AbstractElementPanel {
     maxFuelSpinner.setToolTipText("Maximum amount of fuel");
 
     c.gridx += 2;
-    fuelModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getMassPrecision());
+    fuelModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     fuelSpinner = new JSpinner(fuelModel);
     fuelSpinner.setPreferredSize(new Dimension(75, 20));
     fuelWrapper = new UnitsWrapper(fuelSpinner, "");

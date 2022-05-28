@@ -168,8 +168,8 @@ public class SpaceEdgeEditorPanel extends AbstractEdgeEditorPanel {
     c.gridwidth = 3;
     c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.NONE;
-    durationModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getTimePrecision());
+    durationModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getTimePrecision());
     durationSpinner = new JSpinner(durationModel);
     durationSpinner.setPreferredSize(new Dimension(75, 20));
     add(new UnitsWrapper(durationSpinner, "days"), c);

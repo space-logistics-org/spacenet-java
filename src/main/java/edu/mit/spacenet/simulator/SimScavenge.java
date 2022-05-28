@@ -54,7 +54,7 @@ public class SimScavenge {
    * @return the simulation time
    */
   public double getTime() {
-    return GlobalParameters.getRoundedTime(time);
+    return GlobalParameters.getSingleton().getRoundedTime(time);
   }
 
   /**
@@ -72,7 +72,7 @@ public class SimScavenge {
    * @return the amount
    */
   public double getAmount() {
-    return GlobalParameters.getRoundedDemand(amount);
+    return GlobalParameters.getSingleton().getRoundedDemand(amount);
   }
 
   /**

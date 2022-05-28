@@ -165,8 +165,8 @@ public class ResourceEditorPanel extends JPanel {
     c.gridx++;
     c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.NONE;
-    unitMassModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getMassPrecision());
+    unitMassModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     unitMassSpinner = new JSpinner(unitMassModel);
     unitMassSpinner.setPreferredSize(new Dimension(75, 20));
     add(new UnitsWrapper(unitMassSpinner, "kg"), c);
@@ -180,8 +180,8 @@ public class ResourceEditorPanel extends JPanel {
     c.gridx++;
     c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.NONE;
-    unitVolumeModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getVolumePrecision());
+    unitVolumeModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getVolumePrecision());
     unitVolumeSpinner = new JSpinner(unitVolumeModel);
     unitVolumeSpinner.setPreferredSize(new Dimension(75, 20));
     add(new UnitsWrapper(unitVolumeSpinner, "m^3"), c);

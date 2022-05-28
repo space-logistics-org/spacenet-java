@@ -150,8 +150,8 @@ public class CrewConsumablesDemandModelPanel extends AbstractDemandModelPanel {
     crewTimeSpinner.setPreferredSize(new Dimension(50, 20));
     inputsPanel.add(new UnitsWrapper(crewTimeSpinner, "crew-hours"), c);
     c.gridy++;
-    explorationDurationModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getTimePrecision());
+    explorationDurationModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getTimePrecision());
     explorationDurationSpinner = new JSpinner(explorationDurationModel);
     explorationDurationSpinner.setEnabled(false);
     explorationDurationSpinner.setPreferredSize(new Dimension(50, 20));
@@ -161,27 +161,27 @@ public class CrewConsumablesDemandModelPanel extends AbstractDemandModelPanel {
     transitDemandsCheck.setOpaque(false);
     inputsPanel.add(transitDemandsCheck, c);
     c.gridy++;
-    transitDurationModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getTimePrecision());
+    transitDurationModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getTimePrecision());
     transitDurationSpinner = new JSpinner(transitDurationModel);
     transitDurationSpinner.setEnabled(false);
     transitDurationSpinner.setPreferredSize(new Dimension(50, 20));
     inputsPanel.add(new UnitsWrapper(transitDurationSpinner, "days"), c);
     c.gridy++;
-    reservesDurationModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getTimePrecision());
+    reservesDurationModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getTimePrecision());
     reservesDurationSpinner = new JSpinner(reservesDurationModel);
     reservesDurationSpinner.setPreferredSize(new Dimension(50, 20));
     inputsPanel.add(new UnitsWrapper(reservesDurationSpinner, "days"), c);
     c.gridy++;
-    waterRecoveryModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getTimePrecision());
+    waterRecoveryModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getTimePrecision());
     waterRecoverySpinner = new JSpinner(waterRecoveryModel);
     waterRecoverySpinner.setPreferredSize(new Dimension(50, 20));
     inputsPanel.add(new UnitsWrapper(waterRecoverySpinner, "%"), c);
     c.gridy++;
-    clothingLifetimeModel =
-        new SpinnerNumberModel(1, 1, Double.MAX_VALUE, GlobalParameters.getTimePrecision());
+    clothingLifetimeModel = new SpinnerNumberModel(1, 1, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getTimePrecision());
     clothingLifetimeSpinner = new JSpinner(clothingLifetimeModel);
     clothingLifetimeSpinner.setPreferredSize(new Dimension(50, 20));
     inputsPanel.add(new UnitsWrapper(clothingLifetimeSpinner, "days"), c);
@@ -255,135 +255,135 @@ public class CrewConsumablesDemandModelPanel extends AbstractDemandModelPanel {
     c.gridy = 0;
     c.gridx = 1;
     c.anchor = GridBagConstraints.LINE_START;
-    waterRateModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    waterRateModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     waterRateSpinner = new JSpinner(waterRateModel);
     waterRateSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(waterRateSpinner, "kg/crew/day"), c);
     c.gridy++;
-    evaWaterRateModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    evaWaterRateModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     evaWaterRateSpinner = new JSpinner(evaWaterRateModel);
     evaWaterRateSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(evaWaterRateSpinner, "kg/crew/hour"), c);
     c.gridy++;
-    foodSupportRateModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    foodSupportRateModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     foodSupportRateSpinner = new JSpinner(foodSupportRateModel);
     foodSupportRateSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(foodSupportRateSpinner, "kg/crew/day"), c);
     c.gridy++;
-    ambientFoodRateModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    ambientFoodRateModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     ambientFoodRateSpinner = new JSpinner(ambientFoodRateModel);
     ambientFoodRateSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(ambientFoodRateSpinner, "kg/crew/day"), c);
     c.gridy++;
-    rfFoodRateModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    rfFoodRateModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     rfFoodRateSpinner = new JSpinner(rfFoodRateModel);
     rfFoodRateSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(rfFoodRateSpinner, "kg/crew/day"), c);
     c.gridy++;
-    oxygenRateModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    oxygenRateModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     oxygenRateSpinner = new JSpinner(oxygenRateModel);
     oxygenRateSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(oxygenRateSpinner, "kg/crew/day"), c);
     c.gridy++;
-    evaOxygenRateModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    evaOxygenRateModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     evaOxygenRateSpinner = new JSpinner(evaOxygenRateModel);
     evaOxygenRateSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(evaOxygenRateSpinner, "kg/crew/hour"), c);
     c.gridy++;
-    nitrogenRateModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    nitrogenRateModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     nitrogenRateSpinner = new JSpinner(nitrogenRateModel);
     nitrogenRateSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(nitrogenRateSpinner, "kg/crew/day"), c);
     c.gridy++;
-    hygieneRateModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    hygieneRateModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     hygieneRateSpinner = new JSpinner(hygieneRateModel);
     hygieneRateSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(hygieneRateSpinner, "kg/crew/day"), c);
     c.gridy++;
-    hygieneKitModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    hygieneKitModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     hygieneKitSpinner = new JSpinner(hygieneKitModel);
     hygieneKitSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(hygieneKitSpinner, "kg/crew"), c);
     c.gridy++;
-    clothingRateModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    clothingRateModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     clothingRateSpinner = new JSpinner(clothingRateModel);
     clothingRateSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(clothingRateSpinner, "kg/crew/change"), c);
     c.gridy = 0;
     c.gridx += 2;
-    personalItemsModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    personalItemsModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     personalItemsSpinner = new JSpinner(personalItemsModel);
     personalItemsSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(personalItemsSpinner, "kg/crew"), c);
     c.gridy++;
-    officeEquipmentModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    officeEquipmentModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     officeEquipmentSpinner = new JSpinner(officeEquipmentModel);
     officeEquipmentSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(officeEquipmentSpinner, "kg/crew"), c);
     c.gridy++;
-    evaSuitModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    evaSuitModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     evaSuitSpinner = new JSpinner(evaSuitModel);
     evaSuitSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(evaSuitSpinner, "kg/crew"), c);
     c.gridy++;
-    evaLithiumHydroxideModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    evaLithiumHydroxideModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     evaLithiumHydroxideSpinner = new JSpinner(evaLithiumHydroxideModel);
     evaLithiumHydroxideSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(evaLithiumHydroxideSpinner, "kg/crew/hour"), c);
     c.gridy++;
-    healthEquipmentModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    healthEquipmentModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     healthEquipmentSpinner = new JSpinner(healthEquipmentModel);
     healthEquipmentSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(healthEquipmentSpinner, "kg"), c);
     c.gridy++;
-    healthConsumablesModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    healthConsumablesModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     healthConsumablesSpinner = new JSpinner(healthConsumablesModel);
     healthConsumablesSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(healthConsumablesSpinner, "kg/crew/day"), c);
     c.gridy++;
-    safetyEquipmentModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    safetyEquipmentModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     safetyEquipmentSpinner = new JSpinner(safetyEquipmentModel);
     safetyEquipmentSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(safetyEquipmentSpinner, "kg"), c);
     c.gridy++;
-    commEquipmentModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    commEquipmentModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     commEquipmentSpinner = new JSpinner(commEquipmentModel);
     commEquipmentSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(commEquipmentSpinner, "kg"), c);
     c.gridy++;
-    computerEquipmentModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    computerEquipmentModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     computerEquipmentSpinner = new JSpinner(computerEquipmentModel);
     computerEquipmentSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(computerEquipmentSpinner, "kg/crew"), c);
     c.gridy++;
-    trashBagRateModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    trashBagRateModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     trashBagRateSpinner = new JSpinner(trashBagRateModel);
     trashBagRateSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(trashBagRateSpinner, "kg/crew/day"), c);
     c.gridy++;
-    wasteContainmentRateModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    wasteContainmentRateModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     wasteContainmentRateSpinner = new JSpinner(wasteContainmentRateModel);
     wasteContainmentRateSpinner.setPreferredSize(new Dimension(50, 20));
     ratesPanel.add(new UnitsWrapper(wasteContainmentRateSpinner, "kg/crew/day"), c);

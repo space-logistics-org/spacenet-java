@@ -46,7 +46,7 @@ public abstract class SimError extends Exception implements Comparable<SimError>
    * @return the simulation time
    */
   public double getTime() {
-    return GlobalParameters.getRoundedTime(time);
+    return GlobalParameters.getSingleton().getRoundedTime(time);
   }
 
   /**

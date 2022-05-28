@@ -21,6 +21,7 @@ import edu.mit.spacenet.domain.network.edge.EdgeType;
 import edu.mit.spacenet.domain.network.node.NodeType;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.simulator.event.EventType;
+import edu.mit.spacenet.util.GlobalParameters;
 
 public abstract class GsonEngine {
   public static Scenario openScenario(String filePath) throws FileNotFoundException, IOException {
@@ -28,6 +29,7 @@ public abstract class GsonEngine {
     Scenario scenario =
         getGson().fromJson(in, edu.mit.spacenet.io.gson.scenario.Scenario.class).toSpaceNet();
     in.close();
+    GlobalParameters.getSingleton().setParametersFrom(scenario);
     return scenario;
   }
 

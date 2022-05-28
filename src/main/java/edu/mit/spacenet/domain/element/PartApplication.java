@@ -159,7 +159,7 @@ public class PartApplication extends DomainType implements Comparable<PartApplic
    * @param quantity the quantity of parts
    */
   public void setQuantity(double quantity) {
-    this.quantity = GlobalParameters.getRoundedDemand(quantity);
+    this.quantity = GlobalParameters.getSingleton().getRoundedDemand(quantity);
   }
 
   /*

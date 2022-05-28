@@ -148,7 +148,7 @@ public class PropulsiveVehicle extends Carrier {
       mass += omsFuelTank.getTotalMass();
     if (rcsFuelTank != null && rcsFuelTank != omsFuelTank)
       mass += rcsFuelTank.getTotalMass();
-    return GlobalParameters.getRoundedMass(mass);
+    return GlobalParameters.getSingleton().getRoundedMass(mass);
   }
 
   /*
@@ -164,7 +164,7 @@ public class PropulsiveVehicle extends Carrier {
       amount += getOmsFuelTank().getTotalMass(cos);
     if (getRcsFuelTank() != null && getRcsFuelTank() != getOmsFuelTank())
       amount += getRcsFuelTank().getTotalMass(cos);
-    return GlobalParameters.getRoundedMass(amount);
+    return GlobalParameters.getSingleton().getRoundedMass(amount);
   }
 
   /*

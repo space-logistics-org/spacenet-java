@@ -200,7 +200,7 @@ public class EventDialog extends JDialog {
     c.gridwidth = 1;
     c.fill = GridBagConstraints.HORIZONTAL;
     timeModel = new SpinnerNumberModel(event.getTime(), 0, Double.MAX_VALUE,
-        GlobalParameters.getTimePrecision());
+        GlobalParameters.getSingleton().getTimePrecision());
     timeSpinner = new JSpinner(timeModel);
     timeSpinner.setPreferredSize(new Dimension(100, 20));
     timeSpinner.setToolTipText("Execution time (days) relative to the start of the mission");

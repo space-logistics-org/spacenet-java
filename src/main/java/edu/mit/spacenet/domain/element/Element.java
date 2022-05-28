@@ -86,7 +86,8 @@ public class Element extends DomainObject implements I_Element {
    * @see edu.mit.spacenet.domain.element.I_Element#getEnvironment()
    */
   public Environment getEnvironment() {
-    return GlobalParameters.isEnvironmentConstrained() ? environment : Environment.UNPRESSURIZED;
+    return GlobalParameters.getSingleton().isEnvironmentConstrained() ? environment
+        : Environment.UNPRESSURIZED;
   }
 
   /*
@@ -105,7 +106,7 @@ public class Element extends DomainObject implements I_Element {
    * @see edu.mit.spacenet.domain.element.I_Element#getAccommodationMass()
    */
   public double getAccommodationMass() {
-    return GlobalParameters.getRoundedMass(accommodationMass);
+    return GlobalParameters.getSingleton().getRoundedMass(accommodationMass);
   }
 
   /*
@@ -123,7 +124,7 @@ public class Element extends DomainObject implements I_Element {
    * @see edu.mit.spacenet.domain.element.I_Element#getMass()
    */
   public double getMass() {
-    return GlobalParameters.getRoundedMass(mass);
+    return GlobalParameters.getSingleton().getRoundedMass(mass);
   }
 
   /*
@@ -141,7 +142,7 @@ public class Element extends DomainObject implements I_Element {
    * @see edu.mit.spacenet.domain.element.I_Element#getTotalMass()
    */
   public double getTotalMass() {
-    return GlobalParameters.getRoundedMass(getMass());
+    return GlobalParameters.getSingleton().getRoundedMass(getMass());
   }
 
   /*
@@ -150,7 +151,7 @@ public class Element extends DomainObject implements I_Element {
    * @see edu.mit.spacenet.domain.element.I_Element#getVolume()
    */
   public double getVolume() {
-    return GlobalParameters.getRoundedVolume(volume);
+    return GlobalParameters.getSingleton().getRoundedVolume(volume);
   }
 
   /*
@@ -168,7 +169,7 @@ public class Element extends DomainObject implements I_Element {
    * @see edu.mit.spacenet.domain.element.I_Element#getTotalVolume()
    */
   public double getTotalVolume() {
-    return GlobalParameters.getRoundedVolume(getVolume());
+    return GlobalParameters.getSingleton().getRoundedVolume(getVolume());
   }
 
   /*
@@ -225,7 +226,7 @@ public class Element extends DomainObject implements I_Element {
    */
   public double getTotalMass(ClassOfSupply cos) {
     double mass = 0;
-    if (GlobalParameters.isScavengeSpares() && getCurrentState() != null
+    if (GlobalParameters.getSingleton().isScavengeSpares() && getCurrentState() != null
         && getCurrentState().getStateType().equals(StateType.DECOMMISSIONED)) {
       double partsMass = 0;
       for (PartApplication p : getParts()) {
@@ -242,7 +243,7 @@ public class Element extends DomainObject implements I_Element {
         mass += getMass();
       }
     }
-    return GlobalParameters.getRoundedMass(mass);
+    return GlobalParameters.getSingleton().getRoundedMass(mass);
   }
 
   /*

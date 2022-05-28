@@ -132,7 +132,7 @@ public class SurfaceTransport extends AbstractEvent implements I_Transport {
     if (getSpeed() == 0 || getDutyCycle() == 0)
       return Double.POSITIVE_INFINITY;
     else
-      return GlobalParameters
+      return GlobalParameters.getSingleton()
           .getRoundedTime(edge.getDistance() / (getSpeed() * getDutyCycle() * 24));
   }
 

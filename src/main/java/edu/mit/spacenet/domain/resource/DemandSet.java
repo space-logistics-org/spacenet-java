@@ -101,7 +101,7 @@ public class DemandSet implements Iterable<Demand> {
     for (Demand demand : demands) {
       mass += demand.getMass();
     }
-    return GlobalParameters.getRoundedMass(mass);
+    return GlobalParameters.getSingleton().getRoundedMass(mass);
   }
 
   /**
@@ -114,7 +114,7 @@ public class DemandSet implements Iterable<Demand> {
     for (Demand demand : demands) {
       volume += demand.getVolume();
     }
-    return GlobalParameters.getRoundedVolume(volume);
+    return GlobalParameters.getSingleton().getRoundedVolume(volume);
   }
 
   /*

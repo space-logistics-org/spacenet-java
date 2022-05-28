@@ -70,7 +70,7 @@ import edu.mit.spacenet.util.GlobalParameters;
 public class NetworkHistoryVisualization extends JSplitPane {
   private static final long serialVersionUID = -6405124067606236705L;
   private static int numLabels = 5;
-  private static double stepsPerDay = 1 / GlobalParameters.getTimePrecision();
+  private static double stepsPerDay = 1 / GlobalParameters.getSingleton().getTimePrecision();
 
   private SimulationTab tab;
   private DecimalFormat decimalFormat = new DecimalFormat("0.0");
@@ -431,7 +431,8 @@ public class NetworkHistoryVisualization extends JSplitPane {
       SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy kk:mm");
       dateLabel.setText(
           "Date: " + dateFormat.format(DateFunctions.getDate(getScenario().getStartDate(), time)));
-      relativeTimeLabel.setText("Relative Time: " + GlobalParameters.getRoundedTime(time));
+      relativeTimeLabel
+          .setText("Relative Time: " + GlobalParameters.getSingleton().getRoundedTime(time));
       elementTree.setRoot(network);
       networkPanel.setNetwork(network);
     } else {
@@ -464,7 +465,7 @@ public class NetworkHistoryVisualization extends JSplitPane {
       volumeValueLabel.setText(decimalFormat.format(element.getVolume()) + " m^3");
       massLabel.setVisible(true);
       massValueLabel.setVisible(true);
-      if (GlobalParameters.isVolumeConstrained()) {
+      if (GlobalParameters.getSingleton().isVolumeConstrained()) {
         volumeLabel.setVisible(true);
         volumeValueLabel.setVisible(true);
       } else {

@@ -82,7 +82,7 @@ public abstract class AbstractEvent implements I_Event {
    * @see edu.mit.spacenet.domain.event.I_Event#getTime()
    */
   public double getTime() {
-    return GlobalParameters.getRoundedTime(time);
+    return GlobalParameters.getSingleton().getRoundedTime(time);
   }
 
   /*

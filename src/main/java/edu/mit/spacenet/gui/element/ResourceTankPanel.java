@@ -111,8 +111,8 @@ public class ResourceTankPanel extends AbstractElementPanel {
     c.gridy++;
     c.gridwidth = 1;
     c.fill = GridBagConstraints.HORIZONTAL;
-    maxAmountModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    maxAmountModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     maxAmountSpinner = new JSpinner(maxAmountModel);
     maxAmountSpinner.setPreferredSize(new Dimension(150, 20));
     maxAmountWrapper = new UnitsWrapper(maxAmountSpinner, "units");
@@ -120,8 +120,8 @@ public class ResourceTankPanel extends AbstractElementPanel {
     maxAmountSpinner.setToolTipText("Maximum amount of resource to nest");
 
     c.gridx += 2;
-    amountModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getDemandPrecision());
+    amountModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getDemandPrecision());
     amountSpinner = new JSpinner(amountModel);
     amountSpinner.setPreferredSize(new Dimension(150, 20));
     amountWrapper = new UnitsWrapper(amountSpinner, "units");

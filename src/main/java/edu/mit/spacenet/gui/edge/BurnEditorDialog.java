@@ -108,8 +108,8 @@ public class BurnEditorDialog extends JDialog {
     c.gridx++;
     c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.NONE;
-    timeModel =
-        new SpinnerNumberModel(0, 0, panel.getEdgeDuration(), GlobalParameters.getTimePrecision());
+    timeModel = new SpinnerNumberModel(0, 0, panel.getEdgeDuration(),
+        GlobalParameters.getSingleton().getTimePrecision());
     timeSpinner = new JSpinner(timeModel);
     timeSpinner.setPreferredSize(new Dimension(75, 20));
     timeSpinner.setToolTipText("Time (after transport start) to perform burn [days]");

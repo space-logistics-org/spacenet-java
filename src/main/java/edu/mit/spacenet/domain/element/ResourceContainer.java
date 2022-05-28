@@ -54,13 +54,13 @@ public class ResourceContainer extends Element implements I_ResourceContainer {
    */
   public boolean canAdd(I_Resource resource, double amount) {
     if (getCargoMass() + resource.getUnitMass() * amount
-        - maxCargoMass > GlobalParameters.getMassPrecision() / 2d) {
+        - maxCargoMass > GlobalParameters.getSingleton().getMassPrecision() / 2d) {
       return false; // mass constrained
-    } else if (GlobalParameters.isVolumeConstrained()
+    } else if (GlobalParameters.getSingleton().isVolumeConstrained()
         && getCargoVolume() + resource.getUnitVolume() * amount
-            - maxCargoVolume > GlobalParameters.getVolumePrecision() / 2d) {
+            - maxCargoVolume > GlobalParameters.getSingleton().getVolumePrecision() / 2d) {
       return false; // volume constrained
-    } else if (GlobalParameters.isEnvironmentConstrained()
+    } else if (GlobalParameters.getSingleton().isEnvironmentConstrained()
         && resource.getEnvironment().equals(Environment.PRESSURIZED)
         && getCargoEnvironment().equals(Environment.UNPRESSURIZED)) {
       return false; // environment constrained
@@ -132,7 +132,7 @@ public class ResourceContainer extends Element implements I_ResourceContainer {
    * @see edu.mit.spacenet.domain.element.I_ResourceContainer#getMaxCargoMass()
    */
   public double getMaxCargoMass() {
-    return GlobalParameters.getRoundedMass(maxCargoMass);
+    return GlobalParameters.getSingleton().getRoundedMass(maxCargoMass);
   }
 
   /*
@@ -150,7 +150,7 @@ public class ResourceContainer extends Element implements I_ResourceContainer {
    * @see edu.mit.spacenet.domain.element.I_ResourceContainer#getMaxCargoVolume()
    */
   public double getMaxCargoVolume() {
-    return GlobalParameters.getRoundedVolume(maxCargoVolume);
+    return GlobalParameters.getSingleton().getRoundedVolume(maxCargoVolume);
   }
 
   /*
@@ -172,7 +172,7 @@ public class ResourceContainer extends Element implements I_ResourceContainer {
     for (I_Resource r : contents.keySet()) {
       volume += r.getUnitVolume() * contents.get(r);
     }
-    return GlobalParameters.getRoundedVolume(volume);
+    return GlobalParameters.getSingleton().getRoundedVolume(volume);
   }
 
   /*
@@ -185,7 +185,7 @@ public class ResourceContainer extends Element implements I_ResourceContainer {
     for (I_Resource r : contents.keySet()) {
       mass += r.getUnitMass() * contents.get(r);
     }
-    return GlobalParameters.getRoundedMass(mass);
+    return GlobalParameters.getSingleton().getRoundedMass(mass);
   }
 
   /*
@@ -204,7 +204,7 @@ public class ResourceContainer extends Element implements I_ResourceContainer {
    */
   @Override
   public double getTotalMass() {
-    return GlobalParameters.getRoundedMass(super.getTotalMass() + getCargoMass());
+    return GlobalParameters.getSingleton().getRoundedMass(super.getTotalMass() + getCargoMass());
   }
 
   /*
@@ -223,7 +223,7 @@ public class ResourceContainer extends Element implements I_ResourceContainer {
       }
     }
 
-    return GlobalParameters.getRoundedMass(amount);
+    return GlobalParameters.getSingleton().getRoundedMass(amount);
   }
 
   /*

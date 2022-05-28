@@ -57,7 +57,8 @@ public class ResourceTank extends Element implements I_ResourceContainer {
   public boolean canAdd(I_Resource resource, double amount) {
     if (this.resource != null && !this.resource.equals(resource))
       return false;
-    else if (this.amount + amount - maxAmount > GlobalParameters.getDemandPrecision() / 2d)
+    else if (this.amount + amount - maxAmount > GlobalParameters.getSingleton().getDemandPrecision()
+        / 2d)
       return false;
     else
       return true;
@@ -143,7 +144,7 @@ public class ResourceTank extends Element implements I_ResourceContainer {
    * @return the amount of resource (units of resource consumption)
    */
   public double getAmount() {
-    return GlobalParameters.getRoundedDemand(amount);
+    return GlobalParameters.getSingleton().getRoundedDemand(amount);
   }
 
   /**
@@ -161,7 +162,7 @@ public class ResourceTank extends Element implements I_ResourceContainer {
    * @return the maximum amount of resource (units of resource consumption)
    */
   public double getMaxAmount() {
-    return GlobalParameters.getRoundedDemand(maxAmount);
+    return GlobalParameters.getSingleton().getRoundedDemand(maxAmount);
   }
 
   /**
@@ -180,7 +181,7 @@ public class ResourceTank extends Element implements I_ResourceContainer {
    */
   @Override
   public double getTotalMass() {
-    return GlobalParameters.getRoundedMass(super.getTotalMass() + getCargoMass());
+    return GlobalParameters.getSingleton().getRoundedMass(super.getTotalMass() + getCargoMass());
   }
 
   /*
@@ -194,7 +195,7 @@ public class ResourceTank extends Element implements I_ResourceContainer {
     if (resource != null && getResource().getClassOfSupply().isInstanceOf(cos)) {
       mass += getResource().getUnitMass() * getAmount();
     }
-    return GlobalParameters.getRoundedMass(mass);
+    return GlobalParameters.getSingleton().getRoundedMass(mass);
   }
 
   /*
@@ -271,7 +272,8 @@ public class ResourceTank extends Element implements I_ResourceContainer {
    * @see edu.mit.spacenet.domain.element.I_ResourceContainer#getCargoMass()
    */
   public double getCargoMass() {
-    return resource == null ? 0 : GlobalParameters.getRoundedMass(amount * resource.getUnitMass());
+    return resource == null ? 0
+        : GlobalParameters.getSingleton().getRoundedMass(amount * resource.getUnitMass());
   }
 
   /*
@@ -281,7 +283,7 @@ public class ResourceTank extends Element implements I_ResourceContainer {
    */
   public double getCargoVolume() {
     return resource == null ? 0
-        : GlobalParameters.getRoundedVolume(amount * resource.getUnitVolume());
+        : GlobalParameters.getSingleton().getRoundedVolume(amount * resource.getUnitVolume());
   }
 
   /*
@@ -291,7 +293,7 @@ public class ResourceTank extends Element implements I_ResourceContainer {
    */
   public double getMaxCargoMass() {
     return resource == null ? 0
-        : GlobalParameters.getRoundedMass(maxAmount * resource.getUnitMass());
+        : GlobalParameters.getSingleton().getRoundedMass(maxAmount * resource.getUnitMass());
   }
 
   /*
@@ -301,7 +303,7 @@ public class ResourceTank extends Element implements I_ResourceContainer {
    */
   public double getMaxCargoVolume() {
     return resource == null ? 0
-        : GlobalParameters.getRoundedVolume(maxAmount * resource.getUnitVolume());
+        : GlobalParameters.getSingleton().getRoundedVolume(maxAmount * resource.getUnitVolume());
   }
 
   /*

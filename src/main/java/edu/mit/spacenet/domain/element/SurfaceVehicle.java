@@ -99,7 +99,8 @@ public class SurfaceVehicle extends Carrier {
    */
   @Override
   public double getTotalMass() {
-    return GlobalParameters.getRoundedMass(super.getTotalMass() + fuelTank.getTotalMass());
+    return GlobalParameters.getSingleton()
+        .getRoundedMass(super.getTotalMass() + fuelTank.getTotalMass());
   }
 
   /*
@@ -113,7 +114,7 @@ public class SurfaceVehicle extends Carrier {
     double amount = super.getTotalMass(cos);
     if (getFuelTank() != null)
       amount += getFuelTank().getTotalMass(cos);
-    return GlobalParameters.getRoundedMass(amount);
+    return GlobalParameters.getSingleton().getRoundedMass(amount);
   }
 
   /*

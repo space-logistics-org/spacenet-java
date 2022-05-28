@@ -272,7 +272,7 @@ public class AddEventPanel extends AbstractEventPanel {
 
       if (cargoVolume > container.getMaxCargoVolume()) {
         containerVolumeCapacity.setForeground(new Color(153, 0, 0));
-        hasErrors = hasErrors || GlobalParameters.isVolumeConstrained();
+        hasErrors = hasErrors || GlobalParameters.getSingleton().isVolumeConstrained();
       } else {
         containerVolumeCapacity.setForeground(new Color(0, 153, 0));
       }

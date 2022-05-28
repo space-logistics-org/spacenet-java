@@ -41,7 +41,7 @@ public class SpaceEdge extends Edge {
    * @return the duration (days)
    */
   public double getDuration() {
-    return GlobalParameters.getRoundedTime(duration);
+    return GlobalParameters.getSingleton().getRoundedTime(duration);
   }
 
   /**

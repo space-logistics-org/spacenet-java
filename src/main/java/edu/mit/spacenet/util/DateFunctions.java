@@ -35,7 +35,8 @@ public class DateFunctions {
   public static double getDaysBetween(Date d1, Date d2) {
     long l1 = d1.getTime();
     long l2 = d2.getTime();
-    return GlobalParameters.getRoundedTime(Math.abs((l1 - l2) / (1000d * 60d * 60d * 24d)));
+    return GlobalParameters.getSingleton()
+        .getRoundedTime(Math.abs((l1 - l2) / (1000d * 60d * 60d * 24d)));
   }
 
   /**

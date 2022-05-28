@@ -150,8 +150,8 @@ public class FlightEdgeEditorPanel extends AbstractEdgeEditorPanel {
     c.gridx++;
     c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.NONE;
-    durationModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getTimePrecision());
+    durationModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getTimePrecision());
     durationSpinner = new JSpinner(durationModel);
     durationSpinner.setPreferredSize(new Dimension(75, 20));
     add(new UnitsWrapper(durationSpinner, "days"), c);
@@ -182,8 +182,8 @@ public class FlightEdgeEditorPanel extends AbstractEdgeEditorPanel {
     c.gridx++;
     c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.NONE;
-    maxCargoModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getMassPrecision());
+    maxCargoModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     maxCargoSpinner = new JSpinner(maxCargoModel);
     maxCargoSpinner.setPreferredSize(new Dimension(75, 20));
     add(new UnitsWrapper(maxCargoSpinner, "kg"), c);

@@ -14,6 +14,7 @@
 package edu.mit.spacenet.util;
 
 import edu.mit.spacenet.scenario.ItemDiscretization;
+import edu.mit.spacenet.scenario.Scenario;
 
 /**
  * A global access point to scenario options.
@@ -21,16 +22,43 @@ import edu.mit.spacenet.scenario.ItemDiscretization;
  * @author Paul Grogan
  */
 public class GlobalParameters {
-  private static final int DECIMAL_PRECISION = 1000;
+  private static final GlobalParameters singleton = new GlobalParameters();
 
-  private static double timePrecision = 0.05;
+  public static final GlobalParameters getSingleton() {
+    return singleton;
+  }
+
+  private final int DECIMAL_PRECISION = 1000;
+  private double timePrecision = 0.05;
+  private double demandPrecision = 0.01;
+  private double massPrecision = 0.01;
+  private boolean volumeConstrained = false;
+  private double volumePrecision = 0.000001;
+  private boolean environmentConstrained = true;
+  private double itemAggregation = 0;
+  private ItemDiscretization itemDiscretization = ItemDiscretization.NONE;
+  private boolean scavengeSpares = false;
+
+  private GlobalParameters() {}
+
+  public void setParametersFrom(Scenario scenario) {
+    this.timePrecision = scenario.getTimePrecision();
+    this.demandPrecision = scenario.getDemandPrecision();
+    this.massPrecision = scenario.getMassPrecision();
+    this.volumeConstrained = scenario.isVolumeConstrained();
+    this.volumePrecision = scenario.getVolumePrecision();
+    this.environmentConstrained = scenario.isEnvironmentConstrained();
+    this.itemAggregation = scenario.getItemAggregation();
+    this.itemDiscretization = scenario.getItemDiscretization();
+    this.scavengeSpares = scenario.isScavengeSpares();
+  }
 
   /**
    * Gets the time precision.
    * 
    * @return the time precision (days)
    */
-  public static double getTimePrecision() {
+  public double getTimePrecision() {
     return timePrecision;
   }
 
@@ -39,8 +67,8 @@ public class GlobalParameters {
    * 
    * @param timePrecision the time precision (days)
    */
-  public static void setTimePrecision(double timePrecision) {
-    GlobalParameters.timePrecision = timePrecision;
+  public void setTimePrecision(double timePrecision) {
+    this.timePrecision = timePrecision;
   }
 
   /**
@@ -50,19 +78,18 @@ public class GlobalParameters {
    * 
    * @return the rounded time (days)
    */
-  public static double getRoundedTime(double time) {
+  public double getRoundedTime(double time) {
     return Math.round(Math.round(time / timePrecision) * timePrecision * DECIMAL_PRECISION)
         / ((double) DECIMAL_PRECISION);
   }
 
-  private static double demandPrecision = 0.01;
 
   /**
    * Gets the demand precision.
    * 
    * @return the demand precision (units)
    */
-  public static double getDemandPrecision() {
+  public double getDemandPrecision() {
     return demandPrecision;
   }
 
@@ -71,8 +98,8 @@ public class GlobalParameters {
    * 
    * @param demandPrecision the demand precision (units)
    */
-  public static void setDemandPrecision(double demandPrecision) {
-    GlobalParameters.demandPrecision = demandPrecision;
+  public void setDemandPrecision(double demandPrecision) {
+    this.demandPrecision = demandPrecision;
   }
 
   /**
@@ -82,18 +109,17 @@ public class GlobalParameters {
    * 
    * @return the rounded demand amount
    */
-  public static double getRoundedDemand(double demand) {
+  public double getRoundedDemand(double demand) {
     return Math.round(demand / demandPrecision) * demandPrecision;
   }
 
-  private static double massPrecision = 0.01;
 
   /**
    * Gets the mass precision.
    * 
    * @return the mass precision (kilograms)
    */
-  public static double getMassPrecision() {
+  public double getMassPrecision() {
     return massPrecision;
   }
 
@@ -102,8 +128,8 @@ public class GlobalParameters {
    * 
    * @param massPrecision the mass precision (kilograms)
    */
-  public static void setMassPrecision(double massPrecision) {
-    GlobalParameters.massPrecision = massPrecision;
+  public void setMassPrecision(double massPrecision) {
+    this.massPrecision = massPrecision;
   }
 
   /**
@@ -113,18 +139,16 @@ public class GlobalParameters {
    * 
    * @return the rounded mass (kilograms)
    */
-  public static double getRoundedMass(double mass) {
+  public double getRoundedMass(double mass) {
     return Math.round(mass / massPrecision) * massPrecision;
   }
-
-  private static double volumePrecision = 0.000001;
 
   /**
    * Gets the volume precision.
    * 
    * @return the volume precision (cubic meters)
    */
-  public static double getVolumePrecision() {
+  public double getVolumePrecision() {
     return volumePrecision;
   }
 
@@ -133,8 +157,8 @@ public class GlobalParameters {
    * 
    * @param volumePrecision the volume precision (cubic meters)
    */
-  public static void setVolumePrecision(double volumePrecision) {
-    GlobalParameters.volumePrecision = volumePrecision;
+  public void setVolumePrecision(double volumePrecision) {
+    this.volumePrecision = volumePrecision;
   }
 
   /**
@@ -144,19 +168,18 @@ public class GlobalParameters {
    * 
    * @return the rounded volume (cubic meters)
    */
-  public static double getRoundedVolume(double volume) {
+  public double getRoundedVolume(double volume) {
     return Math.round(volume / volumePrecision) * volumePrecision;
   }
 
-  private static boolean volumeConstrained = false;
 
   /**
    * Sets whether volume constraints should be active.
    * 
    * @param volumeConstrained true if volume constraints are active, false otherwise
    */
-  public static void setVolumeConstrained(boolean volumeConstrained) {
-    GlobalParameters.volumeConstrained = volumeConstrained;
+  public void setVolumeConstrained(boolean volumeConstrained) {
+    this.volumeConstrained = volumeConstrained;
   }
 
   /**
@@ -164,11 +187,9 @@ public class GlobalParameters {
    * 
    * @return true if volume constraints are active, false otherwise
    */
-  public static boolean isVolumeConstrained() {
+  public boolean isVolumeConstrained() {
     return volumeConstrained;
   }
-
-  private static boolean environmentConstrained = true;
 
   /**
    * Sets whether environment constraints (pressurized items can only go inside pressurized
@@ -176,8 +197,8 @@ public class GlobalParameters {
    * 
    * @param environmentConstrained true if environment constraints are active, false otherwise
    */
-  public static void setEnvironmentConstrained(boolean environmentConstrained) {
-    GlobalParameters.environmentConstrained = environmentConstrained;
+  public void setEnvironmentConstrained(boolean environmentConstrained) {
+    this.environmentConstrained = environmentConstrained;
   }
 
   /**
@@ -186,18 +207,16 @@ public class GlobalParameters {
    * 
    * @return true if environment constraints are active, false otherwise
    */
-  public static boolean isEnvironmentConstrained() {
+  public boolean isEnvironmentConstrained() {
     return environmentConstrained;
   }
-
-  private static ItemDiscretization itemDiscretization = ItemDiscretization.NONE;
 
   /**
    * Gets the item discretization option.
    * 
    * @return how items are discretized
    */
-  public static ItemDiscretization getItemDiscretization() {
+  public ItemDiscretization getItemDiscretization() {
     return itemDiscretization;
   }
 
@@ -206,11 +225,10 @@ public class GlobalParameters {
    * 
    * @param itemDiscretization how items are discretized
    */
-  public static void setItemDiscretization(ItemDiscretization itemDiscretization) {
-    GlobalParameters.itemDiscretization = itemDiscretization;
+  public void setItemDiscretization(ItemDiscretization itemDiscretization) {
+    this.itemDiscretization = itemDiscretization;
   }
 
-  private static double itemAggregation = 0;
 
   /**
    * Gets the item aggregation point, which ranges between 0 and 1. 0 aggregates whole items at the
@@ -218,7 +236,7 @@ public class GlobalParameters {
    * 
    * @return the item aggregation point (between 0 and 1)
    */
-  public static double getItemAggregation() {
+  public double getItemAggregation() {
     return itemAggregation;
   }
 
@@ -228,22 +246,20 @@ public class GlobalParameters {
    * 
    * @param itemAggregation the item aggregation point (between 0 and 1)
    */
-  public static void setItemAggregation(double itemAggregation) {
+  public void setItemAggregation(double itemAggregation) {
     if (itemAggregation < 0)
       itemAggregation = 0;
     else if (itemAggregation > 1)
       itemAggregation = 1;
-    GlobalParameters.itemAggregation = itemAggregation;
+    this.itemAggregation = itemAggregation;
   }
-
-  private static boolean scavengeSpares = false;
 
   /**
    * Gets whether spares can be scavenged from decommissioned elements.
    * 
    * @return true if spares can be scavenged, false otherwise
    */
-  public static boolean isScavengeSpares() {
+  public boolean isScavengeSpares() {
     return scavengeSpares;
   }
 
@@ -252,7 +268,7 @@ public class GlobalParameters {
    * 
    * @param scavengeSpares true if spares can be scavenged, false otherwise
    */
-  public static void setScavengeSpares(boolean scavengeSpares) {
-    GlobalParameters.scavengeSpares = scavengeSpares;
+  public void setScavengeSpares(boolean scavengeSpares) {
+    this.scavengeSpares = scavengeSpares;
   }
 }

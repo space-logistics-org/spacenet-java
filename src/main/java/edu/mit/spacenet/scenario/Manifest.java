@@ -159,7 +159,7 @@ public class Manifest {
     for (Demand demandAsPacked : getDemandsAsPacked().get(demand)) {
       amount += demandAsPacked.getAmount();
     }
-    return GlobalParameters.getRoundedDemand(amount);
+    return GlobalParameters.getSingleton().getRoundedDemand(amount);
   }
 
   /**
@@ -383,7 +383,7 @@ public class Manifest {
         I_ResourceContainer container;
         if (getRemainingAmount(d)
             * d.getResource().getUnitMass() > ResourceContainerFactory.LTD_MAX_MASS
-            || (GlobalParameters.isVolumeConstrained() && getRemainingAmount(d)
+            || (GlobalParameters.getSingleton().isVolumeConstrained() && getRemainingAmount(d)
                 * d.getResource().getUnitVolume() > ResourceContainerFactory.LTD_MAX_VOLUME)) {
           container = ResourceContainerFactory.createLT();
         } else {
@@ -405,7 +405,7 @@ public class Manifest {
         I_ResourceContainer container;
         if (getRemainingAmount(d)
             * d.getResource().getUnitMass() > ResourceContainerFactory.GTD_MAX_MASS
-            || (GlobalParameters.isVolumeConstrained() && getRemainingAmount(d)
+            || (GlobalParameters.getSingleton().isVolumeConstrained() && getRemainingAmount(d)
                 * d.getResource().getUnitVolume() > ResourceContainerFactory.GTD_MAX_VOLUME)) {
           container = ResourceContainerFactory.createGT();
         } else {
@@ -427,7 +427,7 @@ public class Manifest {
         I_ResourceContainer container;
         if (getRemainingAmount(d)
             * d.getResource().getUnitMass() > ResourceContainerFactory.LTD_MAX_MASS
-            || (GlobalParameters.isVolumeConstrained() && getRemainingAmount(d)
+            || (GlobalParameters.getSingleton().isVolumeConstrained() && getRemainingAmount(d)
                 * d.getResource().getUnitVolume() > ResourceContainerFactory.LTD_MAX_VOLUME)) {
           container = ResourceContainerFactory.createLT();
         } else {
@@ -456,7 +456,7 @@ public class Manifest {
         I_ResourceContainer container;
         if (getRemainingAmount(d)
             * d.getResource().getUnitMass() > ResourceContainerFactory.HCTB_MAX_MASS
-            || (GlobalParameters.isVolumeConstrained() && getRemainingAmount(d)
+            || (GlobalParameters.getSingleton().isVolumeConstrained() && getRemainingAmount(d)
                 * d.getResource().getUnitVolume() > ResourceContainerFactory.HCTB_MAX_VOLUME)) {
           container = ResourceContainerFactory.createCTB();
         } else {
@@ -542,17 +542,17 @@ public class Manifest {
     if (containerPoint == null || (demandPoint.getNode().equals(containerPoint.getNode())
         && demandPoint.getTime() <= containerPoint.getTime())) {
       double remainingAmountMass = demand.getResource().getUnitMass() == 0 ? Double.MAX_VALUE
-          : GlobalParameters.getRoundedDemand(
+          : GlobalParameters.getSingleton().getRoundedDemand(
               (container.getMaxCargoMass() - getCargoMass(container, containerPoint))
                   / demand.getResource().getUnitMass());
-      double remainingAmountVolume =
-          (!GlobalParameters.isVolumeConstrained() || demand.getResource().getUnitVolume() == 0)
+      double remainingAmountVolume = (!GlobalParameters.getSingleton().isVolumeConstrained()
+          || demand.getResource().getUnitVolume() == 0)
               ? Double.MAX_VALUE
-              : GlobalParameters.getRoundedDemand(
+              : GlobalParameters.getSingleton().getRoundedDemand(
                   (container.getMaxCargoVolume() - getCargoVolume(container, containerPoint))
                       / demand.getResource().getUnitVolume());
 
-      double amount = GlobalParameters.isEnvironmentConstrained()
+      double amount = GlobalParameters.getSingleton().isEnvironmentConstrained()
           && demand.getResource().getEnvironment() == Environment.PRESSURIZED
           && container.getCargoEnvironment() == Environment.UNPRESSURIZED ? 0
               : Math.min(getRemainingAmount(demand),
@@ -683,10 +683,10 @@ public class Manifest {
       return false;
     else if (getRemainingAmount(demand) > 0
         && getCargoMass(container, getSupplyPoint(demand))
-            - container.getMaxCargoMass() < GlobalParameters.getMassPrecision() / 2d
-        && (!GlobalParameters.isVolumeConstrained()
-            || getCargoVolume(container, getSupplyPoint(demand))
-                - container.getMaxCargoVolume() < GlobalParameters.getVolumePrecision() / 2d)) {
+            - container.getMaxCargoMass() < GlobalParameters.getSingleton().getMassPrecision() / 2d
+        && (!GlobalParameters.getSingleton().isVolumeConstrained()
+            || getCargoVolume(container, getSupplyPoint(demand)) - container
+                .getMaxCargoVolume() < GlobalParameters.getSingleton().getVolumePrecision() / 2d)) {
       SupplyPoint containerPoint = getCurrentSupplyPoint(container);
       SupplyPoint demandPoint = getSupplyPoint(demand);
       if (containerPoint == null && !isManifested(container, containerPoint)) {
@@ -746,11 +746,12 @@ public class Manifest {
       if (point != null && edge.equals(point.getEdge())
           && manifestedContainers.get(edge).keySet().contains(carrier)
           && getCargoMass(carrier, point) + container.getMass() + getCargoMass(container, point)
-              - carrier.getMaxCargoMass() < GlobalParameters.getMassPrecision() / 2d
-          && (!GlobalParameters.isVolumeConstrained()
+              - carrier.getMaxCargoMass() < GlobalParameters.getSingleton().getMassPrecision() / 2d
+          && (!GlobalParameters.getSingleton().isVolumeConstrained()
               || getCargoVolume(carrier, point) + container.getVolume()
-                  - carrier.getMaxCargoVolume() < GlobalParameters.getVolumePrecision() / 2d)
-          && (!GlobalParameters.isEnvironmentConstrained()
+                  - carrier.getMaxCargoVolume() < GlobalParameters.getSingleton()
+                      .getVolumePrecision() / 2d)
+          && (!GlobalParameters.getSingleton().isEnvironmentConstrained()
               || !(container.getEnvironment() == Environment.PRESSURIZED
                   && carrier.getCargoEnvironment() == Environment.UNPRESSURIZED))
           && !isManifested(container, point)) {
@@ -761,11 +762,11 @@ public class Manifest {
         && edge.getEndTime() <= point.getTime()
         && manifestedContainers.get(edge).keySet().contains(carrier)
         && getCargoMass(carrier, point) + container.getMass() + getCargoMass(container, point)
-            - carrier.getMaxCargoMass() < GlobalParameters.getMassPrecision() / 2d
-        && (!GlobalParameters.isVolumeConstrained()
-            || getCargoVolume(carrier, point) + container.getVolume()
-                - carrier.getMaxCargoVolume() < GlobalParameters.getVolumePrecision() / 2d)
-        && (!GlobalParameters.isEnvironmentConstrained()
+            - carrier.getMaxCargoMass() < GlobalParameters.getSingleton().getMassPrecision() / 2d
+        && (!GlobalParameters.getSingleton().isVolumeConstrained()
+            || getCargoVolume(carrier, point) + container.getVolume() - carrier
+                .getMaxCargoVolume() < GlobalParameters.getSingleton().getVolumePrecision() / 2d)
+        && (!GlobalParameters.getSingleton().isEnvironmentConstrained()
             || !(container.getEnvironment() == Environment.PRESSURIZED
                 && carrier.getCargoEnvironment() == Environment.UNPRESSURIZED))
         && !isManifested(container, point)) {

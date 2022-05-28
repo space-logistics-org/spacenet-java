@@ -53,7 +53,7 @@ public class SimState implements Comparable<SimState> {
    * @return the simulation time
    */
   public double getTime() {
-    return GlobalParameters.getRoundedTime(time);
+    return GlobalParameters.getSingleton().getRoundedTime(time);
   }
 
   /**

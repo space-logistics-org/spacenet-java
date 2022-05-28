@@ -111,7 +111,7 @@ public class CapacityPanel extends JPanel {
    */
   public boolean updateCapacities(I_ResourceContainer container, double mass, double volume) {
     boolean hasErrors = false;
-    if (GlobalParameters.isEnvironmentConstrained()) {
+    if (GlobalParameters.getSingleton().isEnvironmentConstrained()) {
       environmentLabel.setVisible(true);
       environmentLabel.setText(container.getCargoEnvironment().getName());
     } else {
@@ -132,11 +132,11 @@ public class CapacityPanel extends JPanel {
     }
     massCapacity.setString(
         massFormat.format(mass) + " / " + massFormat.format(container.getMaxCargoMass()) + " kg");
-    if (GlobalParameters.isVolumeConstrained()) {
+    if (GlobalParameters.getSingleton().isVolumeConstrained()) {
       volumeCapacity.setVisible(true);
       volumeLabel.setVisible(true);
       if (volume > container.getMaxCargoVolume()) {
-        hasErrors = hasErrors || GlobalParameters.isVolumeConstrained();
+        hasErrors = hasErrors || GlobalParameters.getSingleton().isVolumeConstrained();
         volumeCapacity.setForeground(new Color(153, 0, 0));
       } else {
         volumeCapacity.setForeground(new Color(0, 153, 0));
@@ -168,7 +168,7 @@ public class CapacityPanel extends JPanel {
    */
   public boolean updateCapacities(I_Carrier carrier, double mass, double volume, int crew) {
     boolean hasErrors = false;
-    if (GlobalParameters.isEnvironmentConstrained()) {
+    if (GlobalParameters.getSingleton().isEnvironmentConstrained()) {
       environmentLabel.setVisible(true);
       environmentLabel.setText(carrier.getCargoEnvironment().getName());
     } else {
@@ -189,11 +189,11 @@ public class CapacityPanel extends JPanel {
     }
     massCapacity.setString(
         massFormat.format(mass) + " / " + massFormat.format(carrier.getMaxCargoMass()) + " kg");
-    if (GlobalParameters.isVolumeConstrained()) {
+    if (GlobalParameters.getSingleton().isVolumeConstrained()) {
       volumeCapacity.setVisible(true);
       volumeLabel.setVisible(true);
       if (volume > carrier.getMaxCargoVolume()) {
-        hasErrors = hasErrors || GlobalParameters.isVolumeConstrained();
+        hasErrors = hasErrors || GlobalParameters.getSingleton().isVolumeConstrained();
         volumeCapacity.setForeground(new Color(153, 0, 0));
       } else {
         volumeCapacity.setForeground(new Color(0, 153, 0));
@@ -236,7 +236,7 @@ public class CapacityPanel extends JPanel {
    * @return true, if successful
    */
   public boolean updateCapacities(Location location, double mass, double volume, int crew) {
-    if (GlobalParameters.isEnvironmentConstrained()) {
+    if (GlobalParameters.getSingleton().isEnvironmentConstrained()) {
       environmentLabel.setText(Environment.UNPRESSURIZED.getName());
     } else {
       environmentLabel.setVisible(false);
@@ -246,7 +246,7 @@ public class CapacityPanel extends JPanel {
     massCapacity.setForeground(new Color(0, 153, 0));
     massCapacity.setValue(0);
     massCapacity.setString(massFormat.format(mass) + " kg");
-    if (GlobalParameters.isVolumeConstrained()) {
+    if (GlobalParameters.getSingleton().isVolumeConstrained()) {
       volumeCapacity.setVisible(true);
       volumeLabel.setVisible(true);
       volumeCapacity.setForeground(new Color(0, 153, 0));

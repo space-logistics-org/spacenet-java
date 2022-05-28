@@ -775,7 +775,8 @@ public class ManifestTab extends JSplitPane {
       containerContentsTable.setContainer(container, point);
       containerEnvironmentLabel.setText(container.getCargoEnvironment().toString());
 
-      if (cargoMass - container.getMaxCargoMass() > GlobalParameters.getMassPrecision() / 2d)
+      if (cargoMass
+          - container.getMaxCargoMass() > GlobalParameters.getSingleton().getMassPrecision() / 2d)
         containerMassCapacity.setForeground(new Color(153, 0, 0));
       else
         containerMassCapacity.setForeground(new Color(0, 153, 0));
@@ -786,7 +787,8 @@ public class ManifestTab extends JSplitPane {
       containerMassCapacity.setString(massFormat.format(cargoMass) + " / "
           + massFormat.format(container.getMaxCargoMass()) + " kg");
 
-      if (cargoVolume - container.getMaxCargoVolume() > GlobalParameters.getVolumePrecision() / 2d)
+      if (cargoVolume - container.getMaxCargoVolume() > GlobalParameters.getSingleton()
+          .getVolumePrecision() / 2d)
         containerVolumeCapacity.setForeground(new Color(153, 0, 0));
       else
         containerVolumeCapacity.setForeground(new Color(0, 153, 0));
@@ -838,7 +840,8 @@ public class ManifestTab extends JSplitPane {
       double cargoVolume = getManifest().getCargoVolume(carrier, edge.getPoint());
 
       DecimalFormat massFormat = new DecimalFormat("0.00");
-      if (cargoMass - carrier.getMaxCargoMass() > GlobalParameters.getMassPrecision() / 2d)
+      if (cargoMass - carrier.getMaxCargoMass() > GlobalParameters.getSingleton().getMassPrecision()
+          / 2d)
         carrierMassCapacity.setForeground(new Color(153, 0, 0));
       else
         carrierMassCapacity.setForeground(new Color(0, 153, 0));
@@ -850,7 +853,8 @@ public class ManifestTab extends JSplitPane {
           + massFormat.format(carrier.getMaxCargoMass()) + " kg");
 
       DecimalFormat volumeFormat = new DecimalFormat("0.000");
-      if (cargoVolume - carrier.getMaxCargoVolume() > GlobalParameters.getVolumePrecision() / 2d)
+      if (cargoVolume
+          - carrier.getMaxCargoVolume() > GlobalParameters.getSingleton().getVolumePrecision() / 2d)
         carrierVolumeCapacity.setForeground(new Color(153, 0, 0));
       else
         carrierVolumeCapacity.setForeground(new Color(0, 153, 0));

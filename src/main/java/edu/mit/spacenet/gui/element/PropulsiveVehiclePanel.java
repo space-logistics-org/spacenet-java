@@ -133,8 +133,8 @@ public class PropulsiveVehiclePanel extends AbstractElementPanel {
     omsPanel.add(omsResourceCombo, c);
 
     c.gridy++;
-    maxOmsFuelModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getMassPrecision());
+    maxOmsFuelModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     maxOmsFuelSpinner = new JSpinner(maxOmsFuelModel);
     maxOmsFuelSpinner.setPreferredSize(new Dimension(150, 20));
     maxOmsFuelSpinner.addChangeListener(new ChangeListener() {
@@ -147,8 +147,8 @@ public class PropulsiveVehiclePanel extends AbstractElementPanel {
     maxOmsFuelSpinner.setToolTipText("Maximum amount of orbital maneuvering system fuel");
 
     c.gridy++;
-    omsFuelModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getMassPrecision());
+    omsFuelModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     omsFuelSpinner = new JSpinner(omsFuelModel);
     omsFuelSpinner.setPreferredSize(new Dimension(150, 20));
     omsFuelWrapper = new UnitsWrapper(omsFuelSpinner, "");
@@ -216,8 +216,8 @@ public class PropulsiveVehiclePanel extends AbstractElementPanel {
     rcsPanel.add(rcsResourceCombo, c);
 
     c.gridy++;
-    maxRcsFuelModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getMassPrecision());
+    maxRcsFuelModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     maxRcsFuelSpinner = new JSpinner(maxRcsFuelModel);
     maxRcsFuelSpinner.setPreferredSize(new Dimension(150, 20));
     maxRcsFuelSpinner.addChangeListener(new ChangeListener() {
@@ -230,8 +230,8 @@ public class PropulsiveVehiclePanel extends AbstractElementPanel {
     maxRcsFuelSpinner.setToolTipText("Maximum amount of reaction control system fuel");
 
     c.gridy++;
-    rcsFuelModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getMassPrecision());
+    rcsFuelModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     rcsFuelSpinner = new JSpinner(rcsFuelModel);
     rcsFuelSpinner.setPreferredSize(new Dimension(150, 20));
     rcsFuelWrapper = new UnitsWrapper(rcsFuelSpinner, "");

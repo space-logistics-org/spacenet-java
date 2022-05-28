@@ -41,7 +41,7 @@ public class GenericResourceContainer extends ResourceContainer {
    */
   @Override
   public double getVolume() {
-    return GlobalParameters
+    return GlobalParameters.getSingleton()
         .getRoundedVolume(super.getVolume() + volumePackingFactor * getCargoVolume());
   }
 
@@ -52,7 +52,8 @@ public class GenericResourceContainer extends ResourceContainer {
    */
   @Override
   public double getMass() {
-    return GlobalParameters.getRoundedMass(super.getMass() + massPackingFactor * getCargoMass());
+    return GlobalParameters.getSingleton()
+        .getRoundedMass(super.getMass() + massPackingFactor * getCargoMass());
   }
 
   /*
@@ -62,7 +63,8 @@ public class GenericResourceContainer extends ResourceContainer {
    */
   @Override
   public double getMaxCargoMass() {
-    return GlobalParameters.getRoundedMass((maxMass - getMass()) / (massPackingFactor + 1));
+    return GlobalParameters.getSingleton()
+        .getRoundedMass((maxMass - getMass()) / (massPackingFactor + 1));
   }
 
   /*
@@ -82,7 +84,8 @@ public class GenericResourceContainer extends ResourceContainer {
    */
   @Override
   public double getMaxCargoVolume() {
-    return GlobalParameters.getRoundedVolume((maxVolume - getVolume()) / (volumePackingFactor + 1));
+    return GlobalParameters.getSingleton()
+        .getRoundedVolume((maxVolume - getVolume()) / (volumePackingFactor + 1));
   }
 
   /*
@@ -137,7 +140,7 @@ public class GenericResourceContainer extends ResourceContainer {
    * @return the maximum mass (kilograms)
    */
   public double getMaxMass() {
-    return GlobalParameters.getRoundedMass(maxMass);
+    return GlobalParameters.getSingleton().getRoundedMass(maxMass);
   }
 
   /**
@@ -155,7 +158,7 @@ public class GenericResourceContainer extends ResourceContainer {
    * @return the maximum container volume (cubic meters)
    */
   public double getMaxVolume() {
-    return GlobalParameters.getRoundedVolume(maxVolume);
+    return GlobalParameters.getSingleton().getRoundedVolume(maxVolume);
   }
 
   /**

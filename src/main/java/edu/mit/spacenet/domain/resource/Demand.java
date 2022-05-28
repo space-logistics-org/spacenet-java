@@ -42,7 +42,7 @@ public class Demand implements Comparable<Demand> {
     if (resource == null)
       return 0;
     else
-      return GlobalParameters.getRoundedMass(resource.getUnitMass() * amount);
+      return GlobalParameters.getSingleton().getRoundedMass(resource.getUnitMass() * amount);
   }
 
   /**
@@ -54,7 +54,7 @@ public class Demand implements Comparable<Demand> {
     if (resource == null)
       return 0;
     else
-      return GlobalParameters.getRoundedVolume(resource.getUnitVolume() * amount);
+      return GlobalParameters.getSingleton().getRoundedVolume(resource.getUnitVolume() * amount);
   }
 
   /**
@@ -93,7 +93,7 @@ public class Demand implements Comparable<Demand> {
    * @return the demanded amount (units of resource)
    */
   public double getAmount() {
-    return GlobalParameters.getRoundedDemand(amount);
+    return GlobalParameters.getSingleton().getRoundedDemand(amount);
   }
 
   /**

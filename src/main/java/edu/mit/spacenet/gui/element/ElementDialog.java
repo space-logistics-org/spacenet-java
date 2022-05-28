@@ -228,8 +228,8 @@ public class ElementDialog extends JDialog {
     environmentCombo.setToolTipText("Required environment for nesting");
 
     c.gridx += 2;
-    accommodationMassModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getMassPrecision());
+    accommodationMassModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     accommodationMassSpinner = new JSpinner(accommodationMassModel);
     accommodationMassSpinner.setPreferredSize(new Dimension(150, 20));
     accommodationMassSpinner.setEnabled(false); // TODO disabled
@@ -240,7 +240,8 @@ public class ElementDialog extends JDialog {
     c.gridy++;
     c.gridx = 1;
     c.weightx = 1;
-    massModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getMassPrecision());
+    massModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     massSpinner = new JSpinner(massModel);
     massSpinner.setPreferredSize(new Dimension(150, 20));
     contentPanel.add(new UnitsWrapper(massSpinner, "kg"), c);
@@ -248,8 +249,8 @@ public class ElementDialog extends JDialog {
 
     c.gridx += 2;
     c.weightx = 1;
-    volumeModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getVolumePrecision());
+    volumeModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getVolumePrecision());
     volumeSpinner = new JSpinner(volumeModel);
     volumeSpinner.setPreferredSize(new Dimension(150, 20));
     contentPanel.add(new UnitsWrapper(volumeSpinner, "m^3"), c);

@@ -79,16 +79,16 @@ public class Scenario {
     detailedEva = true;
     detailedExploration = true;
 
-    timePrecision = GlobalParameters.getTimePrecision();
-    demandPrecision = GlobalParameters.getDemandPrecision();
-    massPrecision = GlobalParameters.getMassPrecision();
-    volumePrecision = GlobalParameters.getVolumePrecision();
-    volumeConstrained = GlobalParameters.isVolumeConstrained();
-    environmentConstrained = GlobalParameters.isEnvironmentConstrained();
+    timePrecision = GlobalParameters.getSingleton().getTimePrecision();
+    demandPrecision = GlobalParameters.getSingleton().getDemandPrecision();
+    massPrecision = GlobalParameters.getSingleton().getMassPrecision();
+    volumePrecision = GlobalParameters.getSingleton().getVolumePrecision();
+    volumeConstrained = GlobalParameters.getSingleton().isVolumeConstrained();
+    environmentConstrained = GlobalParameters.getSingleton().isEnvironmentConstrained();
 
-    itemDiscretization = GlobalParameters.getItemDiscretization();
-    itemAggregation = GlobalParameters.getItemAggregation();
-    scavengeSpares = GlobalParameters.isScavengeSpares();
+    itemDiscretization = GlobalParameters.getSingleton().getItemDiscretization();
+    itemAggregation = GlobalParameters.getSingleton().getItemAggregation();
+    scavengeSpares = GlobalParameters.getSingleton().isScavengeSpares();
     repairedItems = new HashMap<Mission, Set<RepairItem>>();
   }
 
@@ -424,7 +424,7 @@ public class Scenario {
    */
   public void setTimePrecision(double timePrecision) {
     this.timePrecision = timePrecision;
-    GlobalParameters.setTimePrecision(timePrecision);
+    GlobalParameters.getSingleton().setTimePrecision(timePrecision);
   }
 
   /**
@@ -443,7 +443,7 @@ public class Scenario {
    */
   public void setDemandPrecision(double demandPrecision) {
     this.demandPrecision = demandPrecision;
-    GlobalParameters.setDemandPrecision(demandPrecision);
+    GlobalParameters.getSingleton().setDemandPrecision(demandPrecision);
   }
 
   /**
@@ -462,7 +462,7 @@ public class Scenario {
    */
   public void setMassPrecision(double massPrecision) {
     this.massPrecision = massPrecision;
-    GlobalParameters.setMassPrecision(massPrecision);
+    GlobalParameters.getSingleton().setMassPrecision(massPrecision);
   }
 
   /**
@@ -481,7 +481,7 @@ public class Scenario {
    */
   public void setVolumePrecision(double volumePrecision) {
     this.volumePrecision = volumePrecision;
-    GlobalParameters.setVolumePrecision(volumePrecision);
+    GlobalParameters.getSingleton().setVolumePrecision(volumePrecision);
   }
 
   /**
@@ -500,7 +500,7 @@ public class Scenario {
    */
   public void setVolumeConstrained(boolean volumeConstrained) {
     this.volumeConstrained = volumeConstrained;
-    GlobalParameters.setVolumeConstrained(volumeConstrained);
+    GlobalParameters.getSingleton().setVolumeConstrained(volumeConstrained);
   }
 
   /**
@@ -519,7 +519,7 @@ public class Scenario {
    */
   public void setEnvironmentConstrained(boolean environmentConstrained) {
     this.environmentConstrained = environmentConstrained;
-    GlobalParameters.setEnvironmentConstrained(environmentConstrained);
+    GlobalParameters.getSingleton().setEnvironmentConstrained(environmentConstrained);
   }
 
   /**
@@ -538,7 +538,7 @@ public class Scenario {
    */
   public void setItemDiscretization(ItemDiscretization itemDiscretization) {
     this.itemDiscretization = itemDiscretization;
-    GlobalParameters.setItemDiscretization(itemDiscretization);
+    GlobalParameters.getSingleton().setItemDiscretization(itemDiscretization);
   }
 
   /**
@@ -557,7 +557,7 @@ public class Scenario {
    */
   public void setScavengeSpares(boolean scavengeSpares) {
     this.scavengeSpares = scavengeSpares;
-    GlobalParameters.setScavengeSpares(scavengeSpares);
+    GlobalParameters.getSingleton().setScavengeSpares(scavengeSpares);
   }
 
   /**
@@ -577,7 +577,7 @@ public class Scenario {
    */
   public void setItemAggregation(double itemAggregation) {
     this.itemAggregation = itemAggregation;
-    GlobalParameters.setItemAggregation(itemAggregation);
+    GlobalParameters.getSingleton().setItemAggregation(itemAggregation);
   }
 
   /**

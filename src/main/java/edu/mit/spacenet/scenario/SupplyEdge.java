@@ -117,7 +117,7 @@ public class SupplyEdge implements Comparable<SupplyEdge> {
    * @return the start time
    */
   public double getStartTime() {
-    return GlobalParameters.getRoundedTime(startTime);
+    return GlobalParameters.getSingleton().getRoundedTime(startTime);
   }
 
   /**
@@ -126,7 +126,7 @@ public class SupplyEdge implements Comparable<SupplyEdge> {
    * @return the end time
    */
   public double getEndTime() {
-    return GlobalParameters.getRoundedTime(endTime);
+    return GlobalParameters.getSingleton().getRoundedTime(endTime);
   }
 
   /**

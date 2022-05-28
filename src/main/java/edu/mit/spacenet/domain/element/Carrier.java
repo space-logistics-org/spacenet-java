@@ -69,7 +69,7 @@ public class Carrier extends Element implements I_Carrier {
    * @see edu.mit.spacenet.domain.element.I_Carrier#getMaxCargoMass()
    */
   public double getMaxCargoMass() {
-    return GlobalParameters.getRoundedMass(maxCargoMass);
+    return GlobalParameters.getSingleton().getRoundedMass(maxCargoMass);
   }
 
   /*
@@ -102,7 +102,7 @@ public class Carrier extends Element implements I_Carrier {
    * @see edu.mit.spacenet.domain.element.I_Carrier#getMaxCargoVolume()
    */
   public double getMaxCargoVolume() {
-    return GlobalParameters.getRoundedVolume(maxCargoVolume);
+    return GlobalParameters.getSingleton().getRoundedVolume(maxCargoVolume);
   }
 
   /*
@@ -126,7 +126,7 @@ public class Carrier extends Element implements I_Carrier {
         volume += e.getVolume();
       }
     }
-    return GlobalParameters.getRoundedVolume(volume);
+    return GlobalParameters.getSingleton().getRoundedVolume(volume);
   }
 
   /*
@@ -196,12 +196,13 @@ public class Carrier extends Element implements I_Carrier {
       if (contents.contains(element)) {
         return true;
       } else if (getCargoMass() + element.getTotalMass()
-          - getMaxCargoMass() > GlobalParameters.getMassPrecision() / 2d) {
+          - getMaxCargoMass() > GlobalParameters.getSingleton().getMassPrecision() / 2d) {
         return false; // mass constrained
-      } else if (GlobalParameters.isVolumeConstrained() && getCargoVolume() + element.getVolume()
-          - getMaxCargoVolume() > GlobalParameters.getVolumePrecision() / 2d) {
+      } else if (GlobalParameters.getSingleton().isVolumeConstrained()
+          && getCargoVolume() + element.getVolume()
+              - getMaxCargoVolume() > GlobalParameters.getSingleton().getVolumePrecision() / 2d) {
         return false; // volume constrained
-      } else if (GlobalParameters.isEnvironmentConstrained()
+      } else if (GlobalParameters.getSingleton().isEnvironmentConstrained()
           && (element.getEnvironment().equals(Environment.PRESSURIZED)
               && getCargoEnvironment().equals(Environment.UNPRESSURIZED))) {
         return false; // environment constrained
@@ -216,7 +217,8 @@ public class Carrier extends Element implements I_Carrier {
    * @see edu.mit.spacenet.domain.I_Container#canAdd(double)
    */
   public boolean canAdd(double addedMass) {
-    if (getCargoMass() + addedMass - getMaxCargoMass() > GlobalParameters.getMassPrecision() / 2d)
+    if (getCargoMass() + addedMass
+        - getMaxCargoMass() > GlobalParameters.getSingleton().getMassPrecision() / 2d)
       return false;
     else
       return true;
@@ -295,7 +297,7 @@ public class Carrier extends Element implements I_Carrier {
     for (I_Element e : contents) {
       mass += e.getTotalMass();
     }
-    return GlobalParameters.getRoundedMass(super.getTotalMass() + mass);
+    return GlobalParameters.getSingleton().getRoundedMass(super.getTotalMass() + mass);
   }
 
   /*
@@ -310,7 +312,7 @@ public class Carrier extends Element implements I_Carrier {
     for (I_Element e : getContents()) {
       amount += e.getTotalMass(cos);
     }
-    return GlobalParameters.getRoundedMass(amount);
+    return GlobalParameters.getSingleton().getRoundedMass(amount);
   }
 
   /*

@@ -100,16 +100,16 @@ public class ResourceContainerPanel extends AbstractElementPanel {
     c.gridx = 1;
     c.gridy = 0;
     c.weightx = 1;
-    maxCargoMassModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getMassPrecision());
+    maxCargoMassModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     maxCargoMassSpinner = new JSpinner(maxCargoMassModel);
     maxCargoMassSpinner.setPreferredSize(new Dimension(75, 20));
     add(new UnitsWrapper(maxCargoMassSpinner, "kg"), c);
     maxCargoMassSpinner.setToolTipText("Maximum mass of nested resources [kilograms]");
 
     c.gridx += 2;
-    maxCargoVolumeModel =
-        new SpinnerNumberModel(0, 0, Double.MAX_VALUE, GlobalParameters.getVolumePrecision());
+    maxCargoVolumeModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getVolumePrecision());
     maxCargoVolumeSpinner = new JSpinner(maxCargoVolumeModel);
     maxCargoVolumeSpinner.setPreferredSize(new Dimension(75, 20));
     add(new UnitsWrapper(maxCargoVolumeSpinner, "m^3"), c);

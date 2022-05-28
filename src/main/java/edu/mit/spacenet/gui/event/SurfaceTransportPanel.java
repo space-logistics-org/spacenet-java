@@ -320,8 +320,8 @@ public class SurfaceTransportPanel extends AbstractEventPanel {
       double duration = ((SurfaceEdge) ddlEdge.getSelectedItem()).getDistance()
           / (speedModel.getNumber().doubleValue() * dutyCycleModel.getNumber().doubleValue() * 24);
       DecimalFormat format = new DecimalFormat("0.00");
-      lblDuration.setText(
-          "Duration: " + format.format(GlobalParameters.getRoundedTime(duration)) + " days");
+      lblDuration.setText("Duration: "
+          + format.format(GlobalParameters.getSingleton().getRoundedTime(duration)) + " days");
     }
   }
 }

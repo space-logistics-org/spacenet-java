@@ -490,7 +490,7 @@ public class Mission implements Comparable<Mission> {
           .get(getScenario().getMissionList().indexOf(this) + 1).getStartDate(),
           getScenario().getStartDate());
     }
-    return GlobalParameters.getRoundedTime(endTime - startTime);
+    return GlobalParameters.getSingleton().getRoundedTime(endTime - startTime);
   }
 
   /**
@@ -513,9 +513,9 @@ public class Mission implements Comparable<Mission> {
     if (arrival < 0)
       return 0;
     else if (departure < 0)
-      return GlobalParameters.getRoundedTime(getDuration() - arrival);
+      return GlobalParameters.getSingleton().getRoundedTime(getDuration() - arrival);
     else
-      return GlobalParameters.getRoundedTime(departure - arrival);
+      return GlobalParameters.getSingleton().getRoundedTime(departure - arrival);
   }
 
   /**
@@ -534,7 +534,8 @@ public class Mission implements Comparable<Mission> {
         }
       }
     }
-    return GlobalParameters.getRoundedTime((arrivalTime != -1) ? arrivalTime : getDuration());
+    return GlobalParameters.getSingleton()
+        .getRoundedTime((arrivalTime != -1) ? arrivalTime : getDuration());
   }
 
   /**
@@ -558,7 +559,7 @@ public class Mission implements Comparable<Mission> {
         }
       }
     }
-    return GlobalParameters
+    return GlobalParameters.getSingleton()
         .getRoundedTime((transitEnd != -1 && transitStart != -1) ? transitEnd - transitStart : 0);
   }
 
@@ -568,7 +569,7 @@ public class Mission implements Comparable<Mission> {
    * @return the dormant duration (days)
    */
   public double getDormantDuration() {
-    return GlobalParameters.getRoundedTime(getDuration() - getTransitDuration()
+    return GlobalParameters.getSingleton().getRoundedTime(getDuration() - getTransitDuration()
         - getDestinationDuration() - getReturnTransitDuration());
   }
 

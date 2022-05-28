@@ -47,7 +47,7 @@ public class SimWarning extends Exception implements Comparable<SimWarning> {
    * @return the simulation time
    */
   public double getTime() {
-    return GlobalParameters.getRoundedTime(time);
+    return GlobalParameters.getSingleton().getRoundedTime(time);
   }
 
   /**

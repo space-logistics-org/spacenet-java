@@ -41,6 +41,7 @@ import edu.mit.spacenet.domain.network.node.SurfaceNode;
 import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.domain.resource.DemandSet;
 import edu.mit.spacenet.scenario.Scenario;
+import edu.mit.spacenet.util.GlobalParameters;
 
 /**
  * A class to help manage serialization/deserialization of objects.
@@ -134,6 +135,7 @@ public abstract class XStreamEngine {
     // TODO: re-load libraries when opening scenario
     // scenario.getDataSource().loadLibraries();
     fis.close();
+    GlobalParameters.getSingleton().setParametersFrom(scenario);
     return scenario;
   }
 }

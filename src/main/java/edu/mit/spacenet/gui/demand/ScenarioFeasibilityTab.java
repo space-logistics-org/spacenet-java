@@ -76,8 +76,8 @@ import edu.mit.spacenet.util.DateFunctions;
 public class ScenarioFeasibilityTab extends JSplitPane {
   private static final long serialVersionUID = -7246327673230474018L;
 
-  private static final String RAW_CAPACITY = "Raw Delivery Capacity";
-  private static final String REMAINING_CAPACITY = "Remaining Delivery Capacity";
+  private static final String RAW_CAPACITY = "Gross Capacity";
+  private static final String REMAINING_CAPACITY = "Net Capacity";
   private static final String ESTIMATED_DEMANDS = "Estimated Demands";
 
   private DemandsTab demandsTab;
@@ -471,15 +471,15 @@ public class ScenarioFeasibilityTab extends JSplitPane {
         renderer.setBaseShapesFilled(true);
       }
 
-      TimeSeries rawCapacitySeries = new TimeSeries("Raw Capacity", Hour.class);
+      TimeSeries rawCapacitySeries = new TimeSeries(RAW_CAPACITY, Hour.class);
       dataset.addSeries(rawCapacitySeries);
       r.setSeriesPaint(dataset.getSeriesCount() - 1, Color.BLUE);
       r.setSeriesShape(dataset.getSeriesCount() - 1, new Ellipse2D.Double(-1, -1, 2, 2));
-      TimeSeries remainingCapacitySeries = new TimeSeries("Remaining Capacity", Hour.class);
+      TimeSeries remainingCapacitySeries = new TimeSeries(REMAINING_CAPACITY, Hour.class);
       dataset.addSeries(remainingCapacitySeries);
       r.setSeriesPaint(dataset.getSeriesCount() - 1, Color.GREEN);
       r.setSeriesShape(dataset.getSeriesCount() - 1, new Ellipse2D.Double(-1, -1, 2, 2));
-      TimeSeries estimatedDemandsSeries = new TimeSeries("Estimated Demands", Hour.class);
+      TimeSeries estimatedDemandsSeries = new TimeSeries(ESTIMATED_DEMANDS, Hour.class);
       dataset.addSeries(estimatedDemandsSeries);
       r.setSeriesPaint(dataset.getSeriesCount() - 1, Color.RED);
       r.setSeriesShape(dataset.getSeriesCount() - 1, new Ellipse2D.Double(-1, -1, 2, 2));

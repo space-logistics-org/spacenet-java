@@ -85,6 +85,7 @@ public class ManifestTab extends JSplitPane {
   private ElementTree carrierTree;
   private CarrierContentsTable carrierContentsTable;
   private JButton unmanifestContentsButton;
+  private JLabel carrierEnvironmentLabel;
   private JProgressBar carrierMassCapacity, carrierVolumeCapacity;
   private JButton manifestButton;
 
@@ -481,12 +482,14 @@ public class ManifestTab extends JSplitPane {
     manifestingPanel.add(new JLabel("Containers: "), c);
     c.anchor = GridBagConstraints.LINE_END;
     c.gridy += 2;
+    manifestingPanel.add(new JLabel("Environment: "), c);
+    c.gridy++;
     manifestingPanel.add(new JLabel("Cargo Mass: "), c);
     c.gridy++;
     manifestingPanel.add(new JLabel("Cargo Volume: "), c);
     c.gridx++;
     c.weightx = 1;
-    c.gridy -= 4;
+    c.gridy -= 5;
     c.fill = GridBagConstraints.BOTH;
     c.anchor = GridBagConstraints.FIRST_LINE_START;
     c.weighty = 0.4;
@@ -550,6 +553,9 @@ public class ManifestTab extends JSplitPane {
     manifestingPanel.add(unmanifestContentsButton, c);
     c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.BOTH;
+    c.gridy++;
+    carrierEnvironmentLabel = new JLabel();
+    manifestingPanel.add(carrierEnvironmentLabel, c);
     c.gridy++;
     carrierMassCapacity = new JProgressBar(0, 100);
     carrierMassCapacity.setStringPainted(true);
@@ -821,6 +827,7 @@ public class ManifestTab extends JSplitPane {
     } else {
       carrierTree.setRoot(null);
       carrierTree.setRootVisible(false);
+      carrierEnvironmentLabel.setText(null);
       carrierMassCapacity.setValue(0);
       carrierMassCapacity.setString("");
       carrierVolumeCapacity.setValue(0);
@@ -840,6 +847,7 @@ public class ManifestTab extends JSplitPane {
       double cargoVolume = getManifest().getCargoVolume(carrier, edge.getPoint());
 
       DecimalFormat massFormat = new DecimalFormat("0.00");
+      carrierEnvironmentLabel.setText(carrier.getCargoEnvironment().toString());
       if (cargoMass - carrier.getMaxCargoMass() > GlobalParameters.getSingleton().getMassPrecision()
           / 2d)
         carrierMassCapacity.setForeground(new Color(153, 0, 0));
@@ -865,12 +873,11 @@ public class ManifestTab extends JSplitPane {
       carrierVolumeCapacity.setString(volumeFormat.format(cargoVolume) + " / "
           + volumeFormat.format(carrier.getMaxCargoVolume()) + " m^3");
     } else {
+      carrierEnvironmentLabel.setText(null);
       carrierMassCapacity.setValue(0);
       carrierMassCapacity.setString("");
-
       carrierVolumeCapacity.setValue(0);
       carrierVolumeCapacity.setString("");
-
       carrierContentsTable.setCarrier(null, null);
     }
   }

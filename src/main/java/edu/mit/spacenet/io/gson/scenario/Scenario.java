@@ -132,6 +132,26 @@ public class Scenario {
     s.setGenericPackingFactorLiquid(configuration.genericPackingFactorLiquid);
     s.setGenericPackingFactorPressurized(configuration.genericPackingFactorPressurized);
     s.setGenericPackingFactorUnpressurized(configuration.genericPackingFactorUnpressurized);
+    s.setSmallGasTankMass(configuration.smallGasTankMass);
+    s.setSmallGasTankVolume(configuration.smallGasTankVolume);
+    s.setSmallGasTankMaxMass(configuration.smallGasTankMaxMass);
+    s.setSmallGasTankMaxVolume(configuration.smallGasTankMaxVolume);
+    s.setLargeGasTankMass(configuration.largeGasTankMass);
+    s.setLargeGasTankVolume(configuration.largeGasTankVolume);
+    s.setLargeGasTankMaxMass(configuration.largeGasTankMaxMass);
+    s.setLargeGasTankMaxVolume(configuration.largeGasTankMaxVolume);
+    s.setSmallLiquidTankMass(configuration.smallLiquidTankMass);
+    s.setSmallLiquidTankVolume(configuration.smallLiquidTankVolume);
+    s.setSmallLiquidTankMaxMass(configuration.smallLiquidTankMaxMass);
+    s.setSmallLiquidTankMaxVolume(configuration.smallLiquidTankMaxVolume);
+    s.setLargeLiquidTankMass(configuration.largeLiquidTankMass);
+    s.setLargeLiquidTankVolume(configuration.largeLiquidTankVolume);
+    s.setLargeLiquidTankMaxMass(configuration.largeLiquidTankMaxMass);
+    s.setLargeLiquidTankMaxVolume(configuration.largeLiquidTankMaxVolume);
+    s.setCargoTransferBagMass(configuration.cargoTransferBagMass);
+    s.setCargoTransferBagVolume(configuration.cargoTransferBagVolume);
+    s.setCargoTransferBagMaxMass(configuration.cargoTransferBagMaxMass);
+    s.setCargoTransferBagMaxVolume(configuration.cargoTransferBagMaxVolume);
     return s;
   }
 }

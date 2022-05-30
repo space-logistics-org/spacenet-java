@@ -67,6 +67,28 @@ public class Scenario {
   private Double genericPackingFactorPressurized = null;
   private Double genericPackingFactorUnpressurized = null;
 
+  /* (Override) Manifested Resource Containers */
+  private Double smallGasTankMass = null;
+  private Double smallGasTankVolume = null;
+  private Double smallGasTankMaxMass = null;
+  private Double smallGasTankMaxVolume = null;
+  private Double largeGasTankMass = null;
+  private Double largeGasTankVolume = null;
+  private Double largeGasTankMaxMass = null;
+  private Double largeGasTankMaxVolume = null;
+  private Double smallLiquidTankMass = null;
+  private Double smallLiquidTankVolume = null;
+  private Double smallLiquidTankMaxMass = null;
+  private Double smallLiquidTankMaxVolume = null;
+  private Double largeLiquidTankMass = null;
+  private Double largeLiquidTankVolume = null;
+  private Double largeLiquidTankMaxMass = null;
+  private Double largeLiquidTankMaxVolume = null;
+  private Double cargoTransferBagMass = null;
+  private Double cargoTransferBagVolume = null;
+  private Double cargoTransferBagMaxMass = null;
+  private Double cargoTransferBagMaxVolume = null;
+
   /* Simulation Options */
   private boolean detailedEva;
   private boolean detailedExploration;
@@ -103,6 +125,31 @@ public class Scenario {
         GlobalParameters.getSingleton().getGenericPackingFactorPressurizedInternal());
     setGenericPackingFactorUnpressurized(
         GlobalParameters.getSingleton().getGenericPackingFactorUnpressurized());
+
+    setSmallGasTankMass(GlobalParameters.getSingleton().getSmallGasTankMass());
+    setSmallGasTankVolume(GlobalParameters.getSingleton().getSmallGasTankVolume());
+    setSmallGasTankMaxMass(GlobalParameters.getSingleton().getSmallGasTankMaxMass());
+    setSmallGasTankMaxVolume(GlobalParameters.getSingleton().getSmallGasTankMaxVolume());
+
+    setLargeGasTankMass(GlobalParameters.getSingleton().getLargeGasTankMass());
+    setLargeGasTankVolume(GlobalParameters.getSingleton().getLargeGasTankVolume());
+    setLargeGasTankMaxMass(GlobalParameters.getSingleton().getLargeGasTankMaxMass());
+    setLargeGasTankMaxVolume(GlobalParameters.getSingleton().getLargeGasTankMaxVolume());
+
+    setSmallLiquidTankMass(GlobalParameters.getSingleton().getSmallLiquidTankMass());
+    setSmallLiquidTankVolume(GlobalParameters.getSingleton().getSmallLiquidTankVolume());
+    setSmallLiquidTankMaxMass(GlobalParameters.getSingleton().getSmallLiquidTankMaxMass());
+    setSmallLiquidTankMaxVolume(GlobalParameters.getSingleton().getSmallLiquidTankMaxVolume());
+
+    setLargeLiquidTankMass(GlobalParameters.getSingleton().getLargeLiquidTankMass());
+    setLargeLiquidTankVolume(GlobalParameters.getSingleton().getLargeLiquidTankVolume());
+    setLargeLiquidTankMaxMass(GlobalParameters.getSingleton().getLargeLiquidTankMaxMass());
+    setLargeLiquidTankMaxVolume(GlobalParameters.getSingleton().getLargeLiquidTankMaxVolume());
+
+    setCargoTransferBagMass(GlobalParameters.getSingleton().getCargoTransferBagMass());
+    setCargoTransferBagVolume(GlobalParameters.getSingleton().getCargoTransferBagVolume());
+    setCargoTransferBagMaxMass(GlobalParameters.getSingleton().getCargoTransferBagMaxMass());
+    setCargoTransferBagMaxVolume(GlobalParameters.getSingleton().getCargoTransferBagMaxVolume());
   }
 
   /**
@@ -692,5 +739,445 @@ public class Scenario {
     this.genericPackingFactorUnpressurized = genericPackingFactorUnpressurized;
     GlobalParameters.getSingleton()
         .setGenericPackingFactorUnpressurized(genericPackingFactorUnpressurized);
+  }
+
+  /**
+   * Gets the small gas tank mass.
+   *
+   * @return the small gas tank mass
+   */
+  public Double getSmallGasTankMass() {
+    if (smallGasTankMass == null) {
+      smallGasTankMass = GlobalParameters.getSingleton().getSmallGasTankMass();
+    }
+    return smallGasTankMass;
+  }
+
+  /**
+   * Sets the small gas tank mass.
+   *
+   * @param smallGasTankMass the new small gas tank mass
+   */
+  public void setSmallGasTankMass(Double smallGasTankMass) {
+    this.smallGasTankMass = smallGasTankMass;
+    GlobalParameters.getSingleton().setSmallGasTankMass(smallGasTankMass);
+  }
+
+  /**
+   * Gets the small gas tank volume.
+   *
+   * @return the small gas tank volume
+   */
+  public Double getSmallGasTankVolume() {
+    if (smallGasTankVolume == null) {
+      smallGasTankVolume = GlobalParameters.getSingleton().getSmallGasTankVolume();
+    }
+    return smallGasTankVolume;
+  }
+
+  /**
+   * Sets the small gas tank volume.
+   *
+   * @param smallGasTankVolume the new small gas tank volume
+   */
+  public void setSmallGasTankVolume(Double smallGasTankVolume) {
+    this.smallGasTankVolume = smallGasTankVolume;
+    GlobalParameters.getSingleton().setSmallGasTankVolume(smallGasTankVolume);
+  }
+
+  /**
+   * Gets the small gas tank max mass.
+   *
+   * @return the small gas tank max mass
+   */
+  public Double getSmallGasTankMaxMass() {
+    if (smallGasTankMaxMass == null) {
+      smallGasTankMaxMass = GlobalParameters.getSingleton().getSmallGasTankMaxMass();
+    }
+    return smallGasTankMaxMass;
+  }
+
+  /**
+   * Sets the small gas tank max mass.
+   *
+   * @param smallGasTankMaxMass the new small gas tank max mass
+   */
+  public void setSmallGasTankMaxMass(Double smallGasTankMaxMass) {
+    this.smallGasTankMaxMass = smallGasTankMaxMass;
+    GlobalParameters.getSingleton().setSmallGasTankMaxMass(smallGasTankMaxMass);
+  }
+
+  /**
+   * Gets the small gas tank max volume.
+   *
+   * @return the small gas tank max volume
+   */
+  public Double getSmallGasTankMaxVolume() {
+    if (smallGasTankMaxVolume == null) {
+      smallGasTankMaxVolume = GlobalParameters.getSingleton().getSmallGasTankMaxVolume();
+    }
+    return smallGasTankMaxVolume;
+  }
+
+  /**
+   * Sets the small gas tank max volume.
+   *
+   * @param smallGasTankMaxVolume the new small gas tank max volume
+   */
+  public void setSmallGasTankMaxVolume(Double smallGasTankMaxVolume) {
+    this.smallGasTankMaxVolume = smallGasTankMaxVolume;
+    GlobalParameters.getSingleton().setSmallGasTankMaxVolume(smallGasTankMaxVolume);
+  }
+
+  /**
+   * Gets the large gas tank mass.
+   *
+   * @return the large gas tank mass
+   */
+  public Double getLargeGasTankMass() {
+    if (largeGasTankMass == null) {
+      largeGasTankMass = GlobalParameters.getSingleton().getLargeGasTankMass();
+    }
+    return largeGasTankMass;
+  }
+
+  /**
+   * Sets the large gas tank mass.
+   *
+   * @param largeGasTankMass the new large gas tank mass
+   */
+  public void setLargeGasTankMass(Double largeGasTankMass) {
+    this.largeGasTankMass = largeGasTankMass;
+    GlobalParameters.getSingleton().setLargeGasTankMass(largeGasTankMass);
+  }
+
+  /**
+   * Gets the large gas tank volume.
+   *
+   * @return the large gas tank volume
+   */
+  public Double getLargeGasTankVolume() {
+    if (largeGasTankVolume == null) {
+      largeGasTankVolume = GlobalParameters.getSingleton().getLargeGasTankVolume();
+    }
+    return largeGasTankVolume;
+  }
+
+  /**
+   * Sets the large gas tank volume.
+   *
+   * @param largeGasTankVolume the new large gas tank volume
+   */
+  public void setLargeGasTankVolume(Double largeGasTankVolume) {
+    this.largeGasTankVolume = largeGasTankVolume;
+    GlobalParameters.getSingleton().setLargeGasTankVolume(largeGasTankVolume);
+  }
+
+  /**
+   * Gets the large gas tank max mass.
+   *
+   * @return the large gas tank max mass
+   */
+  public Double getLargeGasTankMaxMass() {
+    if (largeGasTankMaxMass == null) {
+      largeGasTankMaxMass = GlobalParameters.getSingleton().getLargeGasTankMaxMass();
+    }
+    return largeGasTankMaxMass;
+  }
+
+  /**
+   * Sets the large gas tank max mass.
+   *
+   * @param largeGasTankMaxMass the new large gas tank max mass
+   */
+  public void setLargeGasTankMaxMass(Double largeGasTankMaxMass) {
+    this.largeGasTankMaxMass = largeGasTankMaxMass;
+    GlobalParameters.getSingleton().setLargeGasTankMaxMass(largeGasTankMaxMass);
+  }
+
+  /**
+   * Gets the large gas tank max volume.
+   *
+   * @return the large gas tank max volume
+   */
+  public Double getLargeGasTankMaxVolume() {
+    if (largeGasTankMaxVolume == null) {
+      largeGasTankMaxVolume = GlobalParameters.getSingleton().getLargeGasTankMaxVolume();
+    }
+    return largeGasTankMaxVolume;
+  }
+
+  /**
+   * Sets the large gas tank max volume.
+   *
+   * @param largeGasTankMaxVolume the new large gas tank max volume
+   */
+  public void setLargeGasTankMaxVolume(Double largeGasTankMaxVolume) {
+    this.largeGasTankMaxVolume = largeGasTankMaxVolume;
+    GlobalParameters.getSingleton().setLargeGasTankMaxVolume(largeGasTankMaxVolume);
+  }
+
+  /**
+   * Gets the small liquid tank mass.
+   *
+   * @return the small liquid tank mass
+   */
+  public Double getSmallLiquidTankMass() {
+    if (smallLiquidTankMass == null) {
+      smallLiquidTankMass = GlobalParameters.getSingleton().getSmallLiquidTankMass();
+    }
+    return smallLiquidTankMass;
+  }
+
+  /**
+   * Sets the small liquid tank mass.
+   *
+   * @param smallLiquidTankMass the new small liquid tank mass
+   */
+  public void setSmallLiquidTankMass(Double smallLiquidTankMass) {
+    this.smallLiquidTankMass = smallLiquidTankMass;
+    GlobalParameters.getSingleton().setSmallLiquidTankMass(smallLiquidTankMass);
+  }
+
+  /**
+   * Gets the small liquid tank volume.
+   *
+   * @return the small liquid tank volume
+   */
+  public Double getSmallLiquidTankVolume() {
+    if (smallLiquidTankVolume == null) {
+      smallLiquidTankVolume = GlobalParameters.getSingleton().getSmallLiquidTankVolume();
+    }
+    return smallLiquidTankVolume;
+  }
+
+  /**
+   * Sets the small liquid tank volume.
+   *
+   * @param smallLiquidTankVolume the new small liquid tank volume
+   */
+  public void setSmallLiquidTankVolume(Double smallLiquidTankVolume) {
+    this.smallLiquidTankVolume = smallLiquidTankVolume;
+    GlobalParameters.getSingleton().setSmallLiquidTankVolume(smallLiquidTankVolume);
+  }
+
+  /**
+   * Gets the small liquid tank max mass.
+   *
+   * @return the small liquid tank max mass
+   */
+  public Double getSmallLiquidTankMaxMass() {
+    if (smallLiquidTankMaxMass == null) {
+      smallLiquidTankMaxMass = GlobalParameters.getSingleton().getSmallLiquidTankMaxMass();
+    }
+    return smallLiquidTankMaxMass;
+  }
+
+  /**
+   * Sets the small liquid tank max mass.
+   *
+   * @param smallLiquidTankMaxMass the new small liquid tank max mass
+   */
+  public void setSmallLiquidTankMaxMass(Double smallLiquidTankMaxMass) {
+    this.smallLiquidTankMaxMass = smallLiquidTankMaxMass;
+    GlobalParameters.getSingleton().setSmallLiquidTankMaxMass(smallLiquidTankMaxMass);
+  }
+
+  /**
+   * Gets the small liquid tank max volume.
+   *
+   * @return the small liquid tank max volume
+   */
+  public Double getSmallLiquidTankMaxVolume() {
+    if (smallLiquidTankMaxVolume == null) {
+      smallLiquidTankMaxVolume = GlobalParameters.getSingleton().getSmallLiquidTankMaxVolume();
+    }
+    return smallLiquidTankMaxVolume;
+  }
+
+  /**
+   * Sets the small liquid tank max volume.
+   *
+   * @param smallLiquidTankMaxVolume the new small liquid tank max volume
+   */
+  public void setSmallLiquidTankMaxVolume(Double smallLiquidTankMaxVolume) {
+    this.smallLiquidTankMaxVolume = smallLiquidTankMaxVolume;
+    GlobalParameters.getSingleton().setSmallLiquidTankMaxVolume(smallLiquidTankMaxVolume);
+  }
+
+  /**
+   * Gets the large liquid tank mass.
+   *
+   * @return the large liquid tank mass
+   */
+  public Double getLargeLiquidTankMass() {
+    if (largeLiquidTankMass == null) {
+      largeLiquidTankMass = GlobalParameters.getSingleton().getLargeLiquidTankMass();
+    }
+    return largeLiquidTankMass;
+  }
+
+  /**
+   * Sets the large liquid tank mass.
+   *
+   * @param largeLiquidTankMass the new large liquid tank mass
+   */
+  public void setLargeLiquidTankMass(Double largeLiquidTankMass) {
+    this.largeLiquidTankMass = largeLiquidTankMass;
+    GlobalParameters.getSingleton().setLargeLiquidTankMass(largeLiquidTankMass);
+  }
+
+  /**
+   * Gets the large liquid tank volume.
+   *
+   * @return the large liquid tank volume
+   */
+  public Double getLargeLiquidTankVolume() {
+    if (largeLiquidTankVolume == null) {
+      largeLiquidTankVolume = GlobalParameters.getSingleton().getLargeLiquidTankVolume();
+    }
+    return largeLiquidTankVolume;
+  }
+
+  /**
+   * Sets the large liquid tank volume.
+   *
+   * @param largeLiquidTankVolume the new large liquid tank volume
+   */
+  public void setLargeLiquidTankVolume(Double largeLiquidTankVolume) {
+    this.largeLiquidTankVolume = largeLiquidTankVolume;
+    GlobalParameters.getSingleton().setLargeLiquidTankVolume(largeLiquidTankVolume);
+  }
+
+  /**
+   * Gets the large liquid tank max mass.
+   *
+   * @return the large liquid tank max mass
+   */
+  public Double getLargeLiquidTankMaxMass() {
+    if (largeLiquidTankMaxMass == null) {
+      largeLiquidTankMaxMass = GlobalParameters.getSingleton().getLargeLiquidTankMaxMass();
+    }
+    return largeLiquidTankMaxMass;
+  }
+
+  /**
+   * Sets the large liquid tank max mass.
+   *
+   * @param largeLiquidTankMaxMass the new large liquid tank max mass
+   */
+  public void setLargeLiquidTankMaxMass(Double largeLiquidTankMaxMass) {
+    this.largeLiquidTankMaxMass = largeLiquidTankMaxMass;
+    GlobalParameters.getSingleton().setLargeLiquidTankMaxMass(largeLiquidTankMaxMass);
+  }
+
+  /**
+   * Gets the large liquid tank max volume.
+   *
+   * @return the large liquid tank max volume
+   */
+  public Double getLargeLiquidTankMaxVolume() {
+    if (largeLiquidTankMaxVolume == null) {
+      largeLiquidTankMaxVolume = GlobalParameters.getSingleton().getLargeLiquidTankMaxVolume();
+    }
+    return largeLiquidTankMaxVolume;
+  }
+
+  /**
+   * Sets the large liquid tank max volume.
+   *
+   * @param largeLiquidTankMaxVolume the new large liquid tank max volume
+   */
+  public void setLargeLiquidTankMaxVolume(Double largeLiquidTankMaxVolume) {
+    this.largeLiquidTankMaxVolume = largeLiquidTankMaxVolume;
+    GlobalParameters.getSingleton().setLargeLiquidTankMaxVolume(largeLiquidTankMaxVolume);
+  }
+
+  /**
+   * Gets the cargo transfer bag mass.
+   *
+   * @return the cargo transfer bag mass
+   */
+  public Double getCargoTransferBagMass() {
+    if (cargoTransferBagMass == null) {
+      cargoTransferBagMass = GlobalParameters.getSingleton().getCargoTransferBagMass();
+    }
+    return cargoTransferBagMass;
+  }
+
+  /**
+   * Sets the cargo transfer bag mass.
+   *
+   * @param cargoTransferBagMass the new cargo transfer bag mass
+   */
+  public void setCargoTransferBagMass(Double cargoTransferBagMass) {
+    this.cargoTransferBagMass = cargoTransferBagMass;
+    GlobalParameters.getSingleton().setCargoTransferBagMass(cargoTransferBagMass);
+  }
+
+  /**
+   * Gets the cargo transfer bag volume.
+   *
+   * @return the cargo transfer bag volume
+   */
+  public Double getCargoTransferBagVolume() {
+    if (cargoTransferBagVolume == null) {
+      cargoTransferBagVolume = GlobalParameters.getSingleton().getCargoTransferBagVolume();
+    }
+    return cargoTransferBagVolume;
+  }
+
+  /**
+   * Sets the cargo transfer bag volume.
+   *
+   * @param cargoTransferBagVolume the new cargo transfer bag volume
+   */
+  public void setCargoTransferBagVolume(Double cargoTransferBagVolume) {
+    this.cargoTransferBagVolume = cargoTransferBagVolume;
+    GlobalParameters.getSingleton().setCargoTransferBagVolume(cargoTransferBagVolume);
+  }
+
+  /**
+   * Gets the cargo transfer bag max mass.
+   *
+   * @return the cargo transfer bag max mass
+   */
+  public Double getCargoTransferBagMaxMass() {
+    if (cargoTransferBagMaxMass == null) {
+      cargoTransferBagMaxMass = GlobalParameters.getSingleton().getCargoTransferBagMaxMass();
+    }
+    return cargoTransferBagMaxMass;
+  }
+
+  /**
+   * Sets the cargo transfer bag max mass.
+   *
+   * @param cargoTransferBagMaxMass the new cargo transfer bag max mass
+   */
+  public void setCargoTransferBagMaxMass(Double cargoTransferBagMaxMass) {
+    this.cargoTransferBagMaxMass = cargoTransferBagMaxMass;
+    GlobalParameters.getSingleton().setCargoTransferBagMaxMass(cargoTransferBagMaxMass);
+  }
+
+  /**
+   * Gets the cargo transfer bag max volume.
+   *
+   * @return the cargo transfer bag max volume
+   */
+  public Double getCargoTransferBagMaxVolume() {
+    if (cargoTransferBagMaxVolume == null) {
+      cargoTransferBagMaxVolume = GlobalParameters.getSingleton().getCargoTransferBagMaxVolume();
+    }
+    return cargoTransferBagMaxVolume;
+  }
+
+  /**
+   * Sets the cargo transfer bag max volume.
+   *
+   * @param cargoTransferBagMaxVolume the new cargo transfer bag max volume
+   */
+  public void setCargoTransferBagMaxVolume(Double cargoTransferBagMaxVolume) {
+    this.cargoTransferBagMaxVolume = cargoTransferBagMaxVolume;
+    GlobalParameters.getSingleton().setCargoTransferBagMaxVolume(cargoTransferBagMaxVolume);
   }
 }

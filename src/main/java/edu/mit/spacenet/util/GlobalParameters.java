@@ -24,6 +24,11 @@ import edu.mit.spacenet.scenario.Scenario;
 public class GlobalParameters {
   private static final GlobalParameters singleton = new GlobalParameters();
 
+  /**
+   * Gets the singleton.
+   *
+   * @return the singleton
+   */
   public static final GlobalParameters getSingleton() {
     return singleton;
   }
@@ -38,14 +43,48 @@ public class GlobalParameters {
   private double itemAggregation = 0;
   private ItemDiscretization itemDiscretization = ItemDiscretization.NONE;
   private boolean scavengeSpares = false;
+
   private double genericPackingFactorGas = 1.0;
   private double genericPackingFactorLiquid = 0.5;
   private double genericPackingFactorPressurizedExternal = 1.2;
   private double genericPackingFactorPressurizedInternal = 0.2;
   private double genericPackingFactorUnpressurized = 0.6;
 
+  private double smallGasTankMass = 10.8;
+  private double smallGasTankVolume = 0.275;
+  private double smallGasTankMaxMass = 10;
+  private double smallGasTankMaxVolume = 0.275;
+
+  private double largeGasTankMass = 108;
+  private double largeGasTankVolume = 2.75;
+  private double largeGasTankMaxMass = 100;
+  private double largeGasTankMaxVolume = 2.75;
+
+  private double smallLiquidTankMass = 11.4567;
+  private double smallLiquidTankVolume = 0.0249;
+  private double smallLiquidTankMaxMass = 24.9333;
+  private double smallLiquidTankMaxVolume = 0.0249;
+
+  private double largeLiquidTankMass = 34.37;
+  private double largeLiquidTankVolume = 0.0748;
+  private double largeLiquidTankMaxMass = 74.8;
+  private double largeLiquidTankMaxVolume = 0.0748;
+
+  private double cargoTransferBagMass = 0.83;
+  private double cargoTransferBagVolume = 0.053;
+  private double cargoTransferBagMaxMass = 26.8;
+  private double cargoTransferBagMaxVolume = 0.049;
+
+  /**
+   * Instantiates a new global parameters.
+   */
   private GlobalParameters() {}
 
+  /**
+   * Sets the parameters from.
+   *
+   * @param scenario the new parameters from
+   */
   public void setParametersFrom(Scenario scenario) {
     setTimePrecision(scenario.getTimePrecision());
     setDemandPrecision(scenario.getDemandPrecision());
@@ -60,6 +99,26 @@ public class GlobalParameters {
     setGenericPackingFactorLiquid(scenario.getGenericPackingFactorLiquid());
     setGenericPackingFactorPressurizedInternal(scenario.getGenericPackingFactorPressurized());
     setGenericPackingFactorUnpressurized(scenario.getGenericPackingFactorUnpressurized());
+    setSmallGasTankMass(scenario.getSmallGasTankMass());
+    setSmallGasTankVolume(scenario.getSmallGasTankVolume());
+    setSmallGasTankMaxMass(scenario.getSmallGasTankMaxMass());
+    setSmallGasTankMaxVolume(scenario.getSmallGasTankMaxVolume());
+    setLargeGasTankMass(scenario.getLargeGasTankMass());
+    setLargeGasTankVolume(scenario.getLargeGasTankVolume());
+    setLargeGasTankMaxMass(scenario.getLargeGasTankMaxMass());
+    setLargeLiquidTankMaxVolume(scenario.getLargeLiquidTankMaxVolume());
+    setSmallLiquidTankMass(scenario.getSmallLiquidTankMass());
+    setSmallLiquidTankVolume(scenario.getSmallLiquidTankVolume());
+    setSmallLiquidTankMaxMass(scenario.getSmallLiquidTankMaxMass());
+    setSmallLiquidTankMaxVolume(scenario.getSmallLiquidTankMaxVolume());
+    setLargeLiquidTankMass(scenario.getLargeLiquidTankMass());
+    setLargeLiquidTankVolume(scenario.getLargeLiquidTankVolume());
+    setLargeLiquidTankMaxMass(scenario.getLargeLiquidTankMaxMass());
+    setLargeLiquidTankMaxVolume(scenario.getLargeLiquidTankMaxVolume());
+    setCargoTransferBagMass(scenario.getCargoTransferBagMass());
+    setCargoTransferBagVolume(scenario.getCargoTransferBagVolume());
+    setCargoTransferBagMaxMass(scenario.getCargoTransferBagMaxMass());
+    setCargoTransferBagMaxVolume(scenario.getCargoTransferBagMaxVolume());
   }
 
   /**
@@ -373,5 +432,365 @@ public class GlobalParameters {
    */
   public void setGenericPackingFactorUnpressurized(double genericPackingFactorUnpressurized) {
     this.genericPackingFactorUnpressurized = genericPackingFactorUnpressurized;
+  }
+
+  /**
+   * Gets the small gas tank mass.
+   *
+   * @return the small gas tank mass
+   */
+  public double getSmallGasTankMass() {
+    return smallGasTankMass;
+  }
+
+  /**
+   * Sets the small gas tank mass.
+   *
+   * @param smallGasTankMass the new small gas tank mass
+   */
+  public void setSmallGasTankMass(double smallGasTankMass) {
+    this.smallGasTankMass = smallGasTankMass;
+  }
+
+  /**
+   * Gets the small gas tank volume.
+   *
+   * @return the small gas tank volume
+   */
+  public double getSmallGasTankVolume() {
+    return smallGasTankVolume;
+  }
+
+  /**
+   * Sets the small gas tank volume.
+   *
+   * @param smallGasTankVolume the new small gas tank volume
+   */
+  public void setSmallGasTankVolume(double smallGasTankVolume) {
+    this.smallGasTankVolume = smallGasTankVolume;
+  }
+
+  /**
+   * Gets the small gas tank max mass.
+   *
+   * @return the small gas tank max mass
+   */
+  public double getSmallGasTankMaxMass() {
+    return smallGasTankMaxMass;
+  }
+
+  /**
+   * Sets the small gas tank max mass.
+   *
+   * @param smallGasTankMaxMass the new small gas tank max mass
+   */
+  public void setSmallGasTankMaxMass(double smallGasTankMaxMass) {
+    this.smallGasTankMaxMass = smallGasTankMaxMass;
+  }
+
+  /**
+   * Gets the small gas tank max volume.
+   *
+   * @return the small gas tank max volume
+   */
+  public double getSmallGasTankMaxVolume() {
+    return smallGasTankMaxVolume;
+  }
+
+  /**
+   * Sets the small gas tank max volume.
+   *
+   * @param smallGasTankMaxVolume the new small gas tank max volume
+   */
+  public void setSmallGasTankMaxVolume(double smallGasTankMaxVolume) {
+    this.smallGasTankMaxVolume = smallGasTankMaxVolume;
+  }
+
+  /**
+   * Gets the large gas tank mass.
+   *
+   * @return the large gas tank mass
+   */
+  public double getLargeGasTankMass() {
+    return largeGasTankMass;
+  }
+
+  /**
+   * Sets the large gas tank mass.
+   *
+   * @param largeGasTankMass the new large gas tank mass
+   */
+  public void setLargeGasTankMass(double largeGasTankMass) {
+    this.largeGasTankMass = largeGasTankMass;
+  }
+
+  /**
+   * Gets the large gas tank volume.
+   *
+   * @return the large gas tank volume
+   */
+  public double getLargeGasTankVolume() {
+    return largeGasTankVolume;
+  }
+
+  /**
+   * Sets the large gas tank volume.
+   *
+   * @param largeGasTankVolume the new large gas tank volume
+   */
+  public void setLargeGasTankVolume(double largeGasTankVolume) {
+    this.largeGasTankVolume = largeGasTankVolume;
+  }
+
+  /**
+   * Gets the large gas tank max mass.
+   *
+   * @return the large gas tank max mass
+   */
+  public double getLargeGasTankMaxMass() {
+    return largeGasTankMaxMass;
+  }
+
+  /**
+   * Sets the large gas tank max mass.
+   *
+   * @param largeGasTankMaxMass the new large gas tank max mass
+   */
+  public void setLargeGasTankMaxMass(double largeGasTankMaxMass) {
+    this.largeGasTankMaxMass = largeGasTankMaxMass;
+  }
+
+  /**
+   * Gets the large gas tank max volume.
+   *
+   * @return the large gas tank max volume
+   */
+  public double getLargeGasTankMaxVolume() {
+    return largeGasTankMaxVolume;
+  }
+
+  /**
+   * Sets the large gas tank max volume.
+   *
+   * @param largeGasTankMaxVolume the new large gas tank max volume
+   */
+  public void setLargeGasTankMaxVolume(double largeGasTankMaxVolume) {
+    this.largeGasTankMaxVolume = largeGasTankMaxVolume;
+  }
+
+  /**
+   * Gets the small liquid tank mass.
+   *
+   * @return the small liquid tank mass
+   */
+  public double getSmallLiquidTankMass() {
+    return smallLiquidTankMass;
+  }
+
+  /**
+   * Sets the small liquid tank mass.
+   *
+   * @param smallLiquidTankMass the new small liquid tank mass
+   */
+  public void setSmallLiquidTankMass(double smallLiquidTankMass) {
+    this.smallLiquidTankMass = smallLiquidTankMass;
+  }
+
+  /**
+   * Gets the small liquid tank volume.
+   *
+   * @return the small liquid tank volume
+   */
+  public double getSmallLiquidTankVolume() {
+    return smallLiquidTankVolume;
+  }
+
+  /**
+   * Sets the small liquid tank volume.
+   *
+   * @param smallLiquidTankVolume the new small liquid tank volume
+   */
+  public void setSmallLiquidTankVolume(double smallLiquidTankVolume) {
+    this.smallLiquidTankVolume = smallLiquidTankVolume;
+  }
+
+  /**
+   * Gets the small liquid tank max mass.
+   *
+   * @return the small liquid tank max mass
+   */
+  public double getSmallLiquidTankMaxMass() {
+    return smallLiquidTankMaxMass;
+  }
+
+  /**
+   * Sets the small liquid tank max mass.
+   *
+   * @param smallLiquidTankMaxMass the new small liquid tank max mass
+   */
+  public void setSmallLiquidTankMaxMass(double smallLiquidTankMaxMass) {
+    this.smallLiquidTankMaxMass = smallLiquidTankMaxMass;
+  }
+
+  /**
+   * Gets the small liquid tank max volume.
+   *
+   * @return the small liquid tank max volume
+   */
+  public double getSmallLiquidTankMaxVolume() {
+    return smallLiquidTankMaxVolume;
+  }
+
+  /**
+   * Sets the small liquid tank max volume.
+   *
+   * @param smallLiquidTankMaxVolume the new small liquid tank max volume
+   */
+  public void setSmallLiquidTankMaxVolume(double smallLiquidTankMaxVolume) {
+    this.smallLiquidTankMaxVolume = smallLiquidTankMaxVolume;
+  }
+
+  /**
+   * Gets the large liquid tank mass.
+   *
+   * @return the large liquid tank mass
+   */
+  public double getLargeLiquidTankMass() {
+    return largeLiquidTankMass;
+  }
+
+  /**
+   * Sets the large liquid tank mass.
+   *
+   * @param largeLiquidTankMass the new large liquid tank mass
+   */
+  public void setLargeLiquidTankMass(double largeLiquidTankMass) {
+    this.largeLiquidTankMass = largeLiquidTankMass;
+  }
+
+  /**
+   * Gets the large liquid tank volume.
+   *
+   * @return the large liquid tank volume
+   */
+  public double getLargeLiquidTankVolume() {
+    return largeLiquidTankVolume;
+  }
+
+  /**
+   * Sets the large liquid tank volume.
+   *
+   * @param largeLiquidTankVolume the new large liquid tank volume
+   */
+  public void setLargeLiquidTankVolume(double largeLiquidTankVolume) {
+    this.largeLiquidTankVolume = largeLiquidTankVolume;
+  }
+
+  /**
+   * Gets the large liquid tank max mass.
+   *
+   * @return the large liquid tank max mass
+   */
+  public double getLargeLiquidTankMaxMass() {
+    return largeLiquidTankMaxMass;
+  }
+
+  /**
+   * Sets the large liquid tank max mass.
+   *
+   * @param largeLiquidTankMaxMass the new large liquid tank max mass
+   */
+  public void setLargeLiquidTankMaxMass(double largeLiquidTankMaxMass) {
+    this.largeLiquidTankMaxMass = largeLiquidTankMaxMass;
+  }
+
+  /**
+   * Gets the large liquid tank max volume.
+   *
+   * @return the large liquid tank max volume
+   */
+  public double getLargeLiquidTankMaxVolume() {
+    return largeLiquidTankMaxVolume;
+  }
+
+  /**
+   * Sets the large liquid tank max volume.
+   *
+   * @param largeLiquidTankMaxVolume the new large liquid tank max volume
+   */
+  public void setLargeLiquidTankMaxVolume(double largeLiquidTankMaxVolume) {
+    this.largeLiquidTankMaxVolume = largeLiquidTankMaxVolume;
+  }
+
+  /**
+   * Gets the cargo transfer bag mass.
+   *
+   * @return the cargo transfer bag mass
+   */
+  public double getCargoTransferBagMass() {
+    return cargoTransferBagMass;
+  }
+
+  /**
+   * Sets the cargo transfer bag mass.
+   *
+   * @param cargoTransferBagMass the new cargo transfer bag mass
+   */
+  public void setCargoTransferBagMass(double cargoTransferBagMass) {
+    this.cargoTransferBagMass = cargoTransferBagMass;
+  }
+
+  /**
+   * Gets the cargo transfer bag volume.
+   *
+   * @return the cargo transfer bag volume
+   */
+  public double getCargoTransferBagVolume() {
+    return cargoTransferBagVolume;
+  }
+
+  /**
+   * Sets the cargo transfer bag volume.
+   *
+   * @param cargoTransferBagVolume the new cargo transfer bag volume
+   */
+  public void setCargoTransferBagVolume(double cargoTransferBagVolume) {
+    this.cargoTransferBagVolume = cargoTransferBagVolume;
+  }
+
+  /**
+   * Gets the cargo transfer bag max mass.
+   *
+   * @return the cargo transfer bag max mass
+   */
+  public double getCargoTransferBagMaxMass() {
+    return cargoTransferBagMaxMass;
+  }
+
+  /**
+   * Sets the cargo transfer bag max mass.
+   *
+   * @param cargoTransferBagMaxMass the new cargo transfer bag max mass
+   */
+  public void setCargoTransferBagMaxMass(double cargoTransferBagMaxMass) {
+    this.cargoTransferBagMaxMass = cargoTransferBagMaxMass;
+  }
+
+  /**
+   * Gets the cargo transfer bag max volume.
+   *
+   * @return the cargo transfer bag max volume
+   */
+  public double getCargoTransferBagMaxVolume() {
+    return cargoTransferBagMaxVolume;
+  }
+
+  /**
+   * Sets the cargo transfer bag max volume.
+   *
+   * @param cargoTransferBagMaxVolume the new cargo transfer bag max volume
+   */
+  public void setCargoTransferBagMaxVolume(double cargoTransferBagMaxVolume) {
+    this.cargoTransferBagMaxVolume = cargoTransferBagMaxVolume;
   }
 }

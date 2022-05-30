@@ -381,10 +381,11 @@ public class Manifest {
       // TODO: temporarily use liquid tanks
       while (getRemainingAmount(d) > 0) {
         I_ResourceContainer container;
-        if (getRemainingAmount(d)
-            * d.getResource().getUnitMass() > ResourceContainerFactory.LTD_MAX_MASS
-            || (GlobalParameters.getSingleton().isVolumeConstrained() && getRemainingAmount(d)
-                * d.getResource().getUnitVolume() > ResourceContainerFactory.LTD_MAX_VOLUME)) {
+        if (getRemainingAmount(d) * d.getResource().getUnitMass() > GlobalParameters.getSingleton()
+            .getSmallLiquidTankMaxMass()
+            || (GlobalParameters.getSingleton().isVolumeConstrained()
+                && getRemainingAmount(d) * d.getResource().getUnitVolume() > GlobalParameters
+                    .getSingleton().getSmallLiquidTankMaxVolume())) {
           container = ResourceContainerFactory.createLT();
         } else {
           container = ResourceContainerFactory.createLTD();
@@ -403,10 +404,11 @@ public class Manifest {
       }
       while (getRemainingAmount(d) > 0) {
         I_ResourceContainer container;
-        if (getRemainingAmount(d)
-            * d.getResource().getUnitMass() > ResourceContainerFactory.GTD_MAX_MASS
-            || (GlobalParameters.getSingleton().isVolumeConstrained() && getRemainingAmount(d)
-                * d.getResource().getUnitVolume() > ResourceContainerFactory.GTD_MAX_VOLUME)) {
+        if (getRemainingAmount(d) * d.getResource().getUnitMass() > GlobalParameters.getSingleton()
+            .getSmallGasTankMaxMass()
+            || (GlobalParameters.getSingleton().isVolumeConstrained()
+                && getRemainingAmount(d) * d.getResource().getUnitVolume() > GlobalParameters
+                    .getSingleton().getSmallGasTankMaxVolume())) {
           container = ResourceContainerFactory.createGT();
         } else {
           container = ResourceContainerFactory.createGTD();
@@ -425,10 +427,11 @@ public class Manifest {
       }
       while (getRemainingAmount(d) > 0) {
         I_ResourceContainer container;
-        if (getRemainingAmount(d)
-            * d.getResource().getUnitMass() > ResourceContainerFactory.LTD_MAX_MASS
-            || (GlobalParameters.getSingleton().isVolumeConstrained() && getRemainingAmount(d)
-                * d.getResource().getUnitVolume() > ResourceContainerFactory.LTD_MAX_VOLUME)) {
+        if (getRemainingAmount(d) * d.getResource().getUnitMass() > GlobalParameters.getSingleton()
+            .getSmallLiquidTankMaxMass()
+            || (GlobalParameters.getSingleton().isVolumeConstrained()
+                && getRemainingAmount(d) * d.getResource().getUnitVolume() > GlobalParameters
+                    .getSingleton().getSmallLiquidTankMaxVolume())) {
           container = ResourceContainerFactory.createLT();
         } else {
           container = ResourceContainerFactory.createLTD();
@@ -440,51 +443,22 @@ public class Manifest {
         || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS2)
         || d.getResource().getClassOfSupply().equals(ClassOfSupply.COS3)
         || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS3)
+        || d.getResource().getClassOfSupply().equals(ClassOfSupply.COS4)
+        || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS4)
         || d.getResource().getClassOfSupply().equals(ClassOfSupply.COS7)
         || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS7)) {
       // use ctb
       // try existing ctb's
       for (I_ResourceContainer container : packedDemands.keySet()) {
-        if (container.getTid() == ResourceContainerFactory.CTB_TID
-            || container.getTid() == ResourceContainerFactory.HCTB_TID) {
+        if (container.getTid() == ResourceContainerFactory.CTB_TID) {
           if (canPackDemand(d, container))
             packDemand(d, container);
         }
       }
       // create new ctb's
       while (getRemainingAmount(d) > 0) {
-        I_ResourceContainer container;
-        if (getRemainingAmount(d)
-            * d.getResource().getUnitMass() > ResourceContainerFactory.HCTB_MAX_MASS
-            || (GlobalParameters.getSingleton().isVolumeConstrained() && getRemainingAmount(d)
-                * d.getResource().getUnitVolume() > ResourceContainerFactory.HCTB_MAX_VOLUME)) {
-          container = ResourceContainerFactory.createCTB();
-        } else {
-          container = ResourceContainerFactory.createHCTB();
-        }
-        addContainer(container);
-        packDemand(d, container);
-      }
-    } else if (d.getResource().getClassOfSupply().equals(ClassOfSupply.COS4)
-        || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS4)) {
-      // try existing shoss boxes
-      for (I_ResourceContainer container : packedDemands.keySet()) {
-        if ((d.getResource().getEnvironment().equals(Environment.UNPRESSURIZED)
-            && container.getTid() == ResourceContainerFactory.SHOSS_TID)
-            || (d.getResource().getEnvironment().equals(Environment.PRESSURIZED)
-                && container.getTid() == ResourceContainerFactory.PSHOSS_TID)) {
-          if (canPackDemand(d, container))
-            packDemand(d, container);
-        }
-      }
-      // create new shoss boxes
-      while (getRemainingAmount(d) > 0) {
-        I_ResourceContainer container;
-        if (d.getResource().getEnvironment().equals(Environment.UNPRESSURIZED)) {
-          container = ResourceContainerFactory.createShoss();
-        } else {
-          container = ResourceContainerFactory.createPressShoss();
-        }
+        I_ResourceContainer container = ResourceContainerFactory.createCTB();
+        container.setCargoEnvironment(d.getResource().getEnvironment());
         addContainer(container);
         packDemand(d, container);
       }
@@ -500,8 +474,7 @@ public class Manifest {
         || d.getResource().getClassOfSupply().equals(ClassOfSupply.COS10)
         || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS10)) {
       // use custom resource container
-      I_ResourceContainer container;
-      container = new ResourceContainer();
+      I_ResourceContainer container = new ResourceContainer();
       container.setMaxCargoMass(d.getMass());
       container.setVolume(d.getVolume());
       container.setMaxCargoVolume(d.getVolume());
@@ -518,10 +491,8 @@ public class Manifest {
           || d.getResource().getClassOfSupply().isSubclassOf(ClassOfSupply.COS10)) {
         container.setName("Miscellaneous " + container.getUid());
       }
-      if (d.getResource().getEnvironment().equals(Environment.UNPRESSURIZED)) {
-        container.setMass(d.getMass() * d.getResource().getPackingFactor());
-      } else {
-        container.setMass(d.getMass() * d.getResource().getPackingFactor());
+      container.setMass(d.getMass() * d.getResource().getPackingFactor());
+      if (d.getResource().getEnvironment().equals(Environment.PRESSURIZED)) {
         container.setCargoEnvironment(Environment.PRESSURIZED);
       }
       addContainer(container);

@@ -818,7 +818,7 @@ public class ManifestTab extends JSplitPane {
   }
 
   private void updateCarrier() {
-    if (manifestedDemandsTable.getSelectedRow() >= 0) {
+    if (manifestedDemandsTable.getSelectedRowCount() == 1) {
       I_Carrier superCarrier =
           manifestedDemandsTable.getCarrier(manifestedDemandsTable.getSelectedRow());
       carrierTree.setRoot(superCarrier);

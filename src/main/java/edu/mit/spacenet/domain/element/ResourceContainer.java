@@ -61,8 +61,7 @@ public class ResourceContainer extends Element implements I_ResourceContainer {
             - maxCargoVolume > GlobalParameters.getSingleton().getVolumePrecision() / 2d) {
       return false; // volume constrained
     } else if (GlobalParameters.getSingleton().isEnvironmentConstrained()
-        && resource.getEnvironment().equals(Environment.PRESSURIZED)
-        && getCargoEnvironment().equals(Environment.UNPRESSURIZED)) {
+        && getCargoEnvironment() != resource.getEnvironment()) {
       return false; // environment constrained
     } else
       return true;

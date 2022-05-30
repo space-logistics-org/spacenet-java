@@ -682,6 +682,7 @@ public class Manifest {
     if (demand == null || container == null)
       return false;
     else if (getRemainingAmount(demand) > 0
+        && container.canAdd(demand.getResource(), demand.getAmount())
         && getCargoMass(container, getSupplyPoint(demand))
             - container.getMaxCargoMass() < GlobalParameters.getSingleton().getMassPrecision() / 2d
         && (!GlobalParameters.getSingleton().isVolumeConstrained()

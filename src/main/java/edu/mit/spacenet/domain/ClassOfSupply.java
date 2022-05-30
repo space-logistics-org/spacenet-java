@@ -22,178 +22,178 @@ import java.awt.Color;
  */
 public enum ClassOfSupply {
 
-  /** The COS 0. */
+  /** No specified class of supply. */
   COS0(0, "None", new Color(0, 0, 0)),
 
-  /** The COS 1. */
+  /** Propellants and fuels. */
   COS1(1, "Propellants and Fuels", new Color(0xff, 0x99, 0xff)),
 
-  /** The COS 2. */
+  /** Crew provisions. */
   COS2(2, "Crew Provisions", new Color(0, 0xcc, 0)),
 
-  /** The COS 3. */
+  /** Crew operations. */
   COS3(3, "Crew Operations", new Color(0, 0, 0xcc)),
 
-  /** The COS 4. */
+  /** Maintenance and upkeep. */
   COS4(4, "Maintenance and Upkeep", new Color(0xff, 0xcc, 0)),
 
-  /** The COS 5. */
+  /** Stowage and restraint. */
   COS5(5, "Stowage and Restraint ", new Color(0xcc, 0, 0)),
 
-  /** The COS 6. */
+  /** Exploration and research. */
   COS6(6, "Exploration and Research", new Color(0xff, 0x99, 0)),
 
-  /** The COS 7. */
+  /** Waste and disposal. */
   COS7(7, "Waste and Disposal", new Color(0x99, 0x66, 0)),
 
-  /** The COS 8. */
+  /** Habitation and infrastructure. */
   COS8(8, "Habitation and Infrastructure", new Color(0x66, 0, 0x99)),
 
-  /** The COS 9. */
+  /** Transportation and carriers. */
   COS9(9, "Transportation and Carriers", new Color(0, 0x66, 0x99)),
 
-  /** The COS 10. */
+  /** Miscellaneous. */
   COS10(10, "Miscellaneous", new Color(0x99, 0x99, 0x99)),
 
-  /** The COS 101. */
+  /** Cryogens. */
   COS101(101, "Cryogens", null),
 
-  /** The COS 102. */
+  /** Hypergols. */
   COS102(102, "Hypergols", null),
 
-  /** The COS 103. */
+  /** Nuclear fuel. */
   COS103(103, "Nuclear Fuel", null),
 
-  /** The COS 104. */
+  /** Petroleum fuels. */
   COS104(104, "Petroleum Fuels", null),
 
-  /** The COS 105. */
+  /** Other fuels. */
   COS105(105, "Other Fuels", null),
 
-  /** The COS 106. */
+  /** Green propellant. */
   COS106(106, "Green Propellant", null),
 
-  /** The COS 201. */
+  /** Water and support equipment. */
   COS201(201, "Water and Support Equipment", null),
 
-  /** The COS 202. */
+  /** Food and support equipment. */
   COS202(202, "Food and Support Equipment", null),
 
-  /** The COS 203. */
+  /** Gases. */
   COS203(203, "Gases", null),
 
-  /** The COS 204. */
+  /** Hygiene items. */
   COS204(204, "Hygiene Items", null),
 
-  /** The COS 205. */
+  /** Clothing. */
   COS205(205, "Clothing", null),
 
-  /** The COS 206. */
+  /** Personal items. */
   COS206(206, "Personal Items", null),
 
-  /** The COS 301. */
+  /** Office equipment and supplies. */
   COS301(301, "Office Equipment and Supplies", null),
 
-  /** The COS 302. */
+  /** EVA equipment and consumables. */
   COS302(302, "EVA Equipment and Consumables", null),
 
-  /** The COS 303. */
+  /** Health equipment and consumables. */
   COS303(303, "Health Equipment and Consumables", null),
 
-  /** The COS 304. */
+  /** Safety equipment. */
   COS304(304, "Safety Equipment", null),
 
-  /** The COS 305. */
+  /** Communications equipment. */
   COS305(305, "Communications Equipment", null),
 
-  /** The COS 306. */
+  /** Computers and support equipment. */
   COS306(306, "Computers and Support Equipment", null),
 
-  /** The COS 401. */
+  /** Spares and repair parts. */
   COS401(401, "Spares and Repair Parts", null),
 
-  /** The COS 402. */
+  /** Maintenance tools. */
   COS402(402, "Maintenance Tools", null),
 
-  /** The COS 403. */
+  /** Lubricants and bulk chemicals. */
   COS403(403, "Lubricants and Bulk Chemicals", null),
 
-  /** The COS 404. */
+  /** Batteries. */
   COS404(404, "Batteries", null),
 
-  /** The COS 405. */
+  /** Cleaning equipment and consumables. */
   COS405(405, "Cleaning Equipment and Consumables", null),
 
-  /** The COS 501. */
+  /** Cargo containers and restraints. */
   COS501(501, "Cargo Containers and Restraints", null),
 
-  /** The COS 502. */
+  /** Inventory management equipment. */
   COS502(502, "Inventory Management Equipment", null),
 
-  /** The COS 601. */
+  /** Science payloads and instruments. */
   COS601(601, "Science Payloads and Instruments", null),
 
-  /** The COS 602. */
+  /** Field equipment. */
   COS602(602, "Field Equipment", null),
 
-  /** The COS 603. */
+  /** Samples. */
   COS603(603, "Samples", null),
 
-  /** The COS 701. */
+  /** Waste. */
   COS701(701, "Waste", null),
 
-  /** The COS 702. */
+  /** Waste management equipment. */
   COS702(702, "Waste Management Equipment", null),
 
-  /** The COS 703. */
+  /** Failed parts. */
   COS703(703, "Failed Parts", null),
 
-  /** The COS 801. */
+  /** Habitation facilities. */
   COS801(801, "Habitation Facilities", null),
 
-  /** The COS 802. */
+  /** Surface mobility systems. */
   COS802(802, "Surface Mobility Systems", null),
 
-  /** The COS 803. */
+  /** Power systems. */
   COS803(803, "Power Systems", null),
 
-  /** The COS 804. */
+  /** Robotic systems. */
   COS804(804, "Robotic Systems", null),
 
-  /** The COS 805. */
+  /** Resource utilization systems. */
   COS805(805, "Resource Utilization Systems", null),
 
-  /** The COS 806. */
+  /** Orbiting service systems. */
   COS806(806, "Orbiting Service Systems", null),
 
-  /** The COS 901. */
+  /** Carriers and non-propulsive elements. */
   COS901(901, "Carriers, Non-propulsive Elements", null),
 
-  /** The COS 902. */
+  /** Propulsive elements. */
   COS902(902, "Propulsive Elements", null),
 
-  /** The COS 4011. */
+  /** Spares. */
   COS4011(4011, "Spares", null),
 
-  /** The COS 4012. */
+  /** Repair parts. */
   COS4012(4012, "Repair Parts", null),
 
-  /** The COS 8041. */
+  /** Science robotics. */
   COS8041(8041, "Science Robotics", null),
 
-  /** The COS 8042. */
+  /** Construction and maintenance robotics. */
   COS8042(8042, "Construction/Maintenance Robotics", null),
 
-  /** The COS 9021. */
+  /** Launch vehicles. */
   COS9021(9021, "Launch Vehicles", null),
 
-  /** The COS 9022. */
+  /** Upper stages and in-space propulsion systems. */
   COS9022(9022, "Upper Stages/In-Space Propulsion Systems", null),
 
-  /** The COS 9023. */
+  /** Descent stages. */
   COS9023(9023, "Descent Stages", null),
 
-  /** The COS 9024. */
+  /** Ascent stages. */
   COS9024(9024, "Ascent Stages", null);
 
   private int id;

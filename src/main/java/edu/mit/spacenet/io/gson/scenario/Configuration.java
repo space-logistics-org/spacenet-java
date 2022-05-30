@@ -12,6 +12,10 @@ public class Configuration {
   // TODO add repaired items
   protected Boolean detailedEva;
   protected Boolean detailedExploration;
+  protected Double genericPackingFactorGas;
+  protected Double genericPackingFactorLiquid;
+  protected Double genericPackingFactorPressurized;
+  protected Double genericPackingFactorUnpressurized;
 
   public static Configuration createFrom(edu.mit.spacenet.scenario.Scenario scenario,
       Context context) {
@@ -27,6 +31,10 @@ public class Configuration {
     // TODO add repaired items
     c.detailedEva = scenario.isDetailedEva();
     c.detailedExploration = scenario.isDetailedExploration();
+    c.genericPackingFactorGas = scenario.getGenericPackingFactorGas();
+    c.genericPackingFactorLiquid = scenario.getGenericPackingFactorLiquid();
+    c.genericPackingFactorPressurized = scenario.getGenericPackingFactorPressurized();
+    c.genericPackingFactorUnpressurized = scenario.getGenericPackingFactorUnpressurized();
     return c;
   }
 }

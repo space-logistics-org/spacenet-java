@@ -61,6 +61,12 @@ public class Scenario {
   private boolean scavengeSpares;
   private Map<Mission, Set<RepairItem>> repairedItems;
 
+  /* (Override) Packing Factor Options */
+  private Double genericPackingFactorGas = null;
+  private Double genericPackingFactorLiquid = null;
+  private Double genericPackingFactorPressurized = null;
+  private Double genericPackingFactorUnpressurized = null;
+
   /* Simulation Options */
   private boolean detailedEva;
   private boolean detailedExploration;
@@ -90,6 +96,13 @@ public class Scenario {
     itemAggregation = GlobalParameters.getSingleton().getItemAggregation();
     scavengeSpares = GlobalParameters.getSingleton().isScavengeSpares();
     repairedItems = new HashMap<Mission, Set<RepairItem>>();
+
+    setGenericPackingFactorGas(GlobalParameters.getSingleton().getGenericPackingFactorGas());
+    setGenericPackingFactorLiquid(GlobalParameters.getSingleton().getGenericPackingFactorLiquid());
+    setGenericPackingFactorPressurized(
+        GlobalParameters.getSingleton().getGenericPackingFactorPressurizedInternal());
+    setGenericPackingFactorUnpressurized(
+        GlobalParameters.getSingleton().getGenericPackingFactorUnpressurized());
   }
 
   /**
@@ -587,5 +600,97 @@ public class Scenario {
    */
   public Map<Mission, Set<RepairItem>> getRepairedItems() {
     return repairedItems;
+  }
+
+  /**
+   * Gets the generic packing factor gas.
+   *
+   * @return the generic packing factor gas
+   */
+  public Double getGenericPackingFactorGas() {
+    if (genericPackingFactorGas == null) {
+      genericPackingFactorGas = GlobalParameters.getSingleton().getGenericPackingFactorGas();
+    }
+    return genericPackingFactorGas;
+  }
+
+  /**
+   * Sets the generic packing factor gas.
+   *
+   * @param genericPackingFactorGas the new generic packing factor gas
+   */
+  public void setGenericPackingFactorGas(Double genericPackingFactorGas) {
+    this.genericPackingFactorGas = genericPackingFactorGas;
+    GlobalParameters.getSingleton().setGenericPackingFactorGas(genericPackingFactorGas);
+  }
+
+  /**
+   * Gets the generic packing factor liquid.
+   *
+   * @return the generic packing factor liquid
+   */
+  public Double getGenericPackingFactorLiquid() {
+    if (genericPackingFactorLiquid == null) {
+      genericPackingFactorLiquid = GlobalParameters.getSingleton().getGenericPackingFactorLiquid();
+    }
+    return genericPackingFactorLiquid;
+  }
+
+  /**
+   * Sets the generic packing factor liquid.
+   *
+   * @param genericPackingFactorLiquid the new generic packing factor liquid
+   */
+  public void setGenericPackingFactorLiquid(Double genericPackingFactorLiquid) {
+    this.genericPackingFactorLiquid = genericPackingFactorLiquid;
+    GlobalParameters.getSingleton().setGenericPackingFactorLiquid(genericPackingFactorLiquid);
+  }
+
+  /**
+   * Gets the generic packing factor pressurized.
+   *
+   * @return the generic packing factor pressurized
+   */
+  public Double getGenericPackingFactorPressurized() {
+    if (genericPackingFactorPressurized == null) {
+      genericPackingFactorPressurized =
+          GlobalParameters.getSingleton().getGenericPackingFactorPressurizedInternal();
+    }
+    return genericPackingFactorPressurized;
+  }
+
+  /**
+   * Sets the generic packing factor pressurized.
+   *
+   * @param genericPackingFactorPressurized the new generic packing factor pressurized
+   */
+  public void setGenericPackingFactorPressurized(Double genericPackingFactorPressurized) {
+    this.genericPackingFactorPressurized = genericPackingFactorPressurized;
+    GlobalParameters.getSingleton()
+        .setGenericPackingFactorPressurizedInternal(genericPackingFactorPressurized);
+  }
+
+  /**
+   * Gets the generic packing factor unpressurized.
+   *
+   * @return the generic packing factor unpressurized
+   */
+  public Double getGenericPackingFactorUnpressurized() {
+    if (genericPackingFactorUnpressurized == null) {
+      genericPackingFactorUnpressurized =
+          GlobalParameters.getSingleton().getGenericPackingFactorUnpressurized();
+    }
+    return genericPackingFactorUnpressurized;
+  }
+
+  /**
+   * Sets the generic packing factor unpressurized.
+   *
+   * @param genericPackingFactorUnpressurized the new generic packing factor unpressurized
+   */
+  public void setGenericPackingFactorUnpressurized(Double genericPackingFactorUnpressurized) {
+    this.genericPackingFactorUnpressurized = genericPackingFactorUnpressurized;
+    GlobalParameters.getSingleton()
+        .setGenericPackingFactorUnpressurized(genericPackingFactorUnpressurized);
   }
 }

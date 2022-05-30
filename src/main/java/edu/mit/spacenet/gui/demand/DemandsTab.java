@@ -29,9 +29,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
-
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -42,17 +40,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.gui.ScenarioPanel;
 import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
+import edu.mit.spacenet.gui.component.UnitsWrapper;
 import edu.mit.spacenet.scenario.ItemDiscretization;
 import edu.mit.spacenet.scenario.Scenario;
 import edu.mit.spacenet.scenario.SupplyEdge;
@@ -79,6 +79,9 @@ public class DemandsTab extends JSplitPane {
   private JComboBox<ItemDiscretization> discretizationCombo;
   private JSlider aggregationSlider;
   private JCheckBox scavengeSparesCheck, packingDemandsCheck, demandsSatisfiedCheck;
+
+  private SpinnerNumberModel gasModel, liquidModel, pressurizedModel, unpressurizedModel;
+  private JSpinner gasSpinner, liquidSpinner, pressurizedSpinner, unpressurizedSpinner;
 
   private JTextField directoryPathText, fileNameText;
   private JCheckBox overwriteCheck;
@@ -182,10 +185,19 @@ public class DemandsTab extends JSplitPane {
 
       fileNameText.setText("demands.txt");
 
+      gasModel.setValue(getScenario().getGenericPackingFactorGas() * 100);
+      liquidModel.setValue(getScenario().getGenericPackingFactorLiquid() * 100);
+      pressurizedModel.setValue(getScenario().getGenericPackingFactorPressurized() * 100);
+      unpressurizedModel.setValue(getScenario().getGenericPackingFactorUnpressurized() * 100);
+
       // TODO: this is a hack, simulator should be initialized, not re-created
       simulator = new DemandSimulator(getScenario());
       simulator.setDemandsSatisfied(false);
       packingDemandsCheck.setSelected(simulator.isPackingDemandsAdded());
+      gasSpinner.setEnabled(simulator.isPackingDemandsAdded());
+      liquidSpinner.setEnabled(simulator.isPackingDemandsAdded());
+      pressurizedSpinner.setEnabled(simulator.isPackingDemandsAdded());
+      unpressurizedSpinner.setEnabled(simulator.isPackingDemandsAdded());
       demandsSatisfiedCheck.setSelected(simulator.isDemandsSatisfied());
       simWorker = new SimWorker(true);
       simWorker.execute();
@@ -286,8 +298,16 @@ public class DemandsTab extends JSplitPane {
    */
   private JPanel buildDisplayPanel() {
     JPanel displayPanel = new JPanel();
-    displayPanel.setLayout(new BoxLayout(displayPanel, BoxLayout.PAGE_AXIS));
     displayPanel.setBorder(BorderFactory.createTitledBorder("Display Options"));
+    displayPanel.setLayout(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints();
+    c.insets = new Insets(2, 2, 2, 2);
+    c.gridx = 0;
+    c.gridy = 0;
+    c.weightx = 1;
+    c.gridwidth = 2;
+    c.anchor = GridBagConstraints.LINE_START;
+    c.fill = GridBagConstraints.HORIZONTAL;
     packingDemandsCheck = new JCheckBox("Estimate Logistics Container Masses");
     packingDemandsCheck.setToolTipText(
         "Estimate mass (Generic COS 5) for containers using resource packing factors.");
@@ -295,11 +315,84 @@ public class DemandsTab extends JSplitPane {
       public void itemStateChanged(ItemEvent e) {
         if (packingDemandsCheck.isSelected() != simulator.isPackingDemandsAdded()) {
           simulator.setPackingDemandsAdded(e.getStateChange() == ItemEvent.SELECTED);
+          gasSpinner.setEnabled(e.getStateChange() == ItemEvent.SELECTED);
+          liquidSpinner.setEnabled(e.getStateChange() == ItemEvent.SELECTED);
+          pressurizedSpinner.setEnabled(e.getStateChange() == ItemEvent.SELECTED);
+          unpressurizedSpinner.setEnabled(e.getStateChange() == ItemEvent.SELECTED);
           updateView();
         }
       }
     });
-    displayPanel.add(packingDemandsCheck);
+    displayPanel.add(packingDemandsCheck, c);
+    c.gridy++;
+    c.weightx = 0;
+    c.gridwidth = 1;
+    c.anchor = GridBagConstraints.LINE_END;
+    c.fill = GridBagConstraints.NONE;
+    displayPanel.add(new JLabel("Gas: "), c);
+    c.gridy++;
+    displayPanel.add(new JLabel("Liquid: "), c);
+    c.gridy++;
+    displayPanel.add(new JLabel("Pressurized: "), c);
+    c.gridy++;
+    displayPanel.add(new JLabel("Unpressurized: "), c);
+    c.gridy++;
+    c.weightx = 1;
+    c.anchor = GridBagConstraints.LINE_START;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.gridx = 1;
+    c.gridy = 1;
+    gasModel = new SpinnerNumberModel(0.0, 0.0, 1000.0, 0.1);
+    gasModel.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        getScenario().setGenericPackingFactorGas(gasModel.getNumber().doubleValue() / 100D);
+        updateView();
+      }
+    });
+    gasSpinner = new JSpinner(gasModel);
+    displayPanel.add(new UnitsWrapper(gasSpinner, "% (Default: 100%)"), c);
+    c.gridy++;
+    liquidModel = new SpinnerNumberModel(0.0, 0.0, 1000.0, 0.1);
+    liquidModel.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        getScenario().setGenericPackingFactorLiquid(liquidModel.getNumber().doubleValue() / 100D);
+        updateView();
+      }
+    });
+    liquidSpinner = new JSpinner(liquidModel);
+    displayPanel.add(new UnitsWrapper(liquidSpinner, "% (Default: 50%)"), c);
+    c.gridy++;
+    pressurizedModel = new SpinnerNumberModel(0.0, 0.0, 1000.0, 0.1);
+    pressurizedModel.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        getScenario()
+            .setGenericPackingFactorPressurized(pressurizedModel.getNumber().doubleValue() / 100D);
+        updateView();
+      }
+    });
+    pressurizedSpinner = new JSpinner(pressurizedModel);
+    displayPanel.add(new UnitsWrapper(pressurizedSpinner, "% (Default: 20%)"), c);
+    c.gridy++;
+    unpressurizedModel = new SpinnerNumberModel(0.0, 0.0, 1000.0, 0.1);
+    unpressurizedModel.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        getScenario().setGenericPackingFactorUnpressurized(
+            unpressurizedModel.getNumber().doubleValue() / 100D);
+        updateView();
+      }
+    });
+    unpressurizedSpinner = new JSpinner(unpressurizedModel);
+    displayPanel.add(new UnitsWrapper(unpressurizedSpinner, "% (Default: 60%)"), c);
+    c.gridy++;
+    c.gridx = 0;
+    c.weightx = 1;
+    c.gridwidth = 2;
+    c.anchor = GridBagConstraints.LINE_START;
+    c.fill = GridBagConstraints.HORIZONTAL;
     demandsSatisfiedCheck = new JCheckBox("Consume Existing Resources");
     demandsSatisfiedCheck.setToolTipText("Consume existing resources when demanded.");
     demandsSatisfiedCheck.addItemListener(new ItemListener() {
@@ -310,7 +403,7 @@ public class DemandsTab extends JSplitPane {
         }
       }
     });
-    displayPanel.add(demandsSatisfiedCheck);
+    displayPanel.add(demandsSatisfiedCheck, c);
     return displayPanel;
   }
 
@@ -679,6 +772,11 @@ public class DemandsTab extends JSplitPane {
     aggregationSlider.setValue((int) (getScenario().getItemAggregation() * 4));
     aggregationSlider.setEnabled(getScenario().getItemDiscretization() != ItemDiscretization.NONE);
     scavengeSparesCheck.setSelected(getScenario().isScavengeSpares());
+
+    gasModel.setValue(getScenario().getGenericPackingFactorGas() * 100D);
+    liquidModel.setValue(getScenario().getGenericPackingFactorLiquid() * 100D);
+    pressurizedModel.setValue(getScenario().getGenericPackingFactorPressurized() * 100D);
+    unpressurizedModel.setValue(getScenario().getGenericPackingFactorUnpressurized() * 100D);
 
     while (simWorker != null && !simWorker.isDone()) {
       // lock UI while previous simulation is running

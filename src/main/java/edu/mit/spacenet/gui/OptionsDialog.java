@@ -23,8 +23,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Hashtable;
-
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -33,9 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
-import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
-
 import edu.mit.spacenet.gui.component.UnitsWrapper;
 import edu.mit.spacenet.scenario.ItemDiscretization;
 
@@ -49,7 +47,7 @@ public class OptionsDialog extends JDialog {
 
   private ScenarioPanel scenarioPanel;
 
-  private JPanel precisionPanel, constraintsPanel, demandsPanel, simulationPanel;
+  private JPanel precisionPanel, constraintsPanel, demandsPanel, packingPanel, simulationPanel;
   private SpinnerNumberModel timeModel, demandModel, massModel, volumeModel;
   private JSpinner timeSpinner, demandSpinner, massSpinner, volumeSpinner;
   private JCheckBox volumeConstrained, environmentConstrained;
@@ -57,6 +55,9 @@ public class OptionsDialog extends JDialog {
   private JComboBox<ItemDiscretization> discretizationCombo;
   private JSlider aggregationSlider;
   private JCheckBox scavengeSparesCheck;
+
+  private SpinnerNumberModel gasModel, liquidModel, pressurizedModel, unpressurizedModel;
+  private JSpinner gasSpinner, liquidSpinner, pressurizedSpinner, unpressurizedSpinner;
 
   private JCheckBox explorationCheck, evaCheck;
 
@@ -81,6 +82,7 @@ public class OptionsDialog extends JDialog {
     buildPrecisionPanel();
     buildConstraintsPanel();
     buildDemandsPanel();
+    buildPackingPanel();
     buildSimulationPanel();
 
     JPanel contentPanel = new JPanel();
@@ -92,12 +94,14 @@ public class OptionsDialog extends JDialog {
     c.weightx = 1;
     c.weighty = 1;
     c.fill = GridBagConstraints.BOTH;
-    JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.addTab("Precision", precisionPanel);
-    tabbedPane.addTab("Constraints", constraintsPanel);
-    tabbedPane.addTab("Demands", demandsPanel);
-    tabbedPane.addTab("Simulation", simulationPanel);
-    contentPanel.add(tabbedPane, c);
+    JPanel wrapper = new JPanel();
+    wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.Y_AXIS));
+    wrapper.add(precisionPanel);
+    wrapper.add(constraintsPanel);
+    wrapper.add(packingPanel);
+    wrapper.add(demandsPanel);
+    wrapper.add(simulationPanel);
+    contentPanel.add(wrapper, c);
     c.gridy++;
     c.weighty = 0;
     c.anchor = GridBagConstraints.LAST_LINE_END;
@@ -132,13 +136,19 @@ public class OptionsDialog extends JDialog {
    */
   private void buildPrecisionPanel() {
     precisionPanel = new JPanel();
-    precisionPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    precisionPanel.setBorder(BorderFactory.createTitledBorder("Numerical Precision"));
     precisionPanel.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     c.insets = new Insets(2, 2, 2, 2);
-    c.insets = new Insets(2, 2, 2, 2);
     c.gridx = 0;
     c.gridy = 0;
+    c.gridwidth = 2;
+    c.anchor = GridBagConstraints.LINE_START;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.weightx = 1;
+    precisionPanel.add(new JLabel("Sets enforced precision of numerical values."), c);
+    c.gridy++;
+    c.gridwidth = 1;
     c.weightx = 0;
     c.anchor = GridBagConstraints.LINE_END;
     c.fill = GridBagConstraints.NONE;
@@ -154,7 +164,7 @@ public class OptionsDialog extends JDialog {
     c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.NONE;
     c.gridx = 1;
-    c.gridy = 0;
+    c.gridy = 1;
     timeModel = new SpinnerNumberModel(0.001, 0.001, 1.000, 0.001);
     timeSpinner = new JSpinner(timeModel);
     precisionPanel.add(new UnitsWrapper(timeSpinner, "days"), c);
@@ -182,28 +192,25 @@ public class OptionsDialog extends JDialog {
    */
   private void buildConstraintsPanel() {
     constraintsPanel = new JPanel();
-    constraintsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    constraintsPanel.setBorder(BorderFactory.createTitledBorder("Cargo Constraints"));
     constraintsPanel.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     c = new GridBagConstraints();
     c.insets = new Insets(2, 2, 2, 2);
     c.gridx = 0;
     c.gridy = 0;
-    c.weightx = 1;
     c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.HORIZONTAL;
-    volumeConstrained = new JCheckBox("Volume Constraints Enforced");
+    c.weightx = 1;
+    constraintsPanel.add(new JLabel("Sets constraints enforced for packing cargo in containers or carriers."), c);
+    c.gridy++;
+    volumeConstrained = new JCheckBox("Volume Enforced");
     volumeConstrained.setOpaque(false);
     constraintsPanel.add(volumeConstrained, c);
     c.gridy++;
-    environmentConstrained = new JCheckBox("Environment Constraints Enforced");
+    environmentConstrained = new JCheckBox("Environment Enforced");
     environmentConstrained.setOpaque(false);
     constraintsPanel.add(environmentConstrained, c);
-    c.gridy++;
-    c.weightx = 1;
-    c.weighty = 1;
-    c.fill = GridBagConstraints.BOTH;
-    constraintsPanel.add(new JLabel(), c);
   }
 
   /**
@@ -211,13 +218,22 @@ public class OptionsDialog extends JDialog {
    */
   private void buildDemandsPanel() {
     demandsPanel = new JPanel();
-    demandsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    demandsPanel.setBorder(BorderFactory.createTitledBorder("Discrete Demands"));
     demandsPanel.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     c = new GridBagConstraints();
     c.insets = new Insets(2, 2, 2, 2);
     c.gridx = 0;
     c.gridy = 0;
+    c.anchor = GridBagConstraints.LINE_START;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.weightx = 1;
+    c.gridwidth = 2;
+    demandsPanel.add(new JLabel("Configures demands for discrete items."), c);
+    c.gridy++;
+    c.gridwidth = 1;
+    c.weightx = 0;
+    c.fill = GridBagConstraints.NONE;
     c.anchor = GridBagConstraints.LINE_END;
     demandsPanel.add(new JLabel("Item Discretization: "), c);
     c.gridy++;
@@ -225,7 +241,7 @@ public class OptionsDialog extends JDialog {
     demandsPanel.add(new JLabel("Item Aggregation: "), c);
     c.weightx = 1;
     c.gridx = 1;
-    c.gridy = 0;
+    c.gridy = 1;
     c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.BOTH;
     discretizationCombo = new JComboBox<ItemDiscretization>();
@@ -266,11 +282,54 @@ public class OptionsDialog extends JDialog {
     scavengeSparesCheck = new JCheckBox("Scavenge Spares");
     scavengeSparesCheck.setOpaque(false);
     demandsPanel.add(scavengeSparesCheck, c);
+  }
+
+  private void buildPackingPanel() {
+    packingPanel = new JPanel();
+    packingPanel.setBorder(BorderFactory.createTitledBorder("Generic Packing Factors"));
+    packingPanel.setLayout(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints();
+    c.insets = new Insets(2, 2, 2, 2);
+    c.gridx = 0;
+    c.gridy = 0;
+    c.anchor = GridBagConstraints.LINE_START;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.weightx = 1;
+    c.gridwidth = 2;
+    packingPanel.add(new JLabel("Sets the estimated packing factors for generic resources."), c);
+    c.gridy++;
+    c.weightx = 0;
+    c.gridwidth = 1;
+    c.anchor = GridBagConstraints.LINE_END;
+    c.fill = GridBagConstraints.NONE;
+    packingPanel.add(new JLabel("Gas: "), c);
+    c.gridy++;
+    packingPanel.add(new JLabel("Liquid: "), c);
+    c.gridy++;
+    packingPanel.add(new JLabel("Pressurized: "), c);
+    c.gridy++;
+    packingPanel.add(new JLabel("Unpressurized: "), c);
     c.gridy++;
     c.weightx = 1;
-    c.weighty = 1;
-    c.fill = GridBagConstraints.BOTH;
-    demandsPanel.add(new JLabel(), c);
+    c.anchor = GridBagConstraints.LINE_START;
+    c.fill = GridBagConstraints.NONE;
+    c.gridx = 1;
+    c.gridy = 1;
+    gasModel = new SpinnerNumberModel(0.0, 0.0, 1000.0, 0.1);
+    gasSpinner = new JSpinner(gasModel);
+    packingPanel.add(new UnitsWrapper(gasSpinner, "% (Default: 100%)"), c);
+    c.gridy++;
+    liquidModel = new SpinnerNumberModel(0.0, 0.0, 1000.0, 0.1);
+    liquidSpinner = new JSpinner(liquidModel);
+    packingPanel.add(new UnitsWrapper(liquidSpinner, "% (Default: 50%)"), c);
+    c.gridy++;
+    pressurizedModel = new SpinnerNumberModel(0.0, 0.0, 1000.0, 0.1);
+    pressurizedSpinner = new JSpinner(pressurizedModel);
+    packingPanel.add(new UnitsWrapper(pressurizedSpinner, "% (Default: 20%)"), c);
+    c.gridy++;
+    unpressurizedModel = new SpinnerNumberModel(0.0, 0.0, 1000.0, 0.1);
+    unpressurizedSpinner = new JSpinner(unpressurizedModel);
+    packingPanel.add(new UnitsWrapper(unpressurizedSpinner, "% (Default: 60%)"), c);
   }
 
   /**
@@ -278,27 +337,24 @@ public class OptionsDialog extends JDialog {
    */
   private void buildSimulationPanel() {
     simulationPanel = new JPanel();
-    simulationPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    simulationPanel.setBorder(BorderFactory.createTitledBorder("Simulation Detail"));
     simulationPanel.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     c.insets = new Insets(2, 2, 2, 2);
     c.gridx = 0;
     c.gridy = 0;
-    c.weightx = 1;
     c.anchor = GridBagConstraints.LINE_START;
-    c.fill = GridBagConstraints.BOTH;
-    explorationCheck = new JCheckBox("Detailed Explorations");
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.weightx = 1;
+    simulationPanel.add(new JLabel("Sets the level of fidelity for simulation execution."), c);
+    c.gridy++;
+    explorationCheck = new JCheckBox("Detailed Explorations (generate EVA events)");
     explorationCheck.setOpaque(false);
     simulationPanel.add(explorationCheck, c);
     c.gridy++;
-    evaCheck = new JCheckBox("Detailed EVAs");
+    evaCheck = new JCheckBox("Detailed EVAs (reconfigure and move elements)");
     evaCheck.setOpaque(false);
     simulationPanel.add(evaCheck, c);
-    c.gridy++;
-    c.weightx = 1;
-    c.weighty = 1;
-    c.fill = GridBagConstraints.BOTH;
-    simulationPanel.add(new JLabel(), c);
   }
 
   /**
@@ -319,6 +375,14 @@ public class OptionsDialog extends JDialog {
     scenarioPanel.getScenario().setScavengeSpares(scavengeSparesCheck.isSelected());
     scenarioPanel.getScenario().setDetailedEva(evaCheck.isSelected());
     scenarioPanel.getScenario().setDetailedExploration(explorationCheck.isSelected());
+    scenarioPanel.getScenario()
+        .setGenericPackingFactorGas(gasModel.getNumber().doubleValue() / 100D);
+    scenarioPanel.getScenario()
+        .setGenericPackingFactorLiquid(liquidModel.getNumber().doubleValue() / 100D);
+    scenarioPanel.getScenario()
+        .setGenericPackingFactorPressurized(pressurizedModel.getNumber().doubleValue() / 100D);
+    scenarioPanel.getScenario()
+        .setGenericPackingFactorUnpressurized(unpressurizedModel.getNumber().doubleValue() / 100D);
   }
 
   /**
@@ -340,6 +404,13 @@ public class OptionsDialog extends JDialog {
 
     explorationCheck.setSelected(scenarioPanel.getScenario().isDetailedExploration());
     evaCheck.setSelected(scenarioPanel.getScenario().isDetailedEva());
+
+    gasModel.setValue(scenarioPanel.getScenario().getGenericPackingFactorGas() * 100);
+    liquidModel.setValue(scenarioPanel.getScenario().getGenericPackingFactorLiquid() * 100);
+    pressurizedModel
+        .setValue(scenarioPanel.getScenario().getGenericPackingFactorPressurized() * 100);
+    unpressurizedModel
+        .setValue(scenarioPanel.getScenario().getGenericPackingFactorUnpressurized() * 100);
   }
 
   /**

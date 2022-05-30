@@ -47,15 +47,19 @@ public class GlobalParameters {
   private GlobalParameters() {}
 
   public void setParametersFrom(Scenario scenario) {
-    this.timePrecision = scenario.getTimePrecision();
-    this.demandPrecision = scenario.getDemandPrecision();
-    this.massPrecision = scenario.getMassPrecision();
-    this.volumeConstrained = scenario.isVolumeConstrained();
-    this.volumePrecision = scenario.getVolumePrecision();
-    this.environmentConstrained = scenario.isEnvironmentConstrained();
-    this.itemAggregation = scenario.getItemAggregation();
-    this.itemDiscretization = scenario.getItemDiscretization();
-    this.scavengeSpares = scenario.isScavengeSpares();
+    setTimePrecision(scenario.getTimePrecision());
+    setDemandPrecision(scenario.getDemandPrecision());
+    setMassPrecision(scenario.getMassPrecision());
+    setVolumeConstrained(scenario.isVolumeConstrained());
+    setVolumePrecision(scenario.getVolumePrecision());
+    setEnvironmentConstrained(scenario.isEnvironmentConstrained());
+    setItemAggregation(scenario.getItemAggregation());
+    setItemDiscretization(scenario.getItemDiscretization());
+    setScavengeSpares(scenario.isScavengeSpares());
+    setGenericPackingFactorGas(scenario.getGenericPackingFactorGas());
+    setGenericPackingFactorLiquid(scenario.getGenericPackingFactorLiquid());
+    setGenericPackingFactorPressurizedInternal(scenario.getGenericPackingFactorPressurized());
+    setGenericPackingFactorUnpressurized(scenario.getGenericPackingFactorUnpressurized());
   }
 
   /**
@@ -277,44 +281,96 @@ public class GlobalParameters {
     this.scavengeSpares = scavengeSpares;
   }
 
+  /**
+   * Gets the generic packing factor gas.
+   *
+   * @return the generic packing factor gas
+   */
   public double getGenericPackingFactorGas() {
     return genericPackingFactorGas;
   }
 
+  /**
+   * Sets the generic packing factor gas.
+   *
+   * @param genericPackingFactorGas the new generic packing factor gas
+   */
   public void setGenericPackingFactorGas(double genericPackingFactorGas) {
     this.genericPackingFactorGas = genericPackingFactorGas;
   }
 
+  /**
+   * Gets the generic packing factor liquid.
+   *
+   * @return the generic packing factor liquid
+   */
   public double getGenericPackingFactorLiquid() {
     return genericPackingFactorLiquid;
   }
 
+  /**
+   * Sets the generic packing factor liquid.
+   *
+   * @param genericPackingFactorLiquid the new generic packing factor liquid
+   */
   public void setGenericPackingFactorLiquid(double genericPackingFactorLiquid) {
     this.genericPackingFactorLiquid = genericPackingFactorLiquid;
   }
 
+  /**
+   * Gets the generic packing factor pressurized external.
+   *
+   * @return the generic packing factor pressurized external
+   */
   public double getGenericPackingFactorPressurizedExternal() {
     return genericPackingFactorPressurizedExternal;
   }
 
+  /**
+   * Sets the generic packing factor pressurized external.
+   *
+   * @param genericPackingFactorPressurizedExternal the new generic packing factor pressurized
+   *        external
+   */
   public void setGenericPackingFactorPressurizedExternal(
       double genericPackingFactorPressurizedExternal) {
     this.genericPackingFactorPressurizedExternal = genericPackingFactorPressurizedExternal;
   }
 
+  /**
+   * Gets the generic packing factor pressurized internal.
+   *
+   * @return the generic packing factor pressurized internal
+   */
   public double getGenericPackingFactorPressurizedInternal() {
     return genericPackingFactorPressurizedInternal;
   }
 
+  /**
+   * Sets the generic packing factor pressurized internal.
+   *
+   * @param genericPackingFactorPressurizedInternal the new generic packing factor pressurized
+   *        internal
+   */
   public void setGenericPackingFactorPressurizedInternal(
       double genericPackingFactorPressurizedInternal) {
     this.genericPackingFactorPressurizedInternal = genericPackingFactorPressurizedInternal;
   }
 
+  /**
+   * Gets the generic packing factor unpressurized.
+   *
+   * @return the generic packing factor unpressurized
+   */
   public double getGenericPackingFactorUnpressurized() {
     return genericPackingFactorUnpressurized;
   }
 
+  /**
+   * Sets the generic packing factor unpressurized.
+   *
+   * @param genericPackingFactorUnpressurized the new generic packing factor unpressurized
+   */
   public void setGenericPackingFactorUnpressurized(double genericPackingFactorUnpressurized) {
     this.genericPackingFactorUnpressurized = genericPackingFactorUnpressurized;
   }

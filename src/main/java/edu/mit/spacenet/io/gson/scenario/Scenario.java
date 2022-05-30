@@ -128,6 +128,10 @@ public class Scenario {
     // TODO add repaired items
     s.setDetailedEva(configuration.detailedEva);
     s.setDetailedExploration(configuration.detailedExploration);
+    s.setGenericPackingFactorGas(configuration.genericPackingFactorGas);
+    s.setGenericPackingFactorLiquid(configuration.genericPackingFactorLiquid);
+    s.setGenericPackingFactorPressurized(configuration.genericPackingFactorPressurized);
+    s.setGenericPackingFactorUnpressurized(configuration.genericPackingFactorUnpressurized);
     return s;
   }
 }

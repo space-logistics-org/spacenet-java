@@ -38,6 +38,11 @@ public class GlobalParameters {
   private double itemAggregation = 0;
   private ItemDiscretization itemDiscretization = ItemDiscretization.NONE;
   private boolean scavengeSpares = false;
+  private double genericPackingFactorGas = 1.0;
+  private double genericPackingFactorLiquid = 0.5;
+  private double genericPackingFactorPressurizedExternal = 1.2;
+  private double genericPackingFactorPressurizedInternal = 0.2;
+  private double genericPackingFactorUnpressurized = 0.6;
 
   private GlobalParameters() {}
 
@@ -270,5 +275,47 @@ public class GlobalParameters {
    */
   public void setScavengeSpares(boolean scavengeSpares) {
     this.scavengeSpares = scavengeSpares;
+  }
+
+  public double getGenericPackingFactorGas() {
+    return genericPackingFactorGas;
+  }
+
+  public void setGenericPackingFactorGas(double genericPackingFactorGas) {
+    this.genericPackingFactorGas = genericPackingFactorGas;
+  }
+
+  public double getGenericPackingFactorLiquid() {
+    return genericPackingFactorLiquid;
+  }
+
+  public void setGenericPackingFactorLiquid(double genericPackingFactorLiquid) {
+    this.genericPackingFactorLiquid = genericPackingFactorLiquid;
+  }
+
+  public double getGenericPackingFactorPressurizedExternal() {
+    return genericPackingFactorPressurizedExternal;
+  }
+
+  public void setGenericPackingFactorPressurizedExternal(
+      double genericPackingFactorPressurizedExternal) {
+    this.genericPackingFactorPressurizedExternal = genericPackingFactorPressurizedExternal;
+  }
+
+  public double getGenericPackingFactorPressurizedInternal() {
+    return genericPackingFactorPressurizedInternal;
+  }
+
+  public void setGenericPackingFactorPressurizedInternal(
+      double genericPackingFactorPressurizedInternal) {
+    this.genericPackingFactorPressurizedInternal = genericPackingFactorPressurizedInternal;
+  }
+
+  public double getGenericPackingFactorUnpressurized() {
+    return genericPackingFactorUnpressurized;
+  }
+
+  public void setGenericPackingFactorUnpressurized(double genericPackingFactorUnpressurized) {
+    this.genericPackingFactorUnpressurized = genericPackingFactorUnpressurized;
   }
 }

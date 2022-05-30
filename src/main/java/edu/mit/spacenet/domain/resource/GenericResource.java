@@ -15,6 +15,7 @@ package edu.mit.spacenet.domain.resource;
 
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
+import edu.mit.spacenet.util.GlobalParameters;
 
 /**
  * A specific type of resource that is forced to have type identifier -cos and (unit) mass 1.
@@ -91,17 +92,13 @@ public class GenericResource extends Resource {
   @Override
   public double getPackingFactor() {
     if (getClassOfSupply().equals(ClassOfSupply.COS203))
-      return 1.0;
+      return GlobalParameters.getSingleton().getGenericPackingFactorGas();
     else if (getClassOfSupply().equals(ClassOfSupply.COS201))
-      return 0.5;
-    else if (getClassOfSupply().equals(ClassOfSupply.COS6))
-      return 0;
+      return GlobalParameters.getSingleton().getGenericPackingFactorLiquid();
     else if (getEnvironment().equals(Environment.UNPRESSURIZED))
-      return 0.6;
-    // else if(getEnvironment().equals(Environment.PRESSURIZED_INTERNAL)) return 0.2;
-    // else if(getEnvironment().equals(Environment.PRESSURIZED_EXTERNAL)) return 1.2;
+      return GlobalParameters.getSingleton().getGenericPackingFactorUnpressurized();
     else if (getEnvironment().equals(Environment.PRESSURIZED))
-      return 1.2;
+      return GlobalParameters.getSingleton().getGenericPackingFactorPressurizedInternal();
     else
       return super.getPackingFactor();
   }

@@ -202,7 +202,8 @@ public class OptionsDialog extends JDialog {
     c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.HORIZONTAL;
     c.weightx = 1;
-    constraintsPanel.add(new JLabel("Sets constraints enforced for packing cargo in containers or carriers."), c);
+    constraintsPanel.add(
+        new JLabel("Sets constraints enforced for packing cargo in containers or carriers."), c);
     c.gridy++;
     volumeConstrained = new JCheckBox("Volume Enforced");
     volumeConstrained.setOpaque(false);

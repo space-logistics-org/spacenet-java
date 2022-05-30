@@ -30,7 +30,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -185,7 +184,7 @@ public class DemandsTab extends JSplitPane {
       scavengeSparesCheck.setSelected(getScenario().isScavengeSpares());
 
       fileNameText.setText("demands.txt");
-      
+
       gasModel.setValue(getScenario().getGenericPackingFactorGas() * 100);
       liquidModel.setValue(getScenario().getGenericPackingFactorLiquid() * 100);
       pressurizedModel.setValue(getScenario().getGenericPackingFactorPressurized() * 100);
@@ -369,7 +368,8 @@ public class DemandsTab extends JSplitPane {
     pressurizedModel.addChangeListener(new ChangeListener() {
       @Override
       public void stateChanged(ChangeEvent e) {
-        getScenario().setGenericPackingFactorPressurized(pressurizedModel.getNumber().doubleValue() / 100D);
+        getScenario()
+            .setGenericPackingFactorPressurized(pressurizedModel.getNumber().doubleValue() / 100D);
         updateView();
       }
     });
@@ -380,7 +380,8 @@ public class DemandsTab extends JSplitPane {
     unpressurizedModel.addChangeListener(new ChangeListener() {
       @Override
       public void stateChanged(ChangeEvent e) {
-        getScenario().setGenericPackingFactorUnpressurized(unpressurizedModel.getNumber().doubleValue() / 100D);
+        getScenario().setGenericPackingFactorUnpressurized(
+            unpressurizedModel.getNumber().doubleValue() / 100D);
         updateView();
       }
     });
@@ -771,7 +772,7 @@ public class DemandsTab extends JSplitPane {
     aggregationSlider.setValue((int) (getScenario().getItemAggregation() * 4));
     aggregationSlider.setEnabled(getScenario().getItemDiscretization() != ItemDiscretization.NONE);
     scavengeSparesCheck.setSelected(getScenario().isScavengeSpares());
-    
+
     gasModel.setValue(getScenario().getGenericPackingFactorGas() * 100D);
     liquidModel.setValue(getScenario().getGenericPackingFactorLiquid() * 100D);
     pressurizedModel.setValue(getScenario().getGenericPackingFactorPressurized() * 100D);

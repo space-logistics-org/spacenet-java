@@ -351,7 +351,7 @@ public class DemandsTab extends JSplitPane {
       }
     });
     gasSpinner = new JSpinner(gasModel);
-    displayPanel.add(new UnitsWrapper(gasSpinner, "% (Default: 100%)"), c);
+    displayPanel.add(new UnitsWrapper(gasSpinner, "%"), c);
     c.gridy++;
     liquidModel = new SpinnerNumberModel(0.0, 0.0, 1000.0, 0.1);
     liquidModel.addChangeListener(new ChangeListener() {
@@ -362,7 +362,7 @@ public class DemandsTab extends JSplitPane {
       }
     });
     liquidSpinner = new JSpinner(liquidModel);
-    displayPanel.add(new UnitsWrapper(liquidSpinner, "% (Default: 50%)"), c);
+    displayPanel.add(new UnitsWrapper(liquidSpinner, "%"), c);
     c.gridy++;
     pressurizedModel = new SpinnerNumberModel(0.0, 0.0, 1000.0, 0.1);
     pressurizedModel.addChangeListener(new ChangeListener() {
@@ -374,7 +374,7 @@ public class DemandsTab extends JSplitPane {
       }
     });
     pressurizedSpinner = new JSpinner(pressurizedModel);
-    displayPanel.add(new UnitsWrapper(pressurizedSpinner, "% (Default: 20%)"), c);
+    displayPanel.add(new UnitsWrapper(pressurizedSpinner, "%"), c);
     c.gridy++;
     unpressurizedModel = new SpinnerNumberModel(0.0, 0.0, 1000.0, 0.1);
     unpressurizedModel.addChangeListener(new ChangeListener() {
@@ -386,7 +386,7 @@ public class DemandsTab extends JSplitPane {
       }
     });
     unpressurizedSpinner = new JSpinner(unpressurizedModel);
-    displayPanel.add(new UnitsWrapper(unpressurizedSpinner, "% (Default: 60%)"), c);
+    displayPanel.add(new UnitsWrapper(unpressurizedSpinner, "%"), c);
     c.gridy++;
     c.gridx = 0;
     c.weightx = 1;

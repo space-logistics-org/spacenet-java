@@ -14,6 +14,7 @@
 package edu.mit.spacenet.domain.element;
 
 import edu.mit.spacenet.domain.Environment;
+import edu.mit.spacenet.util.GlobalParameters;
 
 /**
  * Class which is used to build the "default" resource containers used in auto-packing and
@@ -26,12 +27,6 @@ public abstract class ResourceContainerFactory {
   /** The Constant DCTB_TID. */
   public static final int DCTB_TID = -22;
 
-  /** The Constant DCTB_MAX_MASS. */
-  public static final double DCTB_MAX_MASS = 53.6;
-
-  /** The Constant DCTB_MAX_VOLUME. */
-  public static final double DCTB_MAX_VOLUME = 0.098;
-
   /**
    * Creates a new double cargo transfer bag (DCTB).
    * 
@@ -42,9 +37,9 @@ public abstract class ResourceContainerFactory {
     ResourceContainer ctb = new ResourceContainer();
     ctb.setTid(DCTB_TID);
     ctb.setMass(1.383);
-    ctb.setMaxCargoMass(DCTB_MAX_MASS);
+    ctb.setMaxCargoMass(GlobalParameters.getSingleton().getCargoTransferBagMaxMass() * 2);
     ctb.setVolume(0.106);
-    ctb.setMaxCargoVolume(DCTB_MAX_VOLUME);
+    ctb.setMaxCargoVolume(GlobalParameters.getSingleton().getCargoTransferBagMaxVolume() * 2);
 
     ctb.setName("DCTB " + ctb.getUid());
     return ctb;
@@ -53,12 +48,6 @@ public abstract class ResourceContainerFactory {
 
   /** The Constant CTB_TID. */
   public static final int CTB_TID = -10;
-
-  /** The Constant CTB_MAX_MASS. */
-  public static final double CTB_MAX_MASS = 26.8;
-
-  /** The Constant CTB_MAX_VOLUME. */
-  public static final double CTB_MAX_VOLUME = 0.049;
 
   /**
    * Creates a cargo transfer bag (CTB).
@@ -69,10 +58,10 @@ public abstract class ResourceContainerFactory {
     // cargo transfer bag
     ResourceContainer ctb = new ResourceContainer();
     ctb.setTid(CTB_TID);
-    ctb.setMass(0.83);
-    ctb.setMaxCargoMass(CTB_MAX_MASS);
-    ctb.setVolume(0.053);
-    ctb.setMaxCargoVolume(CTB_MAX_VOLUME);
+    ctb.setMass(GlobalParameters.getSingleton().getCargoTransferBagMass());
+    ctb.setMaxCargoMass(GlobalParameters.getSingleton().getCargoTransferBagMaxMass());
+    ctb.setVolume(GlobalParameters.getSingleton().getCargoTransferBagVolume());
+    ctb.setMaxCargoVolume(GlobalParameters.getSingleton().getCargoTransferBagMaxVolume());
 
     ctb.setName("CTB " + ctb.getUid());
     return ctb;
@@ -80,12 +69,6 @@ public abstract class ResourceContainerFactory {
 
   /** The Constant HCTB_TID. */
   public static final int HCTB_TID = -11;
-
-  /** The Constant HCTB_MAX_MASS. */
-  public static final double HCTB_MAX_MASS = 13.4;
-
-  /** The Constant HCTB_MAX_VOLUME. */
-  public static final double HCTB_MAX_VOLUME = 0.0245;
 
   /**
    * Creates a half-size cargo transfer bag (CTB).
@@ -97,9 +80,9 @@ public abstract class ResourceContainerFactory {
     ResourceContainer ctb = new ResourceContainer();
     ctb.setTid(HCTB_TID);
     ctb.setMass(.5532);
-    ctb.setMaxCargoMass(HCTB_MAX_MASS);
+    ctb.setMaxCargoMass(GlobalParameters.getSingleton().getCargoTransferBagMaxMass() / 2);
     ctb.setVolume(0.0265);
-    ctb.setMaxCargoVolume(HCTB_MAX_VOLUME);
+    ctb.setMaxCargoVolume(GlobalParameters.getSingleton().getCargoTransferBagMaxVolume() / 2);
 
     ctb.setName("Half CTB " + ctb.getUid());
     return ctb;
@@ -129,12 +112,6 @@ public abstract class ResourceContainerFactory {
   /** The Constant LT_TID. */
   public static final int LT_TID = -13;
 
-  /** The Constant LT_MAX_MASS. */
-  public static final double LT_MAX_MASS = 74.8;
-
-  /** The Constant LT_MAX_VOLUME. */
-  public static final double LT_MAX_VOLUME = 0.0748;
-
   /**
    * Creates a liquid tank (LT).
    * 
@@ -144,10 +121,10 @@ public abstract class ResourceContainerFactory {
     // liquid tank
     ResourceContainer lt = new ResourceContainer();
     lt.setTid(LT_TID);
-    lt.setMass(34.37);
-    lt.setMaxCargoMass(LT_MAX_MASS);
-    lt.setVolume(0.0748);
-    lt.setMaxCargoVolume(LT_MAX_VOLUME);
+    lt.setMass(GlobalParameters.getSingleton().getLargeLiquidTankMass());
+    lt.setMaxCargoMass(GlobalParameters.getSingleton().getLargeLiquidTankMaxMass());
+    lt.setVolume(GlobalParameters.getSingleton().getLargeLiquidTankVolume());
+    lt.setMaxCargoVolume(GlobalParameters.getSingleton().getLargeLiquidTankMaxVolume());
 
     lt.setName("Liquid Tank " + lt.getUid());
     return lt;
@@ -155,12 +132,6 @@ public abstract class ResourceContainerFactory {
 
   /** The Constant LTD_TID. */
   public static final int LTD_TID = -14;
-
-  /** The Constant LTD_MAX_MASS. */
-  public static final double LTD_MAX_MASS = 24.9333;
-
-  /** The Constant LTD_MAX_VOLUME. */
-  public static final double LTD_MAX_VOLUME = 0.0249;
 
   /**
    * Creates a derivative liquid tank (LT).
@@ -171,10 +142,10 @@ public abstract class ResourceContainerFactory {
     // liquid tank derivative
     ResourceContainer ltd = new ResourceContainer();
     ltd.setTid(LTD_TID);
-    ltd.setMass(11.4567);
-    ltd.setMaxCargoMass(LTD_MAX_MASS);
-    ltd.setVolume(0.0249);
-    ltd.setMaxCargoVolume(LTD_MAX_VOLUME);
+    ltd.setMass(GlobalParameters.getSingleton().getSmallLiquidTankMass());
+    ltd.setMaxCargoMass(GlobalParameters.getSingleton().getSmallLiquidTankMaxMass());
+    ltd.setVolume(GlobalParameters.getSingleton().getSmallLiquidTankVolume());
+    ltd.setMaxCargoVolume(GlobalParameters.getSingleton().getSmallLiquidTankMaxVolume());
 
     ltd.setName("Liquid Tank Derivative " + ltd.getUid());
     return ltd;
@@ -182,12 +153,6 @@ public abstract class ResourceContainerFactory {
 
   /** The Constant SHOSS_TID. */
   public static final int SHOSS_TID = -15;
-
-  /** The Constant SHOSS_MAX_MASS. */
-  public static final double SHOSS_MAX_MASS = 200;
-
-  /** The Constant SHOSS_MAX_VOLUME. */
-  public static final double SHOSS_MAX_VOLUME = 0.4444;
 
   /**
    * Creates a SHOSS box.
@@ -199,9 +164,9 @@ public abstract class ResourceContainerFactory {
     ResourceContainer shoss = new ResourceContainer();
     shoss.setTid(SHOSS_TID);
     shoss.setMass(120);
-    shoss.setMaxCargoMass(SHOSS_MAX_MASS);
+    shoss.setMaxCargoMass(200);
     shoss.setVolume(0.4444);
-    shoss.setMaxCargoVolume(SHOSS_MAX_VOLUME);
+    shoss.setMaxCargoVolume(0.4444);
 
     shoss.setName("Shoss " + shoss.getUid());
     return shoss;
@@ -209,12 +174,6 @@ public abstract class ResourceContainerFactory {
 
   /** The Constant PSHOSS_TID. */
   public static final int PSHOSS_TID = -16;
-
-  /** The Constant PSHOSS_MAX_MASS. */
-  public static final double PSHOSS_MAX_MASS = 200;
-
-  /** The Constant PSHOSS_MAX_VOLUME. */
-  public static final double PSHOSS_MAX_VOLUME = 0.8;
 
   /**
    * Creates a pressurized SHOSS box.
@@ -226,9 +185,9 @@ public abstract class ResourceContainerFactory {
     ResourceContainer pshoss = new ResourceContainer();
     pshoss.setTid(PSHOSS_TID);
     pshoss.setMass(0);
-    pshoss.setMaxCargoMass(PSHOSS_MAX_MASS);
+    pshoss.setMaxCargoMass(200);
     pshoss.setVolume(0.8);
-    pshoss.setMaxCargoVolume(PSHOSS_MAX_VOLUME);
+    pshoss.setMaxCargoVolume(0.8);
 
     pshoss.setName("Press. Shoss " + pshoss.getUid());
     pshoss.setCargoEnvironment(Environment.PRESSURIZED);
@@ -237,12 +196,6 @@ public abstract class ResourceContainerFactory {
 
   /** The Constant GT_TID. */
   public static final int GT_TID = -17;
-
-  /** The Constant GT_MAX_MASS. */
-  public static final double GT_MAX_MASS = 100;
-
-  /** The Constant GT_MAX_VOLUME. */
-  public static final double GT_MAX_VOLUME = 2.75;
 
   /**
    * Creates a gas tank (GT).
@@ -253,10 +206,10 @@ public abstract class ResourceContainerFactory {
     // gas tank
     ResourceContainer gt = new ResourceContainer();
     gt.setTid(GT_TID);
-    gt.setMass(108);
-    gt.setMaxCargoMass(GT_MAX_MASS);
-    gt.setVolume(2.75);
-    gt.setMaxCargoVolume(GT_MAX_VOLUME);
+    gt.setMass(GlobalParameters.getSingleton().getLargeGasTankMass());
+    gt.setMaxCargoMass(GlobalParameters.getSingleton().getLargeGasTankMaxMass());
+    gt.setVolume(GlobalParameters.getSingleton().getLargeGasTankVolume());
+    gt.setMaxCargoVolume(GlobalParameters.getSingleton().getLargeGasTankMaxVolume());
 
     gt.setName("Gas Tank " + gt.getUid());
     return gt;
@@ -264,12 +217,6 @@ public abstract class ResourceContainerFactory {
 
   /** The Constant GTD_TID. */
   public static final int GTD_TID = -17;
-
-  /** The Constant GTD_MAX_MASS. */
-  public static final double GTD_MAX_MASS = 10;
-
-  /** The Constant GTD_MAX_VOLUME. */
-  public static final double GTD_MAX_VOLUME = 0.275;
 
   /**
    * Creates a derivative gas tank (GT).
@@ -280,10 +227,10 @@ public abstract class ResourceContainerFactory {
     // gas tank derivative
     ResourceContainer gtd = new ResourceContainer();
     gtd.setTid(GTD_TID);
-    gtd.setMass(10.8);
-    gtd.setMaxCargoMass(GTD_MAX_MASS);
-    gtd.setVolume(0.275);
-    gtd.setMaxCargoVolume(GTD_MAX_VOLUME);
+    gtd.setMass(GlobalParameters.getSingleton().getSmallGasTankMass());
+    gtd.setMaxCargoMass(GlobalParameters.getSingleton().getSmallGasTankMaxMass());
+    gtd.setVolume(GlobalParameters.getSingleton().getSmallGasTankVolume());
+    gtd.setMaxCargoVolume(GlobalParameters.getSingleton().getSmallGasTankMaxVolume());
 
     gtd.setName("Gas Tank Derivative " + gtd.getUid());
     return gtd;

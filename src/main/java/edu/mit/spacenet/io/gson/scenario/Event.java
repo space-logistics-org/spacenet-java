@@ -19,7 +19,7 @@ public abstract class Event {
           .put("AddResources", EventType.ADD).put("MoveElements", EventType.MOVE)
           .put("TransferResources", EventType.TRANSFER).put("RemoveElements", EventType.REMOVE)
           .put("ReconfigureElement", EventType.RECONFIGURE)
-          .put("ReconfigureGroup", EventType.RECONFIGURE_GROUP)
+          .put("ReconfigureElements", EventType.RECONFIGURE_GROUP)
           .put("ConsumeResources", EventType.DEMAND).put("PropulsiveBurn", EventType.BURN)
           .put("CrewedEVA", EventType.EVA).put("CrewedExploration", EventType.EXPLORATION)
           .put("SpaceTransport", EventType.SPACE_TRANSPORT)

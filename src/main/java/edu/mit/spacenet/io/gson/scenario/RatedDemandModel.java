@@ -22,6 +22,7 @@ public class RatedDemandModel extends DemandModel {
       if (!template.description.equals(model.getDescription())) {
         m.description = model.getDescription();
       }
+      // TODO cannot override template demand rates; fails silently
     }
     return m;
   }

@@ -22,6 +22,7 @@ public class ImpulseDemandModel extends DemandModel {
       if (!template.description.equals(model.getDescription())) {
         m.description = model.getDescription();
       }
+      // TODO cannot override template demands; fails silently
     }
     return m;
   }

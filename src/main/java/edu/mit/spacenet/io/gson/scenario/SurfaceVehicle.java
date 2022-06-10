@@ -79,12 +79,14 @@ public class SurfaceVehicle extends Carrier {
           || (template.icon != null && !template.icon.equals(element.getIconType().getName()))) {
         e.icon = element.getIconType().getName();
       }
+      // TODO cannot override template states; fails silently
       if (element.getCurrentState() != null) {
         List<I_State> states = new ArrayList<I_State>(element.getStates());
         if (!template.currentStateIndex.equals(states.indexOf(element.getCurrentState()))) {
           e.currentStateIndex = states.indexOf(element.getCurrentState());
         }
       }
+      // TODO cannot override template parts; fails silently
       if (!template.maxCargoMass.equals(element.getMaxCargoMass())) {
         e.maxCargoMass = element.getMaxCargoMass();
       }
@@ -97,6 +99,7 @@ public class SurfaceVehicle extends Carrier {
       if (!template.maxCrewSize.equals(element.getMaxCrewSize())) {
         e.maxCrewSize = element.getMaxCrewSize();
       }
+      // TODO cannot override template contents; fails silently
       if (!template.maxSpeed.equals(element.getMaxSpeed())) {
         e.maxSpeed = element.getMaxSpeed();
       }

@@ -72,12 +72,14 @@ public class ResourceContainer extends Element {
           || (template.icon != null && !template.icon.equals(element.getIconType().getName()))) {
         e.icon = element.getIconType().getName();
       }
+      // TODO cannot override template states; fails silently
       if (element.getCurrentState() != null) {
         List<I_State> states = new ArrayList<I_State>(element.getStates());
         if (!template.currentStateIndex.equals(states.indexOf(element.getCurrentState()))) {
           e.currentStateIndex = states.indexOf(element.getCurrentState());
         }
       }
+      // TODO cannot override template parts; fails silently
       if (!template.maxCargoMass.equals(element.getMaxCargoMass())) {
         e.maxCargoMass = element.getMaxCargoMass();
       }
@@ -87,6 +89,7 @@ public class ResourceContainer extends Element {
       if (!template.cargoEnvironment.equals(element.getCargoEnvironment().getName())) {
         e.cargoEnvironment = element.getCargoEnvironment().getName();
       }
+      // TODO cannot override template contents; fails silently
     }
     return e;
   }

@@ -15,7 +15,7 @@ import edu.mit.spacenet.domain.Environment;
 import edu.mit.spacenet.domain.resource.I_Resource;
 
 public class Resource implements Cloneable {
-  protected UUID type;
+  protected UUID resource;
   protected Integer classOfSupply; // for generic only
   protected String environment; // for generic only
   protected Double amount;
@@ -28,7 +28,7 @@ public class Resource implements Cloneable {
       d.classOfSupply = demand.getResource().getClassOfSupply().getId();
       d.environment = demand.getResource().getEnvironment().getName();
     } else {
-      d.type = context.getJsonIdFromJavaObject(demand.getResource());
+      d.resource = context.getJsonIdFromJavaObject(demand.getResource());
     }
     d.amount = demand.getAmount();
     return d;
@@ -63,11 +63,11 @@ public class Resource implements Cloneable {
 
   public edu.mit.spacenet.domain.resource.Demand toSpaceNet(Context context) {
     edu.mit.spacenet.domain.resource.Demand d = new edu.mit.spacenet.domain.resource.Demand();
-    if (type == null) {
+    if (resource == null) {
       d.setResource(new edu.mit.spacenet.domain.resource.GenericResource(
           ClassOfSupply.getInstance(classOfSupply), Environment.getInstance(environment)));
     } else {
-      d.setResource((I_Resource) context.getJavaObjectFromJsonId(type));
+      d.setResource((I_Resource) context.getJavaObjectFromJsonId(resource));
     }
     d.setAmount(amount);
     return d;
@@ -113,7 +113,7 @@ public class Resource implements Cloneable {
   @Override
   public Resource clone() {
     Resource r = new Resource();
-    r.type = type;
+    r.resource = resource;
     r.classOfSupply = classOfSupply;
     r.environment = environment;
     r.amount = amount;

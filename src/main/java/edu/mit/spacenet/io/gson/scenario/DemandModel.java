@@ -16,10 +16,10 @@ import edu.mit.spacenet.domain.model.I_DemandModel;
 public abstract class DemandModel implements Cloneable {
   public static final BiMap<String, DemandModelType> TYPE_MAP =
       new ImmutableBiMap.Builder<String, DemandModelType>()
-          .put("Crew Consumables Demand Model", DemandModelType.CREW_CONSUMABLES)
-          .put("Timed Impulse Demand Model", DemandModelType.TIMED_IMPULSE)
-          .put("Rated Demand Model", DemandModelType.RATED)
-          .put("Sparing by Mass Demand Model", DemandModelType.SPARING_BY_MASS).build();
+          .put("CrewConsumables", DemandModelType.CREW_CONSUMABLES)
+          .put("TimedImpulse", DemandModelType.TIMED_IMPULSE)
+          .put("Rated", DemandModelType.RATED)
+          .put("SparingByMass", DemandModelType.SPARING_BY_MASS).build();
 
   protected UUID id;
   protected UUID templateId;

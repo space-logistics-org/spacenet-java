@@ -1,11 +1,10 @@
 package edu.mit.spacenet.io.gson.scenario;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class RatedDemandModel extends DemandModel {
-  protected List<Resource> demandRates = new ArrayList<Resource>();
+  protected List<Resource> demandRates;
 
   public static RatedDemandModel createFrom(edu.mit.spacenet.domain.model.RatedDemandModel model,
       Context context) {
@@ -23,6 +22,7 @@ public class RatedDemandModel extends DemandModel {
       if (!template.description.equals(model.getDescription())) {
         m.description = model.getDescription();
       }
+      // TODO cannot override template demand rates; fails silently
     }
     return m;
   }

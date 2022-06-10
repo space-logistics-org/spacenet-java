@@ -66,12 +66,14 @@ public class CrewMember extends Element {
           || (template.icon != null && !template.icon.equals(element.getIconType().getName()))) {
         e.icon = element.getIconType().getName();
       }
+      // TODO cannot override template states; fails silently
       if (element.getCurrentState() != null) {
         List<I_State> states = new ArrayList<I_State>(element.getStates());
         if (!template.currentStateIndex.equals(states.indexOf(element.getCurrentState()))) {
           e.currentStateIndex = states.indexOf(element.getCurrentState());
         }
       }
+      // TODO cannot override template parts; fails silently
       if (!template.availableTimeFraction.equals(element.getAvailableTimeFraction())) {
         e.availableTimeFraction = element.getAvailableTimeFraction();
       }

@@ -6,6 +6,7 @@ public class Configuration {
   protected Double massPrecision;
   protected Double volumePrecision;
   protected Boolean volumeConstrained;
+  protected Boolean environmentConstrained;
   protected String itemDiscretization;
   protected Double itemAggregation;
   protected Boolean scavangeSpares;
@@ -47,6 +48,7 @@ public class Configuration {
     c.massPrecision = scenario.getMassPrecision();
     c.volumePrecision = scenario.getVolumePrecision();
     c.volumeConstrained = scenario.isVolumeConstrained();
+    c.environmentConstrained = scenario.isEnvironmentConstrained();
     c.itemDiscretization = scenario.getItemDiscretization().getName();
     c.itemAggregation = scenario.getItemAggregation();
     c.scavangeSpares = scenario.isScavengeSpares();

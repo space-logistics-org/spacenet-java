@@ -122,6 +122,7 @@ public class Scenario {
     s.setMassPrecision(configuration.massPrecision);
     s.setVolumePrecision(configuration.volumePrecision);
     s.setVolumeConstrained(configuration.volumeConstrained);
+    s.setEnvironmentConstrained(configuration.environmentConstrained);
     s.setItemDiscretization(ItemDiscretization.getInstance(configuration.itemDiscretization));
     s.setItemAggregation(configuration.itemAggregation);
     s.setScavengeSpares(configuration.scavangeSpares);

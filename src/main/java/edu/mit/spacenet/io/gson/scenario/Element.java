@@ -23,7 +23,7 @@ public class Element implements Cloneable {
       new ImmutableBiMap.Builder<String, ElementType>().put("Element", ElementType.ELEMENT)
           .put("Crew Member", ElementType.CREW_MEMBER)
           .put("Resource Container", ElementType.RESOURCE_CONTAINER)
-          .put("Resource Tank", ElementType.RESOURCE_TANK).put("Carrier", ElementType.CARRIER)
+          .put("Resource Tank", ElementType.RESOURCE_TANK).put("Element Carrier", ElementType.CARRIER)
           .put("Propulsive Vehicle", ElementType.PROPULSIVE_VEHICLE)
           .put("Surface Vehicle", ElementType.SURFACE_VEHICLE).build();
 

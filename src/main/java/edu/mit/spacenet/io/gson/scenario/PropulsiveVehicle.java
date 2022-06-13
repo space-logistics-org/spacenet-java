@@ -3,7 +3,8 @@ package edu.mit.spacenet.io.gson.scenario;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import edu.mit.spacenet.data.ElementPreview;
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
@@ -86,14 +87,20 @@ public class PropulsiveVehicle extends Carrier {
           || (template.icon != null && !template.icon.equals(element.getIconType().getName()))) {
         e.icon = element.getIconType().getName();
       }
-      // TODO cannot override template states; fails silently
-      if (element.getCurrentState() != null) {
-        List<I_State> states = new ArrayList<I_State>(element.getStates());
-        if (!template.currentStateIndex.equals(states.indexOf(element.getCurrentState()))) {
-          e.currentStateIndex = states.indexOf(element.getCurrentState());
+      List<State> states = State.createFrom(element.getStates(), context);
+      if (!template.states.equals(states)) {
+        e.states = states;
+      }
+      if (e.states != null || element.getCurrentState() != null) {
+        List<I_State> eStates = new ArrayList<I_State>(element.getStates());
+        if (!template.currentStateIndex.equals(eStates.indexOf(element.getCurrentState()))) {
+          e.currentStateIndex = eStates.indexOf(element.getCurrentState());
         }
       }
-      // TODO cannot override template parts; fails silently
+      List<Part> parts = Part.createFrom(element.getParts(), context);
+      if (!template.parts.equals(parts)) {
+        e.parts = parts;
+      }
       if (!template.maxCargoMass.equals(element.getMaxCargoMass())) {
         e.maxCargoMass = element.getMaxCargoMass();
       }
@@ -106,7 +113,10 @@ public class PropulsiveVehicle extends Carrier {
       if (!template.maxCrewSize.equals(element.getMaxCrewSize())) {
         e.maxCrewSize = element.getMaxCrewSize();
       }
-      // TODO cannot override template contents; fails silently
+      List<Element> contents = Element.createFrom(element.getContents(), context);
+      if (!template.contents.equals(contents)) {
+        e.contents = contents;
+      }
       if (!template.isp
           .equals(element.getOmsFuelTank() != null ? element.getOmsIsp() : element.getRcsIsp())) {
         e.isp = element.getOmsFuelTank() != null ? element.getOmsIsp() : element.getRcsIsp();
@@ -192,6 +202,26 @@ public class PropulsiveVehicle extends Carrier {
   public ElementPreview getPreview(Context context) {
     return new ElementPreview(context.getJavaId(id), name, ElementType.PROPULSIVE_VEHICLE,
         ElementIcon.getInstance(icon));
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof PropulsiveVehicle)) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    final PropulsiveVehicle other = (PropulsiveVehicle) obj;
+    return new EqualsBuilder().appendSuper(super.equals(obj)).append(isp, other.isp)
+        .append(fuelType, other.fuelType).append(fuelMaxAmount, other.fuelMaxAmount)
+        .append(fuelAmount, other.fuelAmount).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(isp).append(fuelType)
+        .append(fuelMaxAmount).append(fuelAmount).toHashCode();
   }
 
   @Override

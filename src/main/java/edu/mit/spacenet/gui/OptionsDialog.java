@@ -50,7 +50,8 @@ public class OptionsDialog extends JDialog {
 
   private ScenarioPanel scenarioPanel;
 
-  private JPanel precisionPanel, constraintsPanel, demandsPanel, packingPanel, containersPanel, simulationPanel;
+  private JPanel precisionPanel, constraintsPanel, demandsPanel, packingPanel, containersPanel,
+      simulationPanel;
   private SpinnerNumberModel timeModel, demandModel, massModel, volumeModel;
   private JSpinner timeSpinner, demandSpinner, massSpinner, volumeSpinner;
   private JCheckBox volumeConstrained, environmentConstrained;
@@ -61,19 +62,28 @@ public class OptionsDialog extends JDialog {
 
   private SpinnerNumberModel gasModel, liquidModel, pressurizedModel, unpressurizedModel;
   private JSpinner gasSpinner, liquidSpinner, pressurizedSpinner, unpressurizedSpinner;
-  
-  private SpinnerNumberModel smallGasMassModel, smallGasVolumeModel, smallGasMaxMassModel, smallGasMaxVolumeModel;
-  private SpinnerNumberModel largeGasMassModel, largeGasVolumeModel, largeGasMaxMassModel, largeGasMaxVolumeModel;
-  private SpinnerNumberModel smallLiquidMassModel, smallLiquidVolumeModel, smallLiquidMaxMassModel, smallLiquidMaxVolumeModel;
-  private SpinnerNumberModel largeLiquidMassModel, largeLiquidVolumeModel, largeLiquidMaxMassModel, largeLiquidMaxVolumeModel;
-  private SpinnerNumberModel cargoMassModel, cargoVolumeModel, cargoMaxMassModel, cargoMaxVolumeModel;
-  
-  private JSpinner smallGasMassSpinner, smallGasVolumeSpinner, smallGasMaxMassSpinner, smallGasMaxVolumeSpinner;
-  private JSpinner largeGasMassSpinner, largeGasVolumeSpinner, largeGasMaxMassSpinner, largeGasMaxVolumeSpinner;
-  private JSpinner smallLiquidMassSpinner, smallLiquidVolumeSpinner, smallLiquidMaxMassSpinner, smallLiquidMaxVolumeSpinner;
-  private JSpinner largeLiquidMassSpinner, largeLiquidVolumeSpinner, largeLiquidMaxMassSpinner, largeLiquidMaxVolumeSpinner;
+
+  private SpinnerNumberModel smallGasMassModel, smallGasVolumeModel, smallGasMaxMassModel,
+      smallGasMaxVolumeModel;
+  private SpinnerNumberModel largeGasMassModel, largeGasVolumeModel, largeGasMaxMassModel,
+      largeGasMaxVolumeModel;
+  private SpinnerNumberModel smallLiquidMassModel, smallLiquidVolumeModel, smallLiquidMaxMassModel,
+      smallLiquidMaxVolumeModel;
+  private SpinnerNumberModel largeLiquidMassModel, largeLiquidVolumeModel, largeLiquidMaxMassModel,
+      largeLiquidMaxVolumeModel;
+  private SpinnerNumberModel cargoMassModel, cargoVolumeModel, cargoMaxMassModel,
+      cargoMaxVolumeModel;
+
+  private JSpinner smallGasMassSpinner, smallGasVolumeSpinner, smallGasMaxMassSpinner,
+      smallGasMaxVolumeSpinner;
+  private JSpinner largeGasMassSpinner, largeGasVolumeSpinner, largeGasMaxMassSpinner,
+      largeGasMaxVolumeSpinner;
+  private JSpinner smallLiquidMassSpinner, smallLiquidVolumeSpinner, smallLiquidMaxMassSpinner,
+      smallLiquidMaxVolumeSpinner;
+  private JSpinner largeLiquidMassSpinner, largeLiquidVolumeSpinner, largeLiquidMaxMassSpinner,
+      largeLiquidMaxVolumeSpinner;
   private JSpinner cargoMassSpinner, cargoVolumeSpinner, cargoMaxMassSpinner, cargoMaxVolumeSpinner;
-  
+
   private JCheckBox explorationCheck, evaCheck;
 
   /**
@@ -397,8 +407,7 @@ public class OptionsDialog extends JDialog {
     c.fill = GridBagConstraints.HORIZONTAL;
     c.weightx = 1;
     c.gridwidth = 5;
-    containersPanel.add(
-        new JLabel("Customizes resource containers used in manifesting."), c);
+    containersPanel.add(new JLabel("Customizes resource containers used in manifesting."), c);
     c.gridy++;
     c.weightx = 0;
     c.gridwidth = 1;
@@ -420,22 +429,26 @@ public class OptionsDialog extends JDialog {
     c.anchor = GridBagConstraints.CENTER;
     c.weightx = 1;
     c.gridx++;
-    smallGasMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getMassPrecision());
+    smallGasMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     smallGasMassSpinner = new JSpinner(smallGasMassModel);
     smallGasMassSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(smallGasMassSpinner, c);
     c.gridx++;
-    smallGasVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
+    smallGasVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
     smallGasVolumeSpinner = new JSpinner(smallGasVolumeModel);
     smallGasVolumeSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(smallGasVolumeSpinner, c);
     c.gridx++;
-    smallGasMaxMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getMassPrecision());
+    smallGasMaxMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     smallGasMaxMassSpinner = new JSpinner(smallGasMaxMassModel);
     smallGasMaxMassSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(smallGasMaxMassSpinner, c);
     c.gridx++;
-    smallGasMaxVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
+    smallGasMaxVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
     smallGasMaxVolumeSpinner = new JSpinner(smallGasMaxVolumeModel);
     smallGasMaxVolumeSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(smallGasMaxVolumeSpinner, c);
@@ -447,22 +460,26 @@ public class OptionsDialog extends JDialog {
     c.anchor = GridBagConstraints.CENTER;
     c.weightx = 1;
     c.gridx++;
-    largeGasMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getMassPrecision());
+    largeGasMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     largeGasMassSpinner = new JSpinner(largeGasMassModel);
     largeGasMassSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(largeGasMassSpinner, c);
     c.gridx++;
-    largeGasVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
+    largeGasVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
     largeGasVolumeSpinner = new JSpinner(largeGasVolumeModel);
     largeGasVolumeSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(largeGasVolumeSpinner, c);
     c.gridx++;
-    largeGasMaxMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getMassPrecision());
+    largeGasMaxMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     largeGasMaxMassSpinner = new JSpinner(largeGasMaxMassModel);
     largeGasMaxMassSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(largeGasMaxMassSpinner, c);
     c.gridx++;
-    largeGasMaxVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
+    largeGasMaxVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
     largeGasMaxVolumeSpinner = new JSpinner(largeGasMaxVolumeModel);
     largeGasMaxVolumeSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(largeGasMaxVolumeSpinner, c);
@@ -474,22 +491,26 @@ public class OptionsDialog extends JDialog {
     c.anchor = GridBagConstraints.CENTER;
     c.weightx = 1;
     c.gridx++;
-    smallLiquidMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getMassPrecision());
+    smallLiquidMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     smallLiquidMassSpinner = new JSpinner(smallLiquidMassModel);
     smallLiquidMassSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(smallLiquidMassSpinner, c);
     c.gridx++;
-    smallLiquidVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
+    smallLiquidVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
     smallLiquidVolumeSpinner = new JSpinner(smallLiquidVolumeModel);
     smallLiquidVolumeSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(smallLiquidVolumeSpinner, c);
     c.gridx++;
-    smallLiquidMaxMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getMassPrecision());
+    smallLiquidMaxMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     smallLiquidMaxMassSpinner = new JSpinner(smallLiquidMaxMassModel);
     smallLiquidMaxMassSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(smallLiquidMaxMassSpinner, c);
     c.gridx++;
-    smallLiquidMaxVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
+    smallLiquidMaxVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
     smallLiquidMaxVolumeSpinner = new JSpinner(smallLiquidMaxVolumeModel);
     smallLiquidMaxVolumeSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(smallLiquidMaxVolumeSpinner, c);
@@ -501,22 +522,26 @@ public class OptionsDialog extends JDialog {
     c.anchor = GridBagConstraints.CENTER;
     c.weightx = 1;
     c.gridx++;
-    largeLiquidMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getMassPrecision());
+    largeLiquidMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     largeLiquidMassSpinner = new JSpinner(largeLiquidMassModel);
     largeLiquidMassSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(largeLiquidMassSpinner, c);
     c.gridx++;
-    largeLiquidVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
+    largeLiquidVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
     largeLiquidVolumeSpinner = new JSpinner(largeLiquidVolumeModel);
     largeLiquidVolumeSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(largeLiquidVolumeSpinner, c);
     c.gridx++;
-    largeLiquidMaxMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getMassPrecision());
+    largeLiquidMaxMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     largeLiquidMaxMassSpinner = new JSpinner(largeLiquidMaxMassModel);
     largeLiquidMaxMassSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(largeLiquidMaxMassSpinner, c);
     c.gridx++;
-    largeLiquidMaxVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
+    largeLiquidMaxVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
     largeLiquidMaxVolumeSpinner = new JSpinner(largeLiquidMaxVolumeModel);
     largeLiquidMaxVolumeSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(largeLiquidMaxVolumeSpinner, c);
@@ -528,22 +553,26 @@ public class OptionsDialog extends JDialog {
     c.anchor = GridBagConstraints.CENTER;
     c.weightx = 1;
     c.gridx++;
-    cargoMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getMassPrecision());
+    cargoMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     cargoMassSpinner = new JSpinner(cargoMassModel);
     cargoMassSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(cargoMassSpinner, c);
     c.gridx++;
-    cargoVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
+    cargoVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
     cargoVolumeSpinner = new JSpinner(cargoVolumeModel);
     cargoVolumeSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(cargoVolumeSpinner, c);
     c.gridx++;
-    cargoMaxMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getMassPrecision());
+    cargoMaxMassModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getMassPrecision());
     cargoMaxMassSpinner = new JSpinner(cargoMaxMassModel);
     cargoMaxMassSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(cargoMaxMassSpinner, c);
     c.gridx++;
-    cargoMaxVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
+    cargoMaxVolumeModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE,
+        GlobalParameters.getSingleton().getVolumePrecision() * 1000000);
     cargoMaxVolumeSpinner = new JSpinner(cargoMaxVolumeModel);
     cargoMaxVolumeSpinner.setPreferredSize(new Dimension(75, 20));
     containersPanel.add(cargoMaxVolumeSpinner, c);
@@ -601,25 +630,42 @@ public class OptionsDialog extends JDialog {
     scenarioPanel.getScenario()
         .setGenericPackingFactorUnpressurized(unpressurizedModel.getNumber().doubleValue() / 100D);
     scenarioPanel.getScenario().setSmallGasTankMass(smallGasMassModel.getNumber().doubleValue());
-    scenarioPanel.getScenario().setSmallGasTankVolume(smallGasVolumeModel.getNumber().doubleValue() / 1000000D);
-    scenarioPanel.getScenario().setSmallGasTankMaxMass(smallGasMaxMassModel.getNumber().doubleValue());
-    scenarioPanel.getScenario().setSmallGasTankMaxVolume(smallGasMaxVolumeModel.getNumber().doubleValue() / 1000000D);
+    scenarioPanel.getScenario()
+        .setSmallGasTankVolume(smallGasVolumeModel.getNumber().doubleValue() / 1000000D);
+    scenarioPanel.getScenario()
+        .setSmallGasTankMaxMass(smallGasMaxMassModel.getNumber().doubleValue());
+    scenarioPanel.getScenario()
+        .setSmallGasTankMaxVolume(smallGasMaxVolumeModel.getNumber().doubleValue() / 1000000D);
     scenarioPanel.getScenario().setLargeGasTankMass(largeGasMassModel.getNumber().doubleValue());
-    scenarioPanel.getScenario().setLargeGasTankVolume(largeGasVolumeModel.getNumber().doubleValue() / 1000000D);
-    scenarioPanel.getScenario().setLargeGasTankMaxMass(largeGasMaxMassModel.getNumber().doubleValue());
-    scenarioPanel.getScenario().setLargeGasTankMaxVolume(largeGasMaxVolumeModel.getNumber().doubleValue() / 1000000D);
-    scenarioPanel.getScenario().setSmallLiquidTankMass(smallLiquidMassModel.getNumber().doubleValue());
-    scenarioPanel.getScenario().setSmallLiquidTankVolume(smallLiquidVolumeModel.getNumber().doubleValue() / 1000000D);
-    scenarioPanel.getScenario().setSmallLiquidTankMaxMass(smallLiquidMaxMassModel.getNumber().doubleValue());
-    scenarioPanel.getScenario().setSmallLiquidTankMaxVolume(smallLiquidMaxVolumeModel.getNumber().doubleValue() / 1000000D);
-    scenarioPanel.getScenario().setLargeLiquidTankMass(largeLiquidMassModel.getNumber().doubleValue());
-    scenarioPanel.getScenario().setLargeLiquidTankVolume(largeLiquidVolumeModel.getNumber().doubleValue() / 1000000D);
-    scenarioPanel.getScenario().setLargeLiquidTankMaxMass(largeLiquidMaxMassModel.getNumber().doubleValue());
-    scenarioPanel.getScenario().setLargeLiquidTankMaxVolume(largeLiquidMaxVolumeModel.getNumber().doubleValue() / 1000000D);
+    scenarioPanel.getScenario()
+        .setLargeGasTankVolume(largeGasVolumeModel.getNumber().doubleValue() / 1000000D);
+    scenarioPanel.getScenario()
+        .setLargeGasTankMaxMass(largeGasMaxMassModel.getNumber().doubleValue());
+    scenarioPanel.getScenario()
+        .setLargeGasTankMaxVolume(largeGasMaxVolumeModel.getNumber().doubleValue() / 1000000D);
+    scenarioPanel.getScenario()
+        .setSmallLiquidTankMass(smallLiquidMassModel.getNumber().doubleValue());
+    scenarioPanel.getScenario()
+        .setSmallLiquidTankVolume(smallLiquidVolumeModel.getNumber().doubleValue() / 1000000D);
+    scenarioPanel.getScenario()
+        .setSmallLiquidTankMaxMass(smallLiquidMaxMassModel.getNumber().doubleValue());
+    scenarioPanel.getScenario().setSmallLiquidTankMaxVolume(
+        smallLiquidMaxVolumeModel.getNumber().doubleValue() / 1000000D);
+    scenarioPanel.getScenario()
+        .setLargeLiquidTankMass(largeLiquidMassModel.getNumber().doubleValue());
+    scenarioPanel.getScenario()
+        .setLargeLiquidTankVolume(largeLiquidVolumeModel.getNumber().doubleValue() / 1000000D);
+    scenarioPanel.getScenario()
+        .setLargeLiquidTankMaxMass(largeLiquidMaxMassModel.getNumber().doubleValue());
+    scenarioPanel.getScenario().setLargeLiquidTankMaxVolume(
+        largeLiquidMaxVolumeModel.getNumber().doubleValue() / 1000000D);
     scenarioPanel.getScenario().setCargoTransferBagMass(cargoMassModel.getNumber().doubleValue());
-    scenarioPanel.getScenario().setCargoTransferBagVolume(cargoVolumeModel.getNumber().doubleValue() / 1000000D);
-    scenarioPanel.getScenario().setCargoTransferBagMaxMass(cargoMaxMassModel.getNumber().doubleValue());
-    scenarioPanel.getScenario().setCargoTransferBagMaxVolume(cargoMaxVolumeModel.getNumber().doubleValue() / 1000000D);
+    scenarioPanel.getScenario()
+        .setCargoTransferBagVolume(cargoVolumeModel.getNumber().doubleValue() / 1000000D);
+    scenarioPanel.getScenario()
+        .setCargoTransferBagMaxMass(cargoMaxMassModel.getNumber().doubleValue());
+    scenarioPanel.getScenario()
+        .setCargoTransferBagMaxVolume(cargoMaxVolumeModel.getNumber().doubleValue() / 1000000D);
   }
 
   /**
@@ -648,27 +694,34 @@ public class OptionsDialog extends JDialog {
         .setValue(scenarioPanel.getScenario().getGenericPackingFactorPressurized() * 100);
     unpressurizedModel
         .setValue(scenarioPanel.getScenario().getGenericPackingFactorUnpressurized() * 100);
-    
+
     smallGasMassModel.setValue(scenarioPanel.getScenario().getSmallGasTankMass());
     smallGasVolumeModel.setValue(scenarioPanel.getScenario().getSmallGasTankVolume() * 1000000);
     smallGasMaxMassModel.setValue(scenarioPanel.getScenario().getSmallGasTankMaxMass());
-    smallGasMaxVolumeModel.setValue(scenarioPanel.getScenario().getSmallGasTankMaxVolume() * 1000000);
+    smallGasMaxVolumeModel
+        .setValue(scenarioPanel.getScenario().getSmallGasTankMaxVolume() * 1000000);
     largeGasMassModel.setValue(scenarioPanel.getScenario().getLargeGasTankMass());
     largeGasVolumeModel.setValue(scenarioPanel.getScenario().getLargeGasTankVolume() * 1000000);
     largeGasMaxMassModel.setValue(scenarioPanel.getScenario().getLargeGasTankMaxMass());
-    largeGasMaxVolumeModel.setValue(scenarioPanel.getScenario().getLargeGasTankMaxVolume() * 1000000);
+    largeGasMaxVolumeModel
+        .setValue(scenarioPanel.getScenario().getLargeGasTankMaxVolume() * 1000000);
     smallLiquidMassModel.setValue(scenarioPanel.getScenario().getSmallLiquidTankMass());
-    smallLiquidVolumeModel.setValue(scenarioPanel.getScenario().getSmallLiquidTankVolume() * 1000000);
+    smallLiquidVolumeModel
+        .setValue(scenarioPanel.getScenario().getSmallLiquidTankVolume() * 1000000);
     smallLiquidMaxMassModel.setValue(scenarioPanel.getScenario().getSmallLiquidTankMaxMass());
-    smallLiquidMaxVolumeModel.setValue(scenarioPanel.getScenario().getSmallLiquidTankMaxVolume() * 1000000);
+    smallLiquidMaxVolumeModel
+        .setValue(scenarioPanel.getScenario().getSmallLiquidTankMaxVolume() * 1000000);
     largeLiquidMassModel.setValue(scenarioPanel.getScenario().getLargeLiquidTankMass());
-    largeLiquidVolumeModel.setValue(scenarioPanel.getScenario().getLargeLiquidTankVolume() * 1000000);
+    largeLiquidVolumeModel
+        .setValue(scenarioPanel.getScenario().getLargeLiquidTankVolume() * 1000000);
     largeLiquidMaxMassModel.setValue(scenarioPanel.getScenario().getLargeLiquidTankMaxMass());
-    largeLiquidMaxVolumeModel.setValue(scenarioPanel.getScenario().getLargeLiquidTankMaxVolume() * 1000000);
+    largeLiquidMaxVolumeModel
+        .setValue(scenarioPanel.getScenario().getLargeLiquidTankMaxVolume() * 1000000);
     cargoMassModel.setValue(scenarioPanel.getScenario().getCargoTransferBagMass());
     cargoVolumeModel.setValue(scenarioPanel.getScenario().getCargoTransferBagVolume() * 1000000);
     cargoMaxMassModel.setValue(scenarioPanel.getScenario().getCargoTransferBagMaxMass());
-    cargoMaxVolumeModel.setValue(scenarioPanel.getScenario().getCargoTransferBagMaxVolume() * 1000000);
+    cargoMaxVolumeModel
+        .setValue(scenarioPanel.getScenario().getCargoTransferBagMaxVolume() * 1000000);
   }
 
   /**

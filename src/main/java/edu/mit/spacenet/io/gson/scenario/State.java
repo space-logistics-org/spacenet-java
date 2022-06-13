@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.UUID;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
@@ -65,6 +66,27 @@ public class State implements Cloneable {
       }
     }
     return ss;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof State)) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    final State other = (State) obj;
+    // nb: omit id to allow for instances to match with template
+    return new EqualsBuilder().append(name, other.name).append(description, other.description)
+        .append(type, other.type).append(demandModels, other.demandModels).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    // nb: omit id to allow for instances to match with template
+    return new HashCodeBuilder(17, 31).append(name).append(description).append(type)
+        .append(demandModels).toHashCode();
   }
 
   @Override

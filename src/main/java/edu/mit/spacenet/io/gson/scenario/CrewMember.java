@@ -3,7 +3,8 @@ package edu.mit.spacenet.io.gson.scenario;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import edu.mit.spacenet.data.ElementPreview;
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
@@ -66,14 +67,20 @@ public class CrewMember extends Element {
           || (template.icon != null && !template.icon.equals(element.getIconType().getName()))) {
         e.icon = element.getIconType().getName();
       }
-      // TODO cannot override template states; fails silently
-      if (element.getCurrentState() != null) {
-        List<I_State> states = new ArrayList<I_State>(element.getStates());
-        if (!template.currentStateIndex.equals(states.indexOf(element.getCurrentState()))) {
-          e.currentStateIndex = states.indexOf(element.getCurrentState());
+      List<State> states = State.createFrom(element.getStates(), context);
+      if (!template.states.equals(states)) {
+        e.states = states;
+      }
+      if (e.states != null || element.getCurrentState() != null) {
+        List<I_State> eStates = new ArrayList<I_State>(element.getStates());
+        if (!template.currentStateIndex.equals(eStates.indexOf(element.getCurrentState()))) {
+          e.currentStateIndex = eStates.indexOf(element.getCurrentState());
         }
       }
-      // TODO cannot override template parts; fails silently
+      List<Part> parts = Part.createFrom(element.getParts(), context);
+      if (!template.parts.equals(parts)) {
+        e.parts = parts;
+      }
       if (!template.availableTimeFraction.equals(element.getAvailableTimeFraction())) {
         e.availableTimeFraction = element.getAvailableTimeFraction();
       }
@@ -124,6 +131,25 @@ public class CrewMember extends Element {
   public ElementPreview getPreview(Context context) {
     return new ElementPreview(context.getJavaId(id), name, ElementType.CREW_MEMBER,
         ElementIcon.getInstance(icon));
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof CrewMember)) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    final CrewMember other = (CrewMember) obj;
+    return new EqualsBuilder().appendSuper(super.equals(obj))
+        .append(availableTimeFraction, other.availableTimeFraction).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(availableTimeFraction)
+        .toHashCode();
   }
 
   @Override

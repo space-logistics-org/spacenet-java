@@ -9,7 +9,8 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.UUID;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
 import edu.mit.spacenet.domain.resource.I_Resource;
@@ -108,6 +109,26 @@ public class Resource implements Cloneable {
       }
     }
     return rs;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Resource)) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    final Resource other = (Resource) obj;
+    return new EqualsBuilder().append(resource, other.resource)
+        .append(classOfSupply, other.classOfSupply).append(environment, other.environment)
+        .append(amount, other.amount).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).append(resource).append(classOfSupply).append(environment)
+        .append(amount).toHashCode();
   }
 
   @Override

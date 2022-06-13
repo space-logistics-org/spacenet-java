@@ -1,7 +1,8 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.UUID;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import edu.mit.spacenet.domain.element.I_Element;
 
 public class SparingByMassDemandModel extends DemandModel {
@@ -60,6 +61,27 @@ public class SparingByMassDemandModel extends DemandModel {
         pressurizedSparesRate == null ? template.pressurizedSparesRate : pressurizedSparesRate);
     m.setPartsListEnabled(partsListEnabled == null ? template.partsListEnabled : partsListEnabled);
     return m;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof SparingByMassDemandModel)) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    final SparingByMassDemandModel other = (SparingByMassDemandModel) obj;
+    return new EqualsBuilder().appendSuper(super.equals(other))
+        .append(unpressurizedSparesRate, other.unpressurizedSparesRate)
+        .append(pressurizedSparesRate, other.pressurizedSparesRate)
+        .append(partsListEnabled, other.partsListEnabled).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(unpressurizedSparesRate)
+        .append(pressurizedSparesRate).append(partsListEnabled).toHashCode();
   }
 
   @Override

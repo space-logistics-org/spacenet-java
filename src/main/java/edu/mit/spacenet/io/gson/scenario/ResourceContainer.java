@@ -3,7 +3,8 @@ package edu.mit.spacenet.io.gson.scenario;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import edu.mit.spacenet.data.ElementPreview;
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
@@ -72,14 +73,20 @@ public class ResourceContainer extends Element {
           || (template.icon != null && !template.icon.equals(element.getIconType().getName()))) {
         e.icon = element.getIconType().getName();
       }
-      // TODO cannot override template states; fails silently
-      if (element.getCurrentState() != null) {
-        List<I_State> states = new ArrayList<I_State>(element.getStates());
-        if (!template.currentStateIndex.equals(states.indexOf(element.getCurrentState()))) {
-          e.currentStateIndex = states.indexOf(element.getCurrentState());
+      List<State> states = State.createFrom(element.getStates(), context);
+      if (!template.states.equals(states)) {
+        e.states = states;
+      }
+      if (e.states != null || element.getCurrentState() != null) {
+        List<I_State> eStates = new ArrayList<I_State>(element.getStates());
+        if (!template.currentStateIndex.equals(eStates.indexOf(element.getCurrentState()))) {
+          e.currentStateIndex = eStates.indexOf(element.getCurrentState());
         }
       }
-      // TODO cannot override template parts; fails silently
+      List<Part> parts = Part.createFrom(element.getParts(), context);
+      if (!template.parts.equals(parts)) {
+        e.parts = parts;
+      }
       if (!template.maxCargoMass.equals(element.getMaxCargoMass())) {
         e.maxCargoMass = element.getMaxCargoMass();
       }
@@ -89,7 +96,10 @@ public class ResourceContainer extends Element {
       if (!template.cargoEnvironment.equals(element.getCargoEnvironment().getName())) {
         e.cargoEnvironment = element.getCargoEnvironment().getName();
       }
-      // TODO cannot override template contents; fails silently
+      List<Resource> contents = Resource.createFrom(element.getContents(), context);
+      if (!template.contents.equals(contents)) {
+        e.contents = contents;
+      }
     }
     return e;
   }
@@ -142,6 +152,27 @@ public class ResourceContainer extends Element {
   public ElementPreview getPreview(Context context) {
     return new ElementPreview(context.getJavaId(id), name, ElementType.RESOURCE_CONTAINER,
         ElementIcon.getInstance(icon));
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof ResourceContainer)) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    final ResourceContainer other = (ResourceContainer) obj;
+    return new EqualsBuilder().appendSuper(super.equals(obj))
+        .append(maxCargoMass, other.maxCargoMass).append(maxCargoVolume, other.maxCargoVolume)
+        .append(cargoEnvironment, other.cargoEnvironment).append(contents, other.contents)
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(maxCargoMass)
+        .append(maxCargoVolume).append(cargoEnvironment).append(contents).toHashCode();
   }
 
   @Override

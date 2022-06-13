@@ -1,6 +1,8 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.UUID;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class ConsumablesDemandModel extends DemandModel {
   protected Double reservesDuration;
@@ -199,6 +201,48 @@ public class ConsumablesDemandModel extends DemandModel {
     m.setWasteContainmentRate(
         wasteContainmentRate == null ? template.wasteContainmentRate : wasteContainmentRate);
     return m;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof ConsumablesDemandModel)) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    final ConsumablesDemandModel other = (ConsumablesDemandModel) obj;
+    return new EqualsBuilder().appendSuper(super.equals(other))
+        .append(reservesDuration, other.reservesDuration)
+        .append(waterRecoveryRate, other.waterRecoveryRate)
+        .append(clothingLifetime, other.clothingLifetime)
+        .append(transitDemandsOmitted, other.transitDemandsOmitted)
+        .append(waterRate, other.waterRate).append(evaWaterRate, other.evaWaterRate)
+        .append(foodSupportRate, other.foodSupportRate)
+        .append(ambientFoodRate, other.ambientFoodRate).append(rfFoodRate, other.rfFoodRate)
+        .append(oxygenRate, other.oxygenRate).append(evaOxygenRate, other.evaOxygenRate)
+        .append(nitrogenRate, other.nitrogenRate).append(hygieneRate, other.hygieneRate)
+        .append(hygieneKit, other.hygieneKit).append(clothingRate, other.clothingRate)
+        .append(personalItems, other.personalItems).append(officeEquipment, other.officeEquipment)
+        .append(evaSuit, other.evaSuit).append(evaLithiumHydroxide, other.evaLithiumHydroxide)
+        .append(healthEquipment, other.healthEquipment)
+        .append(healthConsumables, other.healthConsumables)
+        .append(safetyEquipment, other.safetyEquipment).append(commEquipment, other.commEquipment)
+        .append(computerEquipment, other.computerEquipment).append(trashBagRate, other.trashBagRate)
+        .append(wasteContainmentRate, other.wasteContainmentRate).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).append(id).append(templateId).append(name)
+        .append(description).append(reservesDuration).append(waterRecoveryRate)
+        .append(clothingLifetime).append(transitDemandsOmitted).append(waterRate)
+        .append(evaWaterRate).append(foodSupportRate).append(ambientFoodRate).append(rfFoodRate)
+        .append(oxygenRate).append(evaOxygenRate).append(nitrogenRate).append(hygieneRate)
+        .append(hygieneKit).append(clothingRate).append(personalItems).append(officeEquipment)
+        .append(evaSuit).append(evaLithiumHydroxide).append(healthEquipment)
+        .append(healthConsumables).append(safetyEquipment).append(commEquipment)
+        .append(computerEquipment).append(trashBagRate).append(wasteContainmentRate).toHashCode();
   }
 
   @Override

@@ -15,7 +15,7 @@ public class ResourceContainer extends Element {
   protected Double maxCargoMass;
   protected Double maxCargoVolume;
   protected String cargoEnvironment;
-  protected List<Resource> contents = new ArrayList<Resource>();
+  protected List<Resource> contents;
 
   public static ResourceContainer createFrom(
       edu.mit.spacenet.domain.element.ResourceContainer element, Context context) {

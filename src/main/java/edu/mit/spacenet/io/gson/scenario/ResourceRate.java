@@ -9,7 +9,8 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.UUID;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
 import edu.mit.spacenet.domain.resource.I_Resource;
@@ -55,8 +56,8 @@ public class ResourceRate implements Cloneable {
   public static List<ResourceRate> createFrom(Map<I_Resource, Double> resources, Context context) {
     List<ResourceRate> rs = new ArrayList<ResourceRate>();
     for (edu.mit.spacenet.domain.resource.I_Resource r : resources.keySet()) {
-      rs.add(ResourceRate.createFrom(new edu.mit.spacenet.domain.resource.Demand(r, resources.get(r)),
-          context));
+      rs.add(ResourceRate
+          .createFrom(new edu.mit.spacenet.domain.resource.Demand(r, resources.get(r)), context));
     }
     return rs;
   }
@@ -108,6 +109,26 @@ public class ResourceRate implements Cloneable {
       }
     }
     return rs;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof ResourceRate)) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    final ResourceRate other = (ResourceRate) obj;
+    return new EqualsBuilder().append(resource, other.resource)
+        .append(classOfSupply, other.classOfSupply).append(environment, other.environment)
+        .append(rate, other.rate).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).append(resource).append(classOfSupply).append(environment)
+        .append(rate).toHashCode();
   }
 
   @Override

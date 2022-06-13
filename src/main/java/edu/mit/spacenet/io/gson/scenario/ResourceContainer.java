@@ -89,7 +89,10 @@ public class ResourceContainer extends Element {
       if (!template.cargoEnvironment.equals(element.getCargoEnvironment().getName())) {
         e.cargoEnvironment = element.getCargoEnvironment().getName();
       }
-      // TODO cannot override template contents; fails silently
+      List<Resource> contents = Resource.createFrom(element.getContents(), context);
+      if (!template.contents.equals(contents)) {
+        e.contents = contents;
+      }
     }
     return e;
   }

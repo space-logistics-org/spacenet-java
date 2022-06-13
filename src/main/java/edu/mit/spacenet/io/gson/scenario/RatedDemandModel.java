@@ -22,7 +22,10 @@ public class RatedDemandModel extends DemandModel {
       if (!template.description.equals(model.getDescription())) {
         m.description = model.getDescription();
       }
-      // TODO cannot override template demands; fails silently
+      List<ResourceRate> demands = ResourceRate.createFrom(model.getDemandRates(), context);
+      if (!template.demands.equals(demands)) {
+        m.demands = demands;
+      }
     }
     return m;
   }

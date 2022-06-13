@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class RatedDemandModel extends DemandModel {
-  protected List<Resource> demandRates;
+  protected List<ResourceRate> demands;
 
   public static RatedDemandModel createFrom(edu.mit.spacenet.domain.model.RatedDemandModel model,
       Context context) {
@@ -14,7 +14,7 @@ public class RatedDemandModel extends DemandModel {
     if (template == null) {
       m.name = model.getName();
       m.description = model.getDescription();
-      m.demandRates = Resource.createFrom(model.getDemandRates(), context);
+      m.demands = ResourceRate.createFrom(model.getDemandRates(), context);
     } else {
       if (!template.name.equals(model.getName())) {
         m.name = model.getName();
@@ -22,7 +22,7 @@ public class RatedDemandModel extends DemandModel {
       if (!template.description.equals(model.getDescription())) {
         m.description = model.getDescription();
       }
-      // TODO cannot override template demand rates; fails silently
+      // TODO cannot override template demands; fails silently
     }
     return m;
   }
@@ -39,7 +39,7 @@ public class RatedDemandModel extends DemandModel {
     m.setName(name == null ? template.name : name);
     m.setDescription(description == null ? template.description : description);
     m.setDemandRates(
-        Resource.toSpaceNetSet(demandRates == null ? template.demandRates : demandRates, context));
+        ResourceRate.toSpaceNetSet(demands == null ? template.demands : demands, context));
     return m;
   }
 
@@ -52,7 +52,7 @@ public class RatedDemandModel extends DemandModel {
     m.templateId = templateId;
     m.name = name;
     m.description = description;
-    m.demandRates = Resource.clone(demandRates);
+    m.demands = ResourceRate.clone(demands);
     return m;
   }
 }

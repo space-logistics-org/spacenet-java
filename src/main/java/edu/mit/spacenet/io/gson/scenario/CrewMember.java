@@ -73,7 +73,10 @@ public class CrewMember extends Element {
           e.currentStateIndex = states.indexOf(element.getCurrentState());
         }
       }
-      // TODO cannot override template parts; fails silently
+      List<Part> parts = Part.createFrom(element.getParts(), context);
+      if (!template.parts.equals(parts)) {
+        e.parts = parts;
+      }
       if (!template.availableTimeFraction.equals(element.getAvailableTimeFraction())) {
         e.availableTimeFraction = element.getAvailableTimeFraction();
       }

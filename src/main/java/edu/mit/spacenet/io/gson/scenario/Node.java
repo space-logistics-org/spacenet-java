@@ -11,8 +11,8 @@ import edu.mit.spacenet.domain.network.node.NodeType;
 
 public abstract class Node extends Location {
   public static final BiMap<String, NodeType> TYPE_MAP =
-      new ImmutableBiMap.Builder<String, NodeType>().put("SurfaceNode", NodeType.SURFACE)
-          .put("OrbitalNode", NodeType.ORBITAL).put("LagrangeNode", NodeType.LAGRANGE).build();
+      new ImmutableBiMap.Builder<String, NodeType>().put("Surface Node", NodeType.SURFACE)
+          .put("Orbital Node", NodeType.ORBITAL).put("Lagrange Node", NodeType.LAGRANGE).build();
 
   protected String body_1;
 

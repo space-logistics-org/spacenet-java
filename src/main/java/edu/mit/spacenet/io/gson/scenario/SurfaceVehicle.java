@@ -3,7 +3,8 @@ package edu.mit.spacenet.io.gson.scenario;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import edu.mit.spacenet.data.ElementPreview;
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
@@ -181,6 +182,26 @@ public class SurfaceVehicle extends Carrier {
   public ElementPreview getPreview(Context context) {
     return new ElementPreview(context.getJavaId(id), name, ElementType.SURFACE_VEHICLE,
         ElementIcon.getInstance(icon));
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof SurfaceVehicle)) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    final SurfaceVehicle other = (SurfaceVehicle) obj;
+    return new EqualsBuilder().appendSuper(super.equals(obj)).append(maxSpeed, other.maxSpeed)
+        .append(fuelType, other.fuelType).append(fuelMaxAmount, other.fuelMaxAmount)
+        .append(fuelAmount, other.fuelAmount).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(maxSpeed)
+        .append(fuelType).append(fuelMaxAmount).append(fuelAmount).toHashCode();
   }
 
   @Override

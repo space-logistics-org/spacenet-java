@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.UUID;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
@@ -23,7 +24,8 @@ public class Element implements Cloneable {
       new ImmutableBiMap.Builder<String, ElementType>().put("Element", ElementType.ELEMENT)
           .put("Crew Member", ElementType.CREW_MEMBER)
           .put("Resource Container", ElementType.RESOURCE_CONTAINER)
-          .put("Resource Tank", ElementType.RESOURCE_TANK).put("Element Carrier", ElementType.CARRIER)
+          .put("Resource Tank", ElementType.RESOURCE_TANK)
+          .put("Element Carrier", ElementType.CARRIER)
           .put("Propulsive Vehicle", ElementType.PROPULSIVE_VEHICLE)
           .put("Surface Vehicle", ElementType.SURFACE_VEHICLE).build();
 
@@ -196,6 +198,32 @@ public class Element implements Cloneable {
       }
     }
     return es;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Element)) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    final Element other = (Element) obj;
+    // nb: omit id and templateId to allow for instances to match with template
+    return new EqualsBuilder().append(name, other.name).append(description, other.description)
+        .append(accommodatationMass, other.accommodatationMass).append(mass, other.mass)
+        .append(volume, other.volume).append(classOfSupply, other.classOfSupply)
+        .append(environment, other.environment).append(states, other.states)
+        .append(currentStateIndex, other.currentStateIndex).append(parts, other.parts)
+        .append(icon, other.icon).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    // nb: omit id and templateId to allow for instances to match with template
+    return new HashCodeBuilder(17, 31).append(name).append(description).append(accommodatationMass)
+        .append(mass).append(volume).append(classOfSupply).append(environment).append(states)
+        .append(currentStateIndex).append(parts).append(icon).toHashCode();
   }
 
   @Override

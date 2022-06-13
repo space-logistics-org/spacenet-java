@@ -3,7 +3,8 @@ package edu.mit.spacenet.io.gson.scenario;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import edu.mit.spacenet.data.ElementPreview;
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
@@ -153,6 +154,28 @@ public class Carrier extends Element {
   public ElementPreview getPreview(Context context) {
     return new ElementPreview(context.getJavaId(id), name, ElementType.CARRIER,
         ElementIcon.getInstance(icon));
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Carrier)) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    final Carrier other = (Carrier) obj;
+    return new EqualsBuilder().appendSuper(super.equals(obj))
+        .append(maxCargoMass, other.maxCargoMass).append(maxCargoVolume, other.maxCargoVolume)
+        .append(cargoEnvironment, other.cargoEnvironment).append(maxCrewSize, other.maxCrewSize)
+        .append(contents, other.contents).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(maxCargoMass)
+        .append(maxCargoVolume).append(cargoEnvironment).append(maxCrewSize).append(contents)
+        .toHashCode();
   }
 
   @Override

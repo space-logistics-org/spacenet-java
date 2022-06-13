@@ -113,7 +113,10 @@ public class PropulsiveVehicle extends Carrier {
       if (!template.maxCrewSize.equals(element.getMaxCrewSize())) {
         e.maxCrewSize = element.getMaxCrewSize();
       }
-      // TODO cannot override template contents; fails silently
+      List<Element> contents = Element.createFrom(element.getContents(), context);
+      if (!template.contents.equals(contents)) {
+        e.contents = contents;
+      }
       if (!template.isp
           .equals(element.getOmsFuelTank() != null ? element.getOmsIsp() : element.getRcsIsp())) {
         e.isp = element.getOmsFuelTank() != null ? element.getOmsIsp() : element.getRcsIsp();

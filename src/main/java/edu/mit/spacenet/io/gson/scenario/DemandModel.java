@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.UUID;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
-
 import edu.mit.spacenet.domain.model.DemandModelType;
 import edu.mit.spacenet.domain.model.I_DemandModel;
 
@@ -17,12 +17,11 @@ public abstract class DemandModel implements Cloneable {
   public static final BiMap<String, DemandModelType> TYPE_MAP =
       new ImmutableBiMap.Builder<String, DemandModelType>()
           .put("CrewConsumables", DemandModelType.CREW_CONSUMABLES)
-          .put("TimedImpulse", DemandModelType.TIMED_IMPULSE)
-          .put("Rated", DemandModelType.RATED)
+          .put("TimedImpulse", DemandModelType.TIMED_IMPULSE).put("Rated", DemandModelType.RATED)
           .put("SparingByMass", DemandModelType.SPARING_BY_MASS).build();
 
-  protected UUID id;
-  protected UUID templateId;
+  protected UUID id; // used only for templates
+  protected UUID templateId; // used only for instances
   protected String name;
   protected String description;
 
@@ -62,6 +61,25 @@ public abstract class DemandModel implements Cloneable {
       ds.add(d.toSpaceNet(source, context));
     }
     return ds;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof DemandModel)) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    final DemandModel other = (DemandModel) obj;
+    return new EqualsBuilder().append(id, other.id).append(templateId, other.templateId)
+        .append(name, other.name).append(description, other.description).isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).append(id).append(templateId).append(name)
+        .append(description).toHashCode();
   }
 
   @Override

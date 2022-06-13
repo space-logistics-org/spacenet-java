@@ -92,11 +92,14 @@ public class Element implements Cloneable {
             || (template.icon != null && !template.icon.equals(element.getIconType().getName()))) {
           e.icon = element.getIconType().getName();
         }
-        // TODO cannot override template states; fails silently
-        if (element.getCurrentState() != null) {
-          List<I_State> states = new ArrayList<I_State>(element.getStates());
-          if (!template.currentStateIndex.equals(states.indexOf(element.getCurrentState()))) {
-            e.currentStateIndex = states.indexOf(element.getCurrentState());
+        List<State> states = State.createFrom(element.getStates(), context);
+        if (!template.states.equals(states)) {
+          e.states = states;
+        }
+        if (e.states != null || element.getCurrentState() != null) {
+          List<I_State> eStates = new ArrayList<I_State>(element.getStates());
+          if (!template.currentStateIndex.equals(eStates.indexOf(element.getCurrentState()))) {
+            e.currentStateIndex = eStates.indexOf(element.getCurrentState());
           }
         }
         List<Part> parts = Part.createFrom(element.getParts(), context);

@@ -2,6 +2,8 @@ package edu.mit.spacenet.io.gson.scenario;
 
 import java.util.List;
 import java.util.UUID;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class RatedDemandModel extends DemandModel {
   protected List<ResourceRate> demands;
@@ -44,6 +46,24 @@ public class RatedDemandModel extends DemandModel {
     m.setDemandRates(
         ResourceRate.toSpaceNetSet(demands == null ? template.demands : demands, context));
     return m;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof RatedDemandModel)) {
+      return false;
+    }
+    if (obj == this) {
+      return true;
+    }
+    final RatedDemandModel other = (RatedDemandModel) obj;
+    return new EqualsBuilder().appendSuper(super.equals(other)).append(demands, other.demands)
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(demands).toHashCode();
   }
 
   @Override

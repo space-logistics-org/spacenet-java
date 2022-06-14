@@ -77,15 +77,14 @@ public class State implements Cloneable {
       return true;
     }
     final State other = (State) obj;
-    // nb: omit id to allow for instances to match with template
-    return new EqualsBuilder().append(name, other.name).append(description, other.description)
-        .append(type, other.type).append(demandModels, other.demandModels).isEquals();
+    return new EqualsBuilder().append(id, other.id).append(name, other.name)
+        .append(description, other.description).append(type, other.type)
+        .append(demandModels, other.demandModels).isEquals();
   }
 
   @Override
   public int hashCode() {
-    // nb: omit id to allow for instances to match with template
-    return new HashCodeBuilder(17, 31).append(name).append(description).append(type)
+    return new HashCodeBuilder(17, 31).append(id).append(name).append(description).append(type)
         .append(demandModels).toHashCode();
   }
 

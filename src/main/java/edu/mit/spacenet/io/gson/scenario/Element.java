@@ -209,8 +209,8 @@ public class Element implements Cloneable {
       return true;
     }
     final Element other = (Element) obj;
-    // nb: omit id and templateId to allow for instances to match with template
-    return new EqualsBuilder().append(name, other.name).append(description, other.description)
+    return new EqualsBuilder().append(id, other.id).append(templateId, other.templateId)
+        .append(name, other.name).append(description, other.description)
         .append(accommodatationMass, other.accommodatationMass).append(mass, other.mass)
         .append(volume, other.volume).append(classOfSupply, other.classOfSupply)
         .append(environment, other.environment).append(states, other.states)
@@ -220,10 +220,10 @@ public class Element implements Cloneable {
 
   @Override
   public int hashCode() {
-    // nb: omit id and templateId to allow for instances to match with template
-    return new HashCodeBuilder(17, 31).append(name).append(description).append(accommodatationMass)
-        .append(mass).append(volume).append(classOfSupply).append(environment).append(states)
-        .append(currentStateIndex).append(parts).append(icon).toHashCode();
+    return new HashCodeBuilder(17, 31).append(id).append(templateId).append(name)
+        .append(description).append(accommodatationMass).append(mass).append(volume)
+        .append(classOfSupply).append(environment).append(states).append(currentStateIndex)
+        .append(parts).append(icon).toHashCode();
   }
 
   @Override

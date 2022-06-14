@@ -1,0 +1,5 @@
+fastapi
+fastapi-camelcase
+python-multipart
+python-dotenv
+aiofiles

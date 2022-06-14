@@ -19,7 +19,7 @@ public class TransferResources extends Event {
       Context context) {
     TransferResources e = new TransferResources();
     e.name = event.getName();
-    e.mission_time = PeriodDuration.of(Period.ofDays((int) event.getTime()),
+    e.missionTime = PeriodDuration.of(Period.ofDays((int) event.getTime()),
         Duration.ofSeconds((long) ((event.getTime() - (int) event.getTime()) * 24 * 60 * 60)));
     e.priority = event.getPriority();
     e.location = context.getJsonIdFromJavaObject(event.getLocation());
@@ -34,8 +34,8 @@ public class TransferResources extends Event {
     edu.mit.spacenet.simulator.event.TransferEvent e =
         new edu.mit.spacenet.simulator.event.TransferEvent();
     e.setName(name);
-    e.setTime(mission_time.getPeriod().getDays()
-        + mission_time.getDuration().getSeconds() / (24 * 60 * 60d));
+    e.setTime(missionTime.getPeriod().getDays()
+        + missionTime.getDuration().getSeconds() / (24 * 60 * 60d));
     e.setPriority(priority);
     e.setLocation(
         (edu.mit.spacenet.domain.network.Location) context.getJavaObjectFromJsonId(location));

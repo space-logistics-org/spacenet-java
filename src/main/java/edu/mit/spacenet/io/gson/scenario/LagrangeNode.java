@@ -5,8 +5,8 @@ import java.util.UUID;
 import edu.mit.spacenet.domain.network.node.Body;
 
 public class LagrangeNode extends Node {
-  protected String body_2;
-  protected Integer lp_number;
+  protected String body2;
+  protected Integer lpNumber;
 
   public static LagrangeNode createFrom(edu.mit.spacenet.domain.network.node.LagrangeNode node,
       Context context) {
@@ -15,9 +15,9 @@ public class LagrangeNode extends Node {
     context.put(node, n.id, n);
     n.name = node.getName();
     n.description = node.getDescription();
-    n.body_1 = node.getBody().getName();
-    n.body_2 = node.getMinorBody().getName();
-    n.lp_number = node.getNumber();
+    n.body1 = node.getBody().getName();
+    n.body2 = node.getMinorBody().getName();
+    n.lpNumber = node.getNumber();
     n.contents = context.getJsonIdsFromJavaObjects(node.getContents());
     return n;
   }
@@ -29,9 +29,9 @@ public class LagrangeNode extends Node {
     n.setTid(context.getJavaId(id));
     n.setName(name);
     n.setDescription(description);
-    n.setBody(Body.getInstance(body_1));
-    n.setMinorBody(Body.getInstance(body_2));
-    n.setNumber(lp_number);
+    n.setBody(Body.getInstance(body1));
+    n.setMinorBody(Body.getInstance(body2));
+    n.setNumber(lpNumber);
     n.getContents().addAll(Element.toSpaceNetViaId(contents, context));
     return n;
   }

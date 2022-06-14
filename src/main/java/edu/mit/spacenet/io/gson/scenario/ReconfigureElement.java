@@ -19,7 +19,7 @@ public class ReconfigureElement extends Event {
       edu.mit.spacenet.simulator.event.ReconfigureEvent event, Context context) {
     ReconfigureElement e = new ReconfigureElement();
     e.name = event.getName();
-    e.mission_time = PeriodDuration.of(Period.ofDays((int) event.getTime()),
+    e.missionTime = PeriodDuration.of(Period.ofDays((int) event.getTime()),
         Duration.ofSeconds((long) ((event.getTime() - (int) event.getTime()) * 24 * 60 * 60)));
     e.priority = event.getPriority();
     e.location = context.getJsonIdFromJavaObject(event.getLocation());
@@ -33,8 +33,8 @@ public class ReconfigureElement extends Event {
     edu.mit.spacenet.simulator.event.ReconfigureEvent e =
         new edu.mit.spacenet.simulator.event.ReconfigureEvent();
     e.setName(name);
-    e.setTime(mission_time.getPeriod().getDays()
-        + mission_time.getDuration().getSeconds() / (24 * 60 * 60d));
+    e.setTime(missionTime.getPeriod().getDays()
+        + missionTime.getDuration().getSeconds() / (24 * 60 * 60d));
     e.setPriority(priority);
     e.setLocation(
         (edu.mit.spacenet.domain.network.Location) context.getJavaObjectFromJsonId(location));

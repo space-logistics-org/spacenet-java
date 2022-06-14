@@ -16,8 +16,8 @@ public class ResourceType {
   public static final BiMap<String, edu.mit.spacenet.domain.resource.ResourceType> TYPE_MAP =
       new ImmutableBiMap.Builder<String, edu.mit.spacenet.domain.resource.ResourceType>()
           .put("Generic", edu.mit.spacenet.domain.resource.ResourceType.GENERIC)
-          .put("Resource", edu.mit.spacenet.domain.resource.ResourceType.RESOURCE)
-          .put("Item", edu.mit.spacenet.domain.resource.ResourceType.ITEM).build();
+          .put("Continuous", edu.mit.spacenet.domain.resource.ResourceType.RESOURCE)
+          .put("Discrete", edu.mit.spacenet.domain.resource.ResourceType.ITEM).build();
 
   protected UUID id;
   protected String type;

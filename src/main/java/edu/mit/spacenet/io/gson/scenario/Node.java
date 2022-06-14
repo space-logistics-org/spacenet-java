@@ -14,7 +14,7 @@ public abstract class Node extends Location {
       new ImmutableBiMap.Builder<String, NodeType>().put("Surface Node", NodeType.SURFACE)
           .put("Orbital Node", NodeType.ORBITAL).put("Lagrange Node", NodeType.LAGRANGE).build();
 
-  protected String body_1;
+  protected String body1;
 
   public static Node createFrom(edu.mit.spacenet.domain.network.node.Node node, Context context) {
     if (node.getNodeType() == NodeType.SURFACE) {

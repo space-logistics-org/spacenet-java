@@ -12,8 +12,8 @@ public class SurfaceEdge extends Edge {
     context.put(edge, e.id, e);
     e.name = edge.getName();
     e.description = edge.getDescription();
-    e.origin_id = context.getJsonIdFromJavaObject(edge.getOrigin());
-    e.destination_id = context.getJsonIdFromJavaObject(edge.getDestination());
+    e.originId = context.getJsonIdFromJavaObject(edge.getOrigin());
+    e.destinationId = context.getJsonIdFromJavaObject(edge.getDestination());
     e.distance = edge.getDistance();
     e.contents = context.getJsonIdsFromJavaObjects(edge.getContents());
     return e;
@@ -27,9 +27,9 @@ public class SurfaceEdge extends Edge {
     e.setName(name);
     e.setDescription(description);
     e.setOrigin(
-        (edu.mit.spacenet.domain.network.node.Node) context.getJavaObjectFromJsonId(origin_id));
-    e.setDestination((edu.mit.spacenet.domain.network.node.Node) context
-        .getJavaObjectFromJsonId(destination_id));
+        (edu.mit.spacenet.domain.network.node.Node) context.getJavaObjectFromJsonId(originId));
+    e.setDestination(
+        (edu.mit.spacenet.domain.network.node.Node) context.getJavaObjectFromJsonId(destinationId));
     e.setDistance(distance);
     e.getContents().addAll(Element.toSpaceNetViaId(contents, context));
     return e;

@@ -28,7 +28,7 @@ public abstract class Event {
 
   protected String name;
   protected Integer priority;
-  protected PeriodDuration mission_time;
+  protected PeriodDuration missionTime;
   protected UUID location;
 
   public static Event createFrom(edu.mit.spacenet.simulator.event.I_Event event, Context context) {

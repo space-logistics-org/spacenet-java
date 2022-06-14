@@ -15,7 +15,7 @@ public class SurfaceNode extends Node {
     context.put(node, n.id, n);
     n.name = node.getName();
     n.description = node.getDescription();
-    n.body_1 = node.getBody().getName();
+    n.body1 = node.getBody().getName();
     n.latitude = node.getLatitude();
     n.longitude = node.getLongitude();
     n.contents = context.getJsonIdsFromJavaObjects(node.getContents());
@@ -29,7 +29,7 @@ public class SurfaceNode extends Node {
     n.setTid(context.getJavaId(id));
     n.setName(name);
     n.setDescription(description);
-    n.setBody(Body.getInstance(body_1));
+    n.setBody(Body.getInstance(body1));
     n.setLatitude(latitude);
     n.setLongitude(longitude);
     n.getContents().addAll(Element.toSpaceNetViaId(contents, context));

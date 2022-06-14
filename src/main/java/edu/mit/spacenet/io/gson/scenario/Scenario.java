@@ -18,9 +18,9 @@ import edu.mit.spacenet.scenario.ScenarioType;
 public class Scenario {
   public static final BiMap<String, ScenarioType> TYPE_MAP =
       new ImmutableBiMap.Builder<String, ScenarioType>().put("ISS", ScenarioType.ISS)
-          .put("Lunar", ScenarioType.LUNAR).put("MoonOnly", ScenarioType.MOON_ONLY)
-          .put("Martian", ScenarioType.MARTIAN).put("MarsOnly", ScenarioType.MARS_ONLY)
-          .put("SolarSystem", ScenarioType.SOLAR_SYSTEM).build();
+          .put("Lunar", ScenarioType.LUNAR).put("Moon Only", ScenarioType.MOON_ONLY)
+          .put("Martian", ScenarioType.MARTIAN).put("Mars Only", ScenarioType.MARS_ONLY)
+          .put("Solar System", ScenarioType.SOLAR_SYSTEM).build();
 
   protected String createdBy;
   protected String name;

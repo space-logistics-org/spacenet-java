@@ -33,7 +33,7 @@ public class Element implements Cloneable {
   protected UUID templateId;
   protected String name;
   protected String description;
-  protected Double accommodatationMass;
+  protected Double accommodationMass;
   protected Double mass;
   protected Double volume;
   protected Integer classOfSupply;
@@ -53,7 +53,7 @@ public class Element implements Cloneable {
       if (template == null) {
         e.name = element.getName();
         e.description = element.getDescription();
-        e.accommodatationMass = element.getAccommodationMass();
+        e.accommodationMass = element.getAccommodationMass();
         e.mass = element.getMass();
         e.volume = element.getVolume();
         e.classOfSupply = element.getClassOfSupply().getId();
@@ -74,8 +74,8 @@ public class Element implements Cloneable {
         if (!template.description.equals(element.getDescription())) {
           e.description = element.getDescription();
         }
-        if (!template.accommodatationMass.equals(element.getAccommodationMass())) {
-          e.accommodatationMass = element.getAccommodationMass();
+        if (!template.accommodationMass.equals(element.getAccommodationMass())) {
+          e.accommodationMass = element.getAccommodationMass();
         }
         if (!template.mass.equals(element.getMass())) {
           e.mass = element.getMass();
@@ -149,7 +149,7 @@ public class Element implements Cloneable {
     e.setName(name == null ? template.name : name);
     e.setDescription(description == null ? template.description : description);
     e.setAccommodationMass(
-        accommodatationMass == null ? template.accommodatationMass : accommodatationMass);
+        accommodationMass == null ? template.accommodationMass : accommodationMass);
     e.setMass(mass == null ? template.mass : mass);
     e.setVolume(volume == null ? template.volume : volume);
     e.setClassOfSupply(
@@ -211,7 +211,7 @@ public class Element implements Cloneable {
     final Element other = (Element) obj;
     return new EqualsBuilder().append(id, other.id).append(templateId, other.templateId)
         .append(name, other.name).append(description, other.description)
-        .append(accommodatationMass, other.accommodatationMass).append(mass, other.mass)
+        .append(accommodationMass, other.accommodationMass).append(mass, other.mass)
         .append(volume, other.volume).append(classOfSupply, other.classOfSupply)
         .append(environment, other.environment).append(states, other.states)
         .append(currentStateIndex, other.currentStateIndex).append(parts, other.parts)
@@ -221,7 +221,7 @@ public class Element implements Cloneable {
   @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 31).append(id).append(templateId).append(name)
-        .append(description).append(accommodatationMass).append(mass).append(volume)
+        .append(description).append(accommodationMass).append(mass).append(volume)
         .append(classOfSupply).append(environment).append(states).append(currentStateIndex)
         .append(parts).append(icon).toHashCode();
   }
@@ -233,7 +233,7 @@ public class Element implements Cloneable {
     e.templateId = templateId;
     e.name = name;
     e.description = description;
-    e.accommodatationMass = accommodatationMass;
+    e.accommodationMass = accommodationMass;
     e.mass = mass;
     e.volume = volume;
     e.classOfSupply = classOfSupply;

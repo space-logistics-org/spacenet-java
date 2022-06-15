@@ -28,7 +28,7 @@ public class ResourceTank extends Element {
     if (template == null) {
       e.name = element.getName();
       e.description = element.getDescription();
-      e.accommodatationMass = element.getAccommodationMass();
+      e.accommodationMass = element.getAccommodationMass();
       e.mass = element.getMass();
       e.volume = element.getVolume();
       e.classOfSupply = element.getClassOfSupply().getId();
@@ -53,8 +53,8 @@ public class ResourceTank extends Element {
       if (!template.description.equals(element.getDescription())) {
         e.description = element.getDescription();
       }
-      if (!template.accommodatationMass.equals(element.getAccommodationMass())) {
-        e.accommodatationMass = element.getAccommodationMass();
+      if (!template.accommodationMass.equals(element.getAccommodationMass())) {
+        e.accommodationMass = element.getAccommodationMass();
       }
       if (!template.mass.equals(element.getMass())) {
         e.mass = element.getMass();
@@ -110,7 +110,7 @@ public class ResourceTank extends Element {
     e.setName(name == null ? template.name : name);
     e.setDescription(description == null ? template.description : description);
     e.setAccommodationMass(
-        accommodatationMass == null ? template.accommodatationMass : accommodatationMass);
+        accommodationMass == null ? template.accommodationMass : accommodationMass);
     e.setMass(mass == null ? template.mass : mass);
     e.setVolume(volume == null ? template.volume : volume);
     e.setClassOfSupply(
@@ -173,7 +173,7 @@ public class ResourceTank extends Element {
     e.templateId = templateId;
     e.name = name;
     e.description = description;
-    e.accommodatationMass = accommodatationMass;
+    e.accommodationMass = accommodationMass;
     e.mass = mass;
     e.volume = volume;
     e.classOfSupply = classOfSupply;

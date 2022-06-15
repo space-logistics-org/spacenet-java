@@ -16,7 +16,7 @@ public class Carrier extends Element {
   protected Double maxCargoMass;
   protected Double maxCargoVolume;
   protected String cargoEnvironment;
-  protected Integer maxCrewSize;
+  protected Integer maxCrew;
   protected List<Element> contents;
 
   public static Carrier createFrom(edu.mit.spacenet.domain.element.Carrier element,
@@ -47,7 +47,7 @@ public class Carrier extends Element {
       e.maxCargoMass = element.getMaxCargoMass();
       e.maxCargoVolume = element.getMaxCargoVolume();
       e.cargoEnvironment = element.getCargoEnvironment().getName();
-      e.maxCrewSize = element.getMaxCrewSize();
+      e.maxCrew = element.getMaxCrewSize();
       e.contents = Element.createFrom(element.getContents(), context);
     } else {
       if (!template.name.equals(element.getName())) {
@@ -98,8 +98,8 @@ public class Carrier extends Element {
       if (!template.cargoEnvironment.equals(element.getCargoEnvironment().getName())) {
         e.cargoEnvironment = element.getCargoEnvironment().getName();
       }
-      if (!template.maxCrewSize.equals(element.getMaxCrewSize())) {
-        e.maxCrewSize = element.getMaxCrewSize();
+      if (!template.maxCrew.equals(element.getMaxCrewSize())) {
+        e.maxCrew = element.getMaxCrewSize();
       }
       List<Element> contents = Element.createFrom(element.getContents(), context);
       if (!template.contents.equals(contents)) {
@@ -147,7 +147,7 @@ public class Carrier extends Element {
     e.setMaxCargoVolume(maxCargoVolume == null ? template.maxCargoVolume : maxCargoVolume);
     e.setCargoEnvironment(Environment
         .getInstance(cargoEnvironment == null ? template.cargoEnvironment : cargoEnvironment));
-    e.setMaxCrewSize(maxCrewSize == null ? template.maxCrewSize : maxCrewSize);
+    e.setMaxCrewSize(maxCrew == null ? template.maxCrew : maxCrew);
     e.getContents().addAll(Element
         .toSpaceNet(contents == null ? Element.clone(template.contents) : contents, context));
     return e;
@@ -170,14 +170,14 @@ public class Carrier extends Element {
     final Carrier other = (Carrier) obj;
     return new EqualsBuilder().appendSuper(super.equals(obj))
         .append(maxCargoMass, other.maxCargoMass).append(maxCargoVolume, other.maxCargoVolume)
-        .append(cargoEnvironment, other.cargoEnvironment).append(maxCrewSize, other.maxCrewSize)
+        .append(cargoEnvironment, other.cargoEnvironment).append(maxCrew, other.maxCrew)
         .append(contents, other.contents).isEquals();
   }
 
   @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(maxCargoMass)
-        .append(maxCargoVolume).append(cargoEnvironment).append(maxCrewSize).append(contents)
+        .append(maxCargoVolume).append(cargoEnvironment).append(maxCrew).append(contents)
         .toHashCode();
   }
 
@@ -200,7 +200,7 @@ public class Carrier extends Element {
     e.maxCargoMass = maxCargoMass;
     e.maxCargoVolume = maxCargoVolume;
     e.cargoEnvironment = cargoEnvironment;
-    e.maxCrewSize = maxCrewSize;
+    e.maxCrew = maxCrew;
     e.contents = Element.clone(contents);
     return e;
   }

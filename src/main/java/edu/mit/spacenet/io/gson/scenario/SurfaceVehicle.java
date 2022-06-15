@@ -15,9 +15,8 @@ import edu.mit.spacenet.domain.resource.I_Resource;
 
 public class SurfaceVehicle extends Carrier {
   protected Double maxSpeed;
-  protected UUID fuelType;
-  protected Double fuelMaxAmount;
-  protected Double fuelAmount;
+  protected Double maxFuel;
+  protected Resource fuel;
 
   public static SurfaceVehicle createFrom(edu.mit.spacenet.domain.element.SurfaceVehicle element,
       Context context) {
@@ -47,13 +46,19 @@ public class SurfaceVehicle extends Carrier {
       e.maxCargoMass = element.getMaxCargoMass();
       e.maxCargoVolume = element.getMaxCargoVolume();
       e.cargoEnvironment = element.getCargoEnvironment().getName();
-      e.maxCrewSize = element.getMaxCrewSize();
+      e.maxCrew = element.getMaxCrewSize();
       e.contents = Element.createFrom(element.getContents(), context);
-
       e.maxSpeed = element.getMaxSpeed();
-      e.fuelType = context.getJsonIdFromJavaObject(element.getFuelTank().getResource());
-      e.fuelMaxAmount = element.getFuelTank().getMaxAmount();
-      e.fuelAmount = element.getFuelTank().getAmount();
+      e.fuel = new Resource();
+      if (element.getFuelTank().getResource()
+          .getResourceType() == edu.mit.spacenet.domain.resource.ResourceType.GENERIC) {
+        e.fuel.classOfSupply = element.getFuelTank().getResource().getClassOfSupply().getId();
+        e.fuel.environment = element.getFuelTank().getResource().getEnvironment().getName();
+      } else {
+        e.fuel.resource = context.getJsonIdFromJavaObject(element.getFuelTank().getResource());
+      }
+      e.fuel.amount = element.getFuelTank().getAmount();
+      e.maxFuel = element.getFuelTank().getMaxAmount();
     } else {
       if (!template.name.equals(element.getName())) {
         e.name = element.getName();
@@ -103,8 +108,8 @@ public class SurfaceVehicle extends Carrier {
       if (!template.cargoEnvironment.equals(element.getCargoEnvironment().getName())) {
         e.cargoEnvironment = element.getCargoEnvironment().getName();
       }
-      if (!template.maxCrewSize.equals(element.getMaxCrewSize())) {
-        e.maxCrewSize = element.getMaxCrewSize();
+      if (!template.maxCrew.equals(element.getMaxCrewSize())) {
+        e.maxCrew = element.getMaxCrewSize();
       }
       List<Element> contents = Element.createFrom(element.getContents(), context);
       if (!template.contents.equals(contents)) {
@@ -113,15 +118,20 @@ public class SurfaceVehicle extends Carrier {
       if (!template.maxSpeed.equals(element.getMaxSpeed())) {
         e.maxSpeed = element.getMaxSpeed();
       }
-      if (!template.fuelType
-          .equals(context.getJsonIdFromJavaObject(element.getFuelTank().getResource()))) {
-        e.fuelType = context.getJsonIdFromJavaObject(element.getFuelTank().getResource());
+      Resource fuel = new Resource();
+      if (element.getFuelTank().getResource()
+          .getResourceType() == edu.mit.spacenet.domain.resource.ResourceType.GENERIC) {
+        fuel.classOfSupply = element.getFuelTank().getResource().getClassOfSupply().getId();
+        fuel.environment = element.getFuelTank().getResource().getEnvironment().getName();
+      } else {
+        fuel.resource = context.getJsonIdFromJavaObject(element.getFuelTank().getResource());
       }
-      if (!template.fuelMaxAmount.equals(element.getFuelTank().getMaxAmount())) {
-        e.fuelMaxAmount = element.getFuelTank().getMaxAmount();
+      fuel.amount = element.getFuelTank().getAmount();
+      if (!template.fuel.equals(fuel)) {
+        e.fuel = fuel;
       }
-      if (!template.fuelAmount.equals(element.getFuelTank().getAmount())) {
-        e.fuelAmount = element.getFuelTank().getAmount();
+      if (!template.maxFuel.equals(element.getFuelTank().getMaxAmount())) {
+        e.maxFuel = element.getFuelTank().getMaxAmount();
       }
     }
     return e;
@@ -166,17 +176,23 @@ public class SurfaceVehicle extends Carrier {
     e.setMaxCargoVolume(maxCargoVolume == null ? template.maxCargoVolume : maxCargoVolume);
     e.setCargoEnvironment(Environment
         .getInstance(cargoEnvironment == null ? template.cargoEnvironment : cargoEnvironment));
-    e.setMaxCrewSize(maxCrewSize == null ? template.maxCrewSize : maxCrewSize);
+    e.setMaxCrewSize(maxCrew == null ? template.maxCrew : maxCrew);
     e.getContents().addAll(Element
         .toSpaceNet(contents == null ? Element.clone(template.contents) : contents, context));
 
     e.setMaxSpeed(maxSpeed == null ? template.maxSpeed : maxSpeed);
     edu.mit.spacenet.domain.element.ResourceTank t =
         new edu.mit.spacenet.domain.element.ResourceTank();
-    t.setResource((I_Resource) context
-        .getJavaObjectFromJsonId(fuelType == null ? template.fuelType : fuelType));
-    t.setMaxAmount(fuelMaxAmount == null ? template.fuelMaxAmount : fuelMaxAmount);
-    t.setAmount(fuelAmount == null ? template.fuelAmount : fuelAmount);
+    Resource _fuel = (fuel == null ? template.fuel : fuel);
+    if (_fuel.resource == null) {
+      t.setResource(new edu.mit.spacenet.domain.resource.GenericResource(
+          ClassOfSupply.getInstance(_fuel.classOfSupply),
+          Environment.getInstance(_fuel.environment)));
+    } else {
+      t.setResource((I_Resource) context.getJavaObjectFromJsonId(_fuel.resource));
+    }
+    t.setAmount(_fuel.amount);
+    t.setMaxAmount(maxFuel == null ? template.maxFuel : maxFuel);
     e.setFuelTank(t);
     return e;
   }
@@ -197,14 +213,13 @@ public class SurfaceVehicle extends Carrier {
     }
     final SurfaceVehicle other = (SurfaceVehicle) obj;
     return new EqualsBuilder().appendSuper(super.equals(obj)).append(maxSpeed, other.maxSpeed)
-        .append(fuelType, other.fuelType).append(fuelMaxAmount, other.fuelMaxAmount)
-        .append(fuelAmount, other.fuelAmount).isEquals();
+        .append(fuel, other.fuel).append(maxFuel, other.maxFuel).isEquals();
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(maxSpeed)
-        .append(fuelType).append(fuelMaxAmount).append(fuelAmount).toHashCode();
+    return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(maxSpeed).append(fuel)
+        .append(maxFuel).toHashCode();
   }
 
   @Override
@@ -226,12 +241,11 @@ public class SurfaceVehicle extends Carrier {
     e.maxCargoMass = maxCargoMass;
     e.maxCargoVolume = maxCargoVolume;
     e.cargoEnvironment = cargoEnvironment;
-    e.maxCrewSize = maxCrewSize;
+    e.maxCrew = maxCrew;
     e.contents = Element.clone(contents);
     e.maxSpeed = maxSpeed;
-    e.fuelType = fuelType;
-    e.fuelMaxAmount = fuelMaxAmount;
-    e.fuelAmount = fuelAmount;
+    e.fuel = fuel.clone();
+    e.maxFuel = maxFuel;
     return e;
   }
 }

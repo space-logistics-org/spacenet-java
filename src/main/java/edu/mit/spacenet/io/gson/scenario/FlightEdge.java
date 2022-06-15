@@ -18,8 +18,8 @@ public class FlightEdge extends Edge {
     context.put(edge, e.id, e);
     e.name = edge.getName();
     e.description = edge.getDescription();
-    e.originId = context.getJsonIdFromJavaObject(edge.getOrigin());
-    e.destinationId = context.getJsonIdFromJavaObject(edge.getDestination());
+    e.origin = context.getJsonIdFromJavaObject(edge.getOrigin());
+    e.destination = context.getJsonIdFromJavaObject(edge.getDestination());
     e.duration = PeriodDuration.of(Period.ofDays((int) edge.getDuration()), Duration
         .ofSeconds((long) ((edge.getDuration() - (int) edge.getDuration()) * 24 * 60 * 60)));
     e.maxCrew = edge.getMaxCrewSize();
@@ -36,9 +36,9 @@ public class FlightEdge extends Edge {
     e.setName(name);
     e.setDescription(description);
     e.setOrigin(
-        (edu.mit.spacenet.domain.network.node.Node) context.getJavaObjectFromJsonId(originId));
+        (edu.mit.spacenet.domain.network.node.Node) context.getJavaObjectFromJsonId(origin));
     e.setDestination(
-        (edu.mit.spacenet.domain.network.node.Node) context.getJavaObjectFromJsonId(destinationId));
+        (edu.mit.spacenet.domain.network.node.Node) context.getJavaObjectFromJsonId(destination));
     e.setDuration(
         duration.getPeriod().getDays() + duration.getDuration().getSeconds() / (24 * 60 * 60d));
     e.setMaxCrewSize(maxCrew);

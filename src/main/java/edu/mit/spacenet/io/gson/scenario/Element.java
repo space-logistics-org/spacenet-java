@@ -22,7 +22,7 @@ import edu.mit.spacenet.domain.element.I_State;
 public class Element implements Cloneable {
   public static final BiMap<String, ElementType> TYPE_MAP =
       new ImmutableBiMap.Builder<String, ElementType>().put("Element", ElementType.ELEMENT)
-          .put("Crew Member", ElementType.CREW_MEMBER)
+          .put("Human Agent", ElementType.CREW_MEMBER)
           .put("Resource Container", ElementType.RESOURCE_CONTAINER)
           .put("Resource Tank", ElementType.RESOURCE_TANK)
           .put("Element Carrier", ElementType.CARRIER)

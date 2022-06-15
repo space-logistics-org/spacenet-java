@@ -13,7 +13,7 @@ import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_State;
 
 public class CrewMember extends Element {
-  protected Double availableTimeFraction;
+  protected Double activeTimeFraction;
 
   public static CrewMember createFrom(edu.mit.spacenet.domain.element.CrewMember element,
       Context context) {
@@ -40,7 +40,7 @@ public class CrewMember extends Element {
       }
       e.parts = Part.createFrom(element.getParts(), context);
 
-      e.availableTimeFraction = element.getAvailableTimeFraction();
+      e.activeTimeFraction = element.getAvailableTimeFraction();
     } else {
       if (!template.name.equals(element.getName())) {
         e.name = element.getName();
@@ -81,8 +81,8 @@ public class CrewMember extends Element {
       if (!template.parts.equals(parts)) {
         e.parts = parts;
       }
-      if (!template.availableTimeFraction.equals(element.getAvailableTimeFraction())) {
-        e.availableTimeFraction = element.getAvailableTimeFraction();
+      if (!template.activeTimeFraction.equals(element.getAvailableTimeFraction())) {
+        e.activeTimeFraction = element.getAvailableTimeFraction();
       }
     }
     return e;
@@ -123,7 +123,7 @@ public class CrewMember extends Element {
     e.setParts(Part.toSpaceNet(parts == null ? template.parts : parts, context));
 
     e.setAvailableTimeFraction(
-        availableTimeFraction == null ? template.availableTimeFraction : availableTimeFraction);
+        activeTimeFraction == null ? template.activeTimeFraction : activeTimeFraction);
     return e;
   }
 
@@ -143,12 +143,12 @@ public class CrewMember extends Element {
     }
     final CrewMember other = (CrewMember) obj;
     return new EqualsBuilder().appendSuper(super.equals(obj))
-        .append(availableTimeFraction, other.availableTimeFraction).isEquals();
+        .append(activeTimeFraction, other.activeTimeFraction).isEquals();
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(availableTimeFraction)
+    return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(activeTimeFraction)
         .toHashCode();
   }
 
@@ -168,7 +168,7 @@ public class CrewMember extends Element {
     e.currentStateIndex = currentStateIndex;
     e.parts = Part.clone(parts);
     e.icon = icon;
-    e.availableTimeFraction = availableTimeFraction;
+    e.activeTimeFraction = activeTimeFraction;
     return e;
   }
 }

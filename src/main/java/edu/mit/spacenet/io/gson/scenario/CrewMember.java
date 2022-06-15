@@ -13,7 +13,7 @@ import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_State;
 
 public class CrewMember extends Element {
-  protected Double availableTimeFraction;
+  protected Double activeTimeFraction;
 
   public static CrewMember createFrom(edu.mit.spacenet.domain.element.CrewMember element,
       Context context) {
@@ -25,7 +25,7 @@ public class CrewMember extends Element {
     if (template == null) {
       e.name = element.getName();
       e.description = element.getDescription();
-      e.accommodatationMass = element.getAccommodationMass();
+      e.accommodationMass = element.getAccommodationMass();
       e.mass = element.getMass();
       e.volume = element.getVolume();
       e.classOfSupply = element.getClassOfSupply().getId();
@@ -40,7 +40,7 @@ public class CrewMember extends Element {
       }
       e.parts = Part.createFrom(element.getParts(), context);
 
-      e.availableTimeFraction = element.getAvailableTimeFraction();
+      e.activeTimeFraction = element.getAvailableTimeFraction();
     } else {
       if (!template.name.equals(element.getName())) {
         e.name = element.getName();
@@ -48,8 +48,8 @@ public class CrewMember extends Element {
       if (!template.description.equals(element.getDescription())) {
         e.description = element.getDescription();
       }
-      if (!template.accommodatationMass.equals(element.getAccommodationMass())) {
-        e.accommodatationMass = element.getAccommodationMass();
+      if (!template.accommodationMass.equals(element.getAccommodationMass())) {
+        e.accommodationMass = element.getAccommodationMass();
       }
       if (!template.mass.equals(element.getMass())) {
         e.mass = element.getMass();
@@ -81,8 +81,8 @@ public class CrewMember extends Element {
       if (!template.parts.equals(parts)) {
         e.parts = parts;
       }
-      if (!template.availableTimeFraction.equals(element.getAvailableTimeFraction())) {
-        e.availableTimeFraction = element.getAvailableTimeFraction();
+      if (!template.activeTimeFraction.equals(element.getAvailableTimeFraction())) {
+        e.activeTimeFraction = element.getAvailableTimeFraction();
       }
     }
     return e;
@@ -98,7 +98,7 @@ public class CrewMember extends Element {
     e.setName(name == null ? template.name : name);
     e.setDescription(description == null ? template.description : description);
     e.setAccommodationMass(
-        accommodatationMass == null ? template.accommodatationMass : accommodatationMass);
+        accommodationMass == null ? template.accommodationMass : accommodationMass);
     e.setMass(mass == null ? template.mass : mass);
     e.setVolume(volume == null ? template.volume : volume);
     e.setClassOfSupply(
@@ -123,7 +123,7 @@ public class CrewMember extends Element {
     e.setParts(Part.toSpaceNet(parts == null ? template.parts : parts, context));
 
     e.setAvailableTimeFraction(
-        availableTimeFraction == null ? template.availableTimeFraction : availableTimeFraction);
+        activeTimeFraction == null ? template.activeTimeFraction : activeTimeFraction);
     return e;
   }
 
@@ -143,12 +143,12 @@ public class CrewMember extends Element {
     }
     final CrewMember other = (CrewMember) obj;
     return new EqualsBuilder().appendSuper(super.equals(obj))
-        .append(availableTimeFraction, other.availableTimeFraction).isEquals();
+        .append(activeTimeFraction, other.activeTimeFraction).isEquals();
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(availableTimeFraction)
+    return new HashCodeBuilder(17, 31).appendSuper(super.hashCode()).append(activeTimeFraction)
         .toHashCode();
   }
 
@@ -159,7 +159,7 @@ public class CrewMember extends Element {
     e.templateId = templateId;
     e.name = name;
     e.description = description;
-    e.accommodatationMass = accommodatationMass;
+    e.accommodationMass = accommodationMass;
     e.mass = mass;
     e.volume = volume;
     e.classOfSupply = classOfSupply;
@@ -168,7 +168,7 @@ public class CrewMember extends Element {
     e.currentStateIndex = currentStateIndex;
     e.parts = Part.clone(parts);
     e.icon = icon;
-    e.availableTimeFraction = availableTimeFraction;
+    e.activeTimeFraction = activeTimeFraction;
     return e;
   }
 }

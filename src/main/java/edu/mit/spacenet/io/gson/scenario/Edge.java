@@ -15,8 +15,8 @@ public abstract class Edge extends Location {
       new ImmutableBiMap.Builder<String, EdgeType>().put("Surface Edge", EdgeType.SURFACE)
           .put("Space Edge", EdgeType.SPACE).put("Flight Edge", EdgeType.FLIGHT).build();
 
-  protected UUID originId;
-  protected UUID destinationId;
+  protected UUID origin;
+  protected UUID destination;
 
   public static Edge createFrom(edu.mit.spacenet.domain.network.edge.Edge edge, Context context) {
     if (edge.getEdgeType() == EdgeType.SURFACE) {

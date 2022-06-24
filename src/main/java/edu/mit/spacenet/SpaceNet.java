@@ -90,6 +90,9 @@ public class SpaceNet {
     Option confirm =
         Option.builder("y").longOpt("yes").hasArg(false).desc("Confirm overwrite output.").build();
     options.addOption(confirm);
+    Option consumeResources = Option.builder("c").longOpt("consume").hasArg(false)
+        .desc("Consume existing resources.").build();
+    options.addOption(consumeResources);
 
     CommandLineParser parser = new DefaultParser();
     HelpFormatter helper = new HelpFormatter();
@@ -118,7 +121,8 @@ public class SpaceNet {
             System.exit(0);
           }
           runDemandSimulator(scenarioFilePath, outputFilePath, line.hasOption(confirm),
-              mode.equalsIgnoreCase(HeadlessMode.DEMANDS_RAW.label));
+              mode.equalsIgnoreCase(HeadlessMode.DEMANDS_RAW.label),
+              line.hasOption(consumeResources));
         } else if (mode.equalsIgnoreCase(HeadlessMode.CONVERT_SCENARIO.label)) {
           String inputFilePath = null;
           if (line.hasOption(input)) {
@@ -215,11 +219,11 @@ public class SpaceNet {
   }
 
   private static void runDemandSimulator(String scenarioFilePath, String outputFilePath,
-      boolean isOverwriteConfirmed, boolean isRawDemands) {
+      boolean isOverwriteConfirmed, boolean isRawDemands, boolean consumeExistingResources) {
     Scenario scenario = openScenario(scenarioFilePath);
 
     DemandSimulator simulator = new DemandSimulator(scenario);
-    simulator.setDemandsSatisfied(false);
+    simulator.setDemandsSatisfied(consumeExistingResources);
     simulator.simulate();
 
     File file = new File(outputFilePath);

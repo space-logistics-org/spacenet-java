@@ -5,18 +5,18 @@ import java.util.List;
 import java.util.Map;
 
 public class EdgeDemand {
-  public double startTime;
-  public double endTime;
-  public Location origin;
-  public Location destination;
-  public Location location;
-  public List<Demand> demands = new ArrayList<Demand>();
-  public double totalMass;
-  public double totalVolume;
-  public double maxCargoMass;
-  public double netCargoMass;
-  public double maxCargoVolume;
-  public double netCargoVolume;
+  protected Double startTime;
+  protected Double endTime;
+  protected Location origin;
+  protected Location destination;
+  protected Location location;
+  protected List<Demand> demands = new ArrayList<Demand>();
+  protected Double totalMass;
+  protected Double totalVolume;
+  protected Double maxCargoMass;
+  protected Double netCargoMass;
+  protected Double maxCargoVolume;
+  protected Double netCargoVolume;
 
   public static List<EdgeDemand> createFrom(
       Map<edu.mit.spacenet.scenario.SupplyEdge, edu.mit.spacenet.domain.resource.DemandSet> demands) {

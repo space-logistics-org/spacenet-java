@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 public class NodeDemand {
-  public double time;
-  public Location location;
-  public List<Demand> demands = new ArrayList<Demand>();
-  public double totalMass;
-  public double totalVolume;
+  protected Double time;
+  protected Location location;
+  protected List<Demand> demands = new ArrayList<Demand>();
+  protected Double totalMass;
+  protected Double totalVolume;
 
   public static List<NodeDemand> createFrom(
       Map<edu.mit.spacenet.scenario.SupplyPoint, edu.mit.spacenet.domain.resource.DemandSet> demands) {

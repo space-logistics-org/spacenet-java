@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AggregatedDemandsAnalysis {
-  public List<NodeDemand> nodes = new ArrayList<NodeDemand>();
-  public List<EdgeDemand> edges = new ArrayList<EdgeDemand>();
+  protected List<NodeDemand> nodes = new ArrayList<NodeDemand>();
+  protected List<EdgeDemand> edges = new ArrayList<EdgeDemand>();
 
   public static AggregatedDemandsAnalysis createFrom(
       edu.mit.spacenet.simulator.DemandSimulator sim) {

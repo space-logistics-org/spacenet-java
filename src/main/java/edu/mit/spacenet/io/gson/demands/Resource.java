@@ -12,7 +12,7 @@ public class Resource {
   public static Resource createFrom(edu.mit.spacenet.domain.resource.Demand demand) {
     Resource d = new Resource();
     d.resource = ResourceType.createFrom(demand.getResource());
-    d.amount = demand.getAmount();
+    d.amount = Math.abs(demand.getAmount());
     d.mass = demand.getMass();
     d.volume = demand.getVolume();
     return d;

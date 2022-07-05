@@ -12,8 +12,10 @@ public class EdgeDemand {
   protected Location location;
   protected List<Resource> consumption = new ArrayList<Resource>();
   protected List<Resource> production = new ArrayList<Resource>();
-  protected Double totalMass;
-  protected Double totalVolume;
+  protected Double totalConsumptionMass = 0.0;
+  protected Double totalConsumptionVolume = 0.0;
+  protected Double totalProductionMass = 0.0;
+  protected Double totalProductionVolume = 0.0;
   protected Double maxCargoMass;
   protected Double netCargoMass;
   protected Double maxCargoVolume;
@@ -31,8 +33,14 @@ public class EdgeDemand {
       d.location = Location.createFrom(edge.getEdge());
       d.consumption = Resource.createFrom(demands.get(edge), true);
       d.production = Resource.createFrom(demands.get(edge), false);
-      d.totalMass = demands.get(edge).getTotalMass();
-      d.totalVolume = demands.get(edge).getTotalVolume();
+      for(Resource r : d.consumption) {
+        d.totalConsumptionMass += r.mass;
+        d.totalConsumptionVolume += r.volume;
+      }
+      for(Resource r : d.production) {
+        d.totalProductionMass += r.mass;
+        d.totalProductionVolume += r.volume;
+      }
       d.maxCargoMass = edge.getMaxCargoMass();
       d.netCargoMass = edge.getNetCargoMass();
       d.maxCargoVolume = edge.getMaxCargoVolume();

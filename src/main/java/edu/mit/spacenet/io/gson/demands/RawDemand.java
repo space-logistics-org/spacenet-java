@@ -9,8 +9,10 @@ public class RawDemand {
   protected Element element;
   protected List<Resource> consumption = new ArrayList<Resource>();
   protected List<Resource> production = new ArrayList<Resource>();
-  protected Double totalMass;
-  protected Double totalVolume;
+  protected Double totalConsumptionMass = 0.0;
+  protected Double totalConsumptionVolume = 0.0;
+  protected Double totalProductionMass = 0.0;
+  protected Double totalProductionVolume = 0.0;
 
   public static RawDemand createFrom(edu.mit.spacenet.simulator.SimDemand demands) {
     RawDemand d = new RawDemand();
@@ -19,8 +21,14 @@ public class RawDemand {
     d.element = Element.createFrom(demands.getElement());
     d.consumption = Resource.createFrom(demands.getDemands(), true);
     d.production = Resource.createFrom(demands.getDemands(), false);
-    d.totalMass = demands.getDemands().getTotalMass();
-    d.totalVolume = demands.getDemands().getTotalVolume();
+    for(Resource r : d.consumption) {
+      d.totalConsumptionMass += r.mass;
+      d.totalConsumptionVolume += r.volume;
+    }
+    for(Resource r : d.production) {
+      d.totalProductionMass += r.mass;
+      d.totalProductionVolume += r.volume;
+    }
     return d;
   }
 

@@ -9,7 +9,7 @@ public class ResourceType {
           .put("Generic", edu.mit.spacenet.domain.resource.ResourceType.GENERIC)
           .put("Continuous", edu.mit.spacenet.domain.resource.ResourceType.RESOURCE)
           .put("Discrete", edu.mit.spacenet.domain.resource.ResourceType.ITEM).build();
-  
+
   protected String type;
   protected String name;
   protected Integer classOfSupply;

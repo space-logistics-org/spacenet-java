@@ -3,14 +3,14 @@ package edu.mit.spacenet.io.gson.demands;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Demand {
+public class Resource {
   protected ResourceType resource;
   protected Double amount;
   protected Double mass;
   protected Double volume;
 
-  public static Demand createFrom(edu.mit.spacenet.domain.resource.Demand demand) {
-    Demand d = new Demand();
+  public static Resource createFrom(edu.mit.spacenet.domain.resource.Demand demand) {
+    Resource d = new Resource();
     d.resource = ResourceType.createFrom(demand.getResource());
     d.amount = demand.getAmount();
     d.mass = demand.getMass();
@@ -18,10 +18,13 @@ public class Demand {
     return d;
   }
 
-  public static List<Demand> createFrom(edu.mit.spacenet.domain.resource.DemandSet demands) {
-    List<Demand> ds = new ArrayList<Demand>();
+  public static List<Resource> createFrom(edu.mit.spacenet.domain.resource.DemandSet demands,
+      boolean isConsumption) {
+    List<Resource> ds = new ArrayList<Resource>();
     for (edu.mit.spacenet.domain.resource.Demand d : demands) {
-      ds.add(Demand.createFrom(d));
+      if ((isConsumption && d.getAmount() > 0) || (!isConsumption && d.getAmount() < 0)) {
+        ds.add(Resource.createFrom(d));
+      }
     }
     return ds;
   }

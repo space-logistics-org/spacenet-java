@@ -7,7 +7,7 @@ public class RawDemand {
   protected Double time;
   protected Location location;
   protected Element element;
-  protected List<Demand> demands = new ArrayList<Demand>();
+  protected List<Resource> demands = new ArrayList<Resource>();
   protected Double totalMass;
   protected Double totalVolume;
 
@@ -16,7 +16,7 @@ public class RawDemand {
     d.time = demands.getTime();
     d.location = Location.createFrom(demands.getLocation());
     d.element = Element.createFrom(demands.getElement());
-    d.demands = Demand.createFrom(demands.getDemands());
+    d.demands = Resource.createFrom(demands.getDemands());
     d.totalMass = demands.getDemands().getTotalMass();
     d.totalVolume = demands.getDemands().getTotalVolume();
     return d;

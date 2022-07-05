@@ -7,7 +7,7 @@ import java.util.Map;
 public class NodeDemand {
   protected Double time;
   protected Location location;
-  protected List<Demand> demands = new ArrayList<Demand>();
+  protected List<Resource> demands = new ArrayList<Resource>();
   protected Double totalMass;
   protected Double totalVolume;
 
@@ -18,7 +18,7 @@ public class NodeDemand {
       NodeDemand d = new NodeDemand();
       d.time = point.getTime();
       d.location = Location.createFrom(point.getNode());
-      d.demands = Demand.createFrom(demands.get(point));
+      d.demands = Resource.createFrom(demands.get(point));
       d.totalMass = demands.get(point).getTotalMass();
       d.totalVolume = demands.get(point).getTotalVolume();
       ds.add(d);

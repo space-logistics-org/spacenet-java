@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Demand {
-  public Resource resource;
-  public double amount;
-  public double mass;
-  public double volume;
+  protected ResourceType resource;
+  protected Double amount;
+  protected Double mass;
+  protected Double volume;
 
   public static Demand createFrom(edu.mit.spacenet.domain.resource.Demand demand) {
     Demand d = new Demand();
-    d.resource = Resource.createFrom(demand.getResource());
+    d.resource = ResourceType.createFrom(demand.getResource());
     d.amount = demand.getAmount();
     d.mass = demand.getMass();
     d.volume = demand.getVolume();

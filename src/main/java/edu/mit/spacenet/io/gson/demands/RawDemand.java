@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RawDemand {
-  public double time;
-  public Location location;
-  public Element element;
-  public List<Demand> demands = new ArrayList<Demand>();
-  public double totalMass;
-  public double totalVolume;
+  protected Double time;
+  protected Location location;
+  protected Element element;
+  protected List<Demand> demands = new ArrayList<Demand>();
+  protected Double totalMass;
+  protected Double totalVolume;
 
   public static RawDemand createFrom(edu.mit.spacenet.simulator.SimDemand demands) {
     RawDemand d = new RawDemand();

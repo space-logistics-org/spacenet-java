@@ -25,11 +25,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -38,9 +36,8 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.FilenameUtils;
-
 import com.google.gson.Gson;
-
+import com.google.gson.GsonBuilder;
 import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.gui.SplashScreen;
@@ -241,12 +238,13 @@ public class SpaceNet {
       in.close();
     }
 
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
     try {
       BufferedWriter out = new BufferedWriter(new FileWriter(outputFilePath));
       if (isRawDemands) {
-        new Gson().toJson(RawDemandsAnalysis.createFrom(simulator), out);
+        gson.toJson(RawDemandsAnalysis.createFrom(simulator), out);
       } else {
-        new Gson().toJson(AggregatedDemandsAnalysis.createFrom(simulator), out);
+        gson.toJson(AggregatedDemandsAnalysis.createFrom(simulator), out);
       }
       out.close();
     } catch (IOException ex) {

@@ -34,9 +34,10 @@ public class Exploration extends Event {
         .ofSeconds((long) ((event.getDuration() - (int) event.getDuration()) * 24 * 60 * 60)));
     e.evaPerWeek = event.getEvaPerWeek();
     e.vehicle = context.getJsonIdFromJavaObject(event.getVehicle());
-    e.evaDuration =
-        PeriodDuration.of(Period.ofDays((int) event.getEvaDuration()), Duration.ofSeconds(
-            (long) ((event.getEvaDuration() - (int) event.getEvaDuration()) * 24 * 60 * 60)));
+    e.evaDuration = PeriodDuration.of(Period.ofDays((int) (event.getEvaDuration() / 24d)),
+        Duration
+            .ofSeconds((long) ((event.getEvaDuration() / 24d - (int) (event.getEvaDuration() / 24d))
+                * 24 * 60 * 60)));
     e.elementStates = new HashMap<UUID, Integer>();
     for (I_Element element : event.getStateMap().keySet()) {
       if (event.getStateMap().get(element) == null) {
@@ -76,8 +77,8 @@ public class Exploration extends Event {
     e.setDuration(
         duration.getPeriod().getDays() + duration.getDuration().getSeconds() / (24 * 60 * 60d));
     e.setEvaPerWeek(evaPerWeek);
-    e.setEvaDuration(evaDuration.getPeriod().getDays()
-        + evaDuration.getDuration().getSeconds() / (24 * 60 * 60d));
+    e.setEvaDuration(evaDuration.getPeriod().getDays() * 24
+        + evaDuration.getDuration().getSeconds() / (60 * 60d));
     return e;
   }
 

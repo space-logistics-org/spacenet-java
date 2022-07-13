@@ -12,7 +12,7 @@ import org.threeten.extra.PeriodDuration;
 public class Burn {
   protected UUID id;
   protected PeriodDuration time;
-  protected Double delta_v;
+  protected Double deltaV;
 
   public static Burn createFrom(edu.mit.spacenet.domain.network.edge.Burn burn, Context context) {
     Burn b = new Burn();
@@ -20,7 +20,7 @@ public class Burn {
     context.put(burn, b.id, b);
     b.time = PeriodDuration.of(Period.ofDays((int) burn.getTime()),
         Duration.ofSeconds((long) ((burn.getTime() - (int) burn.getTime()) * 24 * 60 * 60)));
-    b.delta_v = burn.getDeltaV();
+    b.deltaV = burn.getDeltaV();
     return b;
   }
 
@@ -38,7 +38,7 @@ public class Burn {
     context.put(b, id, this);
     b.setTid(context.getJavaId(id));
     b.setTime(time.getPeriod().getDays() + time.getDuration().getSeconds() / (24 * 60 * 60d));
-    b.setDeltaV(delta_v);
+    b.setDeltaV(deltaV);
     return b;
   }
 

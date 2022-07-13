@@ -35,8 +35,9 @@ public class Exploration extends Event {
     e.evaPerWeek = event.getEvaPerWeek();
     e.vehicle = context.getJsonIdFromJavaObject(event.getVehicle());
     e.evaDuration = PeriodDuration.of(Period.ofDays((int) (event.getEvaDuration() / 24d)),
-        Duration.ofSeconds((long) ((event.getEvaDuration() / 24d - (int) (event.getEvaDuration() / 24d))
-            * 24 * 60 * 60)));
+        Duration
+            .ofSeconds((long) ((event.getEvaDuration() / 24d - (int) (event.getEvaDuration() / 24d))
+                * 24 * 60 * 60)));
     e.elementStates = new HashMap<UUID, Integer>();
     for (I_Element element : event.getStateMap().keySet()) {
       if (event.getStateMap().get(element) == null) {

@@ -53,7 +53,7 @@ public class EvaEvent extends Event {
     e.setVehicle((I_Carrier) context.getJavaObjectFromJsonId(vehicle));
     SortedMap<I_Element, I_State> stateMap = new TreeMap<I_Element, I_State>();
     for (ElementState elementState : elementStates) {
-      if (elementState.stateIndex == null) {
+      if (elementState.stateIndex == -1) {
         stateMap.put((I_Element) context.getJavaObjectFromJsonId(elementState.element), null);
       } else {
         stateMap.put((I_Element) context.getJavaObjectFromJsonId(elementState.element),

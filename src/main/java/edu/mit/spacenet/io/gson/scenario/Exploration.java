@@ -3,9 +3,7 @@ package edu.mit.spacenet.io.gson.scenario;
 import java.time.Duration;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -19,7 +17,7 @@ public class Exploration extends Event {
   protected PeriodDuration duration;
   protected Double evaPerWeek;
   protected PeriodDuration evaDuration;
-  protected Map<UUID, Integer> elementStates;
+  protected List<ElementState> elementStates;
   protected List<Resource> additionalDemands;
 
   public static Exploration createFrom(edu.mit.spacenet.simulator.event.ExplorationProcess event,
@@ -38,14 +36,10 @@ public class Exploration extends Event {
         Duration
             .ofSeconds((long) ((event.getEvaDuration() / 24d - (int) (event.getEvaDuration() / 24d))
                 * 24 * 60 * 60)));
-    e.elementStates = new HashMap<UUID, Integer>();
+    e.elementStates = new ArrayList<ElementState>();
     for (I_Element element : event.getStateMap().keySet()) {
-      if (event.getStateMap().get(element) == null) {
-        e.elementStates.put(context.getJsonIdFromJavaObject(element), -1);
-      } else {
-        e.elementStates.put(context.getJsonIdFromJavaObject(element),
-            new ArrayList<I_State>(element.getStates()).indexOf(event.getStateMap().get(element)));
-      }
+      e.elementStates
+          .add(ElementState.createFrom(element, event.getStateMap().get(element), context));
     }
     e.additionalDemands = Resource.createFrom(event.getDemands(), context);
     return e;
@@ -63,14 +57,14 @@ public class Exploration extends Event {
         (edu.mit.spacenet.domain.network.Location) context.getJavaObjectFromJsonId(location));
     e.setVehicle((I_Carrier) context.getJavaObjectFromJsonId(vehicle));
     SortedMap<I_Element, I_State> stateMap = new TreeMap<I_Element, I_State>();
-    for (UUID element : elementStates.keySet()) {
-      if (elementStates.get(element).equals(-1)) {
-        stateMap.put((I_Element) context.getJavaObjectFromJsonId(element), null);
+    for (ElementState elementState : elementStates) {
+      if (elementState.stateIndex == null) {
+        stateMap.put((I_Element) context.getJavaObjectFromJsonId(elementState.element), null);
       } else {
-        stateMap.put((I_Element) context.getJavaObjectFromJsonId(element),
-            (I_State) context
-                .getJavaObjectFromJsonId(((Element) context.getJsonObject(element)).states
-                    .get(elementStates.get(element)).id));
+        stateMap.put((I_Element) context.getJavaObjectFromJsonId(elementState.element),
+            (I_State) context.getJavaObjectFromJsonId(
+                ((Element) context.getJsonObject(elementState.element)).states
+                    .get(elementState.stateIndex).id));
       }
     }
     e.setStateMap(stateMap);

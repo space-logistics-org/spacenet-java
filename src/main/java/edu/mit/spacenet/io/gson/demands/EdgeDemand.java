@@ -33,11 +33,11 @@ public class EdgeDemand {
       d.location = Location.createFrom(edge.getEdge());
       d.consumption = Resource.createFrom(demands.get(edge), true);
       d.production = Resource.createFrom(demands.get(edge), false);
-      for(Resource r : d.consumption) {
+      for (Resource r : d.consumption) {
         d.totalConsumptionMass += r.mass;
         d.totalConsumptionVolume += r.volume;
       }
-      for(Resource r : d.production) {
+      for (Resource r : d.production) {
         d.totalProductionMass += r.mass;
         d.totalProductionVolume += r.volume;
       }

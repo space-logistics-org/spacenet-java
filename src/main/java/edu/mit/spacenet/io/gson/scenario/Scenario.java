@@ -125,7 +125,7 @@ public class Scenario {
     s.setEnvironmentConstrained(configuration.environmentConstrained);
     s.setItemDiscretization(ItemDiscretization.getInstance(configuration.itemDiscretization));
     s.setItemAggregation(configuration.itemAggregation);
-    s.setScavengeSpares(configuration.scavangeSpares);
+    s.setScavengeSpares(configuration.scavengeSpares);
     // TODO add repaired items
     s.setDetailedEva(configuration.detailedEva);
     s.setDetailedExploration(configuration.detailedExploration);
@@ -133,26 +133,66 @@ public class Scenario {
     s.setGenericPackingFactorLiquid(configuration.genericPackingFactorLiquid);
     s.setGenericPackingFactorPressurized(configuration.genericPackingFactorPressurized);
     s.setGenericPackingFactorUnpressurized(configuration.genericPackingFactorUnpressurized);
-    s.setSmallGasTankMass(configuration.smallGasTankMass);
-    s.setSmallGasTankVolume(configuration.smallGasTankVolume);
-    s.setSmallGasTankMaxMass(configuration.smallGasTankMaxMass);
-    s.setSmallGasTankMaxVolume(configuration.smallGasTankMaxVolume);
-    s.setLargeGasTankMass(configuration.largeGasTankMass);
-    s.setLargeGasTankVolume(configuration.largeGasTankVolume);
-    s.setLargeGasTankMaxMass(configuration.largeGasTankMaxMass);
-    s.setLargeGasTankMaxVolume(configuration.largeGasTankMaxVolume);
-    s.setSmallLiquidTankMass(configuration.smallLiquidTankMass);
-    s.setSmallLiquidTankVolume(configuration.smallLiquidTankVolume);
-    s.setSmallLiquidTankMaxMass(configuration.smallLiquidTankMaxMass);
-    s.setSmallLiquidTankMaxVolume(configuration.smallLiquidTankMaxVolume);
-    s.setLargeLiquidTankMass(configuration.largeLiquidTankMass);
-    s.setLargeLiquidTankVolume(configuration.largeLiquidTankVolume);
-    s.setLargeLiquidTankMaxMass(configuration.largeLiquidTankMaxMass);
-    s.setLargeLiquidTankMaxVolume(configuration.largeLiquidTankMaxVolume);
-    s.setCargoTransferBagMass(configuration.cargoTransferBagMass);
-    s.setCargoTransferBagVolume(configuration.cargoTransferBagVolume);
-    s.setCargoTransferBagMaxMass(configuration.cargoTransferBagMaxMass);
-    s.setCargoTransferBagMaxVolume(configuration.cargoTransferBagMaxVolume);
+    if (configuration.smallGasTankMass != null) {
+      s.setSmallGasTankMass(configuration.smallGasTankMass);
+    }
+    if (configuration.smallGasTankVolume != null) {
+      s.setSmallGasTankVolume(configuration.smallGasTankVolume);
+    }
+    if (configuration.smallGasTankMaxMass != null) {
+      s.setSmallGasTankMaxMass(configuration.smallGasTankMaxMass);
+    }
+    if (configuration.smallGasTankMaxVolume != null) {
+      s.setSmallGasTankMaxVolume(configuration.smallGasTankMaxVolume);
+    }
+    if (configuration.largeGasTankMass != null) {
+      s.setLargeGasTankMass(configuration.largeGasTankMass);
+    }
+    if (configuration.largeGasTankVolume != null) {
+      s.setLargeGasTankVolume(configuration.largeGasTankVolume);
+    }
+    if (configuration.largeGasTankMaxMass != null) {
+      s.setLargeGasTankMaxMass(configuration.largeGasTankMaxMass);
+    }
+    if (configuration.largeGasTankMaxVolume != null) {
+      s.setLargeGasTankMaxVolume(configuration.largeGasTankMaxVolume);
+    }
+    if (configuration.smallLiquidTankMass != null) {
+      s.setSmallLiquidTankMass(configuration.smallLiquidTankMass);
+    }
+    if (configuration.smallLiquidTankVolume != null) {
+      s.setSmallLiquidTankVolume(configuration.smallLiquidTankVolume);
+    }
+    if (configuration.smallLiquidTankMaxMass != null) {
+      s.setSmallLiquidTankMaxMass(configuration.smallLiquidTankMaxMass);
+    }
+    if (configuration.smallLiquidTankMaxVolume != null) {
+      s.setSmallLiquidTankMaxVolume(configuration.smallLiquidTankMaxVolume);
+    }
+    if (configuration.largeLiquidTankMass != null) {
+      s.setLargeLiquidTankMass(configuration.largeLiquidTankMass);
+    }
+    if (configuration.largeLiquidTankVolume != null) {
+      s.setLargeLiquidTankVolume(configuration.largeLiquidTankVolume);
+    }
+    if (configuration.largeLiquidTankMaxMass != null) {
+      s.setLargeLiquidTankMaxMass(configuration.largeLiquidTankMaxMass);
+    }
+    if (configuration.largeLiquidTankMaxVolume != null) {
+      s.setLargeLiquidTankMaxVolume(configuration.largeLiquidTankMaxVolume);
+    }
+    if (configuration.cargoTransferBagMass != null) {
+      s.setCargoTransferBagMass(configuration.cargoTransferBagMass);
+    }
+    if (configuration.cargoTransferBagVolume != null) {
+      s.setCargoTransferBagVolume(configuration.cargoTransferBagVolume);
+    }
+    if (configuration.cargoTransferBagMaxMass != null) {
+      s.setCargoTransferBagMaxMass(configuration.cargoTransferBagMaxMass);
+    }
+    if (configuration.cargoTransferBagMaxVolume != null) {
+      s.setCargoTransferBagMaxVolume(configuration.cargoTransferBagMaxVolume);
+    }
     return s;
   }
 }

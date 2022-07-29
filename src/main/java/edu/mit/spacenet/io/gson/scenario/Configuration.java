@@ -9,7 +9,7 @@ public class Configuration {
   protected Boolean environmentConstrained;
   protected String itemDiscretization;
   protected Double itemAggregation;
-  protected Boolean scavangeSpares;
+  protected Boolean scavengeSpares;
   // TODO add repaired items
   protected Boolean detailedEva;
   protected Boolean detailedExploration;
@@ -51,7 +51,7 @@ public class Configuration {
     c.environmentConstrained = scenario.isEnvironmentConstrained();
     c.itemDiscretization = scenario.getItemDiscretization().getName();
     c.itemAggregation = scenario.getItemAggregation();
-    c.scavangeSpares = scenario.isScavengeSpares();
+    c.scavengeSpares = scenario.isScavengeSpares();
     // TODO add repaired items
     c.detailedEva = scenario.isDetailedEva();
     c.detailedExploration = scenario.isDetailedExploration();

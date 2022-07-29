@@ -34,8 +34,8 @@ public final class PeriodDurationTypeAdpater extends TypeAdapter<PeriodDuration>
           String duration = in.nextString();
           try {
             return PeriodDuration.parse(duration);
-          } catch(DateTimeParseException e) {
-            return PeriodDuration.of(Duration.ofMillis((long) Float.parseFloat(duration)*1000));
+          } catch (DateTimeParseException e) {
+            return PeriodDuration.of(Duration.ofMillis((long) Float.parseFloat(duration) * 1000));
           }
       }
     } catch (DateTimeParseException e) {

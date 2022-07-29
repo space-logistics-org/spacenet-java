@@ -23,9 +23,21 @@ public class Part implements Cloneable {
       Context context) {
     Part p = new Part();
     p.resource = context.getJsonIdFromJavaObject(part.getPart());
-    p.meanTimeToFailure = part.getMeanTimeToFailure();
-    p.meanTimeToRepair = part.getMeanTimeToRepair();
-    p.massToRepair = part.getMassToRepair();
+    if (part.getMeanTimeToFailure() > 0) {
+      p.meanTimeToFailure = part.getMeanTimeToFailure();
+    } else {
+      p.meanTimeToFailure = null;
+    }
+    if (part.getMeanTimeToRepair() > 0) {
+      p.meanTimeToRepair = part.getMeanTimeToRepair();
+    } else {
+      p.meanTimeToRepair = null;
+    }
+    if (part.getMassToRepair() >= 0) {
+      p.massToRepair = part.getMassToRepair();
+    } else {
+      p.massToRepair = null;
+    }
     p.quantity = part.getQuantity();
     p.dutyCycle = part.getDutyCycle();
     return p;
@@ -44,8 +56,16 @@ public class Part implements Cloneable {
     edu.mit.spacenet.domain.element.PartApplication p =
         new edu.mit.spacenet.domain.element.PartApplication();
     p.setPart((Item) context.getJavaObjectFromJsonId(resource));
-    p.setMeanTimeToFailure(meanTimeToFailure);
-    p.setMeanTimeToRepair(meanTimeToRepair);
+    if (meanTimeToFailure != null) {
+      p.setMeanTimeToFailure(meanTimeToFailure);
+    } else {
+      p.setMeanTimeToFailure(0);
+    }
+    if (meanTimeToRepair != null) {
+      p.setMeanTimeToRepair(meanTimeToRepair);
+    } else {
+      p.setMeanTimeToRepair(0);
+    }
     p.setMassToRepair(massToRepair);
     p.setQuantity(quantity);
     p.setDutyCycle(dutyCycle);

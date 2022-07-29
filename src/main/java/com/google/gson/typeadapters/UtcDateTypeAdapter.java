@@ -181,6 +181,9 @@ public final class UtcDateTypeAdapter extends TypeAdapter<Date> {
             // milliseconds can be optional in the format
             if (checkOffset(date, offset, '.')) {
               milliseconds = parseInt(date, offset += 1, offset += 3);
+              while (Character.isDigit(date.charAt(offset))) {
+                offset++; // ignore microseconds, if present
+              }
             }
           }
         }

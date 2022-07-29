@@ -21,11 +21,11 @@ public class RawDemand {
     d.element = Element.createFrom(demands.getElement());
     d.consumption = Resource.createFrom(demands.getDemands(), true);
     d.production = Resource.createFrom(demands.getDemands(), false);
-    for(Resource r : d.consumption) {
+    for (Resource r : d.consumption) {
       d.totalConsumptionMass += r.mass;
       d.totalConsumptionVolume += r.volume;
     }
-    for(Resource r : d.production) {
+    for (Resource r : d.production) {
       d.totalProductionMass += r.mass;
       d.totalProductionVolume += r.volume;
     }

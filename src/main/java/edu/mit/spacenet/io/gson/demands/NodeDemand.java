@@ -23,11 +23,11 @@ public class NodeDemand {
       d.location = Location.createFrom(point.getNode());
       d.consumption = Resource.createFrom(demands.get(point), true);
       d.production = Resource.createFrom(demands.get(point), false);
-      for(Resource r : d.consumption) {
+      for (Resource r : d.consumption) {
         d.totalConsumptionMass += r.mass;
         d.totalConsumptionVolume += r.volume;
       }
-      for(Resource r : d.production) {
+      for (Resource r : d.production) {
         d.totalProductionMass += r.mass;
         d.totalProductionVolume += r.volume;
       }

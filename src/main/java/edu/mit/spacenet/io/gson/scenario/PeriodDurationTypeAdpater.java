@@ -1,6 +1,7 @@
 package edu.mit.spacenet.io.gson.scenario;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.format.DateTimeParseException;
 
 import org.threeten.extra.PeriodDuration;
@@ -31,7 +32,11 @@ public final class PeriodDurationTypeAdpater extends TypeAdapter<PeriodDuration>
           return null;
         default:
           String duration = in.nextString();
-          return PeriodDuration.parse(duration);
+          try {
+            return PeriodDuration.parse(duration);
+          } catch (DateTimeParseException e) {
+            return PeriodDuration.of(Duration.ofMillis((long) Float.parseFloat(duration) * 1000));
+          }
       }
     } catch (DateTimeParseException e) {
       throw new JsonParseException(e);

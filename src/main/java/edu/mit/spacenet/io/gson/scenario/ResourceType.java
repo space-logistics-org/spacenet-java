@@ -67,7 +67,12 @@ public class ResourceType {
     r.setName(name);
     r.setDescription(description);
     r.setClassOfSupply(ClassOfSupply.getInstance(classOfSupply));
-    r.setEnvironment(Environment.getInstance(environment));
+    if (environment == null) {
+      // set default environment of unpressurized (phasing out environments for resource types)
+      r.setEnvironment(Environment.UNPRESSURIZED);
+    } else {
+      r.setEnvironment(Environment.getInstance(environment));
+    }
     r.setUnits(units);
     r.setUnitMass(unitMass);
     r.setUnitVolume(unitVolume);

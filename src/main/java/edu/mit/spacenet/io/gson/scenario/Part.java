@@ -117,6 +117,9 @@ public class Part implements Cloneable {
   }
 
   public static List<Part> clone(Collection<Part> parts) {
+    if (parts == null) {
+      return null;
+    }
     List<Part> ps = new ArrayList<Part>();
     for (Part p : parts) {
       ps.add(p.clone());

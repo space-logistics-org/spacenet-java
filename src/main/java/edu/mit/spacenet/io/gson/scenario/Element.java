@@ -246,6 +246,9 @@ public class Element implements Cloneable {
   }
 
   public static List<Element> clone(Collection<? extends Element> elements) {
+    if (elements == null) {
+      return null;
+    }
     List<Element> es = new ArrayList<Element>();
     for (Element e : elements) {
       es.add(e.clone());

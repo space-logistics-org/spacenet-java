@@ -86,6 +86,9 @@ public abstract class DemandModel implements Cloneable {
   public abstract DemandModel clone();
 
   public static List<DemandModel> clone(Collection<? extends DemandModel> models) {
+    if (models == null) {
+      return null;
+    }
     List<DemandModel> ms = new ArrayList<DemandModel>();
     for (DemandModel m : models) {
       ms.add(m.clone());

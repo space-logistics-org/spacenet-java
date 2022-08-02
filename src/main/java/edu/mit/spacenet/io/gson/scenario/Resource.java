@@ -142,6 +142,9 @@ public class Resource implements Cloneable {
   }
 
   public static List<Resource> clone(Collection<Resource> resources) {
+    if (resources == null) {
+      return null;
+    }
     List<Resource> rs = new ArrayList<Resource>();
     for (Resource r : resources) {
       rs.add(r.clone());

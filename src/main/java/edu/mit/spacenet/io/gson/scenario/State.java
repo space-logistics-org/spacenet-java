@@ -101,6 +101,9 @@ public class State implements Cloneable {
 
 
   public static List<State> clone(Collection<State> states) {
+    if (states == null) {
+      return null;
+    }
     List<State> ss = new ArrayList<State>();
     for (State s : states) {
       ss.add(s.clone());

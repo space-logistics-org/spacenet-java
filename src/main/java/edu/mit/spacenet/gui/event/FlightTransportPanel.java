@@ -202,10 +202,15 @@ public class FlightTransportPanel extends AbstractEventPanel {
         }
       }
     }
-    lblDestination
-        .setText("Destination: " + ((FlightEdge) ddlFlight.getSelectedItem()).getDestination());
-    lblDuration
-        .setText("Duration: " + ((FlightEdge) ddlFlight.getSelectedItem()).getDuration() + " days");
+    if (flight != null) {
+	    lblDestination
+	        .setText("Destination: " + ((FlightEdge) ddlFlight.getSelectedItem()).getDestination());
+	    lblDuration
+	        .setText("Duration: " + ((FlightEdge) ddlFlight.getSelectedItem()).getDuration() + " days");
+    } else {
+    	lblDestination.setText("Destination: ");
+    	lblDuration.setText("Duration: ");
+    }
     ddlFlight.addActionListener(flightListener);
 
     Set<I_Element> checkedElements = elementModel.getTopCheckedElements();

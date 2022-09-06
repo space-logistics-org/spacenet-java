@@ -293,10 +293,13 @@ public class SpaceTransportPanel extends AbstractEventPanel {
         }
       }
     }
-    lblDestination
-        .setText("Destination: " + ((SpaceEdge) ddlTrajectory.getSelectedItem()).getDestination());
-    lblDuration.setText(
-        "Duration: " + ((SpaceEdge) ddlTrajectory.getSelectedItem()).getDuration() + " days");
+    if (trajectory != null) {
+      lblDestination.setText("Destination: " + trajectory.getDestination());
+      lblDuration.setText("Duration: " + trajectory.getDuration() + " days");
+    } else {
+      lblDestination.setText("Destination: ");
+      lblDuration.setText("Duration: ");
+    }
     ddlTrajectory.addItemListener(trajectoryListener);
     if (tabbedBurnPane.getComponentCount() != ((SpaceEdge) ddlTrajectory.getSelectedItem())
         .getBurns().size()) {

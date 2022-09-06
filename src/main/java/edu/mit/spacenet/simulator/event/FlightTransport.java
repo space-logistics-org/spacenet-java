@@ -162,6 +162,9 @@ public class FlightTransport extends AbstractEvent implements I_Transport {
    * @see edu.mit.spacenet.domain.event.I_Transport#getOrigin()
    */
   public Node getOrigin() {
+    if(edge == null) {
+      return null;
+    }
     return edge.getOrigin();
   }
 
@@ -171,6 +174,9 @@ public class FlightTransport extends AbstractEvent implements I_Transport {
    * @see edu.mit.spacenet.domain.event.I_Transport#getDestination()
    */
   public Node getDestination() {
+    if(edge == null) {
+      return null;
+    }
     return edge.getDestination();
   }
 

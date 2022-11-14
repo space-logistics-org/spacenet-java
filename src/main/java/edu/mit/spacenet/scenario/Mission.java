@@ -335,13 +335,16 @@ public class Mission implements Comparable<Mission> {
   public Set<I_Carrier> getDeliveryCarriers() {
     HashSet<I_Carrier> carriers = new HashSet<I_Carrier>();
     for (I_Event e : getEventList()) {
-      if (e instanceof I_Transport && ((I_Transport) e).getDestination().equals(getDestination())) {
-        for (I_Element element : ((I_Transport) e).getElements()) {
-          if (element instanceof I_Carrier) {
-            carriers.add((I_Carrier) element);
+      if (e instanceof I_Transport) {
+        Node destination = ((I_Transport) e).getDestination();
+        if (destination != null && destination.equals(getDestination())) {
+          for (I_Element element : ((I_Transport) e).getElements()) {
+            if (element instanceof I_Carrier) {
+              carriers.add((I_Carrier) element);
+            }
           }
+          break;
         }
-        break;
       }
     }
     return carriers;
@@ -356,14 +359,16 @@ public class Mission implements Comparable<Mission> {
   public Set<I_Carrier> getReturnCarriers() {
     HashSet<I_Carrier> carriers = new HashSet<I_Carrier>();
     for (I_Event e : getEventList()) {
-      if (e instanceof I_Transport
-          && ((I_Transport) e).getDestination().equals(getReturnDestination())) {
-        for (I_Element element : ((I_Transport) e).getElements()) {
-          if (element instanceof I_Carrier) {
-            carriers.add((I_Carrier) element);
+      if (e instanceof I_Transport) {
+        Node destination = ((I_Transport) e).getDestination();
+        if (destination != null && destination.equals(getReturnDestination())) {
+          for (I_Element element : ((I_Transport) e).getElements()) {
+            if (element instanceof I_Carrier) {
+              carriers.add((I_Carrier) element);
+            }
           }
+          break;
         }
-        break;
       }
     }
     return carriers;
@@ -503,9 +508,11 @@ public class Mission implements Comparable<Mission> {
     double departure = -1;
     for (I_Event e : getEventList()) {
       if (e instanceof I_Transport) {
-        if (((I_Transport) e).getDestination().equals(getDestination()) && arrival == -1) {
+        Node destination = ((I_Transport) e).getDestination();
+        Node origin = ((I_Transport) e).getOrigin();
+        if (destination != null && destination.equals(getDestination()) && arrival == -1) {
           arrival = e.getTime() + ((I_Transport) e).getDuration();
-        } else if (((I_Transport) e).getOrigin().equals(getDestination())) {
+        } else if (origin != null && origin.equals(getDestination())) {
           departure = e.getTime();
         }
       }
@@ -529,7 +536,8 @@ public class Mission implements Comparable<Mission> {
     double arrivalTime = -1;
     for (I_Event e : getEventList()) {
       if (e instanceof I_Transport) {
-        if (((I_Transport) e).getDestination().equals(getDestination()) && arrivalTime == -1) {
+        Node destination = ((I_Transport) e).getDestination();
+        if (destination != null && destination.equals(getDestination()) && arrivalTime == -1) {
           arrivalTime = e.getTime() + ((I_Transport) e).getDuration();
         }
       }
@@ -551,10 +559,12 @@ public class Mission implements Comparable<Mission> {
     double transitEnd = -1;
     for (I_Event e : getEventList()) {
       if (e instanceof I_Transport) {
-        if (((I_Transport) e).getDestination().equals(getReturnDestination())) {
+        Node destination = ((I_Transport) e).getDestination();
+        if (destination != null && destination.equals(getReturnDestination())) {
           transitEnd = e.getTime() + ((I_Transport) e).getDuration();
         }
-        if (((I_Transport) e).getOrigin().equals(getReturnOrigin())) {
+        Node origin = ((I_Transport) e).getOrigin();
+        if (origin != null && origin.equals(getReturnOrigin())) {
           transitStart = e.getTime();
         }
       }

@@ -262,11 +262,12 @@ public class SurfaceTransportPanel extends AbstractEventPanel {
         }
       }
     }
-    if (ddlEdge.getSelectedItem() != null) {
-      lblDestination
-          .setText("Destination: " + ((SurfaceEdge) ddlEdge.getSelectedItem()).getDestination());
-      lblDistance.setText(
-          "Distance: " + ((SurfaceEdge) ddlEdge.getSelectedItem()).getDistance() + " kilometers");
+    if (edge != null) {
+      lblDestination.setText("Destination: " + edge.getDestination());
+      lblDistance.setText("Distance: " + edge.getDistance() + " kilometers");
+    } else {
+      lblDestination.setText("Destination: ");
+      lblDistance.setText("Duration: ");
     }
     ddlEdge.addItemListener(edgeListener);
 

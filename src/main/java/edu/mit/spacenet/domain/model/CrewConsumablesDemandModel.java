@@ -133,7 +133,8 @@ public class CrewConsumablesDemandModel extends AbstractDemandModel {
         getEvaLithiumHydroxide() * getMissionEvaCrewTime()));
     demands.add(new Demand(new GenericResource(ClassOfSupply.COS303), getHealthEquipment()));
     demands.add(new Demand(new GenericResource(ClassOfSupply.COS303),
-        getHealthConsumables() * getMissionCrewSize()));
+        (getMissionExplorationDuration() + getMissionTransitDuration()) * getHealthConsumables()
+            * getMissionCrewSize()));
     demands.add(new Demand(new GenericResource(ClassOfSupply.COS304), getSafetyEquipment()));
     demands.add(new Demand(new GenericResource(ClassOfSupply.COS305), getCommEquipment()));
     demands.add(new Demand(new GenericResource(ClassOfSupply.COS306),

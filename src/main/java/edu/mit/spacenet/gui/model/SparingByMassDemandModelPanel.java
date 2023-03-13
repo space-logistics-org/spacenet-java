@@ -137,7 +137,7 @@ public class SparingByMassDemandModelPanel extends AbstractDemandModelPanel {
    */
   private void updateDemands() {
     demandsTable.removeAllDemands();
-    for (Demand demand : demandModel.generateDemands(365.25,
+    for (Demand demand : demandModel.generateDemands(365.0,
         pressRateModel.getNumber().doubleValue() / 100d,
         unpressRateModel.getNumber().doubleValue() / 100d, partsListEnabledCheck.isSelected())) {
       demandsTable.addDemand(demand);

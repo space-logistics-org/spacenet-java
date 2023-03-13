@@ -92,7 +92,7 @@ public class AboutDialog extends JDialog {
     c.fill = GridBagConstraints.BOTH;
     JTextPane textPane = new JTextPane();
     textPane.setText("Copyright (c) 2010 MIT Strategic Engineering Research Group"
-        + "\n\nSpaceNet 2.5r2 is released under the GNU General Public License (GPL) Version 3."
+        + "\n\nSpaceNet 2.5.X is released under the Apache License Version 2.0."
         + "\n\nThis project was paritally supported by the Jet Propulsion Laboratory (JPL) "
         + "under the Strategic University Relations Program (SURP) and contract number 1344341."
         + "\n\nResearch Advisor:\tOlivier de Weck" + "\n\nJPL Contacts:\t\tGene Lee\n\t\tLiz Jordan"

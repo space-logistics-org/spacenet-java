@@ -15,8 +15,8 @@ package edu.mit.spacenet.gui.command;
 
 import java.awt.Component;
 import java.awt.Cursor;
+import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -25,14 +25,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingWorker;
-
 import edu.mit.spacenet.domain.element.Carrier;
 import edu.mit.spacenet.domain.element.CrewMember;
 import edu.mit.spacenet.domain.element.ElementType;
 import edu.mit.spacenet.domain.element.I_Element;
+import edu.mit.spacenet.domain.element.I_State;
 import edu.mit.spacenet.domain.element.PropulsiveVehicle;
 import edu.mit.spacenet.domain.element.ResourceContainer;
 import edu.mit.spacenet.domain.element.SurfaceVehicle;
+import edu.mit.spacenet.domain.model.DemandModelType;
+import edu.mit.spacenet.domain.model.I_DemandModel;
+import edu.mit.spacenet.domain.model.RatedDemandModel;
+import edu.mit.spacenet.domain.model.SparingByMassDemandModel;
+import edu.mit.spacenet.domain.model.TimedImpulseDemandModel;
 import edu.mit.spacenet.gui.ScenarioPanel;
 import edu.mit.spacenet.gui.SpaceNetFrame;
 import edu.mit.spacenet.gui.data.DataSourceDialog;
@@ -108,8 +113,112 @@ public class LoadDataSourceCommand implements I_Command {
                     element.setDescription(mirror.getDescription());
                     element.setEnvironment(mirror.getEnvironment());
                     element.setMass(mirror.getMass());
-                    element.setStates(mirror.getStates());
-                    element.setCurrentState(mirror.getCurrentState());
+                    // add and update states
+                    List<I_State> statesToAdd = new ArrayList<I_State>();
+                    for (I_State mirrorState : mirror.getStates()) {
+                      boolean stateExists = false;
+                      for (I_State elementState : element.getStates()) {
+                        if (mirrorState.getTid() == element.getTid()) {
+                          stateExists = true;
+                          elementState.setName(mirrorState.getName());
+                          elementState.setDescription(mirrorState.getDescription());
+                          elementState.setStateType(mirrorState.getStateType());
+                          // add and update demand models
+                          List<I_DemandModel> modelsToAdd = new ArrayList<I_DemandModel>();
+                          for (I_DemandModel mirrorModel : mirrorState.getDemandModels()) {
+                            boolean modelExists = false;
+                            for (I_DemandModel elementModel : elementState.getDemandModels()) {
+                              modelExists = true;
+                              elementModel.setName(mirrorModel.getName());
+                              elementModel.setDescription(mirrorModel.getDescription());
+                              if (mirrorModel.getClass().equals(elementModel.getClass())) {
+                                if (elementModel.getDemandModelType() == DemandModelType.RATED) {
+                                  ((RatedDemandModel) elementModel).setDemandRates(
+                                      ((RatedDemandModel) mirrorModel).getDemandRates());
+                                } else if (elementModel
+                                    .getDemandModelType() == DemandModelType.TIMED_IMPULSE) {
+                                  ((TimedImpulseDemandModel) elementModel).setDemands(
+                                      ((TimedImpulseDemandModel) mirrorModel).getDemands());
+                                } else if (elementModel
+                                    .getDemandModelType() == DemandModelType.SPARING_BY_MASS) {
+                                  ((SparingByMassDemandModel) elementModel)
+                                      .setPartsListEnabled(((SparingByMassDemandModel) mirrorModel)
+                                          .isPartsListEnabled());
+                                  ((SparingByMassDemandModel) elementModel)
+                                      .setPressurizedSparesRate(
+                                          ((SparingByMassDemandModel) mirrorModel)
+                                              .getPressurizedSparesRate());
+                                  ((SparingByMassDemandModel) elementModel)
+                                      .setUnpressurizedSparesRate(
+                                          ((SparingByMassDemandModel) mirrorModel)
+                                              .getUnpressurizedSparesRate());
+                                  ((SparingByMassDemandModel) elementModel).setElement(element);
+                                }
+                              }
+                            }
+                            if (!modelExists) {
+                              I_DemandModel newModel = mirrorModel;
+                              if (newModel
+                                  .getDemandModelType() == DemandModelType.SPARING_BY_MASS) {
+                                // update element reference for sparing-by-mass demand model
+                                ((SparingByMassDemandModel) newModel).setElement(element);
+                              }
+                              modelsToAdd.add(newModel);
+                            }
+                          }
+                          elementState.getDemandModels().addAll(modelsToAdd);
+                          // remove demand models
+                          List<I_DemandModel> modelsToRemove = new ArrayList<I_DemandModel>();
+                          for (I_DemandModel elementModel : elementState.getDemandModels()) {
+                            boolean modelExists = false;
+                            for (I_DemandModel mirrorModel : mirrorState.getDemandModels()) {
+                              if (mirrorModel.getTid() == elementModel.getTid()) {
+                                modelExists = true;
+                              }
+                            }
+                            if (!modelExists) {
+                              modelsToRemove.add(elementModel);
+                            }
+                          }
+                          elementState.getDemandModels().removeAll(modelsToRemove);
+                        }
+                      }
+                      if (!stateExists) {
+                        I_State newState = mirrorState;
+                        for (I_DemandModel newModel : newState.getDemandModels()) {
+                          if (newModel.getDemandModelType() == DemandModelType.SPARING_BY_MASS) {
+                            // update element reference for sparing-by-mass demand model
+                            ((SparingByMassDemandModel) newModel).setElement(element);
+                          }
+                        }
+                        statesToAdd.add(newState);
+                      }
+                    }
+                    element.getStates().addAll(statesToAdd);
+                    // remove old states
+                    List<I_State> statesToRemove = new ArrayList<I_State>();
+                    for (I_State elementState : element.getStates()) {
+                      boolean stateExists = false;
+                      for (I_State mirrorState : mirror.getStates()) {
+                        if (mirrorState.getTid() == elementState.getTid()) {
+                          stateExists = true;
+                        }
+                      }
+                      if (!stateExists) {
+                        statesToRemove.add(elementState);
+                      }
+                    }
+                    element.getStates().removeAll(statesToRemove);
+                    if (mirror.getCurrentState() == null) {
+                      element.setCurrentState(null);
+                    } else {
+                      for (I_State elementState : element.getStates()) {
+                        if (elementState.getTid() == mirror.getCurrentState().getTid()) {
+                          element.setCurrentState(elementState);
+                          break;
+                        }
+                      }
+                    }
                     element.setParts(mirror.getParts());
                     element.setVolume(mirror.getVolume());
                     element.setIconType(mirror.getIconType());

@@ -24,18 +24,28 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
@@ -43,12 +53,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-
 import edu.mit.spacenet.domain.element.I_Carrier;
 import edu.mit.spacenet.domain.element.I_ResourceContainer;
 import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.gui.ScenarioPanel;
 import edu.mit.spacenet.gui.SpaceNetFrame;
+import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.gui.component.DropDownButton;
 import edu.mit.spacenet.gui.component.ElementTree;
 import edu.mit.spacenet.scenario.Manifest;
@@ -65,6 +75,11 @@ import edu.mit.spacenet.util.GlobalParameters;
  */
 public class ManifestTab extends JSplitPane {
   private static final long serialVersionUID = 8829941616137676449L;
+  private static String ID_OUTPUT = "Object IDs";
+  private static String NAME_OUTPUT = "Object Names";
+  private static String COMMA_DELIMITED = "Comma Delimited";
+  private static String SEMICOLON_DELIMITED = "Semicolon Delimited";
+  private static String TAB_DELIMITED = "Tab Delimited";
 
   private ScenarioPanel scenarioPanel;
   private DemandSimulator simulator;
@@ -72,6 +87,14 @@ public class ManifestTab extends JSplitPane {
   private ManifestWorker manifestWorker;
   private AggregatedDemandsTable aggregatedDemandsTable;
   private JButton clearButton, resetButton, autoManifestButton, unpackButton, autoPackButton;
+
+  private JTextField directoryPathText, fileNameText;
+  private JCheckBox overwriteCheck;
+  private JButton browseButton, exportButton;
+  private JComboBox<String> referenceCombo;
+  private JComboBox<String> delimiterCombo;
+  private JFileChooser directoryChooser;
+  private ExportWorker exportWorker;
 
   private PackedDemandsTable packedDemandsTable;
   private JButton editContainerButton, removeContainerButton;
@@ -111,6 +134,42 @@ public class ManifestTab extends JSplitPane {
     rightPanel.setDividerLocation(1 / 2D);
     rightPanel.setBorder(BorderFactory.createEmptyBorder());
     setBorder(BorderFactory.createEmptyBorder());
+  }
+
+  /**
+   * The Class ExportWorker.
+   */
+  private class ExportWorker extends SwingWorker<Void, Void> {
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jdesktop.swingworker.SwingWorker#doInBackground()
+     */
+    protected Void doInBackground() {
+      try {
+        SpaceNetFrame.getInstance().getStatusBar().setStatusMessage("Exporting Manifest...");
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        writeFile();
+        setCursor(Cursor.getDefaultCursor());
+        SpaceNetFrame.getInstance().getStatusBar().clearStatusMessage();
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+      return null;
+    }
+  }
+
+  /**
+   * Export manifest.
+   */
+  private void exportManifest() {
+    while (exportWorker != null && !exportWorker.isDone() && simWorker != null
+        && !simWorker.isDone()) {
+      // wait until previous simulation and export is complete
+    }
+    exportWorker = new ExportWorker();
+    exportWorker.execute();
   }
 
   /**
@@ -224,8 +283,191 @@ public class ManifestTab extends JSplitPane {
     autoPackButton.setEnabled(false);
     packButtonPanel.add(autoPackButton);
     demandsPanel.add(packButtonPanel, c);
+
+    c.gridy++;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    demandsPanel.add(buildExportPanel(), c);
+
     return demandsPanel;
   }
+
+  /**
+   * Write file.
+   */
+  private void writeFile() {
+    String filePath =
+        directoryPathText.getText() + System.getProperty("file.separator") + fileNameText.getText();
+    char delimiter = ',';
+    if (delimiterCombo.getSelectedItem() == COMMA_DELIMITED) {
+      delimiter = ',';
+    } else if (delimiterCombo.getSelectedItem() == SEMICOLON_DELIMITED) {
+      delimiter = ';';
+    } else if (delimiterCombo.getSelectedItem() == TAB_DELIMITED) {
+      delimiter = '\t';
+    }
+    try {
+      File file = new File(filePath);
+      if (file.exists() && !overwriteCheck.isSelected()) {
+        int answer = JOptionPane.showOptionDialog(getThis(),
+            "Overwrite existing file " + fileNameText.getText() + "?", "SpaceNet Warning",
+            JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+        if (answer == JOptionPane.NO_OPTION)
+          return;
+        else
+          overwriteCheck.setSelected(true);
+      }
+      BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
+      out.write("Origin" + delimiter + "Departure" + delimiter + "Destination" + delimiter
+          + "Arrival" + delimiter + "Carrier" + delimiter + "Cargo Environment" + delimiter
+          + "Cargo Mass Available" + delimiter + "Cargo Volume Available" + delimiter + "Container"
+          + delimiter + "Mass" + delimiter + "Volume" + delimiter + "Cargo Environment" + delimiter
+          + "Cargo Mass Available" + delimiter + "Cargo Volume Available" + delimiter + "Resource"
+          + delimiter + "Environment" + delimiter + "Mass" + delimiter + "Volume"
+          + System.getProperty("line.separator"));
+      for (SupplyEdge edge : this.getManifest().getSupplyEdges()) {
+        for (I_Carrier carrier : edge.getCarriers()) {
+          for (I_ResourceContainer container : this.getManifest().getManifestedContainers(edge,
+              carrier)) {
+            for (Demand demand : this.getManifest().getPackedDemands(container)) {
+              if (referenceCombo.getSelectedItem() == NAME_OUTPUT) {
+                out.write(edge.getOrigin().getName() + delimiter + edge.getStartTime() + delimiter
+                    + edge.getDestination().getName() + delimiter + edge.getEndTime() + delimiter
+                    + carrier.getName() + delimiter + carrier.getCargoEnvironment() + delimiter
+                    + (carrier.getMaxCargoMass() - carrier.getCargoMass()) + delimiter
+                    + (carrier.getMaxCargoVolume() - carrier.getCargoVolume()) + delimiter
+                    + container.getName() + delimiter + container.getMass() + delimiter
+                    + container.getVolume() + delimiter + container.getCargoEnvironment()
+                    + delimiter + (container.getMaxCargoMass() - container.getCargoMass())
+                    + delimiter + (container.getMaxCargoVolume() - container.getCargoVolume())
+                    + delimiter + demand.getResource().getName() + delimiter
+                    + demand.getResource().getEnvironment() + delimiter + demand.getMass()
+                    + delimiter + demand.getVolume() + System.getProperty("line.separator"));
+              } else {
+                out.write("" + edge.getOrigin().getTid() + delimiter + edge.getStartTime()
+                    + delimiter + edge.getDestination().getTid() + delimiter + edge.getEndTime()
+                    + delimiter + carrier.getUid() + delimiter + carrier.getCargoEnvironment()
+                    + delimiter + (carrier.getMaxCargoMass() - carrier.getCargoMass()) + delimiter
+                    + (carrier.getMaxCargoVolume() - carrier.getCargoVolume()) + delimiter
+                    + container.getUid() + delimiter + container.getMass() + delimiter
+                    + container.getVolume() + delimiter + container.getCargoEnvironment()
+                    + delimiter + (container.getMaxCargoMass() - container.getCargoMass())
+                    + delimiter + (container.getMaxCargoVolume() - container.getCargoVolume())
+                    + delimiter + demand.getResource().getTid() + delimiter
+                    + demand.getResource().getEnvironment() + delimiter + demand.getMass()
+                    + delimiter + demand.getVolume() + System.getProperty("line.separator"));
+              }
+            }
+          }
+        }
+      }
+      out.close();
+    } catch (IOException ex) {
+      JOptionPane.showMessageDialog(this,
+          "An error of type \"" + ex.getClass().getSimpleName()
+              + "\" occurred while exporting the demands",
+          "SpaceNet Error", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  private JPanel buildExportPanel() {
+    directoryChooser = new JFileChooser();
+    directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+    JPanel exportPanel = new JPanel();
+    exportPanel.setBorder(BorderFactory.createTitledBorder("Export Manifest"));
+    exportPanel.setLayout(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints();
+    c.gridx = 0;
+    c.gridy = 0;
+    c.insets = new Insets(2, 2, 2, 2);
+    c.anchor = GridBagConstraints.LINE_END;
+    c.fill = GridBagConstraints.NONE;
+    exportPanel.add(new JLabel("Directory: "), c);
+    c.gridy++;
+    exportPanel.add(new JLabel("File Name: "), c);
+    c.gridy += 2;
+    exportPanel.add(new JLabel("Output: "), c);
+    c.gridy++;
+    exportPanel.add(new JLabel("Delimiter: "), c);
+    c.gridy = 0;
+    c.gridx++;
+    c.weightx = 1;
+    c.anchor = GridBagConstraints.LINE_START;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    directoryPathText = new JTextField();
+    directoryPathText.setEnabled(false);
+    exportPanel.add(directoryPathText, c);
+    c.anchor = GridBagConstraints.LINE_END;
+    c.fill = GridBagConstraints.NONE;
+    c.gridx++;
+    c.weightx = 0;
+    browseButton = new JButton(
+        new ImageIcon(getClass().getClassLoader().getResource("icons/folder_explore.png")));
+    browseButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        if (directoryPathText.getText() == "") {
+          directoryChooser
+              .setCurrentDirectory(new File(SpaceNetSettings.getInstance().getDefaultDirectory()));
+        }
+        int returnVal = directoryChooser.showOpenDialog(getThis());
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+          directoryPathText.setText(directoryChooser.getSelectedFile().getAbsolutePath());
+        }
+        exportButton.setEnabled(directoryPathText.getText() != "" && fileNameText.getText() != "");
+      }
+    });
+    exportPanel.add(browseButton, c);
+    c.gridy++;
+    c.gridx--;
+    c.gridwidth = 2;
+    c.weightx = 1;
+    c.anchor = GridBagConstraints.LINE_START;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    fileNameText = new JTextField(15);
+    fileNameText.addKeyListener(new KeyAdapter() {
+      public void keyTyped(KeyEvent e) {
+        exportButton.setEnabled(directoryPathText.getText() != "" && fileNameText.getText() != "");
+      }
+    });
+    exportPanel.add(fileNameText, c);
+    c.gridy++;
+    overwriteCheck = new JCheckBox("Overwrite existing files", false);
+    exportPanel.add(overwriteCheck, c);
+    c.gridy++;
+    referenceCombo = new JComboBox<String>();
+    referenceCombo.addItem(NAME_OUTPUT);
+    referenceCombo.addItem(ID_OUTPUT);
+    exportPanel.add(referenceCombo, c);
+    c.gridy++;
+    delimiterCombo = new JComboBox<String>();
+    delimiterCombo.addItem(TAB_DELIMITED);
+    delimiterCombo.addItem(COMMA_DELIMITED);
+    delimiterCombo.addItem(SEMICOLON_DELIMITED);
+    exportPanel.add(delimiterCombo, c);
+    c.gridy++;
+    c.anchor = GridBagConstraints.LINE_END;
+    c.fill = GridBagConstraints.NONE;
+    exportButton = new JButton("Export",
+        new ImageIcon(getClass().getClassLoader().getResource("icons/page_white_edit.png")));
+    exportButton.setEnabled(false);
+    exportButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        exportManifest();
+      }
+    });
+    exportPanel.add(exportButton, c);
+    return exportPanel;
+  }
+
+  /**
+   * Gets this.
+   * 
+   * @return this
+   */
+  private ManifestTab getThis() {
+    return this;
+  }
+
 
   /**
    * Builds the packing panel.

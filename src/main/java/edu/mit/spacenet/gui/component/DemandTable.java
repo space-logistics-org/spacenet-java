@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 
 import edu.mit.spacenet.domain.ClassOfSupply;
+import edu.mit.spacenet.domain.Environment;
 import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.domain.resource.GenericResource;
 import edu.mit.spacenet.domain.resource.I_Resource;
@@ -65,8 +66,10 @@ public class DemandTable extends JTable {
     getColumnModel().getColumn(0).setCellRenderer(new ResourceTypeTableCellRenderer());
     getColumnModel().getColumn(0).setMaxWidth(100);
     getColumnModel().getColumn(1).setHeaderValue("Resource");
-    getColumnModel().getColumn(2).setHeaderValue("Amount");
-    getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
+    getColumnModel().getColumn(2).setHeaderValue("Environment");
+    getColumnModel().getColumn(2).setMaxWidth(75);
+    getColumnModel().getColumn(3).setHeaderValue("Amount");
+    getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
       private static final long serialVersionUID = 2092491034324672219L;
       private DecimalFormat format = new DecimalFormat("0.00");
 
@@ -78,12 +81,12 @@ public class DemandTable extends JTable {
         return this;
       }
     });
-    getColumnModel().getColumn(2).setMaxWidth(75);
-    getColumnModel().getColumn(3).setHeaderValue("Units");
     getColumnModel().getColumn(3).setMaxWidth(75);
+    getColumnModel().getColumn(4).setHeaderValue("Units");
+    getColumnModel().getColumn(4).setMaxWidth(75);
     DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
     renderer.setHorizontalAlignment(JLabel.CENTER);
-    getColumnModel().getColumn(3).setCellRenderer(renderer);
+    getColumnModel().getColumn(4).setCellRenderer(renderer);
     getTableHeader().setReorderingAllowed(false);
   }
 
@@ -128,6 +131,23 @@ public class DemandTable extends JTable {
         }
       }
       return new DefaultCellEditor(comboBox);
+    } else if (col == 2) {
+      JComboBox<Environment> comboBox = new JComboBox<Environment>();
+      comboBox.setRenderer(new DefaultListCellRenderer() {
+        private static final long serialVersionUID = 1L;
+
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+            boolean isSelected, boolean cellHasFocus) {
+          JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,
+              cellHasFocus);
+          return label;
+        }
+      });
+      for (Environment e : Environment.values()) {
+        comboBox.addItem(e);
+      }
+      comboBox.setSelectedItem(getValueAt(row, col));
+      return new DefaultCellEditor(comboBox);
     } else {
       return super.getCellEditor(row, col);
     }
@@ -145,7 +165,7 @@ public class DemandTable extends JTable {
     }
 
     public int getColumnCount() {
-      return 4;
+      return 5;
     }
 
     public int getRowCount() {
@@ -153,10 +173,13 @@ public class DemandTable extends JTable {
     }
 
     public boolean isCellEditable(int row, int col) {
-      if (col == 3)
+      if (col == 2) {
+        return data.get(row).getResource() != null && data.get(row).getResource().getResourceType() == ResourceType.GENERIC;
+      } else if (col == 4) {
         return false;
-      else
+      } else {
         return true;
+      }
     }
 
     public Class<?> getColumnClass(int col) {
@@ -165,6 +188,8 @@ public class DemandTable extends JTable {
       } else if (col == 1) {
         return Demand.class;
       } else if (col == 2) {
+        return Environment.class;
+      } else if (col == 3) {
         return Double.class;
       } else
         return String.class;
@@ -176,6 +201,12 @@ public class DemandTable extends JTable {
       } else if (col == 1) {
         return data.get(row).getResource();
       } else if (col == 2) {
+        if (data.get(row).getResource() != null) {
+          return data.get(row).getResource().getEnvironment();
+        } else {
+          return Environment.UNPRESSURIZED;
+        }
+      } else if (col == 3) {
         return data.get(row).getAmount();
       } else {
         if (data.get(row).getResource() != null)
@@ -190,7 +221,12 @@ public class DemandTable extends JTable {
         dataType.put(data.get(row), (ResourceType) value);
       } else if (col == 1) {
         data.get(row).setResource((I_Resource) value);
-        fireTableCellUpdated(row, 3);
+        fireTableCellUpdated(row, 2);
+        fireTableCellUpdated(row, 4);
+      } else if (col == 2) {
+        if(data.get(row).getResource() != null) {
+          data.get(row).getResource().setEnvironment((Environment) value);
+        }
       } else {
         data.get(row).setAmount((Double) value);
       }

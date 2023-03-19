@@ -80,6 +80,10 @@ public class ManifestTab extends JSplitPane {
   private static String COMMA_DELIMITED = "Comma Delimited";
   private static String SEMICOLON_DELIMITED = "Semicolon Delimited";
   private static String TAB_DELIMITED = "Tab Delimited";
+  private static String NO_AGGREGATION = "No Aggregation";
+  private static String CONTAINER_AGGREGATION = "Container Aggregation";
+  private static String CARRIER_AGGREGATION = "Carrier Aggregation";
+  private static String TRANSPORT_AGGREGATION = "Transport Aggregation";
 
   private ScenarioPanel scenarioPanel;
   private DemandSimulator simulator;
@@ -93,6 +97,7 @@ public class ManifestTab extends JSplitPane {
   private JButton browseButton, exportButton;
   private JComboBox<String> referenceCombo;
   private JComboBox<String> delimiterCombo;
+  private JComboBox<String> aggregationCombo;
   private JFileChooser directoryChooser;
   private ExportWorker exportWorker;
 
@@ -317,46 +322,169 @@ public class ManifestTab extends JSplitPane {
           overwriteCheck.setSelected(true);
       }
       BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
-      out.write("Origin" + delimiter + "Departure" + delimiter + "Destination" + delimiter
-          + "Arrival" + delimiter + "Carrier" + delimiter + "Cargo Environment" + delimiter
-          + "Cargo Mass Available" + delimiter + "Cargo Volume Available" + delimiter + "Container"
-          + delimiter + "Mass" + delimiter + "Volume" + delimiter + "Cargo Environment" + delimiter
-          + "Cargo Mass Available" + delimiter + "Cargo Volume Available" + delimiter + "Resource"
-          + delimiter + "Environment" + delimiter + "Mass" + delimiter + "Volume"
-          + System.getProperty("line.separator"));
-      for (SupplyEdge edge : this.getManifest().getSupplyEdges()) {
-        for (I_Carrier carrier : edge.getCarriers()) {
-          for (I_ResourceContainer container : this.getManifest().getManifestedContainers(edge,
-              carrier)) {
-            for (Demand demand : this.getManifest().getPackedDemands(container)) {
+
+      if (aggregationCombo.getSelectedItem() == NO_AGGREGATION) {
+        out.write("Origin" + delimiter + "Departure" + delimiter + "Destination" + delimiter
+            + "Arrival" + delimiter + "Carrier" + delimiter + "Cargo Environment" + delimiter
+            + "Cargo Mass Available" + delimiter + "Cargo Volume Available" + delimiter
+            + "Container" + delimiter + "Environment" + delimiter + "Mass" + delimiter + "Volume"
+            + delimiter + "Cargo Environment" + delimiter + "Cargo Mass Available" + delimiter
+            + "Cargo Volume Available" + delimiter + "Resource" + delimiter + "Environment"
+            + delimiter + "Mass" + delimiter + "Volume" + System.getProperty("line.separator"));
+        for (SupplyEdge edge : this.getManifest().getSupplyEdges()) {
+          for (I_Carrier carrier : edge.getCarriers()) {
+            for (I_ResourceContainer container : this.getManifest().getManifestedContainers(edge,
+                carrier)) {
+              for (Demand demand : this.getManifest().getPackedDemands(container)) {
+                if (referenceCombo.getSelectedItem() == NAME_OUTPUT) {
+                  out.write(edge.getOrigin().getName() + delimiter + edge.getStartTime() + delimiter
+                      + edge.getDestination().getName() + delimiter + edge.getEndTime() + delimiter
+                      + carrier.getName() + delimiter + carrier.getCargoEnvironment() + delimiter
+                      + (carrier.getMaxCargoMass() - carrier.getCargoMass()) + delimiter
+                      + (carrier.getMaxCargoVolume() - carrier.getCargoVolume()) + delimiter
+                      + container.getName() + delimiter + container.getEnvironment() + delimiter
+                      + container.getMass() + delimiter + container.getVolume() + delimiter
+                      + container.getCargoEnvironment() + delimiter
+                      + (container.getMaxCargoMass() - container.getCargoMass()) + delimiter
+                      + (container.getMaxCargoVolume() - container.getCargoVolume()) + delimiter
+                      + demand.getResource().getName() + delimiter
+                      + demand.getResource().getEnvironment() + delimiter + demand.getMass()
+                      + delimiter + demand.getVolume() + System.getProperty("line.separator"));
+                } else {
+                  out.write("" + edge.getOrigin().getTid() + delimiter + edge.getStartTime()
+                      + delimiter + edge.getDestination().getTid() + delimiter + edge.getEndTime()
+                      + delimiter + carrier.getUid() + delimiter + carrier.getCargoEnvironment()
+                      + delimiter + (carrier.getMaxCargoMass() - carrier.getCargoMass()) + delimiter
+                      + (carrier.getMaxCargoVolume() - carrier.getCargoVolume()) + delimiter
+                      + container.getUid() + delimiter + container.getEnvironment() + delimiter
+                      + container.getMass() + delimiter + container.getVolume() + delimiter
+                      + container.getCargoEnvironment() + delimiter
+                      + (container.getMaxCargoMass() - container.getCargoMass()) + delimiter
+                      + (container.getMaxCargoVolume() - container.getCargoVolume()) + delimiter
+                      + demand.getResource().getTid() + delimiter
+                      + demand.getResource().getEnvironment() + delimiter + demand.getMass()
+                      + delimiter + demand.getVolume() + System.getProperty("line.separator"));
+                }
+              }
+            }
+          }
+        }
+      } else if (aggregationCombo.getSelectedItem() == CONTAINER_AGGREGATION) {
+        out.write("Origin" + delimiter + "Departure" + delimiter + "Destination" + delimiter
+            + "Arrival" + delimiter + "Carrier" + delimiter + "Cargo Environment" + delimiter
+            + "Cargo Mass Available" + delimiter + "Cargo Volume Available" + delimiter
+            + "Container" + delimiter + "Environment" + delimiter + "Mass" + delimiter + "Volume"
+            + delimiter + "Cargo Environment" + delimiter + "Cargo Mass Available" + delimiter
+            + "Cargo Volume Available" + delimiter + "Packed Mass" + delimiter + "Packed Volume"
+            + System.getProperty("line.separator"));
+        for (SupplyEdge edge : this.getManifest().getSupplyEdges()) {
+          for (I_Carrier carrier : edge.getCarriers()) {
+            for (I_ResourceContainer container : this.getManifest().getManifestedContainers(edge,
+                carrier)) {
+              double packedMass = 0;
+              double packedVolume = 0;
+              for (Demand demand : this.getManifest().getPackedDemands(container)) {
+                packedMass += demand.getMass();
+                packedVolume += demand.getVolume();
+              }
               if (referenceCombo.getSelectedItem() == NAME_OUTPUT) {
                 out.write(edge.getOrigin().getName() + delimiter + edge.getStartTime() + delimiter
                     + edge.getDestination().getName() + delimiter + edge.getEndTime() + delimiter
                     + carrier.getName() + delimiter + carrier.getCargoEnvironment() + delimiter
                     + (carrier.getMaxCargoMass() - carrier.getCargoMass()) + delimiter
                     + (carrier.getMaxCargoVolume() - carrier.getCargoVolume()) + delimiter
-                    + container.getName() + delimiter + container.getMass() + delimiter
-                    + container.getVolume() + delimiter + container.getCargoEnvironment()
-                    + delimiter + (container.getMaxCargoMass() - container.getCargoMass())
-                    + delimiter + (container.getMaxCargoVolume() - container.getCargoVolume())
-                    + delimiter + demand.getResource().getName() + delimiter
-                    + demand.getResource().getEnvironment() + delimiter + demand.getMass()
-                    + delimiter + demand.getVolume() + System.getProperty("line.separator"));
+                    + container.getName() + delimiter + container.getEnvironment() + delimiter
+                    + container.getMass() + delimiter + container.getVolume() + delimiter
+                    + container.getCargoEnvironment() + delimiter
+                    + (container.getMaxCargoMass() - container.getCargoMass()) + delimiter
+                    + (container.getMaxCargoVolume() - container.getCargoVolume()) + delimiter
+                    + packedMass + delimiter + packedVolume + System.getProperty("line.separator"));
               } else {
                 out.write("" + edge.getOrigin().getTid() + delimiter + edge.getStartTime()
                     + delimiter + edge.getDestination().getTid() + delimiter + edge.getEndTime()
                     + delimiter + carrier.getUid() + delimiter + carrier.getCargoEnvironment()
                     + delimiter + (carrier.getMaxCargoMass() - carrier.getCargoMass()) + delimiter
                     + (carrier.getMaxCargoVolume() - carrier.getCargoVolume()) + delimiter
-                    + container.getUid() + delimiter + container.getMass() + delimiter
-                    + container.getVolume() + delimiter + container.getCargoEnvironment()
-                    + delimiter + (container.getMaxCargoMass() - container.getCargoMass())
-                    + delimiter + (container.getMaxCargoVolume() - container.getCargoVolume())
-                    + delimiter + demand.getResource().getTid() + delimiter
-                    + demand.getResource().getEnvironment() + delimiter + demand.getMass()
-                    + delimiter + demand.getVolume() + System.getProperty("line.separator"));
+                    + container.getUid() + delimiter + container.getEnvironment() + delimiter
+                    + container.getMass() + delimiter + container.getVolume() + delimiter
+                    + container.getCargoEnvironment() + delimiter
+                    + (container.getMaxCargoMass() - container.getCargoMass()) + delimiter
+                    + (container.getMaxCargoVolume() - container.getCargoVolume()) + delimiter
+                    + packedMass + delimiter + packedVolume + System.getProperty("line.separator"));
               }
             }
+          }
+        }
+      } else if (aggregationCombo.getSelectedItem() == CARRIER_AGGREGATION) {
+        out.write("Origin" + delimiter + "Departure" + delimiter + "Destination" + delimiter
+            + "Arrival" + delimiter + "Carrier" + delimiter + "Cargo Environment" + delimiter
+            + "Cargo Mass Available" + delimiter + "Cargo Volume Available" + delimiter
+            + "Manifested Mass" + delimiter + "Manifested Volume"
+            + System.getProperty("line.separator"));
+        for (SupplyEdge edge : this.getManifest().getSupplyEdges()) {
+          for (I_Carrier carrier : edge.getCarriers()) {
+            double manifestedMass = 0;
+            double manifestedVolume = 0;
+            for (I_ResourceContainer container : this.getManifest().getManifestedContainers(edge,
+                carrier)) {
+              manifestedMass += container.getMass();
+              manifestedVolume += container.getVolume();
+              for (Demand demand : this.getManifest().getPackedDemands(container)) {
+                manifestedMass += demand.getMass();
+              }
+            }
+            if (referenceCombo.getSelectedItem() == NAME_OUTPUT) {
+              out.write(edge.getOrigin().getName() + delimiter + edge.getStartTime() + delimiter
+                  + edge.getDestination().getName() + delimiter + edge.getEndTime() + delimiter
+                  + carrier.getName() + delimiter + carrier.getCargoEnvironment() + delimiter
+                  + (carrier.getMaxCargoMass() - carrier.getCargoMass()) + delimiter
+                  + (carrier.getMaxCargoVolume() - carrier.getCargoVolume()) + delimiter
+                  + manifestedMass + delimiter + manifestedVolume
+                  + System.getProperty("line.separator"));
+            } else {
+              out.write("" + edge.getOrigin().getTid() + delimiter + edge.getStartTime()
+                  + delimiter + edge.getDestination().getTid() + delimiter + edge.getEndTime()
+                  + delimiter + carrier.getUid() + delimiter + carrier.getCargoEnvironment()
+                  + delimiter + (carrier.getMaxCargoMass() - carrier.getCargoMass()) + delimiter
+                  + (carrier.getMaxCargoVolume() - carrier.getCargoVolume()) + delimiter
+                  + manifestedMass + delimiter + manifestedVolume
+                  + System.getProperty("line.separator"));
+            }
+          }
+        }
+      } else if (aggregationCombo.getSelectedItem() == TRANSPORT_AGGREGATION) {
+        out.write("Origin" + delimiter + "Departure" + delimiter + "Destination" + delimiter
+            + "Arrival" + delimiter + "Cargo Mass Available" + delimiter + "Cargo Volume Available"
+            + delimiter + "Manifested Mass" + delimiter + "Manifested Volume"
+            + System.getProperty("line.separator"));
+        for (SupplyEdge edge : this.getManifest().getSupplyEdges()) {
+          double cargoMass = 0;
+          double cargoVolume = 0;
+          double manifestedMass = 0;
+          double manifestedVolume = 0;
+          for (I_Carrier carrier : edge.getCarriers()) {
+            cargoMass += (carrier.getMaxCargoMass() - carrier.getCargoMass());
+            cargoVolume += (carrier.getMaxCargoVolume() - carrier.getCargoVolume());
+
+            for (I_ResourceContainer container : this.getManifest().getManifestedContainers(edge,
+                carrier)) {
+              manifestedMass += container.getMass();
+              manifestedVolume += container.getVolume();
+              for (Demand demand : this.getManifest().getPackedDemands(container)) {
+                manifestedMass += demand.getMass();
+              }
+            }
+          }
+          if (referenceCombo.getSelectedItem() == NAME_OUTPUT) {
+            out.write(edge.getOrigin().getName() + delimiter + edge.getStartTime() + delimiter
+                + edge.getDestination().getName() + delimiter + edge.getEndTime() + delimiter
+                + cargoMass + delimiter + cargoVolume + delimiter + manifestedMass + delimiter
+                + manifestedVolume + System.getProperty("line.separator"));
+          } else {
+            out.write("" + edge.getOrigin().getTid() + delimiter + edge.getStartTime() + delimiter
+                + edge.getDestination().getTid() + delimiter + edge.getEndTime() + delimiter
+                + cargoMass + delimiter + cargoVolume + delimiter + manifestedMass + delimiter
+                + manifestedVolume + System.getProperty("line.separator"));
           }
         }
       }
@@ -386,6 +514,8 @@ public class ManifestTab extends JSplitPane {
     c.gridy++;
     exportPanel.add(new JLabel("File Name: "), c);
     c.gridy += 2;
+    exportPanel.add(new JLabel("Aggregation: "), c);
+    c.gridy++;
     exportPanel.add(new JLabel("Output: "), c);
     c.gridy++;
     exportPanel.add(new JLabel("Delimiter: "), c);
@@ -433,6 +563,13 @@ public class ManifestTab extends JSplitPane {
     c.gridy++;
     overwriteCheck = new JCheckBox("Overwrite existing files", false);
     exportPanel.add(overwriteCheck, c);
+    c.gridy++;
+    aggregationCombo = new JComboBox<String>();
+    aggregationCombo.addItem(NO_AGGREGATION);
+    aggregationCombo.addItem(CONTAINER_AGGREGATION);
+    aggregationCombo.addItem(CARRIER_AGGREGATION);
+    aggregationCombo.addItem(TRANSPORT_AGGREGATION);
+    exportPanel.add(aggregationCombo, c);
     c.gridy++;
     referenceCombo = new JComboBox<String>();
     referenceCombo.addItem(NAME_OUTPUT);

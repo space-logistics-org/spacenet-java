@@ -21,14 +21,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
-
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.Environment;
 import edu.mit.spacenet.domain.element.Carrier;
@@ -64,6 +63,7 @@ import edu.mit.spacenet.domain.network.node.NodeType;
 import edu.mit.spacenet.domain.network.node.OrbitalNode;
 import edu.mit.spacenet.domain.network.node.SurfaceNode;
 import edu.mit.spacenet.domain.resource.Demand;
+import edu.mit.spacenet.domain.resource.GenericResource;
 import edu.mit.spacenet.domain.resource.I_Resource;
 import edu.mit.spacenet.domain.resource.Item;
 import edu.mit.spacenet.domain.resource.Resource;
@@ -635,6 +635,24 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
     }
   }
 
+  /**
+   * Loads a resource from a cell reference, allowing generic resource environment encoding.
+   *
+   * @param cell the cell
+   * @return the i resource
+   */
+  private I_Resource loadResource(Cell cell) {
+    if (cell.getCellType() == CellType.NUMERIC) {
+      return loadResource((int) cell.getNumericCellValue());
+    }
+    int cos = Integer.parseInt(cell.getStringCellValue().substring(1));
+    if (cell.getStringCellValue().substring(0, 1).toLowerCase().equals("p")) {
+      return new GenericResource(ClassOfSupply.getInstance(cos), Environment.PRESSURIZED);
+    } else {
+      return new GenericResource(ClassOfSupply.getInstance(cos), Environment.UNPRESSURIZED);
+    }
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -686,8 +704,8 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
                 .setMaxAmount(row.getCell(ELEMENT_MAX_FUEL).getNumericCellValue());
             ((SurfaceVehicle) e).getFuelTank()
                 .setAmount(row.getCell(ELEMENT_MAX_FUEL).getNumericCellValue());
-            ((SurfaceVehicle) e).getFuelTank().setResource(
-                loadResource((int) row.getCell(ELEMENT_FUEL_ID).getNumericCellValue()));
+            ((SurfaceVehicle) e).getFuelTank()
+                .setResource(loadResource(row.getCell(ELEMENT_FUEL_ID)));
           } else if (ElementType.PROPULSIVE_VEHICLE.getName().toLowerCase().contains(elementType)) {
             e = new PropulsiveVehicle();
             ((PropulsiveVehicle) e)
@@ -705,8 +723,8 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
                   .setMaxAmount(row.getCell(ELEMENT_MAX_OMS).getNumericCellValue());
               ((PropulsiveVehicle) e).getOmsFuelTank()
                   .setAmount(row.getCell(ELEMENT_MAX_OMS).getNumericCellValue());
-              ((PropulsiveVehicle) e).getOmsFuelTank().setResource(
-                  loadResource((int) row.getCell(ELEMENT_OMS_ID).getNumericCellValue()));
+              ((PropulsiveVehicle) e).getOmsFuelTank()
+                  .setResource(loadResource(row.getCell(ELEMENT_OMS_ID)));
             } else {
               ((PropulsiveVehicle) e).setOmsFuelTank(null);
             }
@@ -716,8 +734,8 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
                   .setMaxAmount(row.getCell(ELEMENT_MAX_RCS).getNumericCellValue());
               ((PropulsiveVehicle) e).getRcsFuelTank()
                   .setAmount(row.getCell(ELEMENT_MAX_RCS).getNumericCellValue());
-              ((PropulsiveVehicle) e).getRcsFuelTank().setResource(
-                  loadResource((int) row.getCell(ELEMENT_RCS_ID).getNumericCellValue()));
+              ((PropulsiveVehicle) e).getRcsFuelTank()
+                  .setResource(loadResource(row.getCell(ELEMENT_RCS_ID)));
             } else if (((PropulsiveVehicle) e).getRcsIsp() > 0) {
               ((PropulsiveVehicle) e).getContents()
                   .remove(((PropulsiveVehicle) e).getRcsFuelTank());
@@ -748,7 +766,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
                 continue;
               if (r.getCell(DEMAND_CONTAINER_ID).getNumericCellValue() == e.getTid()) {
                 ((ResourceContainer) e).getContents().put(
-                    loadResource((int) r.getCell(DEMAND_RESOURCE_ID).getNumericCellValue()),
+                    loadResource(r.getCell(DEMAND_RESOURCE_ID)),
                     r.getCell(DEMAND_AMOUNT).getNumericCellValue());
               }
             }
@@ -780,8 +798,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
         if (row.getCell(PART_ELEMENT_ID).getNumericCellValue() == element.getTid()) {
           PartApplication partApp = new PartApplication();
           partApp.setTid((int) row.getCell(PART_ID).getNumericCellValue());
-          partApp.setPart(
-              (Item) loadResource((int) row.getCell(PART_RESOURCE_ID).getNumericCellValue()));
+          partApp.setPart((Item) loadResource(row.getCell(PART_RESOURCE_ID)));
           partApp.setQuantity((int) row.getCell(PART_QUANTITY).getNumericCellValue());
           partApp.setDutyCycle(row.getCell(PART_DUTY_CYCLE).getNumericCellValue());
           partApp.setMeanTimeToFailure(row.getCell(PART_MTTF).getNumericCellValue());
@@ -842,8 +859,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
                 continue;
               if (r.getCell(DEMAND_MODEL_ID).getNumericCellValue() == model.getTid()) {
                 Demand demand = new Demand();
-                demand.setResource(
-                    loadResource((int) r.getCell(DEMAND_RESOURCE_ID).getNumericCellValue()));
+                demand.setResource(loadResource(r.getCell(DEMAND_RESOURCE_ID)));
                 demand.setAmount(r.getCell(DEMAND_AMOUNT).getNumericCellValue());
                 model.getDemands().add(demand);
               }
@@ -858,8 +874,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
                 continue;
               if (r.getCell(DEMAND_MODEL_ID).getNumericCellValue() == model.getTid()) {
                 Demand demand = new Demand();
-                demand.setResource(
-                    loadResource((int) r.getCell(DEMAND_RESOURCE_ID).getNumericCellValue()));
+                demand.setResource(loadResource(r.getCell(DEMAND_RESOURCE_ID)));
                 demand.setAmount(r.getCell(DEMAND_AMOUNT).getNumericCellValue());
                 model.getDemandRates().add(demand);
               }
@@ -1034,7 +1049,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
       if (row.getRowNum() == 0 || isRowEmpty(row))
         continue;
       try {
-        I_Resource r = loadResource((int) row.getCell(RESOURCE_ID).getNumericCellValue());
+        I_Resource r = loadResource(row.getCell(RESOURCE_ID));
         String resourceType = row.getCell(RESOURCE_TYPE).getStringCellValue().toLowerCase();
         if (r == null || !r.getResourceType().getName().toLowerCase().contains(resourceType)) {
           resourceTypeLibrary.remove(r);
@@ -1185,6 +1200,45 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
     }
   }
 
+  /**
+   * Gets the generic resource encoding.
+   *
+   * @param resource the resource
+   * @return the generic resource encoding
+   */
+  private String getGenericResourceEncoding(I_Resource resource) {
+    String env = resource.getEnvironment() == Environment.PRESSURIZED ? "P" : "U";
+    return env + -resource.getTid();
+  }
+
+  /**
+   * Save resource, allowing for generic resource environment encoding.
+   *
+   * @param cell the cell
+   * @param resource the resource
+   */
+  private void saveResource(Cell cell, I_Resource resource) {
+    if (resource.getTid() > 0) {
+      cell.setCellValue(resource.getTid());
+    } else {
+      cell.setCellValue(getGenericResourceEncoding(resource));
+    }
+  }
+
+  /**
+   * Checks if is cell is a resource match.
+   *
+   * @param cell the cell
+   * @param resource the resource
+   * @return true, if is cell resource match
+   */
+  private boolean isCellResourceMatch(Cell cell, I_Resource resource) {
+    return (cell.getCellType() == CellType.NUMERIC
+        && resource.getTid() == cell.getNumericCellValue())
+        || (cell.getCellType() == CellType.STRING
+            && getGenericResourceEncoding(resource).equals(cell.getStringCellValue()));
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -1256,8 +1310,8 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
         row.getCell(ELEMENT_OMS_ISP).setCellValue(((PropulsiveVehicle) element).getOmsIsp());
         row.getCell(ELEMENT_MAX_OMS)
             .setCellValue(((PropulsiveVehicle) element).getOmsFuelTank().getMaxAmount());
-        row.getCell(ELEMENT_OMS_ID)
-            .setCellValue(((PropulsiveVehicle) element).getOmsFuelTank().getResource().getTid());
+        saveResource(row.getCell(ELEMENT_OMS_ID),
+            ((PropulsiveVehicle) element).getOmsFuelTank().getResource());
       } else {
         row.getCell(ELEMENT_OMS_ISP).setCellValue(0);
         row.getCell(ELEMENT_MAX_OMS).setCellValue(0);
@@ -1273,8 +1327,8 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
         } else {
           row.getCell(ELEMENT_MAX_RCS)
               .setCellValue(((PropulsiveVehicle) element).getRcsFuelTank().getMaxAmount());
-          row.getCell(ELEMENT_RCS_ID)
-              .setCellValue(((PropulsiveVehicle) element).getRcsFuelTank().getResource().getTid());
+          saveResource(row.getCell(ELEMENT_RCS_ID),
+              ((PropulsiveVehicle) element).getRcsFuelTank().getResource());
         }
       } else {
         row.getCell(ELEMENT_RCS_ISP).setCellValue(0);
@@ -1291,8 +1345,8 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
       row.getCell(ELEMENT_MAX_SPEED).setCellValue(((SurfaceVehicle) element).getMaxSpeed());
       row.getCell(ELEMENT_MAX_FUEL)
           .setCellValue(((SurfaceVehicle) element).getFuelTank().getMaxAmount());
-      row.getCell(ELEMENT_FUEL_ID)
-          .setCellValue(((SurfaceVehicle) element).getFuelTank().getResource().getTid());
+      saveResource(row.getCell(ELEMENT_FUEL_ID),
+          ((SurfaceVehicle) element).getFuelTank().getResource());
     }
     saveParts(wb, element);
     saveStates(wb, element);
@@ -1316,7 +1370,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
           && row.getCell(DEMAND_CONTAINER_ID).getNumericCellValue() == container.getTid()) {
         boolean isDemandFound = false;
         for (I_Resource resource : container.getContents().keySet()) {
-          if (resource.getTid() == row.getCell(DEMAND_RESOURCE_ID).getNumericCellValue()) {
+          if (isCellResourceMatch(row.getCell(DEMAND_RESOURCE_ID), resource)) {
             isDemandFound = true;
             break;
           }
@@ -1335,7 +1389,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
           continue;
         if (row.getCell(DEMAND_CONTAINER_ID).getCellType() == CellType.NUMERIC
             && row.getCell(DEMAND_CONTAINER_ID).getNumericCellValue() == container.getTid()
-            && row.getCell(DEMAND_RESOURCE_ID).getNumericCellValue() == resource.getTid()) {
+            && isCellResourceMatch(row.getCell(DEMAND_RESOURCE_ID), resource)) {
           rowNum = row.getRowNum();
           tid = (int) row.getCell(DEMAND_ID).getNumericCellValue();
         }
@@ -1354,7 +1408,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
         row = sheet.getRow(rowNum);
       }
       row.getCell(DEMAND_ID).setCellValue(tid);
-      row.getCell(DEMAND_RESOURCE_ID).setCellValue(resource.getTid());
+      saveResource(row.getCell(DEMAND_RESOURCE_ID), resource);
       row.getCell(DEMAND_AMOUNT).setCellValue(container.getContents().get(resource));
       row.getCell(DEMAND_CONTAINER_ID).setCellValue(container.getTid());
     }
@@ -1376,7 +1430,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
       if (row.getCell(PART_ELEMENT_ID).getNumericCellValue() == element.getTid()) {
         boolean isPartFound = false;
         for (PartApplication part : element.getParts()) {
-          if (part.getPart().getTid() == row.getCell(PART_RESOURCE_ID).getNumericCellValue()) {
+          if (isCellResourceMatch(row.getCell(PART_RESOURCE_ID), part.getPart())) {
             isPartFound = true;
             break;
           }
@@ -1394,7 +1448,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
         if (row.getRowNum() == 0 || isRowEmpty(row))
           continue;
         if (row.getCell(PART_ELEMENT_ID).getNumericCellValue() == element.getTid()
-            && row.getCell(PART_RESOURCE_ID).getNumericCellValue() == part.getPart().getTid()) {
+            && isCellResourceMatch(row.getCell(PART_RESOURCE_ID), part.getPart())) {
           rowNum = row.getRowNum();
         }
         maxTid = (int) Math.max(maxTid, row.getCell(PART_ID).getNumericCellValue());
@@ -1412,7 +1466,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
         row = sheet.getRow(rowNum);
       }
       row.getCell(PART_ID).setCellValue(part.getTid());
-      row.getCell(PART_RESOURCE_ID).setCellValue(part.getPart().getTid());
+      saveResource(row.getCell(PART_RESOURCE_ID), part.getPart());
       row.getCell(PART_ELEMENT_ID).setCellValue(element.getTid());
       row.getCell(PART_QUANTITY).setCellValue(part.getQuantity());
       row.getCell(PART_DUTY_CYCLE).setCellValue(part.getDutyCycle());
@@ -1579,8 +1633,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
           && row.getCell(DEMAND_MODEL_ID).getNumericCellValue() == model.getTid()) {
         boolean isDemandFound = false;
         for (Demand demand : demands) {
-          if (demand.getResource().getTid() == row.getCell(DEMAND_RESOURCE_ID)
-              .getNumericCellValue()) {
+          if (isCellResourceMatch(row.getCell(DEMAND_RESOURCE_ID), demand.getResource())) {
             isDemandFound = true;
             break;
           }
@@ -1599,8 +1652,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
           continue;
         if (row.getCell(DEMAND_MODEL_ID).getCellType() == CellType.NUMERIC
             && row.getCell(DEMAND_MODEL_ID).getNumericCellValue() == model.getTid()
-            && row.getCell(DEMAND_RESOURCE_ID).getNumericCellValue() == demand.getResource()
-                .getTid()) {
+            && isCellResourceMatch(row.getCell(DEMAND_RESOURCE_ID), demand.getResource())) {
           rowNum = row.getRowNum();
           tid = (int) row.getCell(DEMAND_ID).getNumericCellValue();
         }
@@ -1620,7 +1672,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
       }
       row.getCell(DEMAND_ID).setCellValue(tid);
       row.getCell(DEMAND_MODEL_ID).setCellValue(model.getTid());
-      row.getCell(DEMAND_RESOURCE_ID).setCellValue(demand.getResource().getTid());
+      saveResource(row.getCell(DEMAND_RESOURCE_ID), demand.getResource());
       row.getCell(DEMAND_AMOUNT).setCellValue(demand.getAmount());
     }
   }
@@ -1955,6 +2007,29 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
   }
 
   /**
+   * Check if a cell has a valid resource id (numeric or numeric prefixed by "U" or "P").
+   *
+   * @param cell the cell
+   * @return true, if successful
+   */
+  private boolean cellHasValidResourceId(Cell cell) {
+    if (cell.getCellType() == CellType.NUMERIC) {
+      return true;
+    } else if (cell.getCellType() == CellType.STRING && cell.getStringCellValue().length() > 1
+        && (cell.getStringCellValue().substring(0, 1).toLowerCase().equals("u")
+            || cell.getStringCellValue().substring(0, 1).toLowerCase().equals("p"))) {
+      try {
+        Integer.parseInt(cell.getStringCellValue().substring(1));
+        return true;
+      } catch (NumberFormatException ex) {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * Checks the elements sheet to find any parse errors.
    * 
    * @param sheet the elements sheet
@@ -2042,14 +2117,14 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
         if (row.getCell(ELEMENT_OMS_ISP).getCellType() != CellType.NUMERIC) {
           errors.add("Propulsive Vehicle in row " + (i + 1) + " has missing or invalid OMS Isp.");
         }
-        if (row.getCell(ELEMENT_OMS_ID).getCellType() != CellType.NUMERIC) {
+        if (!cellHasValidResourceId(row.getCell(ELEMENT_OMS_ID))) {
           errors.add(
               "Propulsive Vehicle in row " + (i + 1) + " has missing or invalid max OMS fuel.");
         }
         if (row.getCell(ELEMENT_RCS_ISP).getCellType() != CellType.NUMERIC) {
           errors.add("Propulsive Vehicle in row " + (i + 1) + " has missing or invalid RCS Isp.");
         }
-        if (row.getCell(ELEMENT_RCS_ID).getCellType() != CellType.NUMERIC) {
+        if (!cellHasValidResourceId(row.getCell(ELEMENT_RCS_ID))) {
           errors.add(
               "Propulsive Vehicle in row " + (i + 1) + " has missing or invalid max RCS fuel.");
         }
@@ -2060,7 +2135,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
         if (row.getCell(ELEMENT_MAX_FUEL).getCellType() != CellType.NUMERIC) {
           errors.add("Surface Vehicle in row " + (i + 1) + " has missing or invalid max fuel.");
         }
-        if (row.getCell(ELEMENT_FUEL_ID).getCellType() != CellType.NUMERIC) {
+        if (!cellHasValidResourceId(row.getCell(ELEMENT_FUEL_ID))) {
           errors.add("Surface Vehicle in row " + (i + 1) + " has missing or invalid fuel id.");
         }
       } else if (!type.equals("")) {
@@ -2086,7 +2161,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
       if (row.getCell(PART_ID).getCellType() != CellType.NUMERIC) {
         errors.add("Part Application in row " + (i + 1) + " has missing or invalid id.");
       }
-      if (row.getCell(PART_RESOURCE_ID).getCellType() != CellType.NUMERIC) {
+      if (!cellHasValidResourceId(row.getCell(PART_RESOURCE_ID))) {
         errors.add("Part Application in row " + (i + 1) + " has missing or invalid resource id.");
       }
       if (row.getCell(PART_QUANTITY).getCellType() != CellType.NUMERIC) {
@@ -2212,7 +2287,7 @@ public class Spreadsheet_2_5 extends AbstractDataSource {
       if (row.getCell(DEMAND_ID).getCellType() != CellType.NUMERIC) {
         errors.add("Demand in row " + (i + 1) + " has missing or invalid id.");
       }
-      if (row.getCell(DEMAND_RESOURCE_ID).getCellType() != CellType.NUMERIC) {
+      if (!cellHasValidResourceId(row.getCell(DEMAND_RESOURCE_ID))) {
         errors.add("Demand in row " + (i + 1) + " has missing or invalid resource id.");
       }
       if (row.getCell(DEMAND_AMOUNT).getCellType() != CellType.NUMERIC) {

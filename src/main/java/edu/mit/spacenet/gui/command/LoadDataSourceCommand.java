@@ -117,8 +117,8 @@ public class LoadDataSourceCommand implements I_Command {
                     List<I_State> statesToAdd = new ArrayList<I_State>();
                     for (I_State mirrorState : mirror.getStates()) {
                       boolean stateExists = false;
-                      for (I_State elementState : element.getStates()) {
-                        if (mirrorState.getTid() == element.getTid()) {
+                      for (I_State elementState : element.getStates().toArray(new I_State[0])) {
+                        if (mirrorState.getTid() == elementState.getTid()) {
                           stateExists = true;
                           elementState.setName(mirrorState.getName());
                           elementState.setDescription(mirrorState.getDescription());
@@ -127,7 +127,8 @@ public class LoadDataSourceCommand implements I_Command {
                           List<I_DemandModel> modelsToAdd = new ArrayList<I_DemandModel>();
                           for (I_DemandModel mirrorModel : mirrorState.getDemandModels()) {
                             boolean modelExists = false;
-                            for (I_DemandModel elementModel : elementState.getDemandModels()) {
+                            for (I_DemandModel elementModel : elementState.getDemandModels()
+                                .toArray(new I_DemandModel[0])) {
                               modelExists = true;
                               elementModel.setName(mirrorModel.getName());
                               elementModel.setDescription(mirrorModel.getDescription());

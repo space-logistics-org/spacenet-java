@@ -45,8 +45,12 @@ public class Scenario {
     s.scenarioType = TYPE_MAP.inverse().get(scenario.getScenarioType());
     Context context = new Context();
     s.network = Network.createFrom(scenario.getNetwork(), context);
-    s.resourceList =
-        ResourceType.createFrom(scenario.getDataSource().getResourceLibrary(), context);
+    if (scenario.getDataSource() != null) {
+      s.resourceList =
+          ResourceType.createFrom(scenario.getDataSource().getResourceLibrary(), context);
+    } else {
+      s.resourceList = new ArrayList<ResourceType>();
+    }
     s.demandModels = new ArrayList<DemandModel>();
     for (edu.mit.spacenet.scenario.Mission mission : scenario.getMissionList()) {
       for (I_DemandModel model : mission.getDemandModels()) {

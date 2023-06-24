@@ -59,4 +59,31 @@ public class CrewMember extends Element implements I_Agent {
   public ElementType getElementType() {
     return ElementType.CREW_MEMBER;
   }
+
+  @Override
+  public CrewMember clone() throws CloneNotSupportedException {
+    CrewMember e = new CrewMember();
+    e.setTid(getTid());
+    e.setName(getName());
+    e.setDescription(getDescription());
+    e.setClassOfSupply(getClassOfSupply());
+    e.setEnvironment(getEnvironment());
+    e.setAccommodationMass(getAccommodationMass());
+    e.setMass(getMass());
+    e.setVolume(getVolume());
+    for (PartApplication part : getParts()) {
+      e.getParts().add(part.clone());
+    }
+    for (I_State state : getStates()) {
+      I_State s = state.clone();
+      e.getStates().add(s);
+      if (state.equals(getCurrentState())) {
+        e.setCurrentState(s);
+      }
+    }
+    e.setContainer(getContainer());
+    e.setIconType(getIconType());
+    e.setAvailableTimeFraction(getAvailableTimeFraction());
+    return e;
+  }
 }

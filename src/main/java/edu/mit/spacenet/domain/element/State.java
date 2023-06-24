@@ -15,7 +15,6 @@ package edu.mit.spacenet.domain.element;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
-
 import edu.mit.spacenet.domain.DomainType;
 import edu.mit.spacenet.domain.model.I_DemandModel;
 import edu.mit.spacenet.domain.resource.Demand;
@@ -121,5 +120,18 @@ public class State extends DomainType implements I_State {
   @Override
   public String toString() {
     return getName();
+  }
+
+  @Override
+  public State clone() throws CloneNotSupportedException {
+    State s = new State();
+    s.setTid(getTid());
+    s.setName(getName());
+    s.setDescription(getDescription());
+    s.setStateType(stateType);
+    for (I_DemandModel model : demandModels) {
+      s.demandModels.add(model.clone());
+    }
+    return s;
   }
 }

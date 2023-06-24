@@ -292,4 +292,36 @@ public class ResourceContainer extends Element implements I_ResourceContainer {
   public ElementType getElementType() {
     return ElementType.RESOURCE_CONTAINER;
   }
+
+  @Override
+  public ResourceContainer clone() throws CloneNotSupportedException {
+    ResourceContainer e = new ResourceContainer();
+    e.setTid(getTid());
+    e.setName(getName());
+    e.setDescription(getDescription());
+    e.setClassOfSupply(getClassOfSupply());
+    e.setEnvironment(getEnvironment());
+    e.setAccommodationMass(getAccommodationMass());
+    e.setMass(getMass());
+    e.setVolume(getVolume());
+    for (PartApplication part : getParts()) {
+      e.getParts().add(part.clone());
+    }
+    for (I_State state : getStates()) {
+      I_State s = state.clone();
+      e.getStates().add(s);
+      if (state.equals(getCurrentState())) {
+        e.setCurrentState(s);
+      }
+    }
+    e.setContainer(getContainer());
+    e.setIconType(getIconType());
+    e.setMaxCargoMass(getMaxCargoMass());
+    e.setMaxCargoVolume(getMaxCargoVolume());
+    e.setCargoEnvironment(getCargoEnvironment());
+    for (I_Resource resource : getContents().keySet()) {
+      e.getContents().put(resource, getContents().get(resource));
+    }
+    return e;
+  }
 }

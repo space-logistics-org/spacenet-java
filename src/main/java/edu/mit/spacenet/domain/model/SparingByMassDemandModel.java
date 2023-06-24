@@ -203,4 +203,16 @@ public class SparingByMassDemandModel extends AbstractDemandModel {
   public void setPartsListEnabled(boolean partsListEnabled) {
     this.partsListEnabled = partsListEnabled;
   }
+
+  @Override
+  public SparingByMassDemandModel clone() throws CloneNotSupportedException {
+    SparingByMassDemandModel m = new SparingByMassDemandModel(getElement());
+    m.setTid(getTid());
+    m.setName(getName());
+    m.setDescription(getDescription());
+    m.setUnpressurizedSparesRate(getUnpressurizedSparesRate());
+    m.setPressurizedSparesRate(getPressurizedSparesRate());
+    m.setPartsListEnabled(isPartsListEnabled());
+    return m;
+  }
 }

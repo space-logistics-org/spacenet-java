@@ -30,7 +30,7 @@ import edu.mit.spacenet.simulator.I_Simulator;
  * 
  * @author Paul Grogan
  */
-public interface I_Element extends I_DomainObject, Comparable<I_Element> {
+public interface I_Element extends I_DomainObject, Comparable<I_Element>, Cloneable {
 
   /**
    * Gets the class of supply.
@@ -248,4 +248,12 @@ public interface I_Element extends I_DomainObject, Comparable<I_Element> {
    * @param iconType the new icon type
    */
   public void setIconType(ElementIcon iconType);
+
+  /**
+   * Creates a clone of this element.
+   * 
+   * @return the cloned element
+   * @throws CloneNotSupportedException
+   */
+  public I_Element clone() throws CloneNotSupportedException;
 }

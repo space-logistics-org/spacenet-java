@@ -15,9 +15,7 @@ package edu.mit.spacenet.domain.element;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
-
 import javax.swing.ImageIcon;
-
 import edu.mit.spacenet.domain.ClassOfSupply;
 import edu.mit.spacenet.domain.DomainObject;
 import edu.mit.spacenet.domain.Environment;
@@ -423,5 +421,31 @@ public class Element extends DomainObject implements I_Element {
   public void setIconType(ElementIcon iconType) {
     this.iconType = iconType;
     this.icon = null;
+  }
+
+  @Override
+  public Element clone() throws CloneNotSupportedException {
+    Element e = new Element();
+    e.setTid(getTid());
+    e.setName(getName());
+    e.setDescription(getDescription());
+    e.setClassOfSupply(getClassOfSupply());
+    e.setEnvironment(getEnvironment());
+    e.setAccommodationMass(getAccommodationMass());
+    e.setMass(getMass());
+    e.setVolume(getVolume());
+    for (PartApplication part : getParts()) {
+      e.getParts().add(part.clone());
+    }
+    for (I_State state : getStates()) {
+      I_State s = state.clone();
+      e.getStates().add(s);
+      if (state.equals(getCurrentState())) {
+        e.setCurrentState(s);
+      }
+    }
+    e.setContainer(getContainer());
+    e.setIconType(getIconType());
+    return e;
   }
 }

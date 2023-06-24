@@ -205,4 +205,41 @@ public class PropulsiveVehicle extends Carrier {
   public ElementType getElementType() {
     return ElementType.PROPULSIVE_VEHICLE;
   }
+
+  @Override
+  public PropulsiveVehicle clone() throws CloneNotSupportedException {
+    PropulsiveVehicle e = new PropulsiveVehicle();
+    e.setTid(getTid());
+    e.setName(getName());
+    e.setDescription(getDescription());
+    e.setClassOfSupply(getClassOfSupply());
+    e.setEnvironment(getEnvironment());
+    e.setAccommodationMass(getAccommodationMass());
+    e.setMass(getMass());
+    e.setVolume(getVolume());
+    for (PartApplication part : getParts()) {
+      e.getParts().add(part.clone());
+    }
+    for (I_State state : getStates()) {
+      I_State s = state.clone();
+      e.getStates().add(s);
+      if (state.equals(getCurrentState())) {
+        e.setCurrentState(s);
+      }
+    }
+    e.setContainer(getContainer());
+    e.setIconType(getIconType());
+    e.setMaxCargoMass(getMaxCargoMass());
+    e.setMaxCargoVolume(getMaxCargoVolume());
+    e.setCargoEnvironment(getCargoEnvironment());
+    e.setMaxCrewSize(getMaxCrewSize());
+    for (I_Element element : getContents()) {
+      e.getContents().add(element.clone());
+    }
+    e.setRcsIsp(getRcsIsp());
+    e.setOmsIsp(getOmsIsp());
+    e.setRcsFuelTank(getRcsFuelTank().clone());
+    e.setOmsFuelTank(getOmsFuelTank().clone());
+    return e;
+  }
 }

@@ -2,7 +2,6 @@ package edu.mit.spacenet.data;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.network.edge.Edge;
 import edu.mit.spacenet.domain.network.node.Node;
@@ -10,6 +9,10 @@ import edu.mit.spacenet.domain.resource.I_Resource;
 
 public class InMemoryDataSource extends AbstractDataSource {
   private List<I_Element> elementTemplateLibrary;
+  private int nextNodeId = -1;
+  private int nextEdgeId = -1;
+  private int nextResourceId = -1;
+  private int nextElementId = -1;
 
   public InMemoryDataSource() {
     super();
@@ -96,14 +99,16 @@ public class InMemoryDataSource extends AbstractDataSource {
 
   @Override
   public void loadEdgeLibrary() throws Exception {
-    return;
+    for (Edge edge : edgeLibrary) {
+      nextEdgeId = Math.max(nextEdgeId, edge.getTid() + 1);
+    }
   }
 
   @Override
   public I_Element loadElement(int tid) throws Exception {
     for (I_Element e : elementTemplateLibrary) {
       if (e.getTid() == tid) {
-        return e;
+        return e.clone();
       }
     }
     return null;
@@ -111,37 +116,63 @@ public class InMemoryDataSource extends AbstractDataSource {
 
   @Override
   public void loadElementLibrary() throws Exception {
-    return;
+    for (I_Element element : elementTemplateLibrary) {
+      nextElementId = Math.max(nextElementId, element.getUid() + 1);
+    }
   }
 
   @Override
   public void loadNodeLibrary() throws Exception {
-    return;
+    for (Node node : nodeLibrary) {
+      nextNodeId = Math.max(nextNodeId, node.getTid() + 1);
+    }
   }
 
   @Override
   public void loadResourceLibrary() throws Exception {
-    return;
+    for (I_Resource resource : resourceTypeLibrary) {
+      nextResourceId = Math.max(nextResourceId, resource.getTid() + 1);
+    }
   }
 
   @Override
   public void saveEdge(Edge edge) throws Exception {
-    edgeLibrary.add(edge);
+    if (edgeLibrary.contains(edge)) {
+      // update edge properties (not needed for in-memory)
+    } else {
+      edge.setTid(nextEdgeId++);
+      edgeLibrary.add(edge);
+    }
   }
 
   @Override
   public void saveElement(I_Element element) throws Exception {
-    return;
+    if (elementTemplateLibrary.contains(element)) {
+      // update element properties (not needed for in-memory)
+    } else {
+      element.setUid(nextElementId++);
+      elementTemplateLibrary.add(element);
+    }
   }
 
   @Override
   public void saveNode(Node node) throws Exception {
-    nodeLibrary.add(node);
+    if (nodeLibrary.contains(node)) {
+      // update node properties (not needed for in-memory)
+    } else {
+      node.setTid(nextNodeId++);
+      nodeLibrary.add(node);
+    }
   }
 
   @Override
   public void saveResource(I_Resource resource) throws Exception {
-    resourceTypeLibrary.add(resource);
+    if (resourceTypeLibrary.contains(resource)) {
+      // update resource type properties (not needed for in-memory)
+    } else {
+      resource.setTid(nextResourceId++);
+      resourceTypeLibrary.add(resource);
+    }
   }
 
   @Override

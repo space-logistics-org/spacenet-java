@@ -13,6 +13,7 @@
  */
 package edu.mit.spacenet.domain.element;
 
+import edu.mit.spacenet.domain.resource.I_Resource;
 import edu.mit.spacenet.util.GlobalParameters;
 
 /**
@@ -168,5 +169,41 @@ public class GenericResourceContainer extends ResourceContainer {
    */
   public void setMaxVolume(double maxVolume) {
     this.maxVolume = maxVolume;
+  }
+
+  @Override
+  public GenericResourceContainer clone() throws CloneNotSupportedException {
+    GenericResourceContainer e = new GenericResourceContainer();
+    e.setTid(getTid());
+    e.setName(getName());
+    e.setDescription(getDescription());
+    e.setClassOfSupply(getClassOfSupply());
+    e.setEnvironment(getEnvironment());
+    e.setAccommodationMass(getAccommodationMass());
+    e.setMass(getMass());
+    e.setVolume(getVolume());
+    for (PartApplication part : getParts()) {
+      e.getParts().add(part.clone());
+    }
+    for (I_State state : getStates()) {
+      I_State s = state.clone();
+      e.getStates().add(s);
+      if (state.equals(getCurrentState())) {
+        e.setCurrentState(s);
+      }
+    }
+    e.setContainer(getContainer());
+    e.setIconType(getIconType());
+    e.setMaxCargoMass(getMaxCargoMass());
+    e.setMaxCargoVolume(getMaxCargoVolume());
+    e.setCargoEnvironment(getCargoEnvironment());
+    e.setMassPackingFactor(getMassPackingFactor());
+    e.setVolumePackingFactor(getVolumePackingFactor());
+    e.setMaxMass(getMaxMass());
+    e.setMaxVolume(getMaxVolume());
+    for (I_Resource resource : getContents().keySet()) {
+      e.getContents().put(resource, getContents().get(resource));
+    }
+    return e;
   }
 }

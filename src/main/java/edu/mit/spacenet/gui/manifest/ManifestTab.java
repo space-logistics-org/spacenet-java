@@ -442,10 +442,10 @@ public class ManifestTab extends JSplitPane {
                   + manifestedMass + delimiter + manifestedVolume
                   + System.getProperty("line.separator"));
             } else {
-              out.write("" + edge.getOrigin().getTid() + delimiter + edge.getStartTime()
-                  + delimiter + edge.getDestination().getTid() + delimiter + edge.getEndTime()
-                  + delimiter + carrier.getUid() + delimiter + carrier.getCargoEnvironment()
-                  + delimiter + (carrier.getMaxCargoMass() - carrier.getCargoMass()) + delimiter
+              out.write("" + edge.getOrigin().getTid() + delimiter + edge.getStartTime() + delimiter
+                  + edge.getDestination().getTid() + delimiter + edge.getEndTime() + delimiter
+                  + carrier.getUid() + delimiter + carrier.getCargoEnvironment() + delimiter
+                  + (carrier.getMaxCargoMass() - carrier.getCargoMass()) + delimiter
                   + (carrier.getMaxCargoVolume() - carrier.getCargoVolume()) + delimiter
                   + manifestedMass + delimiter + manifestedVolume
                   + System.getProperty("line.separator"));

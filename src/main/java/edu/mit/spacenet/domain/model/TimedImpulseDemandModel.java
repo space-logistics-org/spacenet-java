@@ -15,7 +15,6 @@ package edu.mit.spacenet.domain.model;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
-
 import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.domain.resource.DemandSet;
 import edu.mit.spacenet.simulator.I_Simulator;
@@ -80,5 +79,17 @@ public class TimedImpulseDemandModel extends AbstractDemandModel {
    */
   public DemandModelType getDemandModelType() {
     return DemandModelType.TIMED_IMPULSE;
+  }
+
+  @Override
+  public TimedImpulseDemandModel clone() throws CloneNotSupportedException {
+    TimedImpulseDemandModel m = new TimedImpulseDemandModel();
+    m.setTid(getTid());
+    m.setName(getName());
+    m.setDescription(getDescription());
+    for (Demand demand : getDemands()) {
+      m.getDemands().add(demand.clone());
+    }
+    return m;
   }
 }

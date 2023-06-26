@@ -25,7 +25,7 @@ import edu.mit.spacenet.simulator.I_Simulator;
  * 
  * @author Paul Grogan
  */
-public interface I_DemandModel extends I_DomainType, Comparable<I_DemandModel> {
+public interface I_DemandModel extends I_DomainType, Comparable<I_DemandModel>, Cloneable {
 
   /**
    * Generates a set of demands based on the duration (in days) of time that has elapsed.
@@ -43,4 +43,13 @@ public interface I_DemandModel extends I_DomainType, Comparable<I_DemandModel> {
    * @return the demand model type
    */
   public DemandModelType getDemandModelType();
+
+
+  /**
+   * Creates a clone of this demand model.
+   * 
+   * @return the cloned demand model
+   * @throws CloneNotSupportedException
+   */
+  public I_DemandModel clone() throws CloneNotSupportedException;
 }

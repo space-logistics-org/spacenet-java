@@ -22,7 +22,7 @@ import edu.mit.spacenet.util.GlobalParameters;
  * 
  * @author Paul Grogan
  */
-public class Demand implements Comparable<Demand> {
+public class Demand implements Comparable<Demand>, Cloneable {
   private I_Resource resource;
   private double amount;
 
@@ -134,5 +134,13 @@ public class Demand implements Comparable<Demand> {
     } else {
       return getResource().compareTo(demand.getResource());
     }
+  }
+
+  @Override
+  public Demand clone() throws CloneNotSupportedException {
+    Demand d = new Demand();
+    d.setAmount(amount);
+    d.setResource(resource);
+    return d;
   }
 }

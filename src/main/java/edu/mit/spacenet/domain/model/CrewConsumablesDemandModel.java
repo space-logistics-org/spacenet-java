@@ -673,4 +673,39 @@ public class CrewConsumablesDemandModel extends AbstractDemandModel {
   public void setTransitDemandsOmitted(boolean transitDemandsOmitted) {
     this.transitDemandsOmitted = transitDemandsOmitted;
   }
+
+  @Override
+  public CrewConsumablesDemandModel clone() throws CloneNotSupportedException {
+    CrewConsumablesDemandModel m = new CrewConsumablesDemandModel(getMission());
+    m.setTid(getTid());
+    m.setName(getName());
+    m.setDescription(getDescription());
+    m.setReservesDuration(getReservesDuration());
+    m.setWaterRecoveryRate(getWaterRecoveryRate());
+    m.setClothingLifetime(getClothingLifetime());
+    m.setTransitDemandsOmitted(isTransitDemandsOmitted());
+    m.setWaterRate(getWaterRate());
+    m.setEvaWaterRate(getEvaWaterRate());
+    m.setFoodSupportRate(getFoodSupportRate());
+    m.setAmbientFoodRate(getAmbientFoodRate());
+    m.setRfFoodRate(getRfFoodRate());
+    m.setOxygenRate(getOxygenRate());
+    m.setEvaOxygenRate(getEvaOxygenRate());
+    m.setNitrogenRate(getNitrogenRate());
+    m.setHygieneRate(getHygieneRate());
+    m.setHygieneKit(getHygieneKit());
+    m.setClothingRate(getClothingRate());
+    m.setPersonalItems(getPersonalItems());
+    m.setOfficeEquipment(getOfficeEquipment());
+    m.setEvaSuit(getEvaSuit());
+    m.setEvaLithiumHydroxide(getEvaLithiumHydroxide());
+    m.setHealthEquipment(getHealthEquipment());
+    m.setHealthConsumables(getHealthConsumables());
+    m.setSafetyEquipment(getSafetyEquipment());
+    m.setCommEquipment(getCommEquipment());
+    m.setComputerEquipment(getComputerEquipment());
+    m.setTrashBagRate(getTrashBagRate());
+    m.setWasteContainmentRate(getWasteContainmentRate());
+    return m;
+  }
 }

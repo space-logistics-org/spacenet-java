@@ -222,6 +222,11 @@ public class PropulsiveVehicle extends Carrier {
     t.setAmount(_fuel.amount);
     t.setMaxAmount(maxFuel == null ? template.maxFuel : maxFuel);
     e.setOmsFuelTank(t);
+    edu.mit.spacenet.domain.element.ResourceTank t2 = new edu.mit.spacenet.domain.element.ResourceTank();
+    t2.setResource(new edu.mit.spacenet.domain.resource.GenericResource(
+          ClassOfSupply.COS0,
+          Environment.UNPRESSURIZED));
+    e.setRcsFuelTank(t2);
     return e;
   }
 

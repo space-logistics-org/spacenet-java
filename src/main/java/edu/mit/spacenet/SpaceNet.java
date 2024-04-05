@@ -43,6 +43,7 @@ import edu.mit.spacenet.gui.SpaceNetSettings;
 import edu.mit.spacenet.gui.SplashScreen;
 import edu.mit.spacenet.io.XStreamEngine;
 import edu.mit.spacenet.io.gson.demands.AggregatedDemandsAnalysis;
+import edu.mit.spacenet.io.gson.demands.ManifestAnalysis;
 import edu.mit.spacenet.io.gson.demands.RawDemandsAnalysis;
 import edu.mit.spacenet.io.gson.scenario.GsonEngine;
 import edu.mit.spacenet.scenario.Scenario;
@@ -55,7 +56,10 @@ import edu.mit.spacenet.simulator.DemandSimulator;
  */
 public class SpaceNet {
   public static enum HeadlessMode {
-    DEMANDS_RAW("demands-raw"), DEMANDS_AGGREGATED("demands-agg"), CONVERT_SCENARIO("convert");
+    DEMANDS_RAW("demands-raw"), 
+    DEMANDS_AGGREGATED("demands-agg"), 
+    AUTO_MANIFEST("auto-manifest"), 
+    CONVERT_SCENARIO("convert");
 
     public final String label;
 
@@ -72,10 +76,12 @@ public class SpaceNet {
   public static void main(String[] args) {
     Options options = new Options();
     Option headless = Option.builder("h").longOpt("headless").argName("mode").hasArg()
-        .desc("Headless execution mode. Alternatives: " + HeadlessMode.DEMANDS_RAW.label
-            + " (raw demand simulator)" + HeadlessMode.DEMANDS_AGGREGATED.label
-            + " (aggregated demand simulator)" + HeadlessMode.CONVERT_SCENARIO.label
-            + " (convert scenario format: xml <--> json)" + ".")
+        .desc("Headless execution mode. Alternatives: " 
+            + HeadlessMode.DEMANDS_RAW.label + " (raw demand simulator)" 
+            + HeadlessMode.DEMANDS_AGGREGATED.label + " (aggregated demand simulator)" 
+            + HeadlessMode.AUTO_MANIFEST.label + " (auto-manifest)" 
+            + HeadlessMode.CONVERT_SCENARIO.label + " (convert scenario format: xml <--> json)" 
+            + ".")
         .build();
     options.addOption(headless);
     Option input = Option.builder("i").longOpt("input").argName("file path").hasArg()
@@ -100,7 +106,8 @@ public class SpaceNet {
         String mode = line.getOptionValue(headless);
 
         if (mode.equalsIgnoreCase(HeadlessMode.DEMANDS_RAW.label)
-            || mode.equalsIgnoreCase(HeadlessMode.DEMANDS_AGGREGATED.label)) {
+            || mode.equalsIgnoreCase(HeadlessMode.DEMANDS_AGGREGATED.label)
+            || mode.equalsIgnoreCase(HeadlessMode.AUTO_MANIFEST.label)) {
           String scenarioFilePath = null;
           if (line.hasOption(input)) {
             scenarioFilePath = new File(line.getOptionValue(input)).getAbsolutePath();
@@ -117,9 +124,14 @@ public class SpaceNet {
             helper.printHelp("Usage:", options);
             System.exit(0);
           }
-          runDemandSimulator(scenarioFilePath, outputFilePath, line.hasOption(confirm),
-              mode.equalsIgnoreCase(HeadlessMode.DEMANDS_RAW.label),
-              line.hasOption(consumeResources));
+          runDemandSimulator(
+            scenarioFilePath, 
+            outputFilePath, 
+            line.hasOption(confirm),
+            mode.equalsIgnoreCase(HeadlessMode.DEMANDS_RAW.label),
+            line.hasOption(consumeResources), 
+            mode.equalsIgnoreCase(HeadlessMode.AUTO_MANIFEST.label)
+          );
         } else if (mode.equalsIgnoreCase(HeadlessMode.CONVERT_SCENARIO.label)) {
           String inputFilePath = null;
           if (line.hasOption(input)) {
@@ -216,7 +228,8 @@ public class SpaceNet {
   }
 
   private static void runDemandSimulator(String scenarioFilePath, String outputFilePath,
-      boolean isOverwriteConfirmed, boolean isRawDemands, boolean consumeExistingResources) {
+      boolean isOverwriteConfirmed, boolean isRawDemands, boolean consumeExistingResources, 
+      boolean autoManifest) {
     Scenario scenario = openScenario(scenarioFilePath);
 
     DemandSimulator simulator = new DemandSimulator(scenario);
@@ -241,7 +254,11 @@ public class SpaceNet {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     try {
       BufferedWriter out = new BufferedWriter(new FileWriter(outputFilePath));
-      if (isRawDemands) {
+      if (autoManifest) {
+        scenario.getManifest().importDemands(simulator);
+        scenario.getManifest().autoManifest();
+        gson.toJson(ManifestAnalysis.createFrom(scenario.getManifest()), out);
+      } else if (isRawDemands) {
         gson.toJson(RawDemandsAnalysis.createFrom(simulator), out);
       } else {
         gson.toJson(AggregatedDemandsAnalysis.createFrom(simulator), out);

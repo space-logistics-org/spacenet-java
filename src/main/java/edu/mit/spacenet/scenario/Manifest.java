@@ -390,6 +390,8 @@ public class Manifest {
         } else {
           container = ResourceContainerFactory.createLTD();
         }
+        container.setEnvironment(d.getResource().getEnvironment());
+        container.setCargoEnvironment(d.getResource().getEnvironment());
         addContainer(container);
         packDemand(d, container);
       }
@@ -413,6 +415,8 @@ public class Manifest {
         } else {
           container = ResourceContainerFactory.createGTD();
         }
+        container.setEnvironment(d.getResource().getEnvironment());
+        container.setCargoEnvironment(d.getResource().getEnvironment());
         addContainer(container);
         packDemand(d, container);
       }
@@ -436,6 +440,8 @@ public class Manifest {
         } else {
           container = ResourceContainerFactory.createLTD();
         }
+        container.setEnvironment(d.getResource().getEnvironment());
+        container.setCargoEnvironment(d.getResource().getEnvironment());
         addContainer(container);
         packDemand(d, container);
       }
@@ -458,6 +464,7 @@ public class Manifest {
       // create new ctb's
       while (getRemainingAmount(d) > 0) {
         I_ResourceContainer container = ResourceContainerFactory.createCTB();
+        container.setEnvironment(d.getResource().getEnvironment());
         container.setCargoEnvironment(d.getResource().getEnvironment());
         addContainer(container);
         packDemand(d, container);
@@ -492,9 +499,8 @@ public class Manifest {
         container.setName("Miscellaneous " + container.getUid());
       }
       container.setMass(d.getMass() * d.getResource().getPackingFactor());
-      if (d.getResource().getEnvironment().equals(Environment.PRESSURIZED)) {
-        container.setCargoEnvironment(Environment.PRESSURIZED);
-      }
+      container.setEnvironment(d.getResource().getEnvironment());
+      container.setCargoEnvironment(d.getResource().getEnvironment());
       addContainer(container);
       packDemand(d, container);
     }

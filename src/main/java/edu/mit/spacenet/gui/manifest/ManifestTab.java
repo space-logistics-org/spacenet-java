@@ -104,7 +104,7 @@ public class ManifestTab extends JSplitPane {
   private PackedDemandsTable packedDemandsTable;
   private JButton editContainerButton, removeContainerButton;
   private JLabel containerNameLabel, containerMassLabel, containerVolumeLabel,
-      containerEnvironmentLabel;
+      containerEnvironmentLabel, containerCargoEnvironmentLabel;
   private ContainerContentsTable containerContentsTable;
   private JButton unpackContentsButton;
   private JProgressBar containerMassCapacity, containerVolumeCapacity;
@@ -442,10 +442,10 @@ public class ManifestTab extends JSplitPane {
                   + manifestedMass + delimiter + manifestedVolume
                   + System.getProperty("line.separator"));
             } else {
-              out.write("" + edge.getOrigin().getTid() + delimiter + edge.getStartTime()
-                  + delimiter + edge.getDestination().getTid() + delimiter + edge.getEndTime()
-                  + delimiter + carrier.getUid() + delimiter + carrier.getCargoEnvironment()
-                  + delimiter + (carrier.getMaxCargoMass() - carrier.getCargoMass()) + delimiter
+              out.write("" + edge.getOrigin().getTid() + delimiter + edge.getStartTime() + delimiter
+                  + edge.getDestination().getTid() + delimiter + edge.getEndTime() + delimiter
+                  + carrier.getUid() + delimiter + carrier.getCargoEnvironment() + delimiter
+                  + (carrier.getMaxCargoMass() - carrier.getCargoMass()) + delimiter
                   + (carrier.getMaxCargoVolume() - carrier.getCargoVolume()) + delimiter
                   + manifestedMass + delimiter + manifestedVolume
                   + System.getProperty("line.separator"));
@@ -621,7 +621,7 @@ public class ManifestTab extends JSplitPane {
     c.gridy = 0;
     c.weightx = 1;
     c.weighty = 0;
-    c.gridwidth = 2;
+    c.gridwidth = 4;
     c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.BOTH;
     packingPanel.add(new JLabel("Available Logistics Containers"), c);
@@ -681,10 +681,14 @@ public class ManifestTab extends JSplitPane {
     c.weightx = 0;
     c.gridwidth = 1;
     packingPanel.add(new JLabel("Name: "), c);
+    c.gridx += 2;
+    packingPanel.add(new JLabel("Environment: "), c);
+    c.gridx -= 2;
     c.gridy++;
     packingPanel.add(new JLabel("Total Mass: "), c);
-    c.gridy++;
+    c.gridx += 2;
     packingPanel.add(new JLabel("Total Volume: "), c);
+    c.gridx -= 2;
     c.gridy++;
     c.anchor = GridBagConstraints.FIRST_LINE_END;
     packingPanel.add(new JLabel("Contents: "), c);
@@ -697,20 +701,26 @@ public class ManifestTab extends JSplitPane {
     packingPanel.add(new JLabel("Cargo Volume: "), c);
     c.gridx++;
     c.weightx = 1;
-    c.gridy -= 7;
+    c.gridy -= 6;
     c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.BOTH;
     containerNameLabel = new JLabel();
     packingPanel.add(containerNameLabel, c);
+    c.gridx += 2;
+    containerEnvironmentLabel = new JLabel();
+    packingPanel.add(containerEnvironmentLabel, c);
+    c.gridx -= 2;
     c.gridy++;
     containerMassLabel = new JLabel();
     packingPanel.add(containerMassLabel, c);
-    c.gridy++;
+    c.gridx += 2;
     containerVolumeLabel = new JLabel();
     packingPanel.add(containerVolumeLabel, c);
+    c.gridx -= 2;
     c.gridy++;
     c.anchor = GridBagConstraints.FIRST_LINE_START;
     c.weighty = 0.4;
+    c.gridwidth = 3;
     containerContentsTable = new ContainerContentsTable(this);
     containerContentsTable.getSelectionModel()
         .addListSelectionListener(new ListSelectionListener() {
@@ -758,8 +768,9 @@ public class ManifestTab extends JSplitPane {
     c.gridy++;
     c.fill = GridBagConstraints.BOTH;
     c.anchor = GridBagConstraints.LINE_START;
-    containerEnvironmentLabel = new JLabel();
-    packingPanel.add(containerEnvironmentLabel, c);
+    c.gridwidth = 3;
+    containerCargoEnvironmentLabel = new JLabel();
+    packingPanel.add(containerCargoEnvironmentLabel, c);
     c.gridy++;
     containerMassCapacity = new JProgressBar(0, 100);
     containerMassCapacity.setStringPainted(true);
@@ -772,7 +783,7 @@ public class ManifestTab extends JSplitPane {
     packingPanel.add(containerVolumeCapacity, c);
     c.gridy++;
     c.gridx = 0;
-    c.gridwidth = 2;
+    c.gridwidth = 4;
     c.anchor = GridBagConstraints.LINE_END;
     c.fill = GridBagConstraints.NONE;
     JPanel packButtonPanel = new JPanel();
@@ -1155,10 +1166,11 @@ public class ManifestTab extends JSplitPane {
       DecimalFormat massFormat = new DecimalFormat("0.00");
       DecimalFormat volumeFormat = new DecimalFormat("0.000");
       containerNameLabel.setText(container.getName());
+      containerEnvironmentLabel.setText(container.getEnvironment().toString());
       containerMassLabel.setText(massFormat.format(container.getMass() + cargoMass) + " kg");
       containerVolumeLabel.setText(volumeFormat.format(container.getVolume()) + " m^3");
       containerContentsTable.setContainer(container, point);
-      containerEnvironmentLabel.setText(container.getCargoEnvironment().toString());
+      containerCargoEnvironmentLabel.setText(container.getCargoEnvironment().toString());
 
       if (cargoMass
           - container.getMaxCargoMass() > GlobalParameters.getSingleton().getMassPrecision() / 2d)
@@ -1185,10 +1197,11 @@ public class ManifestTab extends JSplitPane {
           + volumeFormat.format(container.getMaxCargoVolume()) + " m^3");
     } else {
       containerNameLabel.setText(null);
+      containerEnvironmentLabel.setText(null);
       containerMassLabel.setText(null);
       containerVolumeLabel.setText(null);
       containerContentsTable.setContainer(null, null);
-      containerEnvironmentLabel.setText(null);
+      containerCargoEnvironmentLabel.setText(null);
       containerMassCapacity.setValue(0);
       containerMassCapacity.setString("");
       containerVolumeCapacity.setValue(0);

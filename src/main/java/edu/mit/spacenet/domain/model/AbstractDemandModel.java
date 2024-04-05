@@ -41,4 +41,9 @@ public abstract class AbstractDemandModel extends DomainType implements I_Demand
       return getName().compareTo(demandModel.getName());
     }
   }
+
+  @Override
+  public AbstractDemandModel clone() throws CloneNotSupportedException {
+    throw new CloneNotSupportedException();
+  }
 }

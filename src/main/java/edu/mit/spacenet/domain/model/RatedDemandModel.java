@@ -15,7 +15,6 @@ package edu.mit.spacenet.domain.model;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
-
 import edu.mit.spacenet.domain.resource.Demand;
 import edu.mit.spacenet.domain.resource.DemandSet;
 import edu.mit.spacenet.simulator.I_Simulator;
@@ -78,5 +77,17 @@ public class RatedDemandModel extends AbstractDemandModel {
    */
   public DemandModelType getDemandModelType() {
     return DemandModelType.RATED;
+  }
+
+  @Override
+  public RatedDemandModel clone() throws CloneNotSupportedException {
+    RatedDemandModel m = new RatedDemandModel();
+    m.setTid(getTid());
+    m.setName(getName());
+    m.setDescription(getDescription());
+    for (Demand demand : getDemandRates()) {
+      m.getDemandRates().add(demand.clone());
+    }
+    return m;
   }
 }

@@ -9,6 +9,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
 import edu.mit.spacenet.data.ElementPreview;
+import edu.mit.spacenet.data.InMemoryDataSource;
 import edu.mit.spacenet.domain.element.I_Element;
 import edu.mit.spacenet.domain.element.I_State;
 import edu.mit.spacenet.domain.model.I_DemandModel;
@@ -45,8 +46,12 @@ public class Scenario {
     s.scenarioType = TYPE_MAP.inverse().get(scenario.getScenarioType());
     Context context = new Context();
     s.network = Network.createFrom(scenario.getNetwork(), context);
-    s.resourceList =
-        ResourceType.createFrom(scenario.getDataSource().getResourceLibrary(), context);
+    if (scenario.getDataSource() != null) {
+      s.resourceList =
+          ResourceType.createFrom(scenario.getDataSource().getResourceLibrary(), context);
+    } else {
+      s.resourceList = new ArrayList<ResourceType>();
+    }
     s.demandModels = new ArrayList<DemandModel>();
     for (edu.mit.spacenet.scenario.Mission mission : scenario.getMissionList()) {
       for (I_DemandModel model : mission.getDemandModels()) {
@@ -73,6 +78,25 @@ public class Scenario {
       }
     }
     s.elementTemplates = new ArrayList<Element>();
+    if (InMemoryDataSource.class.isInstance(scenario.getDataSource())) {
+      for (I_Element element : ((InMemoryDataSource) scenario.getDataSource())
+          .getElementLibrary()) {
+        for (I_State state : element.getStates()) {
+          for (I_DemandModel model : state.getDemandModels()) {
+            if (context.getModelTemplate(model.getTid()) == null) {
+              DemandModel m = DemandModel.createFrom(model, context);
+              m.id = UUID.randomUUID();
+              m.templateId = null;
+              context.putModelTemplate(model, m.id, m);
+              s.demandModels.add(m);
+            }
+          }
+        }
+        Element e = Element.createFrom(element, context);
+        context.putElementTemplate(element, e.id, e);
+        s.elementTemplates.add(e);
+      }
+    }
     for (I_Element element : scenario.getElements()) {
       if (context.getElementTemplate(element.getTid()) == null) {
         Element e = Element.createFrom(element, context);

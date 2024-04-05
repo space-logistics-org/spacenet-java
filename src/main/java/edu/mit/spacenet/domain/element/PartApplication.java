@@ -14,7 +14,6 @@
 package edu.mit.spacenet.domain.element;
 
 import edu.mit.spacenet.domain.DomainType;
-import edu.mit.spacenet.domain.resource.I_Item;
 import edu.mit.spacenet.domain.resource.Item;
 import edu.mit.spacenet.util.GlobalParameters;
 
@@ -24,7 +23,7 @@ import edu.mit.spacenet.util.GlobalParameters;
  * 
  * @author Paul Grogan
  */
-public class PartApplication extends DomainType implements Comparable<PartApplication> {
+public class PartApplication extends DomainType implements Comparable<PartApplication>, Cloneable {
   private Item partType;
   private double meanTimeToFailure;
   private double meanTimeToRepair;
@@ -50,7 +49,7 @@ public class PartApplication extends DomainType implements Comparable<PartApplic
    * 
    * @return the part
    */
-  public I_Item getPart() {
+  public Item getPart() {
     return partType;
   }
 
@@ -186,5 +185,20 @@ public class PartApplication extends DomainType implements Comparable<PartApplic
   @Override
   public String toString() {
     return partType + " (" + ((int) getQuantity()) + ")";
+  }
+
+  @Override
+  public PartApplication clone() throws CloneNotSupportedException {
+    PartApplication p = new PartApplication();
+    p.setTid(getTid());
+    p.setName(getName());
+    p.setDescription(getDescription());
+    p.setPart(partType);
+    p.setMeanTimeToFailure(meanTimeToFailure);
+    p.setMeanTimeToRepair(meanTimeToRepair);
+    p.setMassToRepair(massToRepair);
+    p.setQuantity(quantity);
+    p.setDutyCycle(dutyCycle);
+    return p;
   }
 }

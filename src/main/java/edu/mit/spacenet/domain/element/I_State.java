@@ -26,7 +26,7 @@ import edu.mit.spacenet.simulator.I_Simulator;
  * 
  * @author Paul Grogan
  */
-public interface I_State extends I_DomainType, Comparable<I_State> {
+public interface I_State extends I_DomainType, Comparable<I_State>, Cloneable {
 
   /**
    * Gets the state type.
@@ -66,4 +66,12 @@ public interface I_State extends I_DomainType, Comparable<I_State> {
    * @return the aggregated set of demands
    */
   public DemandSet generateDemands(double duration, I_Simulator simulator);
+
+  /**
+   * Creates a clone of this state.
+   * 
+   * @return the cloned state
+   * @throws CloneNotSupportedException
+   */
+  public I_State clone() throws CloneNotSupportedException;
 }

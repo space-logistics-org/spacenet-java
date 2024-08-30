@@ -1,5 +1,6 @@
 package edu.mit.spacenet.io.gson.scenario;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -8,13 +9,15 @@ import java.util.TreeSet;
 import java.util.UUID;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.threeten.extra.PeriodDuration;
+
 import edu.mit.spacenet.domain.element.PartApplication;
 import edu.mit.spacenet.domain.resource.Item;
 
 public class Part implements Cloneable {
   protected UUID resource;
-  protected Double meanTimeToFailure;
-  protected Double meanTimeToRepair;
+  protected PeriodDuration meanTimeToFailure;
+  protected PeriodDuration meanTimeToRepair;
   protected Double massToRepair;
   protected Double quantity;
   protected Double dutyCycle;
@@ -24,12 +27,12 @@ public class Part implements Cloneable {
     Part p = new Part();
     p.resource = context.getJsonIdFromJavaObject(part.getPart());
     if (part.getMeanTimeToFailure() > 0) {
-      p.meanTimeToFailure = part.getMeanTimeToFailure();
+      p.meanTimeToFailure = PeriodDuration.of(Duration.ofSeconds((int) part.getMeanTimeToFailure() * 60 * 60));
     } else {
       p.meanTimeToFailure = null;
     }
     if (part.getMeanTimeToRepair() > 0) {
-      p.meanTimeToRepair = part.getMeanTimeToRepair();
+      p.meanTimeToRepair = PeriodDuration.of(Duration.ofSeconds((int) part.getMeanTimeToRepair() * 60 * 60));
     } else {
       p.meanTimeToRepair = null;
     }
@@ -57,12 +60,12 @@ public class Part implements Cloneable {
         new edu.mit.spacenet.domain.element.PartApplication();
     p.setPart((Item) context.getJavaObjectFromJsonId(resource));
     if (meanTimeToFailure != null) {
-      p.setMeanTimeToFailure(meanTimeToFailure);
+      p.setMeanTimeToFailure(meanTimeToFailure.getDuration().getSeconds() / (60 * 60d));
     } else {
       p.setMeanTimeToFailure(0);
     }
     if (meanTimeToRepair != null) {
-      p.setMeanTimeToRepair(meanTimeToRepair);
+      p.setMeanTimeToRepair(meanTimeToRepair.getDuration().getSeconds() / (60 * 60d));
     } else {
       p.setMeanTimeToRepair(0);
     }
